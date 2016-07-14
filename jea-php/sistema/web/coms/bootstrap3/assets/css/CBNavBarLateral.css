@@ -1,0 +1,177 @@
+/*
+Este archivo contiene los estilos necesarios para el componente barra de menú
+*/
+/* 
+    Created on : 03-may-2016, 18:36:36
+    Author     : JAKO
+*/
+
+@media(max-width: 1024px){
+    .nav-bar-lateral{
+        display: none;
+    }   
+}
+.nav-bar-tmp{
+    width: 100%;
+}
+.nav-bar-tmp ul{
+    padding: 0px;
+    height: 100%;
+}
+.nav-bar-tmp .nav-bar-header{
+    padding: 10px;
+    font-size: 20px;
+    padding-bottom: 20px;
+}
+.nav-bar-tmp ul li{
+    list-style-type: none;
+    padding: 10px 0px;
+    transition: all 0.6s;
+    position: relative;
+}
+.nav-bar-tmp li a,
+.nav-bar-tmp .nav-bar-header a{
+    text-decoration: none;
+    width: 100%;
+    display: block;
+    padding-left: 20px;
+}
+.nav-bar-tmp li a i.fa{
+    margin-right: 15px;	
+}
+.nav-bar-tmp .nav-drop-down ul{
+    margin-top: 10px;
+}
+.nav-bar-tmp .nav-drop-down li{
+    border: 0px;
+}
+.nav-bar-tmp .nav-drop-down.open{
+    padding-bottom: 0px;
+}
+.nav-bar-tmp .nav-drop-down li a{
+    padding-left: 60px;
+}
+.nav-bar-tmp .nav-drop-down:after{
+    content: "\f054";
+    font: normal normal normal 14px/1 FontAwesome;
+    position: absolute;
+    right: 15px;
+    top: 15px;
+}
+.nav-bar-tmp .nav-drop-down.open:after{
+    content: "\f078";
+}
+.nav-bar-tmp .separator,
+.nav-bar-tmp .separator:hover{
+    padding-left: 20px;
+    font-weight: 600;
+}
+.nav-bar-tmp .nav-bar-form {
+    padding: 0px 20px 20px 20px;
+    position: relative;
+}
+.nav-bar-tmp .nav-bar-form input{
+    border-radius: 50px;
+}
+.nav-bar-tmp .nav-bar-form i.fa{
+    position: absolute;
+    right: 35px;
+    top: 10px;
+}
+
+/* Tema obscuro */
+.nav-bar-tmp.dark{
+    background-color: #272B33;
+}
+.nav-bar-tmp.dark .nav-bar-header{
+    background-color: #272B33;
+    color: white;
+}
+.nav-bar-tmp.dark ul li{
+    background-color: #272B33;	
+    border-top: 1px solid #45484C;
+    border-bottom: 1px solid #171D23;
+}
+.nav-bar-tmp.dark ul li:hover,
+.nav-bar-tmp.dark ul li.active{
+    background-color: #181A1F;
+}
+.nav-bar-tmp.dark li a,
+.nav-bar-tmp.dark .nav-bar-header a{
+    color: #999CA0;
+    text-shadow: 0px 0px 5px #000000;
+    font-weight: 600;
+}
+.nav-bar-tmp.dark .nav-drop-down ul{
+    background-color: #5A5E64;
+}
+.nav-bar-tmp.dark .nav-drop-down li{
+    background-color: #5A5E64;
+    border: 0px;
+}
+.nav-bar-tmp.dark .nav-drop-down li:hover,
+.nav-bar-tmp.dark .nav-drop-down li.active{
+    background-color: #4A4D52;
+}
+.nav-bar-tmp.dark .nav-drop-down:after{
+    color: #777;
+}
+.nav-bar-tmp.dark .separator,
+.nav-bar-tmp.dark .separator:hover{
+    background-color: #090A0C;
+    color: #999CA0;
+}
+.nav-bar-tmp.dark .nav-bar-form{
+    background-color: #272B33;
+}
+.nav-bar-tmp.dark .nav-bar-form i.fa{
+    color: #999CA0;
+}
+
+/* tema flat 1*/
+.nav-bar-tmp.flat-1{
+    background-color: #222222;
+}
+.nav-bar-tmp.flat-1 .nav-bar-header{
+    background-color: #222222;
+    color: white;
+}
+.nav-bar-tmp.flat-1 ul li{
+    background-color: #222222;	
+    border:0px;
+}
+.nav-bar-tmp.flat-1 ul li:hover,
+.nav-bar-tmp.flat-1 ul li.active{
+    background-color: #181A1F;
+}
+.nav-bar-tmp.flat-1 li a,
+.nav-bar-tmp.flat-1 .nav-bar-header a{
+    color: #BBB9B9;
+    text-shadow: none;
+    font-weight: 600;
+}
+.nav-bar-tmp.flat-1 .nav-drop-down ul{
+    background-color: #5A5E64;
+}
+.nav-bar-tmp.flat-1 .nav-drop-down li{
+    background-color: #5A5E64;
+    border: 0px;
+}
+.nav-bar-tmp.flat-1 .nav-drop-down li:hover,
+.nav-bar-tmp.flat-1 .nav-drop-down li.active{
+    background-color: #4A4D52;
+}
+.nav-bar-tmp.flat-1 .nav-drop-down:after{
+    color: #777;
+}
+.nav-bar-tmp.flat-1 .separator,
+.nav-bar-tmp.flat-1 .separator:hover{
+    background-color: #090A0C;
+    color: #999CA0;
+}
+.nav-bar-tmp.flat-1 .nav-bar-form{
+    background-color: #222222;
+}
+.nav-bar-tmp.flat-1 .nav-bar-form i.fa{
+    color: #999CA0;
+}

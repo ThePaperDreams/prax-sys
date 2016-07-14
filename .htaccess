@@ -1,0 +1,7 @@
+Options -Indexes
+RewriteEngine on
+RewriteRule ^(recursos|protegido|publico) - [L]
+RewriteRule ^/?$ index.php?r=principal&%{QUERY_STRING} [NC,L]
+RewriteRule ^([a-z]+)$ index.php?r=$1&%{QUERY_STRING} [NC,L]
+RewriteRule ^(.*)/(.*) index.php?r=$1/$2&%{QUERY_STRING} [NC,L]
+RewriteRule ^(.*)/(.*)/(.*) index.php?r=$1/$2/$3&%{QUERY_STRING} [NC,L]

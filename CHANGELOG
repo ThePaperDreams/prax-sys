@@ -1,0 +1,7 @@
+[26-06-2016]
+[Bug] : La navbar mostraba dos opciones seleccionadas cuando la segunda era combo y la primera estaba seleccionada (Solucionado) [Jako]
+[Bug] : En el componente de Usuario se seguía llamando la columna "id_usuarios" en lugar de "id_usuario"
+[Bug] : Se removian los addons en CBForm
+
+[Modificacion] : Se añade un acceso directo al componente de usuario de la aplicación [Jako]
+
