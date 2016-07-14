@@ -1,5 +1,4 @@
 <?php 
-
     $this->migas = [
         'Home' => ['principal/inicio'],
         'Ejemplo'
@@ -13,8 +12,8 @@
         ]
     ];
     
-    $f = new CBForm(['id' => 'ejemplo']);
-    $f->abrir();
+$f = new CBForm(['id' => 'ejemplo']);
+$f->abrir();
     
 ?>
     

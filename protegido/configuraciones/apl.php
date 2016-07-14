@@ -38,6 +38,15 @@ return [
         ]
     ],
     
+    'disparadores' => [
+        'iniControlador' => [
+            [
+                'ruta' => '!aplicacion.componentes',
+                'clase' => 'Permisos',
+            ],
+        ],
+    ],   
+    
     'extensiones' => [
         
     ],

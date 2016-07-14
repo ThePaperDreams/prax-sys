@@ -1,21 +1,19 @@
 <?php
 
-class ComUsuario extends CComponenteUsuario {
-
+class ComUsuario extends CComponenteUsuario{
     public $_usr;
     public $_clv;
-
+                
     public function autenticar() {
         $usuario = Usuario::modelo()->primer([
-            'where' => "t.nombre = '" . $this->usuario . "' and t.clave = '" . sha1($this->clave) . "'",
+            'where' => "t.nombre_usuario = '" . $this->usuario . "'",
         ]);
-        if ($usuario != null) {
+        if ($usuario != null && $usuario->clave === sha1($this->clave)) {
             $this->error = false;
-            $this->ID = $usuario->id_usuarios;
+            $this->ID = $usuario->id_usuario;
         } else {
             $this->error = true;
         }
         return !$this->error;
     }
-
 }

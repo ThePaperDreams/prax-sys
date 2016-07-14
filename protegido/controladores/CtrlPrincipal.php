@@ -1,51 +1,57 @@
 <?php
 
-class CtrlPrincipal extends CControlador {
-
+class CtrlPrincipal extends CControlador{
+    
     public function inicializar() {
         parent::inicializar();
     }
-
-    public function accionEjemplo() {
+    
+    public function accionEjemplo(){
         $this->plantilla = "basica";
         $this->vista('ejemploFormularios');
     }
-
-    public function accionInicio() {
+    
+    public function accionInicio(){
         $this->mostrarVista('inicio');
     }
 
-    public function accionAcerca() {
-        $this->mostrarVista("acerca");
+    public function accionAcerca(){
+    	$this->mostrarVista("acerca");
     }
 
-    public function accionContacto() {
-        $this->mostrarVista("contacto");
+    public function accionContacto(){
+    	$this->mostrarVista("contacto");
     }
 
-    public function accionEntrar() {
-        if (!Sis::apl()->usuario->esVisitante) {
+    public function accionEntrar(){
+        $this->plantilla = "login";
+        if(!Sis::apl()->usuario->esVisitante){
             $this->redireccionar('inicio');
         }
-
-        if (isset($this->_p['login-usr']) && isset($this->_p['login-pwd'])) {
+        
+        if(isset($this->_p['login-usr']) && isset($this->_p['login-pwd'])){
             $comUsuario = new ComUsuario($this->_p['login-usr'], $this->_p['login-pwd']);
             $comUsuario->cargarConfiguracion();
-            if ($comUsuario->autenticar()) {
+            if($comUsuario->autenticar()){           
                 Sis::apl()->usuario->iniciarSesion($comUsuario->ID, $comUsuario->usuario);
                 $this->redireccionar('inicio');
+            }else {
+                Sis::Sesion()->flash('alerta', [
+                    'tipo' => 'error',
+                    'msg' => 'Usuario o contraseña incorrectos',
+                ]);
             }
         }
-
-        $this->mostrarVista("entrar");
+        
+    	$this->mostrarVista("entrar");
     }
 
-    public function accionSalir() {
-        if (!Sis::apl()->usuario->esVisitante) {
+    public function accionSalir(){
+        if(!Sis::apl()->usuario->esVisitante){
             Sis::apl()->usuario->cerrarSesion();
             $this->redireccionar("entrar");
         }
-        $this->redireccionar("inicio");
-    }
-
+    	$this->redireccionar("inicio");
+    }    
+    
 }
