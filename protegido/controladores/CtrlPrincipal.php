@@ -4,7 +4,6 @@ class CtrlPrincipal extends CControlador {
 
     public function inicializar() {
         parent::inicializar();
-        $this->plantilla = "dashboard";
     }
 
     public function accionEjemplo() {
@@ -13,8 +12,6 @@ class CtrlPrincipal extends CControlador {
     }
 
     public function accionInicio() {
-        /*echo Sis::apl()->usuario->ID;
-        Sis::fin();*/
         $this->mostrarVista('inicio');
     }
 

@@ -21,8 +21,10 @@ Sis::Recursos()->Js('jquery.ui.timepicker');
             'brand' => Sis::apl()->nombre,
             'elementos' => [
                 ['texto' => 'Inicio', 'url' => ['principal/inicio']],
-                ['texto' => 'Acerca', 'url' => ['principal/acerca']],
-                ['texto' => 'Contacto', 'url' => ['principal/contacto']],
+                ['texto' => 'Publicaciones', 'elementos' => [
+                    ['texto' => 'Publicación', 'url' => ['publicacion/inicio']],
+                    ['texto' => 'Tipos de publicación', 'url' => ['tipoPublicacion/inicio']],
+                ]],
                 [
                     'texto' => (Sis::apl()->usuario->esVisitante? 'Iniciar sesión' : 'Cerrar sesión'),
                     'url' => ['principal/' . (Sis::apl()->usuario->esVisitante? 'entrar' : 'salir')]
