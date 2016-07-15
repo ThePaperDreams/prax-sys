@@ -64,7 +64,11 @@ Sis::Recursos()->recursoJs([
                         ['texto' => 'Tipos de Documentos', 'url' => ['TipoDocumento/inicio']],
                         ['texto' => 'Estados de Deportista', 'url' => ['EstadoDeportista/inicio']],
                         ['texto' => 'Tipos de Identificación', 'url' => ['TipoIdentificacion/inicio']]
-                ]]
+                ]],
+                ['texto' => 'Publicaciones', 'elementos' => [
+                    ['texto' => 'Publicación', 'url' => ['publicacion/inicio']],
+                    ['texto' => 'Tipos de publicación', 'url' => ['tipoPublicacion/inicio']],
+                ]],
             ],
             'menuDerecha' => [
                 [
