@@ -43,6 +43,8 @@ final class CConectorMySql extends CConectorBaseDeDatos
      * @throws CExBaseDeDatos
      */
     public static function conectar() {
+        if(self::$instancia->recursoBd !== null){ return self::$instancia->recursoBd; }
+
         self::$instancia->recursoBd = mysqli_connect(
                     self::$instancia->servidor,
                     self::$instancia->usuario, 
@@ -136,4 +138,18 @@ final class CConectorMySql extends CConectorBaseDeDatos
         return self::$instancia->recursoBd !== null? 
                 mysqli_insert_id(self::$instancia->recursoBd) : 0;
     }
+
+    public static function begin() {
+        self::conectar();
+        return mysqli_begin_transaction(self::$instancia->recursoBd, MYSQLI_TRANS_START_READ_WRITE);
+    }
+
+    public static function commit() {
+        return mysqli_commit(self::$instancia->recursoBd);
+    }
+
+    public static function rollback() {
+        return mysqli_rollback(self::$instancia->recursoBd);
+    }
+
 }

@@ -1,6 +1,6 @@
 <?php
 # Se importan las librerias base js y css
-Sis::Recursos()->JQuery(); 
+Sis::Recursos()->JQuery();
 Sis::Recursos()->Bootstrap3();
 Sis::Recursos()->AwesomeFont();
 Sis::Recursos()->Select2();

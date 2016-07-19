@@ -15,4 +15,7 @@ interface IConectorBaseDeDatos {
     public static function traerSiguiente();
     public static function ultimoId();
     public static function filasAfectadas();
+    public static function begin();
+    public static function commit();
+    public static function rollback();
 }

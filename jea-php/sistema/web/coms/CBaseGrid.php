@@ -44,7 +44,8 @@ abstract class CBaseGrid extends CComplemento{
         if(is_string($this->_modelo)){
             $this->_criterios['offset'] = $this->pagina * $this->_paginacion;
             $this->_criterios['limit'] = $this->_paginacion;
-            $this->modelos = call_user_func([$this->_modelo, 'modelo'])->listar($this->_criterios);
+            $this->modelos = call_user_func([$this->_modelo, 'modelo'])->listar($this->_criterios);                        
+            unset($this->_criterios['offset'], $this->_criterios['limit']);
             $this->total = call_user_func([$this->_modelo, 'modelo'])->contar($this->_criterios);
             $this->totalPaginas = ceil(intval($this->total) / intval($this->_paginacion));
             $this->cModelo = new $this->_modelo();
@@ -76,7 +77,7 @@ abstract class CBaseGrid extends CComplemento{
     protected function construirColumnas(){
         if(is_string($this->_columnas)){
             $this->_columnas = str_replace(' ', '', $this->_columnas);
-            $this->tColumnas = explode(',', $this->_columnas);            
+            $this->tColumnas = explode(',', $this->_columnas);
         } else if(is_array($this->_columnas)){
             $this->tColumnas = $this->_columnas;
         }

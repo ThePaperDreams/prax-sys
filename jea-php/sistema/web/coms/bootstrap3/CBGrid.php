@@ -95,7 +95,7 @@ class CBGrid extends CBaseGrid{
                 $lis[] = CHtml::e('li', $link);
             }
         }
-        if($this->pagina < $this->totalPaginas - 1){            
+        if($this->pagina < $this->totalPaginas - 1){
             $lis [] = CHtml::e('li', CHtml::link(CHtml::e('span', '&raquo;'), ["$ctrl/$accion", 'p' => $this->totalPaginas]));
         }
         return implode('', $lis);

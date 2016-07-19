@@ -84,6 +84,12 @@ abstract class CControladorBaseDeDatos
     public abstract function eliminar();
     
     public abstract function ejecutarComando($comando);
+    
+    public abstract function begin();
+    
+    public abstract function rollback();
+    
+    public abstract function commit();
 
 
     /************************************************
