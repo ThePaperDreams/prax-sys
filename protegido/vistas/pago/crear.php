@@ -1,14 +1,13 @@
 <?php 
-$this->tituloPagina="Registrar categoría de implemento";
     $this->migas = [
         'Home' => ['principal/inicio'],
-        'Listar categoría de implementos' => ['CategoriaImplemento/inicio'],        
+        'Listar Pagos' => ['Pago/inicio'],        
         'Crear'
     ];
     
     $this->opciones = [
         'elementos' => [
-            'Listar' => ['CategoriaImplemento/inicio'],
+            'Listar' => ['Pago/inicio'],
         ]
     ];    
 ?>

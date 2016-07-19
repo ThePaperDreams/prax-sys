@@ -1,8 +1,9 @@
 <?php 
+$this->tituloPagina="Crear salida de implementos";
     $this->migas = [
         'Home' => ['principal/inicio'],
-        'Listar Salidas' => ['Salida/inicio'],        
-        'Crear'
+        'Listar salida de implementos' => ['Salida/inicio'],        
+        'Crear salida de implementos'
     ];
     
     $this->opciones = [

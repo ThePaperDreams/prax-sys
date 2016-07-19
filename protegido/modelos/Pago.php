@@ -1,114 +1,108 @@
 <?php
-
 /**
- * Este modelo es la representación de la tabla tbl_salidas
+ * Este modelo es la representación de la tabla tbl_pagos
  *
  * Atributos del modelo
- * @property int $id_salida
- * @property int $cantidad
- * @property datetime $fecha_realizacion
- * @property datetime $fecha_entrega
- * @property string $descripcion
- * @property int $responsable_id
+ * @property int $id_pago
+ * @property string $fecha
+ * @property double $valor_cancelado
+ * @property string $url_comprobante
  * @property tinyint $estado
+ * @property double $descuento
+ * @property double $razon_descuento
+ * @property int $matricula_id
  * 
  * Relaciones del modelo
  */
-class Salida extends CModelo {
-
+ class Pago extends CModelo{
+ 
     /**
      * Esta función retorna el nombre de la tabla representada por el modelo
      * @return string
      */
     public function tabla() {
-        return "salidas";
+        return "pagos";
     }
 
     /**
-     * Esta función retorna los atributos de la tabla tbl_salidas
+     * Esta función retorna los atributos de la tabla tbl_pagos
      * @return array
      */
     public function atributos() {
         return [
-            'id_salida' => ['pk'],
-            'fecha_realizacion',
-            'fecha_entrega',
-            'descripcion',
-            'responsable_id',
-            'estado' => ['def' => '1'],
+		'id_pago' => ['pk'] , 
+		'fecha', 
+		'valor_cancelado', 
+		'url_comprobante', 
+		'estado' => ['def' => '1'] , 
+		'descuento', 
+		'razon_descuento', 
+		'matricula_id', 
         ];
     }
-
-    public function filtros() {
-        return [
-            'requeridos' => 'fecha_realizacion,fecha_entrega,responsable_id,estado',
-        ];
-    }
-
+    
     /**
      * Esta función retorna las relaciones con otros modelos
      * @return array
      */
-    protected function relaciones() {
+    protected function relaciones() {        
         return [
             # el formato es simple: 
             # tipo de relación | modelo con que se relaciona | campo clave foranea
-            'Usuario' => [self::PERTENECE_A, 'Usuario', 'responsable_id'],
-            'Detalles'=>[
-                self::CONTENGAN_A,'SalidaImplemento','salida_id'
-            ]
+            	'fkTblPagosTblMatriculas1' => [self::PERTENECE_A, 'FkTblPagosTblMatriculas1', 'matricula_id'],
         ];
     }
-
+    
     /**
      * Esta función retorna un alias dado a cada uno de los atributos del modelo
      * @return string
      */
     public function etiquetasAtributos() {
         return [
-            'id_salida' => 'Id Salida',
-            'fecha_realizacion' => 'Fecha Realizacion',
-            'fecha_entrega' => 'Fecha Entrega',
-            'descripcion' => 'Descripcion',
-            'responsable_id' => 'Responsable',
-            'estado' => 'Estado',
+		'id_pago' => 'Id Pago', 
+		'fecha' => 'Fecha', 
+		'valor_cancelado' => 'Valor Cancelado', 
+		'url_comprobante' => 'Url Comprobante', 
+		'estado' => 'Estado', 
+		'descuento' => 'Descuento', 
+		'razon_descuento' => 'Razon Descuento', 
+		'matricula_id' => 'Matricula Id', 
         ];
     }
-
+    
     /**
      * Esta función permite listar todos los registros
      * @param array $criterio
-     * @return Salida
+     * @return Pago
      */
     public function listar($criterio = array()) {
         return parent::listar($criterio);
     }
-
+    
     /**
      * Esta función permite obtener un registro por su primary key
      * @param int $pk
-     * @return Salida
+     * @return Pago
      */
     public function porPk($pk) {
         return parent::porPk($pk);
     }
-
+    
     /**
      * Esta función permite obtener el primer registro
      * @param array $criterio
-     * @return Salida
+     * @return Pago
      */
     public function primer($criterio = array()) {
         return parent::primer($criterio);
-    }
+    } 
 
     /**
-     * Esta función retorna una instancia del modelo tbl_salidas
+     * Esta función retorna una instancia del modelo tbl_pagos
      * @param string $clase
-     * @return Salida
+     * @return Pago
      */
     public static function modelo($clase = __CLASS__) {
         return parent::modelo($clase);
     }
-
 }

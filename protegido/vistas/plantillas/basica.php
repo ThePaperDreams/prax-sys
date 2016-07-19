@@ -69,6 +69,11 @@ Sis::Recursos()->recursoJs([
                     ['texto' => 'Publicación', 'url' => ['publicacion/inicio']],
                     ['texto' => 'Tipos de publicación', 'url' => ['tipoPublicacion/inicio']],
                 ]],
+                ['texto' => 'Pagos', 'elementos' => [
+                    ['texto' => 'Registrar pago', 'url' => ['pago/inicio']],
+                    ['texto' => 'Modificar pago', 'url' => ['pago/registrar']],
+                    ['texto' => 'Ver pago pendiente', 'url' => ['pago/pendiente']],
+                ]],
             ],
             'menuDerecha' => [
                 [

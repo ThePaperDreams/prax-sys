@@ -1,4 +1,5 @@
 <?php 
+$this->tituloPagina="Implementos";
     $this->migas = [
         'Home' => ['principal/inicio'],
         'Listar Implementos'

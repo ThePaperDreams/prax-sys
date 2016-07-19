@@ -1,12 +1,13 @@
 <?php 
+$this->tituloPagina="Listar categorías de implementos";
     $this->migas = [
         'Home' => ['principal/inicio'],
-        'Listar CategoriasImplementos'
+        'Listar categoría de implemento'
     ];
     
     $this->opciones = [
         'elementos' => [
-            'Crear' => ['CategoriaImplemento/crear'],
+            'Crear' => ['Categoriaimplemento/crear'],
         ]
     ];
 ?>
@@ -14,7 +15,7 @@
 <?= $this->complemento('!siscoms.bootstrap3.CBGrid', [
     'modelo' => 'CategoriaImplemento',
     # id_categoria, nombre, descripcion
-    'columnas' => 'id_categoria, nombre, descripcion',
+    'columnas' => ' nombre, descripcion',
     'opciones' => true,
     'paginacion' => 10,
 ]) ?>
