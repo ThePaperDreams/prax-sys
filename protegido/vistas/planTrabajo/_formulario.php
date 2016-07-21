@@ -2,6 +2,8 @@
 $formulario = new CBForm(['id' => 'form-planestrabajo']);
 $formulario->abrir();
 ?>
+<p>Los campos con <span class="text-danger">*</span>  son requeridos</p>
+<hr>
 <div class="row">
     <div class="col-sm-6">
         <div class="panel panel-default">

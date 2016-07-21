@@ -2,7 +2,8 @@
 $formulario = new CBForm(['id' => 'form-acudientes']);
 $formulario->abrir();
 ?>
-
+<p>Los campos con <span class="text-danger">*</span>  son requeridos</p>
+<hr>
 <div class="row">
     <div class="col-sm-6">
         <?php echo $formulario->lista($modelo, 'tipo_doc_id', $tiposIdentificaciones, ['label' => true, 'group' => true, 'defecto' => 'Tipo de documento']) ?>
@@ -53,7 +54,7 @@ $formulario->abrir();
         <?php echo $formulario->lista($modelo2, 'id_tipo', $tiposDocumentos, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un Tipo Documento']) ?>
     </div>
     <div class="col-sm-4">
-        <?php echo CBoot::boton('Agregar Documento ' . CBoot::fa('file-word-o'), 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'id' => 'btn-addDoc']) ?>
+        <?php echo CBoot::boton('Asociar Documento ' . CBoot::fa('file-word-o'), 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'id' => 'btn-addDoc']) ?>
     </div>
 </div>
 

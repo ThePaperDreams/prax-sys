@@ -60,6 +60,14 @@ class Deportista extends CModelo{
         ];
     }
 
+    public function getNombreDePila(){
+        return $this->getDatos();
+    }
+    
+    public function getNombreIdentificacion(){
+        return $this->getDatos();
+    }    
+    
     public function getDatos() {
         return $this->identificacion . " (" . $this->nombre1 . " " . $this->apellido1 . ")";
     }

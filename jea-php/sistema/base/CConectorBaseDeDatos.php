@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Esta interfaz la deben de implementar todas las clases que vayan a ser usadas
+ * Esta clase la deben de implementar todas las clases que vayan a ser usadas
  * como controlador de bases de datos
  * @package sistema.base
  * @author Jorge Alejandro Quiroz Serna <alejo.jko@gmail.com>

@@ -33,12 +33,11 @@ final class Sis {
     private function __construct() {}
     
     /**
-     * Esta función retorna una instancia del sistema, la única instancia
-     * que se puede crear
+     * Esta función inicializa la apliación y retorna una instancia de la aplicación, la única instancia
+     * que se ejecuta en el sistema
      * 
-     * @staticvar \Sistema $instanciaSistema
      * @param string $rutaConfiguracion Ruta de donde se cargarán las configuraciones de la aplicación
-     * @return \Sistema
+     * @return \CAplicacionWeb
      */
     public static function crearAplicacion($rutaConfiguracion){        
         self::$rutaSistema = realpath(__DIR__);
@@ -241,6 +240,34 @@ final class Sis {
         } if(method_exists(self::$apliacion, 'get' . ucfirst($metodo))) {
             return call_user_func_array([self::$apliacion, 'get' . ucfirst($metodo)], $argumentos);
         }
+    }
+    
+    /**
+     * Accesos directos
+     */
+    
+    /**
+     * Este es un atajo para obtener el componente de recursos de la aplicación
+     * @return CMRecursos
+     */
+    public static function Recursos(){
+        return self::$apliacion->getRecursos();
+    }
+    
+    /**
+     * Esta función es un atajo para obtener la url de los recursos de la aplicación
+     * @return string
+     */
+    public static function UrlRecursos(){
+        return self::$apliacion->getRecursos()->getUrlRecursos();
+    }
+    
+    /**
+     * Este es un atajo para obtener el componente de sesion de la aplicación
+     * @return CMSesion
+     */
+    public static function Sesion(){
+        return self::$apliacion->getSesion();
     }
     
 }

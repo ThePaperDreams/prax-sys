@@ -179,6 +179,10 @@ class CFormulario {
             'name' => ucfirst($nModelo)."[$atributo]",
             'id' => $nModelo."_".$atributo,
         ];
+        #validamos si el campo es requerido para marcarlo así
+        if($this->esRequerido($modelo, $atributo)){
+            $opciones['requerido'] = true;
+        }
         
         # buscamos si hay label
         if(isset($opciones['label']) && $opciones['label'] == true){
@@ -191,11 +195,25 @@ class CFormulario {
         return array_merge($opcBasicas, $opciones);
     }
     
+    /**
+     * 
+     * @param CModelo $modelo
+     * @param string $atributo
+     */
+    private function esRequerido($modelo, $atributo){
+        $filtros = $modelo->filtros();
+        $requeridos = isset($filtros['requeridos'])? $filtros['requeridos'] : [];
+        $campos = explode(',', trim($requeridos, ' '));
+        return in_array($atributo, $campos);
+    }
+    
     public function obtenerEtiqueta(&$opHtml = []){
         $label = '';
         if(isset($opHtml['label'])){
-            $label = CHtml::e('label', $opHtml['label'], ['for' => $opHtml['id']]);
-            unset($opHtml['label']);
+            $span = isset($opHtml['requerido'])? 
+                CHtml::e('span', '*', ['class' => 'text-danger']) : '';
+            $label = CHtml::e('label', $opHtml['label'] . " $span", ['for' => $opHtml['id']]);
+            unset($opHtml['label'], $opHtml['requerido']);
         }
         return $label;
     }

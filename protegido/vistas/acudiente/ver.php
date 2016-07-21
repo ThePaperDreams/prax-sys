@@ -1,4 +1,5 @@
 <?php
+$this->tituloPagina = "Detalles del Acudiente";
 $this->migas = [
     'Home' => ['principal/inicio'],
     'Listar Acudientes' => ['Acudiente/inicio'],
@@ -13,17 +14,13 @@ $this->opciones = [
     ]
 ];
 ?>
-<div class="col-sm-12">
+<div class="col-sm-6">
     <div class="panel panel-primary">
         <div class="panel-heading text-center">
             Ver detalles
         </div>
         <table class="table table-bordered table-striped table-hover">
             <tbody>
-                <tr>
-                    <th><?php echo $modelo->obtenerEtiqueta('id_acudiente') ?></th>
-                    <td><?php echo $modelo->id_acudiente; ?></td>
-                </tr>
                 <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('tipo_doc_id') ?></th>
                     <td><?php echo $tiposIdentificaciones["$modelo->tipo_doc_id"]; ?></td>
@@ -66,14 +63,16 @@ $this->opciones = [
                 </tr>
             </tbody>
         </table>
-
     </div>
+</div>
+<div class="col-sm-6">
     <div class="panel panel-primary">
         <div class="panel-heading">Documentos</div>
         <ul class="list-group">
             <?php foreach ($modelo->getDocumentos() as $k): ?>
                 <li class="list-group-item"><?= $k->getDatos(); ?></li>
-            <?php endforeach; ?>         
+                <?php endforeach; ?>         
         </ul>
     </div>
 </div>
+

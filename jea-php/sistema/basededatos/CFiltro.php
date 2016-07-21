@@ -13,6 +13,7 @@ class CFiltro {
      * @var CModelo 
      */
     private $m;
+    private $atributos = [];
     private $logErrores = [];
     
     public function __construct(&$modelo) {
@@ -25,12 +26,25 @@ class CFiltro {
      */
     public function ejecutarFiltros(){
         $reglas = $this->m->filtros();
+        $this->atributos = $this->m->atributos();
         # validamos campos requeridos
         $this->validarRequeridos($reglas);
         $this->camposSeguros($reglas);
-        
+        $this->limpiarComillas();
         $this->m->setErrores($this->logErrores);
         return count($this->logErrores) > 0;
+    }
+    
+    public function limpiarComillas(){        
+        foreach($this->atributos AS $k=>$v){
+            if(is_string($k)){
+                $this->m->$k = str_replace("'", "\'", $this->m->$k);
+                $this->m->$k = str_replace('"', '\"', $this->m->$k);
+            } else {
+                $this->m->$v = str_replace("'", "\'", $this->m->$v);
+                $this->m->$v = str_replace('"', '\"', $this->m->$v);
+            }
+        }
     }
     
     /**

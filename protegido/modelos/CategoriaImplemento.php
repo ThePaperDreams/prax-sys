@@ -47,6 +47,7 @@ class CategoriaImplemento extends CModelo {
     public function filtros() {
         return [
             'requeridos' => 'nombre',
+            'seguros' => 'descripcion',
         ];
     }
     

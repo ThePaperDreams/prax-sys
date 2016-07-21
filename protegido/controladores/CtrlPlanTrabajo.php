@@ -77,7 +77,7 @@ class CtrlPlanTrabajo extends CControlador{
                 ]);
                 $this->redireccionar('inicio');
             }
-        }
+        }        
         $this->mostrarVista('editar', ['modelo' => $modelo]);
     }
     

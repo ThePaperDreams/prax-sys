@@ -52,7 +52,8 @@ class Acudiente extends CModelo{
 
     public function filtros() {
         return [
-            'requeridos' => 'identificacion,nombre1,apellido1,telefono1,tipo_doc_id',
+            'requeridos' => 'identificacion,nombre1,apellido1,tipo_doc_id',
+            'seguros' => 'nombre1,nombre2,apellido1,apellido2,identificacion,telefono1,telefono2,email,direccion',
         ];
     }
     
