@@ -49,6 +49,22 @@ Sis::Recursos()->recursoJs([
                     ['texto' => 'Entradas', 'url' => ['entrada/inicio']],
                     ['texto' => 'Salidas', 'url' => ['salida/inicio']],
                 ]],
+                ['texto' => 'Deportistas/Acudientes', 'elementos' => [
+                        ['texto' => 'Acudientes', 'url' => ['Acudiente/inicio']],
+                        ['texto' => 'Deportistas', 'url' => ['Deportista/inicio']],
+                        ['texto' => 'Documentos', 'url' => ['Documento/inicio']]
+                ]],
+                ['texto' => 'Usuarios', 'elementos' => [
+                        ['texto' => 'Roles', 'url' => ['Rol/inicio']],
+                        ['texto' => 'Usuarios', 'url' => ['Usuario/inicio']]
+                ]],
+                ['texto' => 'Configuración', 'elementos' => [
+                        ['texto' => 'Rutas', 'url' => ['Ruta/inicio']],
+                        ['texto' => 'Opciones de Menú', 'url' => ['Opmenu/inicio']],
+                        ['texto' => 'Tipos de Documentos', 'url' => ['TipoDocumento/inicio']],
+                        ['texto' => 'Estados de Deportista', 'url' => ['EstadoDeportista/inicio']],
+                        ['texto' => 'Tipos de Identificación', 'url' => ['TipoIdentificacion/inicio']]
+                ]]
             ],
             'menuDerecha' => [
                 [
@@ -112,26 +128,5 @@ Sis::Recursos()->recursoJs([
         </script>
         <input type="hidden" value="13" id="elemento">
         <?php endif ?>
-        <script>
-//            $(function(){
-//                setTimeout(function(){
-//                    
-//                }, 500);
-//            });
-        </script>
-<!--        <div class="modal-courtain">
-            <div class="panel panel-default" style="width:30%">
-                <div class="panel-heading">
-                    Justificar falta
-                </div>
-                <div class="panel-body">
-                    <textarea class="form-control"></textarea>
-                </div>
-                <div class="panel-footer text-center">
-                    <button class="btn btn-primary">Guardar</button>
-                    <button class="btn btn-default">Cancelar</button>
-                </div>
-            </div>
-        </div>-->
     </body>
 </html> 

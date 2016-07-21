@@ -19,11 +19,11 @@
  * @property int $tipo_documento_id
  * 
  * Relaciones del modelo
- * @property FkTblPersonasTblTiposDocumento $fkTblPersonasTblTiposDocumento
- * @property FkTblPersonasTblEstadoDeportistas1 $fkTblPersonasTblEstadoDeportistas1
+ * @property EstadoDeportista $EstadoDeportista
+ * @property TipoIdentificacion $TipoIdentificacion
  */
-class Deportista extends CModelo {
-
+class Deportista extends CModelo{
+ 
     /**
      * Esta función retorna el nombre de la tabla representada por el modelo
      * @return string
@@ -54,49 +54,69 @@ class Deportista extends CModelo {
         ];
     }
 
+    public function filtros() {
+        return [
+            'requeridos' => 'identificacion,nombre1,apellido1,telefono1,fecha_nacimiento,tipo_documento_id',
+        ];
+    }
+
+    public function getDatos() {
+        return $this->identificacion . " (" . $this->nombre1 . " " . $this->apellido1 . ")";
+    }
+    
+    public function getAcudientes() {
+        $da = DeportistaAcudiente::modelo()->listar(["where" => "id_deportista=$this->id_deportista"]);
+        $acudientes = [];
+        foreach ($da as $detalle) {
+            $acudientes[] = $detalle->Acudiente;
+        }
+        return $acudientes;
+    }
+    
+    public function getDocumentos() {
+        $dc = DeportistaDocumento::modelo()->listar(["where" => "deportista_id=$this->id_deportista"]);
+        $documentos = [];
+        foreach ($dc as $detalle) {
+            $documentos[] = $detalle->Documento;
+        }
+        return $documentos;
+    }
+    
     /**
      * Esta función retorna las relaciones con otros modelos
      * @return array
      */
-    protected function relaciones() {
+    protected function relaciones() {        
         return [
             # el formato es simple: 
             # tipo de relación | modelo con que se relaciona | campo clave foranea
-            'fkTblPersonasTblTiposDocumento' => [self::PERTENECE_A, 'FkTblPersonasTblTiposDocumento', 'tipo_documento_id'],
-            'fkTblPersonasTblEstadoDeportistas1' => [self::PERTENECE_A, 'FkTblPersonasTblEstadoDeportistas1', 'estado_id'],
+            'EstadoDeportista' => [self::PERTENECE_A, 'EstadoDeportista', 'estado_id'],
+            'TipoIdentificacion' => [self::PERTENECE_A, 'TipoIdentificacion', 'tipo_documento_id'],
         ];
     }
-
+    
     /**
      * Esta función retorna un alias dado a cada uno de los atributos del modelo
      * @return string
      */
     public function etiquetasAtributos() {
         return [
-            'id_deportista' => 'Id Persona',
-            'identificacion' => 'Identificacion',
-            'nombre1' => 'Nombre1',
-            'nombre2' => 'Nombre2',
-            'apellido1' => 'Apellido1',
-            'apellido2' => 'Apellido2',
-            'direccion' => 'Direccion',
+            'id_deportista' => 'Deportista',
+            'identificacion' => 'Identificación',
+            'nombre1' => 'Nombre 1',
+            'nombre2' => 'Nombre 2',
+            'apellido1' => 'Apellido 1',
+            'apellido2' => 'Apellido 2',
+            'direccion' => 'Dirección',
             'foto' => 'Foto',
-            'telefono1' => 'Telefono1',
-            'telefono2' => 'Telefono2',
+            'telefono1' => 'Teléfono 1',
+            'telefono2' => 'Teléfono 2',
             'fecha_nacimiento' => 'Fecha Nacimiento',
-            'estado_id' => 'Estado Id',
-            'tipo_documento_id' => 'Tipo Documento Id',
+            'estado_id' => 'Estado',
+            'tipo_documento_id' => 'Tipo Documento',
         ];
     }
     
-    public function getNombreDePila(){
-        return implode(' ', [$this->nombre1, $this->nombre2, $this->apellido1, $this->apellido2]);
-    }
-    
-    public function getNombreIdentificacion(){
-        return implode(' ', [$this->identificacion, $this->getNombreDePila()]);
-    }
-
     /**
      * Esta función permite listar todos los registros
      * @param array $criterio
@@ -105,7 +125,7 @@ class Deportista extends CModelo {
     public function listar($criterio = array()) {
         return parent::listar($criterio);
     }
-
+    
     /**
      * Esta función permite obtener un registro por su primary key
      * @param int $pk
@@ -114,7 +134,7 @@ class Deportista extends CModelo {
     public function porPk($pk) {
         return parent::porPk($pk);
     }
-
+    
     /**
      * Esta función permite obtener el primer registro
      * @param array $criterio
@@ -122,7 +142,7 @@ class Deportista extends CModelo {
      */
     public function primer($criterio = array()) {
         return parent::primer($criterio);
-    }
+    } 
 
     /**
      * Esta función retorna una instancia del modelo tbl_deportistas
@@ -132,5 +152,4 @@ class Deportista extends CModelo {
     public static function modelo($clase = __CLASS__) {
         return parent::modelo($clase);
     }
-
 }
