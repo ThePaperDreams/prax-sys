@@ -64,6 +64,10 @@ class Deportista extends CModelo{
         return $this->identificacion . " (" . $this->nombre1 . " " . $this->apellido1 . ")";
     }
     
+    public function getNombreIdentificacion(){
+        return $this->getDatos();
+    }
+    
     public function getAcudientes() {
         $da = DeportistaAcudiente::modelo()->listar(["where" => "id_deportista=$this->id_deportista"]);
         $acudientes = [];

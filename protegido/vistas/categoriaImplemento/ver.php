@@ -29,6 +29,10 @@ $this->opciones = [
                     <th><?php echo $modelo->obtenerEtiqueta('descripcion') ?></th>
                     <td><?php echo $modelo->descripcion; ?></td>
                 </tr>
+                <tr>
+                    <th><?php echo $modelo->obtenerEtiqueta('estado') ?></th>
+                    <td><?php echo $modelo->EtiquetaEstado; ?></td>
+                </tr>
             </tbody>
         </table>
 

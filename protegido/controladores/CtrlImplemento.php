@@ -11,7 +11,7 @@ class CtrlImplemento extends CControlador{
      * Esta función muestra el inicio y una tabla para listar los datos
      */
     public function accionInicio(){
-        $modelos = Implemento::modelo()->listar();        
+        $modelos = Implemento::modelo()->listar();
         $this->mostrarVista('inicio', ['modelos' => $modelos]);
     }
     
@@ -33,6 +33,19 @@ class CtrlImplemento extends CControlador{
         ]);
     }
     
+     public function accionAnular($pk) {
+        $modelo = $this->cargarModelo($pk);
+        $modelo->estado_id = !$modelo->estado_id;
+        if ($modelo->guardar()) {
+            Sis::Sesion()->flash("alerta", [
+                'msg' => 'Cambio exitoso',
+                'tipo' => 'success',
+            ]);
+        } else {
+            # lógica para error al borrar
+        }
+        $this->redireccionar('inicio');
+    }
     /**
      * Esta función permite editar un registro existente
      * @param int $pk

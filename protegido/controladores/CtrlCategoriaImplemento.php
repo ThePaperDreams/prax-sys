@@ -55,6 +55,20 @@ class CtrlCategoriaImplemento extends CControlador{
         $this->mostrarVista('ver', ['modelo' => $modelo]);
     }
     
+     public function accionAnular($pk) {
+        $modelo = $this->cargarModelo($pk);
+        $modelo->estado =  !$modelo->estado;
+        if ($modelo->guardar()) {
+            Sis::Sesion()->flash("alerta", [
+                'msg' => 'Categoría inactiva',
+                'tipo' => 'success',
+            ]);
+        } else {
+            # lógica para error al borrar
+        }
+        $this->redireccionar('inicio');
+    }
+    
     /**
      * Esta función permite eliminar un registro existente
      * @param int $pk
