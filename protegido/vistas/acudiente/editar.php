@@ -1,4 +1,5 @@
 <?php
+$this->tituloPagina = "Modificar un Acudiente";
 $this->migas = [
     'Home' => ['principal/inicio'],
     'Listar Acudientes' => ['Acudiente/inicio'],
@@ -15,11 +16,11 @@ $this->opciones = [
 <div class="col-sm-12">
     <?php echo $this->mostrarVistaP('_formulario', ['modelo' => $modelo, 'modelo2' => $modelo2, 'tiposDocumentos'=>$tiposDocumentos, 'tiposIdentificaciones' => $tiposIdentificaciones]); ?>
 </div>
-<script>
+<!--<script>
     var d = [];
-<?php foreach ($modelo->getDocumentos() as $k => $v): ?>
-        d.push(<?= $v->tipo_id; ?>);
-<?php endforeach; ?>
+<?php# foreach ($modelo->getDocumentos() as $k => $v): ?>
+        d.push(<?php# echo $v->tipo_id; ?>);
+<?php# endforeach; ?>
     $(function () {
         if (d.length > 0) {
             for (var i = 0; i < d.length; i++) {
@@ -32,4 +33,4 @@ $this->opciones = [
             }
         }
     });
-</script>
+</script>-->

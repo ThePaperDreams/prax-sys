@@ -46,6 +46,12 @@ class Usuario extends CModelo {
             'estado' => ['def' => '1'],
         ];
     }
+    
+    public function filtros() {
+        return [
+            'requeridos' => 'rol_id,email,nombre_usuario,nombres,apellidos,clave',
+        ];
+    }
 
     /**
      * Esta función retorna las relaciones con otros modelos
@@ -55,7 +61,7 @@ class Usuario extends CModelo {
         return [
             # el formato es simple: 
             # tipo de relación | modelo con que se relaciona | campo clave foranea
-            'fkTblUsuariosTblRoles1' => [self::PERTENECE_A, 'FkTblUsuariosTblRoles1', 'rol_id'],
+            'Rol' => [self::PERTENECE_A, 'Rol', 'rol_id'],
         ];
     }
 
@@ -65,15 +71,15 @@ class Usuario extends CModelo {
      */
     public function etiquetasAtributos() {
         return [
-            'id_usuario' => 'Id Usuario',
-            'rol_id' => 'Rol Id',
+            'id_usuario' => 'Usuario',
+            'rol_id' => 'Rol',
             'email' => 'Email',
             'nombre_usuario' => 'Nombre Usuario',
             'nombres' => 'Nombres',
             'apellidos' => 'Apellidos',
-            'telefono' => 'Telefono',
+            'telefono' => 'Teléfono',
             'clave' => 'Clave',
-            'recuperacion' => 'Recuperacion',
+            'recuperacion' => 'Recuperación',
             'estado' => 'Estado',
         ];
     }

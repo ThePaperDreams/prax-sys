@@ -1,4 +1,5 @@
 <?php 
+    $this->tituloPagina = "Acudientes";
     $this->migas = [
         'Home' => ['principal/inicio'],
         'Listar Acudientes'
@@ -16,7 +17,7 @@ $this->opciones = [
 $this->complemento('!siscoms.bootstrap3.CBGrid', [
     'modelo' => 'Acudiente',
     # id_acudiente, identificacion, nombre1, nombre2, apellido1, apellido2, direccion, email, telefono1, telefono2, estado, tipo_doc_id
-    'columnas' => 'id_acudiente, identificacion, nombre1, nombre2, apellido1, apellido2',
+    'columnas' => 'identificacion, nombre1, nombre2, apellido1, apellido2, estado', 
     'opciones' => true,
     'paginacion' => 10,
 ])

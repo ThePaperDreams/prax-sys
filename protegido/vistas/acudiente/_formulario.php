@@ -53,7 +53,7 @@ $formulario->abrir();
         <?php echo $formulario->lista($modelo2, 'id_tipo', $tiposDocumentos, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un Tipo Documento']) ?>
     </div>
     <div class="col-sm-4">
-        <?php echo CBoot::boton('Agregar Documento ' . CBoot::fa('file-word-o'), 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'id' => 'btn-addDoc']) ?>
+        <?php echo CBoot::boton('Asociar Documento ' . CBoot::fa('file-word-o'), 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'id' => 'btn-addDoc']) ?>
     </div>
 </div>
 
