@@ -8,6 +8,8 @@ Sis::Recursos()->recursoJs([
 $formulario = new CBForm(['id' => 'form-matriculas', 'opcionesHtml' => ['enctype' => 'multipart/form-data']]);
 $formulario->abrir();
 ?>
+<p>Los campos con <span class="text-danger">*</span>  son requeridos</p>
+<hr>
 <div class="panel panel-default">
     <div class="panel-heading text-center">
         Información de la matricula

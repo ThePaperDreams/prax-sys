@@ -7,6 +7,8 @@ $formulario->abrir();
         Datos del objetivo
     </div>
     <div class="panel-body">
+        <p>Los campos con <span class="text-danger">*</span>  son requeridos</p>
+        <hr>    
         <?php echo $formulario->campoTexto($modelo, 'titulo', ['label' => true, 'group' => true, 'autofocus' => true]) ?>
         <?php echo $formulario->areaTexto($modelo, 'descripcion', ['label' => true, 'group' => true]) ?>
     </div>

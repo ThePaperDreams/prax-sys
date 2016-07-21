@@ -12,6 +12,7 @@
  * @author JAKO
  */
 abstract class CBaseGrid extends CComplemento{
+    protected $_filtros = null;
     protected $_modelo;
     protected $_paginacion = 10;
     protected $_columnas;    
@@ -28,11 +29,13 @@ abstract class CBaseGrid extends CComplemento{
     protected $cModelo = null;
     protected $mEtiquetas = [];
     protected $cabecera = null;
+    protected $filtros = null;
     protected $cuerpo = null;
     protected $pie = null;
     protected $pagina = 0;
     protected $totalPaginas = 0;
     protected $total = 0;
+    protected $filtrosPost = [];
     
     protected $ths = [];
     
@@ -42,6 +45,7 @@ abstract class CBaseGrid extends CComplemento{
     
     protected function crearModelo(){
         if(is_string($this->_modelo)){
+            $this->filtrar();
             $this->_criterios['offset'] = $this->pagina * $this->_paginacion;
             $this->_criterios['limit'] = $this->_paginacion;
             $this->modelos = call_user_func([$this->_modelo, 'modelo'])->listar($this->_criterios);                        
@@ -55,10 +59,28 @@ abstract class CBaseGrid extends CComplemento{
         }
     }
     
+    protected function filtrar(){
+        $p = filter_input_array(INPUT_POST);
+        if(!isset($p['filtro-tabla'])){ return false; }
+        $campos = [];
+        foreach($p['filtro-tabla'] AS $k=>$v){
+            if($v == ''){
+                continue;
+            }
+            $campos[] = "`$k` LIKE '%$v%'";
+        }
+        
+        if(count($campos) == 0){ return false; }
+        
+        $this->filtrosPost = $p['filtro-tabla'];
+        $this->_criterios['where'] = implode(' AND ', $campos);
+    }
+    
     public function inicializar() {
         $this->validarPaginas();
         $this->crearModelo();
         $this->construirColumnas();
+        $this->construirFiltros();
         $this->crearCabecera();
         $this->crearCuerpo();
         $this->crearPie();
@@ -177,6 +199,14 @@ abstract class CBaseGrid extends CComplemento{
         }
     }
     
+    protected function getFiltros($filtros){
+        $f = [];
+        if(is_string($filtros)){
+            $f = explode(',', str_replace(' ', '', $filtros));
+        }
+        return $f;
+    }    
+    
     abstract function ensamblar();
 
     abstract function crearCabecera();   
@@ -184,5 +214,7 @@ abstract class CBaseGrid extends CComplemento{
     abstract function crearCuerpo();
     
     abstract function crearPie();
+    
+    abstract function construirFiltros();
     
 }

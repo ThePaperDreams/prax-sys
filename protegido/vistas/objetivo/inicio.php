@@ -13,6 +13,7 @@
 
 <?= $this->complemento('!siscoms.bootstrap3.CBGrid', [
     'modelo' => 'Objetivo',
+    'filtros' => 'titulo',
     # id_objetivo, titulo, descripcion, plan_trabajo_id
     'columnas' => 'titulo, descripcion',
     'opciones' => true,

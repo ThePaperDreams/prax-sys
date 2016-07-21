@@ -2,7 +2,8 @@
 $formulario = new CBForm(['id' => 'form-acudientes']);
 $formulario->abrir();
 ?>
-
+<p>Los campos con <span class="text-danger">*</span>  son requeridos</p>
+<hr>
 <div class="row">
     <div class="col-sm-6">
         <?php echo $formulario->lista($modelo, 'tipo_doc_id', $tiposIdentificaciones, ['label' => true, 'group' => true, 'defecto' => 'Tipo de documento']) ?>

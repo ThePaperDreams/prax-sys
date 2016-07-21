@@ -39,8 +39,10 @@ class CFiltro {
         foreach($this->atributos AS $k=>$v){
             if(is_string($k)){
                 $this->m->$k = str_replace("'", "\'", $this->m->$k);
+                $this->m->$k = str_replace('"', '\"', $this->m->$k);
             } else {
                 $this->m->$v = str_replace("'", "\'", $this->m->$v);
+                $this->m->$v = str_replace('"', '\"', $this->m->$v);
             }
         }
     }
