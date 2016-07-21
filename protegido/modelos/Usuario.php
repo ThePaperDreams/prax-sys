@@ -16,7 +16,7 @@
  * @property tinyint $estado
  * 
  * Relaciones del modelo
- * @property FkTblUsuariosTblRoles1 $fkTblUsuariosTblRoles1
+ * @property Rol $Rol
  */
 class Usuario extends CModelo {
 
@@ -50,6 +50,7 @@ class Usuario extends CModelo {
     public function filtros() {
         return [
             'requeridos' => 'rol_id,email,nombre_usuario,nombres,apellidos,clave',
+            'seguros'=>'rol_id,email,nombre_usuario,nombres,apellidos,telefono,clave',
         ];
     }
 
