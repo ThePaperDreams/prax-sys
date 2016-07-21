@@ -69,6 +69,18 @@ class CBDComponente extends CComponenteAplicacion{
         return $this->controlador->ejecutarComando($comando, $comoObjeto);
     }
     
+    public function begin(){
+        return $this->controlador->begin();
+    }
+    
+    public function rollback(){
+        return $this->controlador->rollback();
+    }
+    
+    public function commit(){
+        return $this->controlador->commit();
+    }
+    
     /*********************
      * funciones magicas *
      *********************/

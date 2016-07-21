@@ -99,4 +99,17 @@ class CMySqlDriver extends CControladorBaseDeDatos{
     public function ultimoId() {
         return CConectorMySql::ultimoId();
     }
+
+    public function begin() {
+        return CConectorMySql::begin();
+    }
+
+    public function commit() {
+        return CConectorMySql::commit();
+    }
+
+    public function rollback() {
+        return CConectorMySql::rollback();
+    }
+
 }

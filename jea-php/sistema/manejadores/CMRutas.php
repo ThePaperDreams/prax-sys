@@ -134,6 +134,11 @@ class CMRutas {
          * construimos los parametros para la url, los cuales *
          * son codificados para que la url tenga formato      *
          ******************************************************/
+        $id = '';
+        if(Sis::ap()->apacheRewrite && key_exists('id', $ruta)){ 
+            $id = $ruta['id']; 
+            unset($ruta['id']);
+        }
         $parametros = implode('&', 
                     array_map(
                         function($n, $v){ return $n.'='. rawurlencode($v); }, 
@@ -141,10 +146,11 @@ class CMRutas {
                         $ruta
                     )
                 );
+        
         if(Sis::ap()->apacheRewrite){
             return $this->getUrlBase()
-                    .$peticion
-                    .($parametros != ''? '?'.$parametros : '');
+                    . ($id != ''? "$id/$peticion" : "$peticion")
+                    . ($parametros != ''? '?'.$parametros : '');
         } else {            
             return $this->getUrlBase().'?r='
                     .$peticion
