@@ -20,8 +20,7 @@ class CBGrid extends CBaseGrid{
     public function crearCabecera() {
         $this->ths = $this->encabezados();
         $tr = CHtml::e('tr', implode('', $this->ths));
-        $this->cabecera = CHtml::e('thead', $tr);
-        
+        $this->cabecera = CHtml::e('thead', $tr . $this->filtros);
     }
     
     private function encabezados(){
@@ -104,7 +103,36 @@ class CBGrid extends CBaseGrid{
     public function ensamblar() {
         $contenido = $this->cabecera . $this->cuerpo;
         $t = CHtml::e("table", $contenido, ['class' => 'table table-bordered']);
+        if($this->filtros !== null){
+            $input = CHtml::input('submit', 'buscar', ['style' => 'display:none']);
+            $t = CHtml::e('form', $t . $input, ['method' => 'POST']);
+        }
         return $t . $this->pie;
+    }
+    
+    public function construirFiltros() {
+        if($this->_filtros === null){ return false; }
+        $ths = [];
+        
+        $filtros = $this->getFiltros($this->_filtros);
+        foreach($this->tColumnas AS $k=>$v){
+            $ths[] = $this->construirCampoFiltro($filtros, $v);
+        }
+        
+        if($this->_opciones !== null){ $ths[] = CHtml::e('th', '&nbsp', []); }
+        
+        $tr = CHtml::e('tr', implode('', $ths));
+        $this->filtros = $tr;
+    }
+    
+    protected function construirCampoFiltro($filtros, $atributo){
+        if(in_array($atributo, $filtros)){
+            $val = isset($this->filtrosPost[$atributo])? $this->filtrosPost[$atributo] : '';
+            $campo = CBoot::text($val, ['name' => "filtro-tabla[$atributo]"]);
+            return CHtml::e('th', $campo, []);
+        } else {
+            return CHtml::e('th', '&nbsp', []);
+        }
     }
 
 }
