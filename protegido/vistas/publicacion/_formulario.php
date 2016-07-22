@@ -16,8 +16,6 @@ $formulario->abrir();
 <?php echo $formulario->inputAddon($modelo, 'consecutivo','texto', ['label' => true, 'group' => true], 'list-ol') ?>
 <?php echo $formulario->inputAddon($modelo, 'fecha_publicacion', 'texto', ['label' => true, 'group' => true, 'id' => 'datepicker'], 'calendar') ?>
 <?php echo $formulario->inputAddon($modelo, 'fecha_disponibilidad','texto', ['label' => true, 'group' => true, 'id' => 'datepicker2'],'calendar-check-o') ?>
-<?php echo $formulario->inputAddon($modelo, 'lugar','texto', ['label' => true, 'group' => true], 'home') ?>
-<?php echo $formulario->inputAddon($modelo, 'hora','texto',['label' => true, 'group' => true, 'id'=> 'timepicker'], 'clock-o')  ?>
  <div class="form-group">
     <label>Estado</label>
     <div class="input-group">

@@ -1,17 +1,17 @@
 <?php
 /**
- * Este es el controlador TipoPublicacion, desde aquí se gestionan
- * todas las actividades que tengan que ver con TipoPublicacion
+ * Este es el controlador Equipo, desde aquí se gestionan
+ * todas las actividades que tengan que ver con Equipo
  * @author Jorge Alejandro Quiroz Serna <alejo.jko@gmail.com>
  * @version 1.0.0
  */
-class CtrlTipoPublicacion extends CControlador{
+class CtrlEquipo extends CControlador{
     
     /**
      * Esta función muestra el inicio y una tabla para listar los datos
      */
     public function accionInicio(){
-        $modelos = TipoPublicacion::modelo()->listar();        
+        $modelos = Equipo::modelo()->listar();        
         $this->mostrarVista('inicio', ['modelos' => $modelos]);
     }
     
@@ -19,15 +19,11 @@ class CtrlTipoPublicacion extends CControlador{
      * Esta función permite crear un nuevo registro
      */
     public function accionCrear(){
-        $modelo = new TipoPublicacion();
-        if(isset($this->_p['TiposPublicacion'])){
-            $modelo->atributos = $this->_p['TiposPublicacion'];
+        $modelo = new Equipo();
+        if(isset($this->_p['Equipos'])){
+            $modelo->atributos = $this->_p['Equipos'];
             if($modelo->guardar()){
                 # lógica para guardado exitoso
-                Sis::Sesion()->flash("alerta", [
-                    'msg' => 'Tipo de publicación registrado exitosamente!',
-                    'tipo' => 'success',
-                ]);
                 $this->redireccionar('inicio');
             }
         }
@@ -40,14 +36,10 @@ class CtrlTipoPublicacion extends CControlador{
      */
     public function accionEditar($pk){
         $modelo = $this->cargarModelo($pk);
-        if(isset($this->_p['TiposPublicacion'])){
-            $modelo->atributos = $this->_p['TiposPublicacion'];
+        if(isset($this->_p['Equipos'])){
+            $modelo->atributos = $this->_p['Equipos'];
             if($modelo->guardar()){
                 # lógica para guardado exitoso
-                Sis::Sesion()->flash("alerta", [
-                    'msg' => 'Tipo de publicación registrado exitosamente!',
-                    'tipo' => 'success',
-                ]);
                 $this->redireccionar('inicio');
             }
         }
@@ -80,9 +72,9 @@ class CtrlTipoPublicacion extends CControlador{
     /**
      * Esta función permite cargar un modelo usando su primary key
      * @param int $pk
-     * @return TipoPublicacion
+     * @return Equipo
      */
     private function cargarModelo($pk){
-        return TipoPublicacion::modelo()->porPk($pk);
+        return Equipo::modelo()->porPk($pk);
     }
 }

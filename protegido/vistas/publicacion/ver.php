@@ -21,10 +21,6 @@ $this->opciones = [
         <table class="table table-bordered table-striped table-hover">
             <tbody>
                 <tr>
-                    <th><?php echo $modelo->obtenerEtiqueta('id_publicacion') ?></th>
-                    <td><?php echo $modelo->id_publicacion; ?></td>
-                </tr>
-                <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('titulo') ?></th>
                     <td><?php echo $modelo->titulo; ?></td>
                 </tr>
@@ -46,22 +42,14 @@ $this->opciones = [
                 </tr>
                 <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('tipo_id') ?></th>
-                    <td><?php echo $public["$modelo->tipo_id"] ?></td>
-                </tr>
-                <tr>
-                    <th><?php echo $modelo->obtenerEtiqueta('lugar') ?></th>
-                    <td><?php echo $modelo->lugar; ?></td>
-                </tr>
-                <tr>
-                    <th><?php echo $modelo->obtenerEtiqueta('hora') ?></th>
-                    <td><?php echo $modelo->hora; ?></td>
+                    <td><?php echo $modelo->TipoPublicacion->nombre ?></td>
                 </tr>
                 <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('estado_id') ?></th>
-                    <td><?php echo $estd["$modelo->estado_id"] ?></td>
+                    <td><?php echo $modelo->EstadoPublic->nombre ?></td>
                 </tr>
                 <tr>
-                    <th><?php echo $modelo->obtenerEtiqueta('usuario_id') ?></th>    
+                    <th><?php echo $modelo->obtenerEtiqueta('usuario_id') ?></th>
                     <td><?php echo $modelo->Autor->nombres ?></td>
                 </tr>
             </tbody>
