@@ -8,6 +8,21 @@
  */
 class CBForm extends CFormulario{
     /**
+     * 
+     * @param CModelo $modelo
+     */
+    private function getRequeridos(&$modelo){
+        $filtros = $modelo->filtros();
+        $r = isset($filtros['requeridos'])?  explode(',', str_replace(' ', '', $filtros['requeridos'])) : [];
+        $etiquetas = $modelo->etiquetasAtributos();
+        $requeridos = [];
+        foreach($r AS $k=>$v){
+            $requeridos['requeridos'][$v] = $etiquetas[$v]; 
+        }
+        return $requeridos;
+    }
+    
+    /**
      * Esta función permite generar un campo de texto con estilos de bootstrap
      * @param CModelo $modelo
      * @param string $atributo
@@ -17,7 +32,8 @@ class CBForm extends CFormulario{
     public function campoTexto($modelo = null, $atributo = '', $opciones = array()) {
         $opHtml = $this->obtenerOpciones($modelo, $atributo, $opciones);
         $label = $this->obtenerEtiqueta($opHtml);
-        $error = $this->ObtenerError($modelo->getErrores(), $atributo);
+        $requeridos = $this->getRequeridos($modelo);
+        $error = $this->ObtenerError($requeridos, $atributo);
         $input = CBoot::text($modelo->$atributo, $opHtml);
         return CHtml::e('div', $label.$error.$input, ['class' => 'form-group']);
     }
@@ -131,11 +147,12 @@ class CBForm extends CFormulario{
     }
     
     private function obtenerError($log = [], $campo = ''){  
-        $r = isset($log['requeridos'])? $log['requeridos'] : false;
-        if(!$r || !key_exists($campo, $r)){
+        $r = isset($log['requeridos'])? $log['requeridos'] : [];
+        if(!key_exists($campo, $r)){
             return '';
+        }else {            
+            return CHtml::e('p', "El campo <b>" . $r[$campo] . "</b> no puede estar vacio", ['class' => 'text-danger form-requerido', 'style' => 'display:none', 'id' => 'err-' . $campo]);
         }
-        return CHtml::e('p', "El campo <b>" . $r[$campo] . "</b> no puede estar vacio", ['class' => 'text-danger requerido']);
     }
     
     /**

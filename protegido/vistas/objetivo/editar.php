@@ -1,4 +1,5 @@
 <?php 
+    $this->tituloPagina = "Actualizar objetivos";
     $this->migas = [
         'Home' => ['principal/inicio'],
         'Listar Objetivos' => ['Objetivo/inicio'],        

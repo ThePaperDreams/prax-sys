@@ -1,7 +1,8 @@
 <?php
+$this->tituloPagina = "Ver plan de trabajo";
 $this->migas = [
     'Home' => ['principal/inicio'],
-    'Listar PlanesTrabajo' => ['PlanTrabajo/inicio'],
+    'Listar planes de trabajo' => ['PlanTrabajo/inicio'],
     'Ver'
 ];
 

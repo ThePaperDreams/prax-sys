@@ -1,4 +1,5 @@
 <?php 
+    $this->tituloPagina = "Registrar objetivo";
     $this->migas = [
         'Home' => ['principal/inicio'],
         'Listar Objetivos' => ['Objetivo/inicio'],        

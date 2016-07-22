@@ -1,7 +1,8 @@
 <?php 
+    $this->tituloPagina = "Listar Planes de trabajo";
     $this->migas = [
-        'Home' => ['principal/inicio'],
-        'Listar PlanesTrabajo'
+        'Inicio' => ['principal/inicio'],
+        'Listar Planes de trabajo'
     ];
     
     $this->opciones = [
@@ -15,7 +16,6 @@
     'modelo' => 'PlanTrabajo',
     # id_plan_trabajo, descripcion, fecha_aplicacion, estado, categoria_id
     'columnas' => [
-        'id_plan_trabajo', 
         'descripcion' => 'Resumen',
         'fecha_aplicacion',
         'estado' => 'EstadoEtiqueta',

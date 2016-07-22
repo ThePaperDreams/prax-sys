@@ -58,8 +58,8 @@ class Objetivo extends CModelo {
     public function etiquetasAtributos() {
         return [
             'id_objetivo' => 'ID',
-            'titulo' => 'Titulo',
-            'descripcion' => 'Descripcion',
+            'titulo' => 'Título',
+            'descripcion' => 'Descripción',
             'plan_trabajo_id' => 'Plan Trabajo',
         ];
     }

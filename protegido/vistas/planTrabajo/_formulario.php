@@ -63,7 +63,7 @@ $formulario->abrir();
         <?=  CHtml::link(CBoot::fa('undo').' Cancelar', ['planTrabajo/inicio'], ['class' => 'btn btn-primary btn-block']); ?>
     </div>
     <div class="col-sm-3">
-        <?=  CBoot::boton(CBoot::fa('save') .' '. ($modelo->nuevo? 'Guardar' : 'Actualizar'), 'success', ['class' => 'btn-block']); ?>
+        <?=  CBoot::boton(CBoot::fa('save') .' '. ($modelo->nuevo? 'Guardar' : 'Actualizar'), 'success', ['id' => 'btn-send', 'class' => 'btn-block']); ?>
     </div>
 </div>
 
@@ -80,7 +80,21 @@ $formulario->abrir();
             }
             return false;
         });
+        $("#PlanesTrabajo_fecha_aplicacion").change(function(){
+            validarFecha($(this));
+        });
     });
+    
+    function validarFecha(fecha){
+        var currDate = new Date();
+        var date = Date.parse(fecha.val());
+        if(date >= currDate){            
+            $('#btn-send').removeAttr("disabled");
+        } else {
+            alert("Por favor seleccione una fecha mayor a la de hoy");
+            $('#btn-send').attr("disabled", "disabled");
+        }
+    }
     
     function agregar(){
         var objetivo = $("#lista-objetivos").val();
@@ -94,15 +108,8 @@ $formulario->abrir();
                 .css('display', 'none').append(input, icon);
         var tr = $("<tr>", {'data-obj':objetivo})
                 .append(tdObj, tdOpc);
-//        var html = '<tr data-obj="' + objetivo + '"><td>' + objText + '</td>' +
-//                        '<td class="col-sm-1 text-center text-danger-icon">' + 
-//                            '<input type="hidden" value="' + objetivo + '" name="objetivos[]">' +
-//                            '<i class="fa fa-ban" onclick="quitar($(this));" ></i>' + 
-//                        '</td>' + 
-//                    '</tr>';
         $("#tabla-objetivos").append(tr);
         $("#lista-objetivos").focus();
-        // mostramos los td
         jQuery("[data-obj='" + objetivo + "'] td").fadeIn(800);
     }
     

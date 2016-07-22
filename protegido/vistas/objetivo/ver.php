@@ -1,4 +1,5 @@
 <?php 
+    $this->tituloPagina = "Ver objetivo";
     $this->migas = [
         'Home' => ['principal/inicio'],
         'Listar Objetivos' => ['Objetivo/inicio'],        
@@ -14,7 +15,7 @@
     ];
 ?>
 <div class="col-sm-8">
-    <div class="panel panel-primary">
+    <div class="panel panel-default">
         <div class="panel-heading text-center">
             Ver detalles
         </div>
