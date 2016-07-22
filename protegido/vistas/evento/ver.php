@@ -1,15 +1,15 @@
 <?php
 $this->migas = [
     'Home' => ['principal/inicio'],
-    'Listar Publicaciones' => ['Publicacion/inicio'],
+    'Listar Eventos' => ['Evento/inicio'],
     'Ver'
 ];
 
 $this->opciones = [
     'elementos' => [
-        'Listar' => ['Publicacion/inicio'],
-        'Crear' => ['Publicacion/crear'],
-        'Modificar' => ['Publicacion/editar', 'id' => $modelo->id_publicacion],
+        'Listar' => ['Evento/inicio'],
+        'Crear' => ['Evento/crear'],
+        'Modificar' => ['Evento/editar', 'id' => $modelo->id_evento],
     ]
 ];
 ?>
@@ -29,10 +29,6 @@ $this->opciones = [
                     <td><?php echo $modelo->contenido; ?></td>
                 </tr>
                 <tr>
-                    <th><?php echo $modelo->obtenerEtiqueta('consecutivo') ?></th>
-                    <td><?php echo $modelo->consecutivo; ?></td>
-                </tr>
-                <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('fecha_publicacion') ?></th>
                     <td><?php echo $modelo->fecha_publicacion; ?></td>
                 </tr>
@@ -42,15 +38,23 @@ $this->opciones = [
                 </tr>
                 <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('tipo_id') ?></th>
-                    <td><?php echo $modelo->TipoPublicacion->nombre ?></td>
+                    <td><?php echo $modelo->TipoEvento->nombre; ?></td>
                 </tr>
                 <tr>
-                    <th><?php echo $modelo->obtenerEtiqueta('estado_id') ?></th>
-                    <td><?php echo $modelo->EstadoPublic->nombre ?></td>
+                    <th><?php echo $modelo->obtenerEtiqueta('lugar') ?></th>
+                    <td><?php echo $modelo->lugar; ?></td>
                 </tr>
                 <tr>
-                    <th><?php echo $modelo->obtenerEtiqueta('usuario_id') ?></th>
-                    <td><?php echo $modelo->Autor->nombres ?></td>
+                    <th><?php echo $modelo->obtenerEtiqueta('hora') ?></th>
+                    <td><?php echo $modelo->hora; ?></td>
+                </tr>
+                <tr>
+                    <th><?php echo $modelo->obtenerEtiqueta('estado') ?></th>
+                    <td><?php echo $modelo->Estado->nombre; ?></td>
+                </tr>
+                <tr>
+                    <th><?php echo $modelo->obtenerEtiqueta('autor') ?></th>
+                    <td><?php echo $modelo->Autor->nombre; ?></td>
                 </tr>
             </tbody>
         </table>

@@ -75,9 +75,9 @@ class CtrlMatricula extends CControlador {
      * @param Matricula $modelo
      */
     private function cargarComprobante($modelo){
-        if($modelo->deportista_id === null){ return false;}
+        if($modelo->deportista_id === null){ return false;}        
         $imagen = CArchivoCargado::instanciarModelo('Matriculas', 'url_comprobante');
-        $dirDestino = Sis::resolverRuta(Sis::crearCarpeta("!publico.documentos.comprobantes.matriculas"));
+        $dirDestino = Sis::resolverRuta(Sis::crearCarpeta("!publico.documentos.comprobantes.matriculas"));        
         $nombre = "Matricula-" . date("Y") . "-" . $modelo->Deportista->identificacion;
         return $imagen->guardar($dirDestino, $nombre)? $nombre . '.' . $imagen->getExtension() : false;
     }

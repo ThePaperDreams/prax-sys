@@ -8,13 +8,50 @@
 
 class CtrlPublicacion extends CControlador{
     
+    public function accionCargarImagenes(){
+        if(isset($this->_p['ajx'])){
+            $this->cargarImagen();
+        }
+        $imagenes = Imagen::modelo()->listar();
+        $this->vista("cargarImagenes", [
+            'imagenes' => $imagenes
+        ]);
+    }
+    
+    private function cargarImagen(){        
+        $imagen = CArchivoCargado::instanciarPorNombre('imagenes');
+        $rutaDes = Sis::resolverRuta(Sis::crearCarpeta("!publico.imagenes.publicaciones"));
+        $rutaThumbs = Sis::resolverRuta(Sis::crearCarpeta("!publico.imagenes.publicaciones.thumbs"));
+        $guardado = $imagen->guardar($rutaDes);
+        $error = true;
+        if($guardado){
+            $imagen->thumbnail($rutaThumbs, [
+                'tamanio' => 200,
+                'autocentrar' => true,
+                'tipo' => strtolower($imagen->getExtension()),
+            ]);
+            $mImagen = new Imagen();
+            $mImagen->url = $imagen->getNombreOriginal();
+            $mImagen->guardar();            
+            $error = false;
+        }
+        
+        header("Content-type: Application/json");
+        
+        echo json_encode([
+            'uploadErr' => $error,
+            'url' => Sis::UrlBase() . "/publico/imagenes/publicaciones/thumbs/tmb_$mImagen->url",
+        ]);
+        Sis::fin();
+    }
+    
     /**
      * Esta función muestra el inicio y una tabla para listar los datos
      */
     public function accionInicio(){
         $modelos = Publicacion::modelo()->listar();        
         $this->mostrarVista('inicio', ['modelos' => $modelos,
-            'public' => CHtml::modelolista(TipoPublicacion::modelo()->listar(), "id_tipo_publicacion", "nombre"),      
+            'publc' => CHtml::modelolista(TipoPublicacion::modelo()->listar(), "id_tipo_publicacion", "nombre"),      
             'usuar' => CHtml::modelolista(Usuario::modelo()->listar(), "id_usuario", "nombre"),
             'estd' => CHtml::modelolista(EstadoPublicacion::modelo()->listar(), "id_estado", "nombre"),
             ]);
@@ -29,7 +66,10 @@ class CtrlPublicacion extends CControlador{
             $modelo->atributos = $this->_p['Publicaciones'];
             $modelo->usuario_id = Sis::apl()->usuario->ID;
             if($modelo->guardar()){
-                
+                Sis::Sesion()->flash("alerta", [
+                    'msg' => 'Publicación registrada exitosamente!',
+                    'tipo' => 'success',
+                ]);
                 $this->redireccionar('inicio');
             }
         }      
@@ -53,6 +93,10 @@ class CtrlPublicacion extends CControlador{
             $modelo->usuario_id = Sis::apl()->usuario->ID;
             if($modelo->guardar()){
                 # lógica para guardado exitoso
+                Sis::Sesion()->flash("alerta", [
+                    'msg' => 'Publicación editada exitosamente!',
+                    'tipo' => 'success',
+                ]);
                 $this->redireccionar('inicio');
             }
         }

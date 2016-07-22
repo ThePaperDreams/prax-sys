@@ -18,7 +18,7 @@
  * Relaciones del modelo
 * @property Usuario $Autor
  * @property TipoPublicacion $TipoPublicacion
- * @property Estado $EstadoPublicacion
+ * @property EstadoPublicacion $EstadoPublicacion
  */
  class Publicacion extends CModelo{
  
@@ -43,8 +43,6 @@
 		'fecha_publicacion', 
 		'fecha_disponibilidad', 
 		'tipo_id', 
-		'lugar', 
-		'hora', 
 		'estado_id', 
 		'usuario_id', 
         ];
@@ -76,11 +74,29 @@
 		'consecutivo' => 'Consecutivo', 
 		'fecha_publicacion' => 'Fecha de Publicación', 
 		'fecha_disponibilidad' => 'Fecha de Disponibilidad', 
-		'tipo_id' => 'Tipo de Publicación', 
-		'lugar' => 'Lugar', 
-		'hora' => 'Hora', 
+		'tipo_id' => 'Tipo de Publicación',  
 		'estado_id' => 'Estado', 
 		'usuario_id' => 'Usuario Id', 
+        ];
+    }
+    
+    public function getEtiquetaEstado(){
+        if($this->estado == 1){
+            return CHtml::e('span', 'Borrador', ['class' => 'label label-success']);
+        } else if($this->estado == 2){
+            return CHtml::e('span', 'Disponible', ['class' => 'label label-danger']);
+        } else if($this->estado == 3){
+            return CHtml::e('span', 'No Disponible', ['class' => 'label label-danger']);
+        }else {
+            return CHtml::e('span', 'Expirada', ['class' => 'label label-default']);
+        }
+    }
+   
+    
+    public function filtros() {
+        return [
+            'requeridos' => 'titulo,contenido,fecha_publicacion,fecha_disponibilidad,tipo_id,estado_id',
+            'seguros' => 'titulo,fecha_publicacion,fecha_disponibilidad',
         ];
     }
     

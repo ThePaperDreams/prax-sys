@@ -275,7 +275,7 @@ class CArchivoCargado {
      * Esta función retorna el nombre original del archivo
      * @return string
      */
-    public function getNombreOrigianl(){
+    public function getNombreOriginal(){
         return $this->nombreOriginal;
     }
 
