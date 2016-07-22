@@ -19,7 +19,7 @@ $formulario->abrir();
     <label>Estado</label>
     <div class="input-group">
         
-        <?php echo $formulario->lista($modelo, 'estado_id', $Estado, ['defecto' => 'Seleccione un estado para el evento']) ?>
+        <?php echo $formulario->lista($modelo, 'estado', $Estado, ['defecto' => 'Seleccione un estado para el evento']) ?>
         <div class="input-group-addon"><i class="fa fa-list-ul"></i></div>
     </div>
 </div>

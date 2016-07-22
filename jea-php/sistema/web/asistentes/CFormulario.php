@@ -94,7 +94,7 @@ class CFormulario {
     }
     
     private function registrarScript(){
-        $script = '$("#form-objetivos").submit(function(){' . 
+        $script = '$("#' . $this->id . '").submit(function(){' . 
                     'var enviar = true;' . 
                     '$("[requerido]").each(function(k, v){' . 
                         'var elemento = $(v);' . 

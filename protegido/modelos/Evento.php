@@ -80,7 +80,7 @@
     
     public function filtros() {
         return [
-            'requeridos' => 'titulo,contenido,fecha_publicacion,fecha_disponibilidad,tipo_id,lugar,hora,estado_id','autor',
+            'requeridos' => 'titulo,contenido,fecha_publicacion,fecha_disponibilidad,tipo_id,lugar,hora,estado,autor',
             'seguros' => 'titulo,fecha_publicacion,fecha_disponibilidad','lugar','hora','autor',
         ];
     }
