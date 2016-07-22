@@ -20,10 +20,11 @@ $this->tituloPagina="Salida de implementos";
         "fecha_entrega",
         "descripcion",
         "responsable_id" =>"Usuario->nombres",
-        "estado"
+        'estado' => 'EtiquetaEstado',
     ],
     'opciones' => [
-        ["i"=>"eye","url"=>"Salida/ver&{id:pk}"]
+        ["i"=>"eye","url"=>"Salida/ver&{id:pk}"],
+        ['i' => 'refresh', 'url' => 'Salida/anular&{id:pk}'],
     ],
     'paginacion' => 10,
 ]) ?>

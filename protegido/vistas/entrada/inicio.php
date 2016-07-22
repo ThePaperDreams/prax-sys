@@ -19,10 +19,11 @@ $this->tituloPagina="Entrada de implementos";
         "fecha_realizacion",
         "descripcion",
         "responsable_id" =>"Usuario->nombres",
-        "estado"
+        "estado"=>'EtiquetaEstado',
     ],
     'opciones' => [
-        ["i"=>"eye","url"=>"Entrada/ver&{id:pk}"]
+        ["i"=>"eye","url"=>"Entrada/ver&{id:pk}"],
+        ["i"=>"refresh","url"=>"Entrada/anular&{id:pk}"]
     ],
     'paginacion' => 10,
 ]) ?>

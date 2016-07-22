@@ -42,6 +42,7 @@ class Salida extends CModelo {
     public function filtros() {
         return [
             'requeridos' => 'fecha_realizacion,fecha_entrega,responsable_id,estado',
+            'seguros'=>'*',
         ];
     }
 
@@ -54,8 +55,8 @@ class Salida extends CModelo {
             # el formato es simple: 
             # tipo de relación | modelo con que se relaciona | campo clave foranea
             'Usuario' => [self::PERTENECE_A, 'Usuario', 'responsable_id'],
-            'Detalles'=>[
-                self::CONTENGAN_A,'SalidaImplemento','salida_id'
+            'Detalles' => [
+                self::CONTENGAN_A, 'SalidaImplemento', 'salida_id'
             ]
         ];
     }
@@ -73,6 +74,14 @@ class Salida extends CModelo {
             'responsable_id' => 'Responsable',
             'estado' => 'Estado',
         ];
+    }
+
+    public function getEtiquetaEstado() {
+        if ($this->estado == 1) {
+            return CHtml::e('span', 'Activo', ['class' => 'label label-success']);
+        } else if ($this->estado == 0) {
+            return CHtml::e('span', 'Inactivo', ['class' => 'label label-danger']);
+        } 
     }
 
     /**
