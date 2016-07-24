@@ -47,8 +47,9 @@ class CBForm extends CFormulario{
      */
     public function campoNumber($modelo = null, $atributo = '', $opciones = array()) {
         $opHtml = $this->obtenerOpciones($modelo, $atributo, $opciones);
-        $label = $this->obtenerEtiqueta($opHtml);
-        $error = $this->ObtenerError($modelo->getErrores(), $atributo);
+        $label = $this->obtenerEtiqueta($opHtml);        
+        $requeridos = $this->getRequeridos($modelo);
+        $error = $this->ObtenerError($requeridos, $atributo);
         $input = CBoot::number($modelo->$atributo, $opHtml);
         return CHtml::e('div', $label.$error.$input, ['class' => 'form-group']);
     }
@@ -56,7 +57,8 @@ class CBForm extends CFormulario{
     public function inputAddon($modelo = null, $atributo = '', $tipo = 'texto', $opciones = [], $addons = []){
         $opHtml = $this->obtenerOpciones($modelo, $atributo, $opciones);
         $label = $this->obtenerEtiqueta($opHtml);
-        $error = $this->obtenerError($modelo->getErrores(), $atributo);
+        $requeridos = $this->getRequeridos($modelo);
+        $error = $this->obtenerError($requeridos, $atributo);
         if(isset($addons['pre'])){ $opHtml['pre'] = $addons['pre']; }
         if(isset($addons['pos'])){ $opHtml['pos'] = $addons['pos']; }
         $input = CBoot::fieldAddOn($modelo->$atributo, $tipo, $opHtml);
@@ -66,7 +68,8 @@ class CBForm extends CFormulario{
     public function campoArchivo($modelo = null, $atributo = '', $opciones = array()) {
         $opHtml = $this->obtenerOpciones($modelo, $atributo, $opciones);
         $label = $this->obtenerEtiqueta($opHtml);
-        $error = $this->obtenerError($modelo->getErrores(), $atributo);
+        $requeridos = $this->getRequeridos($modelo);
+        $error = $this->obtenerError($requeridos, $atributo);
         $input = CBoot::fileInput($modelo->$atributo, $opHtml);
         return CHtml::e('div', $label.$error.$input, ['class' => 'form-group']);
     }
@@ -74,7 +77,8 @@ class CBForm extends CFormulario{
     public function campoPassword($modelo = null, $atributo = '', $opciones = array()) {
         $opHtml = $this->obtenerOpciones($modelo, $atributo, $opciones);
         $label = $this->obtenerEtiqueta($opHtml);
-        $error = $this->obtenerError($modelo->getErrores(), $atributo);
+        $requeridos = $this->getRequeridos($modelo);
+        $error = $this->obtenerError($requeridos, $atributo);
         $input = CBoot::passwordField($modelo->$atributo, $opHtml);
         return CHtml::e('div', $label.$error.$input, ['class' => 'form-group']);
     }
@@ -89,7 +93,8 @@ class CBForm extends CFormulario{
     public function areaTexto($modelo = null, $atributo = '', $opciones = array()) {
         $opHtml = $this->obtenerOpciones($modelo, $atributo, $opciones);
         $label = $this->obtenerEtiqueta($opHtml);
-        $error = $this->obtenerError($modelo->getErrores(), $atributo);
+        $requeridos = $this->getRequeridos($modelo);
+        $error = $this->obtenerError($requeridos, $atributo);
         $text = CBoot::textArea($modelo->$atributo, $opHtml); 
         return CHtml::e('div', $label . $error . $text, ['class' => 'form-group']);
     }
@@ -104,7 +109,8 @@ class CBForm extends CFormulario{
     public function lista($modelo = null, $atributo = '', $elementos = [], $opciones = []) {
         $opHtml = $this->obtenerOpciones($modelo, $atributo, $opciones);
         $label = $this->obtenerEtiqueta($opHtml);
-        $error = $this->obtenerError($modelo->getErrores(), $atributo);
+        $requeridos = $this->getRequeridos($modelo);
+        $error = $this->obtenerError($requeridos, $atributo);
         $lista = CBoot::select($modelo->$atributo, $elementos, $opHtml);
         return CHtml::e('div', $label.$error.$lista, ['class' => 'form-group']);
     }
@@ -114,8 +120,8 @@ class CBForm extends CFormulario{
         $label = $this->obtenerEtiqueta($opG);
         
         if($label != ""){ $label = CHtml::e('p', $label); }
-        
-        $error = $this->obtenerError($modelo->getErrores(), $atributo);
+        $requeridos = $this->getRequeridos($modelo);
+        $error = $this->obtenerError($requeridos, $atributo);
         
         $inputs = $this->construirRadioInputs($modelo, $atributo, $elementos, $opG);
         $opciones['class'] = 'btn-group' . (isset($opciones['class'])? $opciones['class'] : '');

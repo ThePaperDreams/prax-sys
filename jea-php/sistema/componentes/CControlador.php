@@ -10,7 +10,8 @@
  * @property string $ID ID del controlador invocado
  */
 abstract class CControlador extends CComponenteAplicacion{
-    
+    const CONTENIDO = 'Content-Type';
+    const JSON = 'application/json';
     /**
      * Instancia de la ación llamada para el controlador
      * @var CAccion 
@@ -316,5 +317,19 @@ abstract class CControlador extends CComponenteAplicacion{
      */
     public function limpiarContenido(){
         $this->contenido = "";
+    }
+    
+    /**
+     * 
+     * @param string $tipo
+     * @param string $contenido
+     */
+    protected function cabecera($tipo, $contenido){
+        header("$tipo: $contenido");
+    }
+    
+    protected function json($json = []){
+        $this->cabecera(self::CONTENIDO, self::JSON);
+        echo json_encode($json);
     }
 }

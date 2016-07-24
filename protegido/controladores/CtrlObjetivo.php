@@ -19,6 +19,7 @@ class CtrlObjetivo extends CControlador{
      * Esta función permite crear un nuevo registro
      */
     public function accionCrear(){
+        $this->validarObjetivo();   # esta función se usa para validar la existencia de un objetivo via ajax
         $modelo = new Objetivo();
         if(isset($this->_p['Objetivos'])){
             $modelo->atributos = $this->_p['Objetivos'];
@@ -38,6 +39,7 @@ class CtrlObjetivo extends CControlador{
      * @param int $pk
      */
     public function accionEditar($pk){
+        $this->validarObjetivo();   # esta función se usa para validar la existencia de un objetivo via ajax
         $modelo = $this->cargarModelo($pk);
         if(isset($this->_p['Objetivos'])){
             $modelo->atributos = $this->_p['Objetivos'];
@@ -50,6 +52,19 @@ class CtrlObjetivo extends CControlador{
             }
         }
         $this->mostrarVista('editar', ['modelo' => $modelo]);
+    }
+    
+    private function validarObjetivo(){   
+        if(isset($this->_p['obj'])){
+            $nombre = $this->_p['obj'];
+            $obj = Objetivo::modelo()->listar([
+                'where' => "LOWER(titulo)=LOWER('$nombre')",
+            ]);
+            $this->json([
+                'existe' => count($obj) > 0,
+            ]);
+            Sis::fin();
+        }        
     }
     
     /**
