@@ -20,6 +20,7 @@ class CtrlCategoriaImplemento extends CControlador {
      * Esta función permite crear un nuevo registro
      */
     public function accionCrear() {
+        $this->validarNombre();       
         $modelo = new CategoriaImplemento();
         if (isset($this->_p['CategoriasImplementos'])) {
             $modelo->atributos = $this->_p['CategoriasImplementos'];
@@ -31,7 +32,8 @@ class CtrlCategoriaImplemento extends CControlador {
                 $this->redireccionar('inicio');
             }
         }
-        $this->mostrarVista('crear', ['modelo' => $modelo]);
+        $urlAjx = Sis::crearUrl(['CategoriaImplemento/crear']);
+        $this->mostrarVista('crear', ['modelo' => $modelo, 'url' => $urlAjx]);
     }
 
     /**
@@ -39,6 +41,7 @@ class CtrlCategoriaImplemento extends CControlador {
      * @param int $pk
      */
     public function accionEditar($pk) {
+        $this->validarNombre($pk);
         $modelo = $this->cargarModelo($pk);
         if (isset($this->_p['CategoriasImplementos'])) {
             $modelo->atributos = $this->_p['CategoriasImplementos'];
@@ -50,9 +53,35 @@ class CtrlCategoriaImplemento extends CControlador {
                 $this->redireccionar('inicio');
             }
         }
-        $this->mostrarVista('editar', ['modelo' => $modelo]);
+        $urlAjx = Sis::crearUrl(['CategoriaImplemento/editar', 'id' => $pk]);
+        $this->mostrarVista('editar', ['modelo' => $modelo, 'url' => $urlAjx]);
     }
 
+    private function validarNombre($id = null){
+        if(isset($this->_p['validarNombre'])){
+            if($id === null){
+                $criterio = [
+                    'where' => "LOWER(nombre) = LOWER('" . $this->_p['nombre'] . "')"
+                ];
+            } else {
+                $criterio = [
+                    'where' => "id_categoria <> $id AND LOWER(nombre) = LOWER('" . $this->_p['nombre'] . "')"
+                ];
+            }
+            $categoria = CategoriaImplemento::modelo()->primer($criterio);
+            
+            if($categoria != null){
+                $error = true;
+            } else {
+                $error = false;
+            }
+            $this->json([
+                'error' => $error,
+            ]);
+            Sis::fin();
+        }
+    }
+    
     /**
      * Esta función permite ver detalladamente un registro existente
      * @param int $pk
