@@ -23,7 +23,10 @@ class CtrlImplemento extends CControlador{
         if(isset($this->_p['Implementos'])){
             $modelo->atributos = $this->_p['Implementos'];
             if($modelo->guardar()){
-                # lógica para guardado exitoso
+                Sis::Sesion()->flash("alerta", [
+                    'msg' => 'Guardado exitoso',
+                    'tipo' => 'success',
+                ]);
                 $this->redireccionar('inicio');
             }
         }
@@ -55,7 +58,10 @@ class CtrlImplemento extends CControlador{
         if(isset($this->_p['Implementos'])){
             $modelo->atributos = $this->_p['Implementos'];
             if($modelo->guardar()){
-                # lógica para guardado exitoso
+                Sis::Sesion()->flash("alerta", [
+                    'msg' => 'Modificación exitosa',
+                    'tipo' => 'success',
+                ]);
                 $this->redireccionar('inicio');
             }
         }
