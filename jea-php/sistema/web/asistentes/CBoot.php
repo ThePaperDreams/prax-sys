@@ -3,7 +3,8 @@
  * Esta clase es el asistente para generar html con clases de bootstrap
  * @package sistema.web.asistentes
  * @author Jorge Alejandro Quiroz Serna (Jako) <alejo.jko@gmail.com>
- * @version 1.0.1
+ * @author Cristian Martinez <cmcris9@gmail.com>
+ * @version 1.0.2
  * @copyright (c) 2014, jakop
  */
 final class CBoot {
@@ -256,6 +257,23 @@ final class CBoot {
         }
         
         return $lista;
+    }
+    
+    /**
+     * Esta funcion es una mejora a la funcion select de esta clase,permitiendo generar una lista
+     * de manera mas resumida
+     * @author Cristian Martinez <cmcris9@gmail.com>
+     * @param String $seleccion
+     * @param String $modelo nombre del modelo del que se desea listar
+     * @param String $valor
+     * @param String $texto
+     * @param array $opciones
+     * @return String
+     */
+    public function selectM($seleccion, $modelo, $valor, $texto, $opciones = []){
+        $modelos = call_user_func([$modelo, "modelo"])->listar();
+        $items = CHtml::modeloLista($modelos, $valor, $texto);
+        return self::select($seleccion, $items, $opciones);
     }
     
     /**

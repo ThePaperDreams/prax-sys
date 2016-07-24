@@ -141,9 +141,21 @@ Sis::Recursos()->recursoJs([
                     delay: 8000,
                     soundPath: '<?= Sis::UrlRecursos() ?>librerias/lobibox/sounds/',
                 });
-            });
+            });           
         </script>
         <input type="hidden" value="13" id="elemento">
         <?php endif ?>
+        <script>
+            function lobiAlert(tipo, mensaje){
+                Lobibox.notify(tipo, {
+                    size: 'mini',
+                    showClass: 'bounceInRight',
+                    hideClass: 'bounceOutRight',
+                    msg:mensaje,
+                    delay: 8000,
+                    soundPath: '<?= Sis::UrlRecursos() ?>librerias/lobibox/sounds/',
+                });
+            }
+        </script>
     </body>
 </html> 
