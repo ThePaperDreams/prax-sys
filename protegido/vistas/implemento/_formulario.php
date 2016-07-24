@@ -21,22 +21,43 @@ $formulario->abrir();
 
 <?php $formulario->cerrar(); ?>
 <script>
-
-    function validar() {
-        var select1 = $("#Implementos_unidades");
-        var select2 = $("#Implementos_minimo_unidades");
-        var select3 = $("#Implementos_maximo_unidades");
-        var valor1 = select1.val();
-        var valor2 = select2.val();
-        var valor3 = select3.val();
-        if (valor1 <= 0) {
-            alert("Seleccione un valor positivo o mayor que 0");
+    $(function(){
+        $("#form-implementos").submit(function(){
+            validarNombre();
+            return false;
+        });
+        
+        function validarNombre(){
+            var nombre = $("#Implementos_nombre");
+            if(nombre === ""){ return; }
+            
+            $.ajax({
+                type: 'POST',
+                url: '<?= $url ?>',
+                data: {
+                    validarNombre: true,
+                    nombre : nombre.val(),
+                }, 
+                success: function(respuesta){
+                    if(respuesta.error == true){
+                        mostrarAlert("error", "Ya existe ese nombre");
+                    }
+                        document.getElementById("form-implementos").submit();
+                    }
+                }
+            });
         }
-        if (valor2 <= 0) {
-            alert("Seleccione un valor positivo o mayor que 0");
+        
+        function mostrarAlert(tipo, msg){
+            Lobibox.notify(tipo, {
+                size: 'mini',
+                showClass: 'bounceInRight',
+                hideClass: 'bounceOutRight',
+                msg:msg,
+                delay: 8000,
+                soundPath: '<?= Sis::UrlRecursos() ?>librerias/lobibox/sounds/',
+            });
         }
-        if (valor3 <= 0) {
-            alert("Seleccione un valor positivo o mayor que 0");
-        }
-    }
+        
+    });
 </script>

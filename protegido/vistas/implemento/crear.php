@@ -13,5 +13,5 @@ $this->tituloPagina="Registrar implemento";
     ];    
 ?>
 <div class="col-sm-8">    
-    <?php echo $this->mostrarVistaP('_formulario', ['modelo' => $modelo, 'elementos' => $elementos]); ?>
+    <?php echo $this->mostrarVistaP('_formulario', ['modelo' => $modelo, 'url' => $url]); ?>
 </div>
