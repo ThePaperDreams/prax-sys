@@ -21,6 +21,16 @@
         'estado' => 'EstadoEtiqueta',
         'total_objetivos' => 'TotalObjetivos',
     ],
-    'opciones' => true,
+    'opciones' => [
+        ['i' => 'eye', 'url' => 'PlanTrabajo/ver&{id:pk}'],
+        ['i' => 'pencil', 'url' => 'PlanTrabajo/editar&{id:pk}'],
+        ['i' => 'trash', 'url' => 'PlanTrabajo/eliminar&{id:pk}', 'visible' => '$m->estado == 1', 'opciones' => ['class' => 'op-eliminar']],
+    ],
     'paginacion' => 10,
 ]) ?>
+<?php 
+$script = '$(".op-eliminar").click(function(){'
+            . 'return confirm("¿Seguro que desea realizar esta acción?");'
+        . '});';
+Sis::Recursos()->Script($script, CMRecursos::POS_READY);
+?>

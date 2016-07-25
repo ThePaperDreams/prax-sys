@@ -19,18 +19,49 @@ class CtrlImplemento extends CControlador{
      * Esta función permite crear un nuevo registro
      */
     public function accionCrear(){
+        $this->validarNombre();
         $modelo = new Implemento();
         if(isset($this->_p['Implementos'])){
             $modelo->atributos = $this->_p['Implementos'];
             if($modelo->guardar()){
-                # lógica para guardado exitoso
+                Sis::Sesion()->flash("alerta", [
+                    'msg' => 'Guardado exitoso',
+                    'tipo' => 'success',
+                ]);
                 $this->redireccionar('inicio');
             }
         }
+        $urlAjx = Sis::crearUrl(['Implemento/crear']);
         $this->mostrarVista('crear', [
             'modelo' => $modelo,
+            'url'=>$urlAjx,
             'elementos' => CHtml::modeloLista(CategoriaImplemento::modelo()->listar(), "id_categoria", "nombre"),
+            
         ]);
+    }
+    private function validarNombre($id = null){
+        if(isset($this->_p['validarNombre'])){
+            if($id === null){
+                $criterio = [
+                    'where' => "LOWER(nombre) = LOWER('" . $this->_p['nombre'] . "')"
+                ];
+            } else {
+                $criterio = [
+                    'where' => "id_implemento <> $id AND LOWER(nombre) = LOWER('" . $this->_p['nombre'] . "')"
+                ];
+            }
+            $implemento = Implemento::modelo()->primer($criterio);
+            
+            if($implemento != null){
+                $error = true;
+            } else {
+                $error = false;
+            }
+            $this->json([
+                'error' => $error,
+            ]);
+            Sis::fin();
+        }
     }
     
      public function accionAnular($pk) {
@@ -51,18 +82,26 @@ class CtrlImplemento extends CControlador{
      * @param int $pk
      */
     public function accionEditar($pk){
+        $this->validarNombre($pk);
         $modelo = $this->cargarModelo($pk);
         if(isset($this->_p['Implementos'])){
             $modelo->atributos = $this->_p['Implementos'];
             if($modelo->guardar()){
-                # lógica para guardado exitoso
+                Sis::Sesion()->flash("alerta", [
+                    'msg' => 'Modificación exitosa',
+                    'tipo' => 'success',
+                ]);
                 $this->redireccionar('inicio');
             }
         }
+        $urlAjx = Sis::crearUrl(['Implemento/editar', 'id' => $pk]);
         $this->mostrarVista('editar', [
             'modelo' => $modelo,
+            'url'=>$urlAjx,
             'elementos' => CHtml::modeloLista(CategoriaImplemento::modelo()->listar(), "id_categoria", "nombre"),
         ]);
+        
+        
     }
     
     /**

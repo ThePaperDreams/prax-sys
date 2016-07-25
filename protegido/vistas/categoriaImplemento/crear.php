@@ -13,5 +13,5 @@ $this->tituloPagina="Registrar categoría de implemento";
     ];    
 ?>
 <div class="col-sm-8">    
-    <?php echo $this->mostrarVistaP('_formulario', ['modelo' => $modelo]); ?>
+    <?php echo $this->mostrarVistaP('_formulario', ['modelo' => $modelo, 'url' => $url]); ?>
 </div>

@@ -26,7 +26,7 @@
     public function filtros() {
         return [
             'requeridos' => 'categoria_id,nombre,unidades,minimo_unidades,maximo_unidades',
-            
+            'seguros'=>'*',
         ];
     }
     /**

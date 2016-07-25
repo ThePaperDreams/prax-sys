@@ -19,13 +19,22 @@ class CtrlSalida extends CControlador{
      * Esta función permite crear un nuevo registro
      */
     public function accionCrear(){
+        
+        if(isset($this->_p['ajaxRequest'])){
+            $implemento = Implemento::modelo()->porPk($this->_p['id']);
+            $this->json([
+                'unidades' => $implemento->unidades,
+            ]);
+            Sis::fin();
+        }
+        
         $modelo = new Salida();
         if(isset($this->_p['Salidas'])){
             $modelo->atributos = $this->_p['Salidas'];
             $modelo->fecha_realizacion = date('Y-m-d H:i:s');
-//            echo "<pre>";
-//            var_dump($modelo);exit();
+            
             if($modelo->guardar()){
+                
                 foreach ($_POST["articulo"] as $key => $artc){
                     $mdSI = new SalidaImplemento();
                     $mdSI->cantidad = $_POST["cantity"][$key];
@@ -34,12 +43,30 @@ class CtrlSalida extends CControlador{
                     $mdSI->guardar();
                     $mdSI->Implemento->unidades = $mdSI->Implemento->unidades - $mdSI->cantidad;
                     $mdSI->Implemento->guardar();
-                }                
+                } 
+                Sis::Sesion()->flash("alerta", [
+                'msg' => 'Guardado exitoso',
+                'tipo' => 'success',
+            ]);
                 $this->redireccionar('inicio');
             }
         }
         $usuarios = CHtml::modeloLista(Usuario::modelo()->listar(), "id_usuario", "nombres");
         $this->mostrarVista('crear', ['modelo' => $modelo, 'usuarios' => $usuarios]);
+    }
+    
+    public function accionAnular($pk) {
+        $modelo = $this->cargarModelo($pk);
+        $modelo->estado = !$modelo->estado;
+        if ($modelo->guardar()) {
+            Sis::Sesion()->flash("alerta", [
+                'msg' => 'Modificación exitosa',
+                'tipo' => 'success',
+            ]);
+        } else {
+            # lógica para error al borrar
+        }
+        $this->redireccionar('inicio');
     }
 
     /**

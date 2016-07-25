@@ -8,6 +8,9 @@ $formulario->abrir();
 <div>
     <div class="form-group">
         <?= CBoot::selectM('', 'Implemento', 'id_implemento', 'nombre', ['label' => 'Implementos', 'group' => true, 'autofocus' => true, 'defecto' => 'Seleccione un implemento', 'id' => 'selectId']) ?>   
+    </div>    
+    <div class="form-group">
+        <span class="label label-default">Unidades: <i id="total-unidades">0</i></span>
     </div>
     <?= CBoot::number(0, ['min' => 0, 'label' => 'Cantidad', 'group' => true, 'id' => 'cant']); ?>   
     <?= CBoot::boton('Agregar ' . CBoot::fa('plus-circle'), 'default', ['group' => true, 'id' => 'btnAgregar']) ?>
@@ -41,7 +44,7 @@ $formulario->abrir();
         <?php echo CHtml::link(CBoot::fa('undo') . ' Cancelar', ['salida/inicio'], ['class' => 'btn btn-primary btn-block']); ?>
     </div>
     <div class="col-sm-3">
-        <?php echo CBoot::boton(CBoot::fa('save') . ' ' . ($modelo->nuevo ? 'Guardar' : 'Actualizar'), 'success', ['class' => 'btn-block']); ?>
+        <?php echo CBoot::boton(CBoot::fa('save') . ' ' . ($modelo->nuevo ? 'Guardar' : 'Actualizar'), 'success', ['class' => 'btn-block','id'=>'btn-send']); ?>
     </div>  
 </div>
 <script>
@@ -53,8 +56,39 @@ $formulario->abrir();
         $("#Salidas_fecha_entrega").datepicker({
             dateFormat: 'yy-mm-dd',
         });
+         $("#Salidas_fecha_entrega").change(function(){
+            validarFecha($(this));
+        });
+        $("#selectId").change(function(){
+            if($(this).val() !== ""){
+                traerDatosImplemento($(this).val());
+            }
+        });
+        $("#cant").keyup(function(){
+            var limite = parseInt($("#total-unidades").html());
+            if($(this).val() > limite){
+                lobiAlert("error", "No puede ingresar una cantidad mayor a las unidades actuales");
+                var cant = $(this);
+                cant.val(limite);
+            }
+        });
     });
-
+   
+   function traerDatosImplemento(id){
+       $.ajax({
+           type: 'POST',
+           url: "<?= Sis::crearUrl(['Salida/crear']) ?>",
+           data: {
+               ajaxRequest: true,
+               id: id,
+           },
+           success: function(respuesta){
+               $("#total-unidades").html(respuesta.unidades);
+               $("#cant").focus().select();
+           }
+       });
+   }
+   
     function Agregar() {
         var select = $("#selectId");
         var valor = select.val();
@@ -77,11 +111,20 @@ $formulario->abrir();
         datosTabla.append(fila);
 
     }
-    
-
+ 
     function Quitar(idFila) {
         var fila = $("#remover-" + idFila);
         fila.remove();
+    }
+    function validarFecha(fecha) {
+        var currDate = new Date();
+        var date = Date.parse(fecha.val());
+        if (date >= currDate) {
+            $('#btn-send').removeAttr("disabled");
+        } else {
+            alert("Por favor seleccione una fecha mayor a la de hoy");
+            $('#btn-send').attr("disabled", "disabled");
+        }
     }
 </script>
 

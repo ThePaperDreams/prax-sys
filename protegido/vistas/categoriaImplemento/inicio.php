@@ -9,7 +9,6 @@ $this->migas = [
 $this->opciones = [
     'elementos' => [
         'Crear' => ['Categoriaimplemento/crear'],
-        'Cambiar' =>['Categoriaimplemento/cambiarEstado']
     ]
 ];
 ?>
