@@ -16,6 +16,10 @@ Sis::Recursos()->recursoCss([
     'alias' => 'lobibox',
     'url' => Sis::UrlRecursos() . 'librerias/lobibox/css/lobibox.css',
 ]);
+Sis::Recursos()->recursoCss([
+    'alias' => 'Trumbowyg',
+    'url' => Sis::UrlRecursos() . 'librerias/Trumbowyg/ui/trumbowyg.css',
+]);
 Sis::Recursos()->recursoJs([
     'alias' => 'lobibox',
     'url' => Sis::UrlRecursos() . 'librerias/lobibox/js/lobibox.js',
@@ -23,6 +27,11 @@ Sis::Recursos()->recursoJs([
 Sis::Recursos()->recursoJs([
     'alias' => 'lobibox-notifications',
     'url' => Sis::UrlRecursos() . 'librerias/lobibox/js/notifications.js',
+]);
+
+Sis::Recursos()->recursoJs([
+    'alias' => 'Trumbowyg',
+    'url' => Sis::UrlRecursos() . 'librerias/Trumbowyg/trumbowyg.js',
 ]);
 ?>
 <!DOCTYPE HTML>
