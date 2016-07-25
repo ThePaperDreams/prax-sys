@@ -26,7 +26,7 @@
     public function filtros() {
         return [
             'requeridos' => 'categoria_id,nombre,unidades,minimo_unidades,maximo_unidades',
-            
+            'seguros'=>'*',
         ];
     }
     /**
@@ -37,6 +37,7 @@
         return [
 		'id_implemento' => ['pk'] , 
 		'categoria_id', 
+                'estado_id' => ['def' => '1'],
 		'nombre', 
 		'descripcion', 
 		'unidades' => ['def' => '0'] , 
@@ -63,8 +64,9 @@
      */
     public function etiquetasAtributos() {
         return [
-		'id_implemento' => 'Id Implemento', 
-		'categoria_id' => 'Categoria Id', 
+                
+		'categoria_id' => 'Nombre categoría',
+                'estado' => 'Estado',
 		'nombre' => 'Nombre', 
 		'descripcion' => 'Descripcion', 
 		'unidades' => 'Unidades', 
@@ -72,7 +74,15 @@
 		'maximo_unidades' => 'Maximo Unidades', 
         ];
     }
-    
+    public function getEtiquetaEstado(){
+        if($this->estado_id == 1){
+            return CHtml::e('span', 'Activo', ['class' => 'label label-success']);
+        } else if($this->estado_id == 0){
+            return CHtml::e('span', 'Inactivo', ['class' => 'label label-danger']);
+        } else {
+            return CHtml::e('span', 'Agotado', ['class' => 'label label-default']);
+        }
+    }
     /**
      * Esta función permite listar todos los registros
      * @param array $criterio

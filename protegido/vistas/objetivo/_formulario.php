@@ -25,3 +25,35 @@ $formulario->abrir();
 </div>
 
 <?php $formulario->cerrar(); ?>
+<?php
+    $script = '$("#form-objetivos").submit(function(){validarObjetivo(); return false;});'
+            . 'function validarObjetivo(){'
+                . 'if($.trim($("#Objetivos_titulo").val()) === ""){ return false; }'
+                . '$.ajax({'
+                    . 'type:"POST",'
+                    . 'url:"' . Sis::crearUrl(['Objetivo/crear']) . '",'
+                    . 'data:{'
+                        . 'obj:$("#Objetivos_titulo").val(),'
+                    . '},'
+                    . 'success: function(obj){'
+                        . 'if(obj.existe){'
+                            . 'mostrarAlerta("error", "Ya hay un objetivo registrado con ese nombre");'
+                            . '$("#Objetivos_titulo").focus().select();'
+                        . '} else {'
+                            . 'document.getElementById("form-objetivos").submit();'
+                        . '}'
+                    . '},'
+                . '});'
+            . '}'
+            . 'function mostrarAlerta(tipo, msg){'
+                . 'Lobibox.notify(tipo,{'
+                    . 'size:"mini",'
+                    . 'showClass:"bounceInRight",'
+                    . 'hideClass:"bounceOutRight",'
+                    . 'msg:msg,'
+                    . 'delay:8000,'
+                    . 'soundPath:"' . Sis::UrlRecursos() . 'librerias/lobibox/sounds/",'
+                . '});'
+            . '}';
+    Sis::Recursos()->Script($script, CMRecursos::POS_READY);
+?>

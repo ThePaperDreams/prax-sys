@@ -41,7 +41,7 @@ $formulario->abrir();
         <?php echo CHtml::link(CBoot::fa('undo') . ' Cancelar', ['salida/inicio'], ['class' => 'btn btn-primary btn-block']); ?>
     </div>
     <div class="col-sm-3">
-        <?php echo CBoot::boton(CBoot::fa('save') . ' ' . ($modelo->nuevo ? 'Guardar' : 'Actualizar'), 'success', ['class' => 'btn-block']); ?>
+        <?php echo CBoot::boton(CBoot::fa('save') . ' ' . ($modelo->nuevo ? 'Guardar' : 'Actualizar'), 'success', ['class' => 'btn-block','id'=>'btn-send']); ?>
     </div>  
 </div>
 <script>
@@ -52,6 +52,9 @@ $formulario->abrir();
         });
         $("#Salidas_fecha_entrega").datepicker({
             dateFormat: 'yy-mm-dd',
+        });
+         $("#Salidas_fecha_entrega").change(function(){
+            validarFecha($(this));
         });
     });
 
@@ -77,11 +80,20 @@ $formulario->abrir();
         datosTabla.append(fila);
 
     }
-    
-
+ 
     function Quitar(idFila) {
         var fila = $("#remover-" + idFila);
         fila.remove();
+    }
+    function validarFecha(fecha) {
+        var currDate = new Date();
+        var date = Date.parse(fecha.val());
+        if (date >= currDate) {
+            $('#btn-send').removeAttr("disabled");
+        } else {
+            alert("Por favor seleccione una fecha mayor a la de hoy");
+            $('#btn-send').attr("disabled", "disabled");
+        }
     }
 </script>
 

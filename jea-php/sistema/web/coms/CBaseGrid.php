@@ -138,23 +138,38 @@ abstract class CBaseGrid extends CComplemento{
             $this->_opciones = [
                 ['i' => 'eye', 'url' => $controlador . '/ver&{id:pk}'],
                 ['i' => 'pencil', 'url' => $controlador . '/editar&{id:pk}'],
-                ['i' => 'trash', 'url' => $controlador . '/eliminar&{id:pk}'],
+                ['i' => 'trash', 'url' => $controlador . '/eliminar&{id:pk}', 'opciones' => ['class' => 'op-eliminar']],
             ];
+            $this->scriptConfirmar();
         }
         
         if($this->_opciones === null){  return false; }                
         
         $opciones = [];
         foreach ($this->_opciones AS $v){
+            $opsHtml = isset($v['opciones'])? $v['opciones'] : [];
+            if(isset($v['visible']) && !$this->evaluarExpVisible($v['visible'], $modelo)){ continue; }
+            
             if(key_exists('i', $v)){
-                $opciones[] = CHtml::link(CBoot::fa($v['i']), $this->evaluarExpresion($v['url'], $modelo));
+                $opciones[] = CHtml::link(CBoot::fa($v['i']), $this->evaluarExpresion($v['url'], $modelo), $opsHtml);
             } else if(key_exists('t', $v)){
-                $opciones[] = CHtml::link($v['t'], $this->evaluarExpresion($v['url'], $modelo));
+                $opciones[] = CHtml::link($v['t'], $this->evaluarExpresion($v['url'], $modelo), $opsHtml);
             } else {
-                $opciones[] = CHtml::link('', $this->evaluarExpresion($v['url'], $modelo));
+                $opciones[] = CHtml::link('', $this->evaluarExpresion($v['url'], $modelo), $opsHtml);
             }
         }
         $columnas[] = CHtml::e("td", implode(' ', $opciones), ['class' => 'text-center']);
+    }
+    
+    private function evaluarExpVisible($exp, &$m){
+        return eval("return $exp;");
+    }
+    
+    private function scriptConfirmar(){
+        $script = '$(".op-eliminar").click(function(){'
+                . 'return confirm("¿Seguro que desea realizar esta acción?");'
+                . '});';
+        Sis::Recursos()->Script($script, CMRecursos::POS_READY);
     }
     
     protected function evaluarExpresion($exp, $modelo){

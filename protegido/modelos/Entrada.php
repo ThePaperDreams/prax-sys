@@ -62,9 +62,18 @@ class Entrada extends CModelo {
         ];
     }
 
+    public function getEtiquetaEstado() {
+        if ($this->estado == 1) {
+            return CHtml::e('span', 'Activo', ['class' => 'label label-success']);
+        } else if($this->estado == 0) {
+            return CHtml::e('span', 'Anulado', ['class' => 'label label-danger']);
+        }
+    }
+
     public function filtros() {
         return [
             'requeridos' => 'fecha_realizacion,responsable_id,estado',
+            'seguros'=>'*',
         ];
     }
 

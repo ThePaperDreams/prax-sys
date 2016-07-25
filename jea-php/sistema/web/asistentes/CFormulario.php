@@ -90,6 +90,25 @@ class CFormulario {
         $this->formularioCerrado = true;
         $contenido = ob_get_clean();
         echo CHtml::e("form", $contenido, $this->opcionesHtml);
+        $this->registrarScript();
+    }
+    
+    private function registrarScript(){
+        $script = '$("#' . $this->id . '").submit(function(){' . 
+                    'var enviar = true;' . 
+                    '$("[requerido]").each(function(k, v){' . 
+                        'var elemento = $(v);' . 
+                        'var error = elemento.closest(".form-group").parent().find(".form-requerido");' . 
+                        'if($.trim(elemento.val()) === ""){' . 
+                            'enviar = false;                    ' . 
+                            'error.show();' . 
+                        '}else {' . 
+                            'error.hide();' . 
+                        '}' . 
+                    '});' . 
+                    'return enviar;' . 
+                '});';
+        Sis::Recursos()->Script($script, CMRecursos::POS_READY);
     }
     
     /**
@@ -213,7 +232,7 @@ class CFormulario {
             $span = isset($opHtml['requerido'])? 
                 CHtml::e('span', '*', ['class' => 'text-danger']) : '';
             $label = CHtml::e('label', $opHtml['label'] . " $span", ['for' => $opHtml['id']]);
-            unset($opHtml['label'], $opHtml['requerido']);
+            unset($opHtml['label']);
         }
         return $label;
     }

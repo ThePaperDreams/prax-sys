@@ -1,8 +1,9 @@
 <?php 
+$this->tituloPagina="Entrada de implementos";
     $this->migas = [
         'Home' => ['principal/inicio'],
-        'Listar Entradas' => ['Entrada/inicio'],        
-        'Crear'
+        'Listar entrada de implementos' => ['Entrada/inicio'],        
+        'Crear entrada'
     ];
     
     $this->opciones = [

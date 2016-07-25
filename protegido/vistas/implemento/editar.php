@@ -1,8 +1,9 @@
 <?php 
+$this->tituloPagina="Actualizar implementos";
     $this->migas = [
         'Home' => ['principal/inicio'],
         'Listar Implementos' => ['Implemento/inicio'],        
-        'Actualizar'
+        'Actualizar implementos'
     ];
     
     $this->opciones = [

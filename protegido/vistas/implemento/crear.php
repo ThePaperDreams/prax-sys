@@ -1,8 +1,9 @@
 <?php 
+$this->tituloPagina="Registrar implemento";
     $this->migas = [
         'Home' => ['principal/inicio'],
         'Listar Implementos' => ['Implemento/inicio'],        
-        'Crear'
+        'Registrar implemento'
     ];
     
     $this->opciones = [

@@ -24,6 +24,10 @@ class CtrlTipoPublicacion extends CControlador{
             $modelo->atributos = $this->_p['TiposPublicacion'];
             if($modelo->guardar()){
                 # lógica para guardado exitoso
+                Sis::Sesion()->flash("alerta", [
+                    'msg' => 'Tipo de publicación registrado exitosamente!',
+                    'tipo' => 'success',
+                ]);
                 $this->redireccionar('inicio');
             }
         }
@@ -40,6 +44,10 @@ class CtrlTipoPublicacion extends CControlador{
             $modelo->atributos = $this->_p['TiposPublicacion'];
             if($modelo->guardar()){
                 # lógica para guardado exitoso
+                Sis::Sesion()->flash("alerta", [
+                    'msg' => 'Tipo de publicación registrado exitosamente!',
+                    'tipo' => 'success',
+                ]);
                 $this->redireccionar('inicio');
             }
         }

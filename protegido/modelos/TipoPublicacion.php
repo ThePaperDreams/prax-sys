@@ -50,10 +50,16 @@
         return [
 		'id_tipo_publicacion' => 'Id Tipo Publicacion', 
 		'nombre' => 'Nombre', 
-		'descripcion' => 'Descripcion', 
+		'descripcion' => 'Descripción', 
         ];
     }
     
+    public function filtros() {
+        return [
+            'requeridos' => 'nombre',
+            'seguros' => '*',
+        ];
+    }
     /**
      * Esta función permite listar todos los registros
      * @param array $criterio

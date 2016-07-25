@@ -65,7 +65,7 @@ class CFiltro {
             return false;
         }
         # removemos cualquier espacio de los campos requeridos
-        $r['requeridos'] = str_replace(' ', '', $r['requeridos']);
+        $r['requeridos'] = str_replace(' ', '', str_replace(' ', '', $r['requeridos']));
         # separamos los campos requeridos para recorrerlos
         $campos = explode(',', $r['requeridos']);
         $errores = [];

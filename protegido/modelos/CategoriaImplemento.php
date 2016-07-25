@@ -29,6 +29,7 @@ class CategoriaImplemento extends CModelo {
             'id_categoria' => ['pk'],
             'nombre',
             'descripcion',
+            'estado' => ['def' => 1]
         ];
     }
 
@@ -46,7 +47,7 @@ class CategoriaImplemento extends CModelo {
     public function filtros() {
         return [
             'requeridos' => 'nombre',
-            'seguros' => 'descripcion',
+            'seguros'=>'*',
         ];
     }
     
@@ -59,9 +60,17 @@ class CategoriaImplemento extends CModelo {
             'id_categoria' => 'Id Categoria',
             'nombre' => 'Nombre',
             'descripcion' => 'Descripcion',
+            'estado' => 'Estado',
         ];
     }
 
+    public function getEtiquetaEstado(){
+        if($this->estado == 1){
+            return CHtml::e('span', 'Activo', ['class' => 'label label-success']);
+        }else {
+            return CHtml::e('span', 'Inactivo', ['class' => 'label label-default']);
+        }
+    }
     /**
      * Esta función permite listar todos los registros
      * @param array $criterio

@@ -58,10 +58,10 @@ class PlanTrabajo extends CModelo {
     public function etiquetasAtributos() {
         return [
             'id_plan_trabajo' => 'Id',
-            'descripcion' => 'Descripcion',
-            'fecha_aplicacion' => 'Fecha Aplicacion',
+            'descripcion' => 'Descripción',
+            'fecha_aplicacion' => 'Fecha aplicación',
             'estado' => 'Estado',
-            'categoria_id' => 'Categoria',
+            'categoria_id' => 'Categoría',
             'total_objetivos' => 'Objetivos',
         ];
     }
@@ -75,11 +75,11 @@ class PlanTrabajo extends CModelo {
 
     public function getEstadoEtiqueta(){
         if($this->estado == 0){
-            return CHtml::e('span', 'Inactivo', ['class' => 'label label-default']);
+            return CHtml::e('span', 'Eliminado', ['class' => 'label label-danger']);
         } else {
             return CHtml::e('span', 'Activo', ['class' => 'label label-success']);
         }
-    }
+    }    
     
     public function getResumen(){
         if(strlen($this->descripcion) > 50){

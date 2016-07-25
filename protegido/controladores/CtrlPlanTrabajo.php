@@ -99,15 +99,46 @@ class CtrlPlanTrabajo extends CControlador{
      */
     public function accionEliminar($pk){
         $modelo = $this->cargarModelo($pk);
+        if($modelo->estado == 1){
+            $this->moverAPapelera($modelo);
+        } else{
+            $this->eliminarPlanTrabajo($modelo);
+        }        
+        $this->redireccionar('inicio');
+    }
+    
+    /**
+     * 
+     * @param PlanTrabajo $modelo
+     * @throws CExAplicacion
+     */
+    private function eliminarPlanTrabajo(&$modelo){
+        $objetivos = $modelo->Detalles;
+        foreach($objetivos AS $obj){ $obj->eliminar(); }
         if($modelo->eliminar()){
             Sis::Sesion()->flash("alerta", [
-                'msg' => 'Se eliminó correctamente',
+                'msg' => 'Se eliminó correctamente el plan de trabajo',
                 'tipo' => 'success',
             ]);
         } else {
-            # lógica para error al borrar
+            throw new CExAplicacion("Error al eliminar el plan de trabajo");
         }
-        $this->redireccionar('inicio');
+    }
+    
+    /**
+     * 
+     * @param PlanTrabajo $modelo
+     */
+    private function moverAPapelera(&$modelo){
+        $modelo->estado = 0;
+        if($modelo->guardar()){
+            Sis::Sesion()->flash("alerta", [
+                'msg' => 'Se movió a papelera el plan de trabajo',
+                'tipo' => 'success',
+            ]);
+        } else {
+            throw new CExAplicacion("Error al mover a papelera");
+        }
     }
     
     /**

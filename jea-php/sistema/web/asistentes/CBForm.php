@@ -8,6 +8,21 @@
  */
 class CBForm extends CFormulario{
     /**
+     * 
+     * @param CModelo $modelo
+     */
+    private function getRequeridos(&$modelo){
+        $filtros = $modelo->filtros();
+        $r = isset($filtros['requeridos'])?  explode(',', str_replace(' ', '', $filtros['requeridos'])) : [];
+        $etiquetas = $modelo->etiquetasAtributos();
+        $requeridos = [];
+        foreach($r AS $k=>$v){
+            $requeridos['requeridos'][$v] = $etiquetas[$v]; 
+        }
+        return $requeridos;
+    }
+    
+    /**
      * Esta función permite generar un campo de texto con estilos de bootstrap
      * @param CModelo $modelo
      * @param string $atributo
@@ -17,7 +32,8 @@ class CBForm extends CFormulario{
     public function campoTexto($modelo = null, $atributo = '', $opciones = array()) {
         $opHtml = $this->obtenerOpciones($modelo, $atributo, $opciones);
         $label = $this->obtenerEtiqueta($opHtml);
-        $error = $this->ObtenerError($modelo->getErrores(), $atributo);
+        $requeridos = $this->getRequeridos($modelo);
+        $error = $this->ObtenerError($requeridos, $atributo);
         $input = CBoot::text($modelo->$atributo, $opHtml);
         return CHtml::e('div', $label.$error.$input, ['class' => 'form-group']);
     }
@@ -31,8 +47,9 @@ class CBForm extends CFormulario{
      */
     public function campoNumber($modelo = null, $atributo = '', $opciones = array()) {
         $opHtml = $this->obtenerOpciones($modelo, $atributo, $opciones);
-        $label = $this->obtenerEtiqueta($opHtml);
-        $error = $this->ObtenerError($modelo->getErrores(), $atributo);
+        $label = $this->obtenerEtiqueta($opHtml);        
+        $requeridos = $this->getRequeridos($modelo);
+        $error = $this->ObtenerError($requeridos, $atributo);
         $input = CBoot::number($modelo->$atributo, $opHtml);
         return CHtml::e('div', $label.$error.$input, ['class' => 'form-group']);
     }
@@ -40,7 +57,8 @@ class CBForm extends CFormulario{
     public function inputAddon($modelo = null, $atributo = '', $tipo = 'texto', $opciones = [], $addons = []){
         $opHtml = $this->obtenerOpciones($modelo, $atributo, $opciones);
         $label = $this->obtenerEtiqueta($opHtml);
-        $error = $this->obtenerError($modelo->getErrores(), $atributo);
+        $requeridos = $this->getRequeridos($modelo);
+        $error = $this->obtenerError($requeridos, $atributo);
         if(isset($addons['pre'])){ $opHtml['pre'] = $addons['pre']; }
         if(isset($addons['pos'])){ $opHtml['pos'] = $addons['pos']; }
         $input = CBoot::fieldAddOn($modelo->$atributo, $tipo, $opHtml);
@@ -50,7 +68,8 @@ class CBForm extends CFormulario{
     public function campoArchivo($modelo = null, $atributo = '', $opciones = array()) {
         $opHtml = $this->obtenerOpciones($modelo, $atributo, $opciones);
         $label = $this->obtenerEtiqueta($opHtml);
-        $error = $this->obtenerError($modelo->getErrores(), $atributo);
+        $requeridos = $this->getRequeridos($modelo);
+        $error = $this->obtenerError($requeridos, $atributo);
         $input = CBoot::fileInput($modelo->$atributo, $opHtml);
         return CHtml::e('div', $label.$error.$input, ['class' => 'form-group']);
     }
@@ -58,7 +77,8 @@ class CBForm extends CFormulario{
     public function campoPassword($modelo = null, $atributo = '', $opciones = array()) {
         $opHtml = $this->obtenerOpciones($modelo, $atributo, $opciones);
         $label = $this->obtenerEtiqueta($opHtml);
-        $error = $this->obtenerError($modelo->getErrores(), $atributo);
+        $requeridos = $this->getRequeridos($modelo);
+        $error = $this->obtenerError($requeridos, $atributo);
         $input = CBoot::passwordField($modelo->$atributo, $opHtml);
         return CHtml::e('div', $label.$error.$input, ['class' => 'form-group']);
     }
@@ -73,7 +93,8 @@ class CBForm extends CFormulario{
     public function areaTexto($modelo = null, $atributo = '', $opciones = array()) {
         $opHtml = $this->obtenerOpciones($modelo, $atributo, $opciones);
         $label = $this->obtenerEtiqueta($opHtml);
-        $error = $this->obtenerError($modelo->getErrores(), $atributo);
+        $requeridos = $this->getRequeridos($modelo);
+        $error = $this->obtenerError($requeridos, $atributo);
         $text = CBoot::textArea($modelo->$atributo, $opHtml); 
         return CHtml::e('div', $label . $error . $text, ['class' => 'form-group']);
     }
@@ -88,7 +109,8 @@ class CBForm extends CFormulario{
     public function lista($modelo = null, $atributo = '', $elementos = [], $opciones = []) {
         $opHtml = $this->obtenerOpciones($modelo, $atributo, $opciones);
         $label = $this->obtenerEtiqueta($opHtml);
-        $error = $this->obtenerError($modelo->getErrores(), $atributo);
+        $requeridos = $this->getRequeridos($modelo);
+        $error = $this->obtenerError($requeridos, $atributo);
         $lista = CBoot::select($modelo->$atributo, $elementos, $opHtml);
         return CHtml::e('div', $label.$error.$lista, ['class' => 'form-group']);
     }
@@ -98,8 +120,8 @@ class CBForm extends CFormulario{
         $label = $this->obtenerEtiqueta($opG);
         
         if($label != ""){ $label = CHtml::e('p', $label); }
-        
-        $error = $this->obtenerError($modelo->getErrores(), $atributo);
+        $requeridos = $this->getRequeridos($modelo);
+        $error = $this->obtenerError($requeridos, $atributo);
         
         $inputs = $this->construirRadioInputs($modelo, $atributo, $elementos, $opG);
         $opciones['class'] = 'btn-group' . (isset($opciones['class'])? $opciones['class'] : '');
@@ -131,11 +153,12 @@ class CBForm extends CFormulario{
     }
     
     private function obtenerError($log = [], $campo = ''){  
-        $r = isset($log['requeridos'])? $log['requeridos'] : false;
-        if(!$r || !key_exists($campo, $r)){
+        $r = isset($log['requeridos'])? $log['requeridos'] : [];
+        if(!key_exists($campo, $r)){
             return '';
+        }else {            
+            return CHtml::e('p', "El campo <b>" . $r[$campo] . "</b> no puede estar vacio", ['class' => 'text-danger form-requerido', 'style' => 'display:none', 'id' => 'err-' . $campo]);
         }
-        return CHtml::e('p', "El campo <b>" . $r[$campo] . "</b> no puede estar vacio", ['class' => 'text-danger requerido']);
     }
     
     /**

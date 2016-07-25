@@ -1,7 +1,8 @@
 <?php 
+$this->tituloPagina="Salida de implementos";
     $this->migas = [
         'Home' => ['principal/inicio'],
-        'Listar Salidas'
+        'Listar salida de implementos'
     ];
     
     $this->opciones = [
@@ -19,10 +20,11 @@
         "fecha_entrega",
         "descripcion",
         "responsable_id" =>"Usuario->nombres",
-        "estado"
+        'estado' => 'EtiquetaEstado',
     ],
     'opciones' => [
-        ["i"=>"eye","url"=>"Salida/ver&{id:pk}"]
+        ["i"=>"eye","url"=>"Salida/ver&{id:pk}"],
+        ['i' => 'refresh', 'url' => 'Salida/anular&{id:pk}'],
     ],
     'paginacion' => 10,
 ]) ?>
