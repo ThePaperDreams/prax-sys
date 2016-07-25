@@ -1,12 +1,13 @@
 <?php 
+    $this->tituloPagina = "Listar Tipos de Identificación";
     $this->migas = [
         'Home' => ['principal/inicio'],
-        'Listar TiposIdentificacion'
+        'Listar Tipos de Identificación'
     ];
     
     $this->opciones = [
         'elementos' => [
-            'Crear' => ['TipoIdentificacion/crear'],
+            'Registrar' => ['TipoIdentificacion/crear'],
         ]
     ];
 ?>

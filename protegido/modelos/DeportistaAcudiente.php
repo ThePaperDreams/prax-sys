@@ -5,8 +5,8 @@
  *
  * Atributos del modelo
  * @property int $id
- * @property int $id_acudiente
- * @property int $id_deportista
+ * @property int $acudiente_id
+ * @property int $deportista_id
  * 
  * Relaciones del modelo
  * @property Acudiente $Acudiente
@@ -29,14 +29,8 @@ class DeportistaAcudiente extends CModelo {
     public function atributos() {
         return [
             'id' => ['pk'],
-            'id_acudiente',
-            'id_deportista',
-        ];
-    }
-
-    public function filtros() {
-        return [
-            'requeridos' => 'id_acudiente, id_deportista',
+            'acudiente_id',
+            'deportista_id',
         ];
     }
 
@@ -48,8 +42,8 @@ class DeportistaAcudiente extends CModelo {
         return [
             # el formato es simple: 
             # tipo de relación | modelo con que se relaciona | campo clave foranea
-            'Acudiente' => [self::PERTENECE_A, 'Acudiente', 'id_acudiente'],
-            'Deportista' => [self::PERTENECE_A, 'Deportista', 'id_deportista'],
+            'Acudiente' => [self::PERTENECE_A, 'Acudiente', 'acudiente_id'],
+            'Deportista' => [self::PERTENECE_A, 'Deportista', 'deportista_id'],
         ];
     }
 
@@ -60,8 +54,8 @@ class DeportistaAcudiente extends CModelo {
     public function etiquetasAtributos() {
         return [
             'id' => 'Id',
-            'id_acudiente' => 'Acudiente',
-            'id_deportista' => 'Deportista',
+            'acudiente_id' => 'Acudiente',
+            'deportista_id' => 'Deportista',
         ];
     }
 

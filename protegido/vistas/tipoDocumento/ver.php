@@ -1,20 +1,21 @@
 <?php 
+    $this->tituloPagina = "Ver Tipo de Documento";
     $this->migas = [
         'Home' => ['principal/inicio'],
-        'Listar TiposDocumento' => ['TipoDocumento/inicio'],        
+        'Listar Tipos de Documentos' => ['TipoDocumento/inicio'],        
         'Ver'
     ];
     
     $this->opciones = [
         'elementos' => [
             'Listar' => ['TipoDocumento/inicio'],
-            'Crear' => ['TipoDocumento/crear'],
-            'Modificar' => ['TipoDocumento/editar', 'id' => $modelo->id_tipo],
+            'Registrar' => ['TipoDocumento/crear'],
+            'Editar' => ['TipoDocumento/editar', 'id' => $modelo->id_tipo],
         ]
     ];
 ?>
 <div class="col-sm-12">
-    <div class="panel panel-primary">
+    <div class="panel panel-default">
         <div class="panel-heading text-center">
             Ver detalles
         </div>

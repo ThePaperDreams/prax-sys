@@ -1,5 +1,5 @@
 <?php
-$this->tituloPagina = "Modificar un Acudiente";
+$this->tituloPagina = "Editar Acudiente";
 $this->migas = [
     'Home' => ['principal/inicio'],
     'Listar Acudientes' => ['Acudiente/inicio'],
@@ -9,7 +9,7 @@ $this->migas = [
 $this->opciones = [
     'elementos' => [
         'Listar' => ['Acudiente/inicio'],
-        'Crear' => ['Acudiente/crear'],
+        'Registrar' => ['Acudiente/crear'],
     ]
 ];
 ?>

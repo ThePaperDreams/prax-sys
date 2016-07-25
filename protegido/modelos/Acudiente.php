@@ -18,6 +18,7 @@
  * 
  * Relaciones del modelo
  * @property TipoIdentificacion $TipoIdentificacion
+ * @property Documentos[] $Detalles
  */
 class Acudiente extends CModelo{
  
@@ -53,17 +54,16 @@ class Acudiente extends CModelo{
     public function filtros() {
         return [
             'requeridos' => 'identificacion,nombre1,apellido1,tipo_doc_id',
-            'seguros' => 'nombre1,nombre2,apellido1,apellido2,identificacion,telefono1,telefono2,email,direccion',
+            'seguros' => '*',
         ];
     }
     
-    public function getDocumentos() {
-        $dc = AcudienteDocumento::modelo()->listar(["where" => "acudiente_id=$this->id_acudiente"]);
-        $documentos = [];
-        foreach ($dc as $detalle) {
-            $documentos[] = $detalle->Documento;
+    public function getEtiquetaEstado(){
+        if($this->estado == 1){
+            return CHtml::e('span', 'Activo', ['class' => 'label label-success']);
+        } else if($this->estado == 0){
+            return CHtml::e('span', 'Inactivo', ['class' => 'label label-danger']);
         }
-        return $documentos;
     }
 
     /**
@@ -75,7 +75,17 @@ class Acudiente extends CModelo{
             # el formato es simple: 
             # tipo de relación | modelo con que se relaciona | campo clave foranea
             'TipoIdentificacion' => [self::PERTENECE_A, 'TipoIdentificacion', 'tipo_doc_id'],
+            'Detalles' => [self::CONTENGAN_A, 'AcudienteDocumento', 'acudiente_id'],
         ];
+    }
+    
+    public function getDocumentos() {
+        $dc = $this->Detalles;
+        $documentos = [];
+        foreach ($dc as $detalle) {
+            $documentos[] = $detalle->Documento;
+        }
+        return $documentos;
     }
     
     /**
@@ -138,5 +148,10 @@ class Acudiente extends CModelo{
     public function getDatos() {
         return $this->identificacion . " (" . $this->nombre1 . " " . $this->apellido1 . ")";
     }
-
+    
+    public function getAcudiente($id, $nombre) {        
+        $icono = CBoot::fa("eye");
+        $url = Sis::UrlBase() . $id . '/Acudiente/ver';
+        return CHtml::link($icono . ' Ver ' . $nombre , $url, ['target' => '_blank']);
+    }
 }
