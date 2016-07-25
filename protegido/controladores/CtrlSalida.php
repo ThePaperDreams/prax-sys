@@ -19,12 +19,19 @@ class CtrlSalida extends CControlador{
      * Esta función permite crear un nuevo registro
      */
     public function accionCrear(){
+        
+        if(isset($this->_p['ajaxRequest'])){
+            $implemento = Implemento::modelo()->porPk($this->_p['id']);
+            $this->json([
+                'unidades' => $implemento->unidades,
+            ]);
+            Sis::fin();
+        }
+        
         $modelo = new Salida();
         if(isset($this->_p['Salidas'])){
             $modelo->atributos = $this->_p['Salidas'];
             $modelo->fecha_realizacion = date('Y-m-d H:i:s');
-//            echo "<pre>";
-//            var_dump($modelo);exit();
             
             if($modelo->guardar()){
                 
