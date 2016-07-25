@@ -77,11 +77,6 @@ Sis::Recursos()->recursoJs([
                     ['texto' => 'Imágenes', 'url' => ['Publicacion/cargarImagenes']],
                     
                 ]],
-                ['texto' => 'Pagos', 'elementos' => [
-                    ['texto' => 'Registrar pago', 'url' => ['pago/inicio']],
-                    ['texto' => 'Modificar pago', 'url' => ['pago/registrar']],
-                    ['texto' => 'Ver pago pendiente', 'url' => ['pago/pendiente']],
-                ]],
             ],
             'menuDerecha' => [
                 [
