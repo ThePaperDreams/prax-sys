@@ -1,8 +1,9 @@
 <?php
+$this->tituloPagina = "Registrar Deportista";
 $this->migas = [
     'Home' => ['principal/inicio'],
     'Listar Deportistas' => ['Deportista/inicio'],
-    'Crear'
+    'Registrar'
 ];
 
 $this->opciones = [

@@ -1,9 +1,9 @@
 <?php
-$this->tituloPagina = "Registrar un Acudiente";
+$this->tituloPagina = "Registrar Acudiente";
 $this->migas = [
     'Home' => ['principal/inicio'],
     'Listar Acudientes' => ['Acudiente/inicio'],
-    'Crear'
+    'Registrar'
 ];
 
 $this->opciones = [

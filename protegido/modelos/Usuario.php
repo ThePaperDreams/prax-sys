@@ -50,7 +50,7 @@ class Usuario extends CModelo {
     public function filtros() {
         return [
             'requeridos' => 'rol_id,email,nombre_usuario,nombres,apellidos,clave',
-            'seguros'=>'rol_id,email,nombre_usuario,nombres,apellidos,telefono,clave',
+            'seguros'=>'*',
         ];
     }
 
@@ -87,6 +87,14 @@ class Usuario extends CModelo {
 
     public function getNombreMasUsuario(){
         return $this->nombres . ' ' . $this->apellidos . " ($this->nombre_usuario)";
+    }
+    
+    public function getEtiquetaEstado(){
+        if($this->estado == 1){
+            return CHtml::e('span', 'Activo', ['class' => 'label label-success']);
+        } else if($this->estado == 0){
+            return CHtml::e('span', 'Inactivo', ['class' => 'label label-danger']);
+        }
     }
     
     /**

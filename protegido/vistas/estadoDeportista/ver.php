@@ -1,20 +1,21 @@
 <?php 
+    $this->tituloPagina = "Ver Estado de Deportista";
     $this->migas = [
         'Home' => ['principal/inicio'],
-        'Listar EstadoDeportistas' => ['EstadoDeportista/inicio'],        
+        'Listar Estados de Deportistas' => ['EstadoDeportista/inicio'],        
         'Ver'
     ];
     
     $this->opciones = [
         'elementos' => [
             'Listar' => ['EstadoDeportista/inicio'],
-            'Crear' => ['EstadoDeportista/crear'],
-            'Modificar' => ['EstadoDeportista/editar', 'id' => $modelo->id_estado],
+            'Registrar' => ['EstadoDeportista/crear'],
+            'Editar' => ['EstadoDeportista/editar', 'id' => $modelo->id_estado],
         ]
     ];
 ?>
 <div class="col-sm-12">
-    <div class="panel panel-primary">
+    <div class="panel panel-default">
         <div class="panel-heading text-center">
             Ver detalles
         </div>

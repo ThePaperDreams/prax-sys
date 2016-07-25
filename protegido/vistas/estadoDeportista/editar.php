@@ -1,14 +1,15 @@
 <?php 
+    $this->tituloPagina = "Editar Estado de Deportista";
     $this->migas = [
         'Home' => ['principal/inicio'],
-        'Listar EstadoDeportistas' => ['EstadoDeportista/inicio'],        
-        'Actualizar'
+        'Listar Estados de Deportistas' => ['EstadoDeportista/inicio'],        
+        'Editar'
     ];
     
     $this->opciones = [
         'elementos' => [
             'Listar' => ['EstadoDeportista/inicio'],
-            'Crear' => ['EstadoDeportista/crear'],
+            'Registrar' => ['EstadoDeportista/crear'],
         ]
     ];    
 ?>

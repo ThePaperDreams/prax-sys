@@ -1,8 +1,9 @@
-<?php 
+<?php
+    $this->tituloPagina = "Registrar Tipo de Documento";
     $this->migas = [
         'Home' => ['principal/inicio'],
-        'Listar TiposDocumento' => ['TipoDocumento/inicio'],        
-        'Crear'
+        'Listar Tipos de Documentos' => ['TipoDocumento/inicio'],        
+        'Registrar'
     ];
     
     $this->opciones = [

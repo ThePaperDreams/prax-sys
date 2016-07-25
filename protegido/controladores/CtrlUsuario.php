@@ -64,6 +64,20 @@ class CtrlUsuario extends CControlador {
         ]);
     }
 
+    public function accionCambiarEstado($pk) {
+        $modelo = $this->cargarModelo($pk);
+        $modelo->estado = !$modelo->estado;
+        if ($modelo->guardar()) {
+            Sis::Sesion()->flash("alerta", [
+                'msg' => 'Cambio exitoso',
+                'tipo' => 'success',
+            ]);
+        } else {
+            # lógica para error al borrar
+        }
+        $this->redireccionar('inicio');
+    }    
+    
     /**
      * Esta función permite eliminar un registro existente
      * @param int $pk

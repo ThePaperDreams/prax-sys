@@ -1,20 +1,21 @@
 <?php 
+    $this->tituloPagina = "Ver Tipo de Identificación";
     $this->migas = [
         'Home' => ['principal/inicio'],
-        'Listar TiposIdentificacion' => ['TipoIdentificacion/inicio'],        
+        'Listar Tipos de Identificación' => ['TipoIdentificacion/inicio'],        
         'Ver'
     ];
     
     $this->opciones = [
         'elementos' => [
             'Listar' => ['TipoIdentificacion/inicio'],
-            'Crear' => ['TipoIdentificacion/crear'],
-            'Modificar' => ['TipoIdentificacion/editar', 'id' => $modelo->id_tipo_documento],
+            'Registrar' => ['TipoIdentificacion/crear'],
+            'Editar' => ['TipoIdentificacion/editar', 'id' => $modelo->id_tipo_documento],
         ]
     ];
 ?>
 <div class="col-sm-12">
-    <div class="panel panel-primary">
+    <div class="panel panel-default">
         <div class="panel-heading text-center">
             Ver detalles
         </div>
