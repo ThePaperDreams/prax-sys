@@ -2,7 +2,6 @@
 $formulario = new CBForm(['id' => 'form-deportistas']);
 $formulario->abrir();
 ?>
-
 <div class="row">
     <div class="col-sm-6">
         <?php echo $formulario->lista($modelo, 'tipo_documento_id', $tiposIdentificaciones, ['label' => true, 'group' => true, 'defecto' => 'Tipo de documento']) ?>
@@ -45,6 +44,12 @@ $formulario->abrir();
     </div>
     <div class="col-sm-6">
         <?php echo $formulario->campoTexto($modelo, 'fecha_nacimiento', ['label' => true, 'group' => true, 'id' => 'birthday']) ?>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <?php echo $formulario->campoArchivo($modelo, 'foto', ['label' => true, 'group' => true]) ?>
     </div>
 </div>
 
@@ -96,7 +101,6 @@ $formulario->abrir();
                     <tbody id="tabla-acudientes">
                         <?php foreach ($modelo->Acudiente AS $dc): ?>
                             <tr>
-
                                 <td titulo="<?= $dc->Acudiente->datos ?>"><?= $dc->Acudiente->datos ?></td>            
                                 <td class="col-sm-1 text-center text-danger-icon"><a class="delete" data-iddepacu="<?= $dc->id ?>" href="#"><i class="fa fa-ban"></i></a></td>
                             </tr>
@@ -129,8 +133,8 @@ $formulario->abrir();
             </div>      
         </div>
     </div>
-
 <?php endif; ?>
+
 <div class="row">
     <div class="col-sm-offset-6 col-sm-3">
         <?php echo CHtml::link(CBoot::fa('undo') . ' Cancelar', ['deportista/inicio'], ['class' => 'btn btn-primary btn-block']); ?>
@@ -139,7 +143,7 @@ $formulario->abrir();
         <?php echo CBoot::boton(CBoot::fa('save') . ' ' . ($modelo->nuevo ? 'Guardar' : 'Actualizar'), 'success', ['class' => 'btn-block']); ?>
     </div>
 </div>
-
+<?php $formulario->cerrar(); ?>
 <script>
     $(function () {
         $("#btn-addAcu").click(function () {
@@ -252,5 +256,3 @@ $formulario->abrir();
         return r;
     }
 </script>
-
-<?php $formulario->cerrar(); ?>

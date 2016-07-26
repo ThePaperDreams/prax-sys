@@ -65,6 +65,10 @@ $this->opciones = [
                     <th><?php echo $modelo->obtenerEtiqueta('estado_id') ?></th>
                     <td><?php echo $modelo->EtiquetaEstado; ?></td>
                 </tr>
+                <tr>
+                    <th><?php echo $modelo->obtenerEtiqueta('foto') ?></th>
+                    <td><?php echo $modelo->foto; ?></td>
+                </tr>
             </tbody>
         </table>
     </div>    

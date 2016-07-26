@@ -57,8 +57,8 @@ $formulario->abrir();
         <?php echo CBoot::boton(CBoot::fa('plus-circle') . ' Agregar', 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'id' => 'btn-addDoc']) ?>
     </div>
 </div>
-<div class="row">
     <?php if ($modelo->nuevo): ?>
+<div class="row">
         <div class="col-sm-12">
         <?php else: ?>
             <div class="col-sm-6">
@@ -98,7 +98,6 @@ $formulario->abrir();
         <?php endif ?>
     </div>
 
-
 <div class="row">
     <div class="col-sm-offset-6 col-sm-3">
         <?php echo CHtml::link(CBoot::fa('undo') . ' Cancelar', ['acudiente/inicio'], ['class' => 'btn btn-primary btn-block']); ?>
@@ -107,7 +106,7 @@ $formulario->abrir();
         <?php echo CBoot::boton(CBoot::fa('save') . ' ' . ($modelo->nuevo ? 'Guardar' : 'Actualizar'), 'success', ['class' => 'btn-block']); ?>
     </div>
 </div>
-
+<?php $formulario->cerrar(); ?>
 <script>
     $(function () {
         $("#btn-addDoc").click(function () {
@@ -168,6 +167,3 @@ $formulario->abrir();
         return r;
     }
 </script>
-
-<?php $formulario->cerrar(); ?>
-

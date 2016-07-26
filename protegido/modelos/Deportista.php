@@ -83,7 +83,10 @@ class Deportista extends CModelo{
     public function getDatos() {
         return $this->identificacion . " (" . $this->nombre1 . " " . $this->apellido1 . ")";
     }
-    
+    /**
+     * Esta función permite retornar los acudientes de un deportista
+     * @return Acudiente
+     */
     public function getAcudientes() {
         $da = $this->Acudiente;
         $acudientes = [];

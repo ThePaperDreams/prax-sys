@@ -25,13 +25,22 @@ class CtrlDeportista extends CControlador {
         $modelo2 = new Acudiente();
         $modelo3 = new TipoDocumento();
         if (isset($this->_p['Deportistas'])) {
-            //echo "<pre>";
-            //var_dump($this->_p['TiposDocumentos']);
-            //exit();
+            /*echo "<pre>";
+            var_dump($_FILES['Deportistas']['name']['foto']);
+            foreach ($_FILES['Deportistas'] as $k => $v){
+                var_dump($k);
+                var_dump($v);
+            }
+            echo "<br>";
+            var_dump(CArchivoCargado::instanciarModelo('Deportistas', 'foto'));
+            exit();*/
             $modelo->atributos = $this->_p['Deportistas'];
+            $modelo->foto = $this->asociarFoto($modelo->identificacion);
             if ($modelo->guardar()) {
-                $this->asociarAcudientes($modelo->id_deportista);
-                $this->asociarDocumentos($modelo->id_deportista);
+                $dep = $this->id_deportista;
+                //$this->asociarFoto($dep);
+                $this->asociarAcudientes($dep);
+                $this->asociarDocumentos($dep);
                 $this->redireccionar('inicio');
             }
         }
@@ -171,6 +180,23 @@ class CtrlDeportista extends CControlador {
             # lógica para error al borrar
         }
         $this->redireccionar('inicio');
+    }
+    
+    public function asociarFoto($dep){
+        if (isset($_FILES['Deportistas'])) {
+            $files = CArchivoCargado::instanciarModelo('Deportistas', 'foto');
+            $rutaDestino = Sis::resolverRuta(Sis::crearCarpeta("!publico.imagenes.deportistas.fotos"));
+            $rutaThumbs = Sis::resolverRuta(Sis::crearCarpeta("!publico.imagenes.deportistas.fotos.thumbs"));
+            $nom = "Foto_$dep";
+            if($files->guardar($rutaDestino, $nom)){
+                $files->thumbnail($rutaThumbs, [
+                    'tamanio' => '400',
+                    'tipo' => strtolower($files->getExtension()),
+                ]);
+            }      
+            $nom .= ".".$files->getExtension();
+        }
+        return $nom;
     }
 
     /**
