@@ -41,7 +41,7 @@ $formulario->abrir();
                 success: function(respuesta){
                     if(respuesta.error == true){
                         mostrarAlert("error", "Ya existe ese nombre");
-                    }
+                    }else{
                         document.getElementById("form-implementos").submit();
                     }
                 }
@@ -54,7 +54,7 @@ $formulario->abrir();
                 showClass: 'bounceInRight',
                 hideClass: 'bounceOutRight',
                 msg:msg,
-                delay: 8000,
+                delay: 5000,
                 soundPath: '<?= Sis::UrlRecursos() ?>librerias/lobibox/sounds/',
             });
         }

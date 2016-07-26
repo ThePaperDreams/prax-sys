@@ -24,13 +24,10 @@ class CtrlEntrada extends CControlador {
         if (isset($this->_p['Entradas'])) {
             $modelo->atributos = $this->_p['Entradas'];
             $modelo->fecha_realizacion = date("Y-m-d H:i:s");
-//            echo '<pre>';
-//            var_dump($modelo);
-//            exit();
             if ($modelo->guardar()) {
-                foreach ($_POST["articulo"] as $key => $artc) {
+                foreach ($_POST[$this->_p['Entradas']] as $key => $artc) {
                     $mdEI = new EntradaImplemento();
-                    $mdEI->cantidad = $_POST["cantity"][$key];
+                    $mdEI->cantidad = $_POST[$this->_p['Entradas']][$key];
                     $mdEI->implemento_id = $artc;
                     $mdEI->entrada_id = $modelo->id_entrada;
                     $mdEI->guardar();
@@ -48,20 +45,6 @@ class CtrlEntrada extends CControlador {
         $this->mostrarVista('crear', ['modelo' => $modelo, 'usuarios' => $usuarios]);
     }
 
-    public function accionAnular($pk) {
-        $modelo = $this->cargarModelo($pk);
-        $modelo->estado = !$modelo->estado;
-        if ($modelo->guardar()) {
-            Sis::Sesion()->flash("alerta", [
-                'msg' => 'Modificación exitosa',
-                'tipo' => 'success',
-            ]);
-        } else {
-            # lógica para error al borrar
-        }
-        $this->redireccionar('inicio');
-    }
-
     /**
      * Esta función permite ver detalladamente un registro existente
      * @param int $pk
@@ -69,6 +52,22 @@ class CtrlEntrada extends CControlador {
     public function accionVer($pk) {
         $modelo = $this->cargarModelo($pk);
         $this->mostrarVista('ver', ['modelo' => $modelo]);
+    }
+    
+    public function accionAnular($pk) {
+        $modelo = $this->cargarModelo($pk);
+        $modelo->estado = $modelo->estado ==1 ? 0:1;
+        
+        if ($modelo->guardar()) {
+                Sis::Sesion()->flash("alerta", [
+                    'msg' => 'Cambio exitoso',
+                    'tipo' => 'success',
+                ]);
+        } else {
+            
+        }
+        
+        $this->redireccionar('inicio');
     }
 
     /**
