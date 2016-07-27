@@ -59,15 +59,17 @@ $this->opciones = [
                 </tr>
             </thead>
             <tbody>
+                <?php foreach ($modelo->Detalles AS $detalle): ?>
                 <tr>
-                    <td><?php foreach ($modelo->Detalles AS $detalle): ?>
+                    <td>
                             <?= $detalle->Implemento->nombre ?>  
-                        <?php endforeach; ?>
+                        
                     </td>
                     <td>
                         <?= $detalle->cantidad ?> <br>
                     </td>
                 </tr>
+                <?php endforeach; ?>
             </tbody>
         </table>
 
