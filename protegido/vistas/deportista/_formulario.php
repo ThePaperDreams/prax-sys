@@ -48,8 +48,11 @@ $formulario->abrir();
 </div>
 
 <div class="row">
-    <div class="col-sm-12">
+    <div class="col-sm-6">
         <?php echo $formulario->campoArchivo($modelo, 'foto', ['label' => true, 'group' => true]) ?>
+    </div>
+    <div class="col-sm-6">
+        <?php echo $formulario->lista($modelo, 'estado_id', $estados, ['label' => true, 'group' => true]) ?>
     </div>
 </div>
 
@@ -89,13 +92,13 @@ $formulario->abrir();
         <div class="col-sm-6">
             <div class="panel panel-default">
                 <div class="panel-heading text-center">
-                    Acudiente/s Asociado/s Actualmente
+                    Acudientes asociados actualmente
                 </div>            
                 <table class="table table-bordered table-condensed">
                     <thead>
                         <tr>
                             <th>Acudiente</th>
-                            <th>&nbsp;</th>
+                            <th>Eliminar</th>
                         </tr>
                     </thead>
                     <tbody id="tabla-acudientes">
@@ -112,13 +115,13 @@ $formulario->abrir();
         <div class="col-sm-6">
             <div class="panel panel-default">
                 <div class="panel-heading text-center">
-                    Documento/s Asociado/s Actualmente
+                    Documentos asociados actualmente
                 </div>            
                 <table class="table table-bordered table-condensed">
                     <thead>
                         <tr>
                             <th>Documento</th>
-                            <th>&nbsp;</th>
+                            <th>Eliminar</th>
                         </tr>
                     </thead>
                     <tbody id="tabla-documentos">

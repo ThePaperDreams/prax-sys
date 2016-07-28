@@ -61,6 +61,7 @@ $formulario->abrir();
 <div class="row">
         <div class="col-sm-12">
         <?php else: ?>
+            <div class="row">
             <div class="col-sm-6">
             <?php endif; ?>
             <div id="lst-doc" class="panel panel-default">
@@ -73,13 +74,13 @@ $formulario->abrir();
             <div class="col-sm-6">
                 <div class="panel panel-default">
                     <div class="panel-heading text-center">
-                        Documento/s Asociado/s Actualmente
+                        Documentos asociados Actualmente
                     </div>            
                     <table class="table table-bordered table-condensed">
                         <thead>
                             <tr>
                                 <th>Documento</th>
-                                <th>&nbsp;</th>
+                                <th>Eliminar</th>
                             </tr>
                         </thead>
                         <tbody id="tabla-documentos">

@@ -65,74 +65,68 @@ $this->opciones = [
                     <th><?php echo $modelo->obtenerEtiqueta('estado_id') ?></th>
                     <td><?php echo $modelo->EtiquetaEstado; ?></td>
                 </tr>
-                <tr>
-                    <th><?php echo $modelo->obtenerEtiqueta('foto') ?></th>
-                    <td><?php echo $modelo->foto; ?></td>
-                </tr>
             </tbody>
         </table>
     </div>    
 </div>
+<?php if (!is_null($modelo->foto)): ?>
+    <div id="thumb" class="col-sm-3">
+        <div class="thumbnail">
+            <img src="<?= Sis::UrlBase() ?>publico/imagenes/deportistas/fotos/<?= $modelo->foto . '?t=' . time(); ?>" alt="">
+            <div class="caption">
+                <p class="text-center"><button id="btn-eliminar" href="#" class="btn btn-danger" role="button"><i class="fa fa-trash"></i></button></p>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
 <div class="col-sm-6">
-    <div class="panel-group">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" href="#collapse1">Documento/s Asociado/s Actualmente <i class="fa fa-chevron-down"></i></a>
-                </h4>
-            </div>
-            <div id="collapse1" class="panel-collapse collapse">
-                <div class="panel-body">
-                    <table class="table table-bordered table-condensed">
-                        <thead>
-                            <tr>
-                                <th>Documento</th>
-                                <th>&nbsp;</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tabla-documentos">
-                            <?php foreach ($modelo->Documento AS $dc): ?>
-                                <tr>
-                                    <td><?= $dc->Documento->getDocumento($modelo->id_deportista, $dc->Documento->url, get_class($modelo)); ?></td>            
-                                    <td class="col-sm-1 text-center text-danger-icon"><a class="eliminar" data-iddep="<?= $modelo->id_deportista ?>" data-nomtipo="<?= $dc->Documento->url ?>" data-iddoc="<?= $dc->documento_id ?>" data-iddepdoc="<?= $dc->id ?>" href="#"><i class="fa fa-ban"></i></a></td>
-                                </tr>
-                            <?php endforeach ?>
-                        </tbody>
-                    </table>
-                </div>      
-            </div>
+    <div class="panel panel-default">
+        <div class="panel-heading text-center">
+            <h4 class="panel-title"><a data-toggle="collapse" href="#collapse">Documentos asociados actualmente <i class="fa fa-chevron-down"></i></a></h4>
+        </div>  
+        <div id="collapse" class="panel-collapse collapse">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Descargar</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-documentos">
+                    <?php foreach ($modelo->Documento AS $dc): ?>
+                        <tr>
+                            <td><?= $dc->Documento->getDocumento($modelo->id_deportista, $dc->Documento->url, get_class($modelo)); ?></td>            
+                            <td class="col-sm-1 text-center text-danger-icon"><a class="eliminar" data-iddep="<?= $modelo->id_deportista ?>" data-nomtipo="<?= $dc->Documento->url ?>" data-iddoc="<?= $dc->documento_id ?>" data-iddepdoc="<?= $dc->id ?>" href="#"><i class="fa fa-ban"></i></a></td>
+                        </tr>
+                    <?php endforeach ?>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
 <div class="col-sm-6">
-    <div class="panel-group">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" href="#collapse2">Acudiente/s Asociado/s Actualmente <i class="fa fa-chevron-down"></i></a>
-                </h4>
-            </div>
-            <div id="collapse2" class="panel-collapse collapse">
-                <div class="panel-body">
-                    <table class="table table-bordered table-condensed">
-                        <thead>
-                            <tr>
-                                <th>Acudiente</th>
-                                <th>&nbsp;</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tabla-documentos">
-                            <?php foreach ($modelo->Acudiente AS $dc): ?>
-                                <tr>
-                                    
-                                    <td><?= $dc->Acudiente->getAcudiente($dc->Acudiente->id_acudiente,$dc->Acudiente->datos); ?></td>            
-                                    <td class="col-sm-1 text-center text-danger-icon"><a class="delete" data-iddepacu="<?= $dc->id ?>" href="#"><i class="fa fa-ban"></i></a></td>
-                                </tr>
-                            <?php endforeach ?>
-                        </tbody>
-                    </table>
-                </div>      
-            </div>
+    <div class="panel panel-default">
+        <div class="panel-heading text-center">
+            <h4 class="panel-title"><a data-toggle="collapse" href="#collapse1">Acudientes asociados actualmente <i class="fa fa-chevron-down"></i></a></h4>
+        </div>  
+        <div id="collapse1" class="panel-collapse collapse">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Ver detalles</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-documentos">
+                    <?php foreach ($modelo->Acudiente AS $dc): ?>
+                        <tr>                                    
+                            <td><?= $dc->Acudiente->getAcudiente($dc->Acudiente->id_acudiente, $dc->Acudiente->datos); ?></td>            
+                            <td class="col-sm-1 text-center text-danger-icon"><a class="delete" data-iddepacu="<?= $dc->id ?>" href="#"><i class="fa fa-ban"></i></a></td>
+                        </tr>
+                    <?php endforeach ?>
+                </tbody>
+            </table>                
+
         </div>
     </div>
 </div>
@@ -163,7 +157,7 @@ $this->opciones = [
         $("a.delete").click(function () {
             if (confirm('¿Está seguro de eliminar este acudiente?')) {
                 var len = $("a.delete");
-                if (len.length > 1) {    
+                if (len.length > 1) {
                     var a = $(this);
                     var iddepacu = a.attr("data-iddepacu");
                     $.ajax({
@@ -175,11 +169,27 @@ $this->opciones = [
                     }).done(function () {
                         $(a).closest("tr").remove();
                     }).fail(function () {});
-                }else{
+                } else {
                     alert('Mínimo un acudiente');
                 }
             }
             return false;
+        });
+        $("#btn-eliminar").click(function () {
+            if (confirm('¿Está seguro de eliminar la foto del deportista?')) {
+                var dep = "<?= $modelo->id_deportista; ?>";
+                var nom = "<?= $modelo->foto; ?>";
+                $.ajax({
+                    type: 'post',
+                    url: "<?php echo Sis::crearUrl(['Deportista/EliminarFoto']) ?>",
+                    data: {
+                        dep: dep,
+                        nom: nom
+                    }
+                }).done(function () {
+                    $("#thumb").remove();
+                }).fail(function () {});
+            }
         });
     });
 </script>    

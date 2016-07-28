@@ -152,6 +152,6 @@ class Acudiente extends CModelo{
     public function getAcudiente($id, $nombre) {        
         $icono = CBoot::fa("eye");
         $url = Sis::UrlBase() . $id . '/Acudiente/ver';
-        return CHtml::link($icono . ' Ver ' . $nombre , $url, ['target' => '_blank']);
+        return CHtml::link($icono . ' ' . $nombre , $url, ['target' => '_blank']);
     }
 }

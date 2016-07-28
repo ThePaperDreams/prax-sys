@@ -65,59 +65,53 @@ $this->opciones = [
     </div>
 </div>
 <div class="col-sm-6">
- <div class="panel-group">
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-          <a data-toggle="collapse" href="#collapse1">Documento/s Asociado/s Actualmente <i class="fa fa-chevron-down"></i></a>
-      </h4>
+    <div class="panel panel-default">
+        <div class="panel-heading text-center">
+            <h4 class="panel-title"><a data-toggle="collapse" href="#collapse3">Documentos asociados actualmente <i class="fa fa-chevron-down"></i></a></h4>
+        </div>  
+        <div id="collapse3" class="panel-collapse collapse">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Descargar</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-documentos">
+                    <?php foreach ($modelo->Detalles AS $dc): ?>
+                        <tr>
+                            <td><?= $dc->Documento->getDocumento($modelo->id_acudiente, $dc->Documento->url, get_class($modelo)); ?></td>            
+                            <td class="col-sm-1 text-center text-danger-icon"><a class="eliminar" data-idacu="<?= $modelo->id_acudiente ?>" data-nomtipo="<?= $dc->Documento->url ?>" data-iddoc="<?= $dc->documento_id ?>" data-idacudoc="<?= $dc->id ?>" href="#"><i class="fa fa-ban"></i></a></td>
+                        </tr>
+                    <?php endforeach ?>
+                </tbody>
+            </table>
+        </div>
     </div>
-    <div id="collapse1" class="panel-collapse collapse">
-      <div class="panel-body">
-          <table class="table table-bordered table-condensed">
-        <thead>
-            <tr>
-                <th>Documento</th>
-                <th>&nbsp;</th>
-            </tr>
-        </thead>
-        <tbody id="tabla-documentos">
-            <?php foreach ($modelo->Detalles AS $dc): ?>
-                <tr>
-                    <td><?= $dc->Documento->getDocumento($modelo->id_acudiente, $dc->Documento->url, get_class($modelo)); ?></td>            
-                    <td class="col-sm-1 text-center text-danger-icon"><a class="eliminar" data-idacu="<?= $modelo->id_acudiente ?>" data-nomtipo="<?= $dc->Documento->url ?>" data-iddoc="<?= $dc->documento_id ?>" data-idacudoc="<?= $dc->id ?>" href="#"><i class="fa fa-ban"></i></a></td>
-                </tr>
-            <?php endforeach ?>
-        </tbody>
-    </table>
-      </div>      
-    </div>
-  </div>
 </div>
-    </div>
 <script>
-    $(function(){
+    $(function () {
         $(".eliminar").click(function () {
-                if (confirm('¿Está seguro de eliminar este documento?')) {
-                    var a = $(this);
-                    var idacudoc = a.attr("data-idacudoc");
-                    var iddoc = a.attr("data-iddoc");
-                    var idacu = a.attr("data-idacu");
-                    var nomtipo = a.attr("data-nomtipo");
-                    $.ajax({
-                        type: 'post',
-                        url: "<?php echo Sis::crearUrl(['Acudiente/EliminarAcudienteDocumento']) ?>",
-                        data: {
-                            idacudoc: idacudoc,
-                            iddoc: iddoc,
-                            idacu: idacu,
-                            nomtipo: nomtipo
-                        }
-                    }).done(function () {
-                        $(a).closest("tr").remove();
-                    }).fail(function () {});
-                }
-                return false;
-            });
-    });    
+            if (confirm('¿Está seguro de eliminar este documento?')) {
+                var a = $(this);
+                var idacudoc = a.attr("data-idacudoc");
+                var iddoc = a.attr("data-iddoc");
+                var idacu = a.attr("data-idacu");
+                var nomtipo = a.attr("data-nomtipo");
+                $.ajax({
+                    type: 'post',
+                    url: "<?php echo Sis::crearUrl(['Acudiente/EliminarAcudienteDocumento']) ?>",
+                    data: {
+                        idacudoc: idacudoc,
+                        iddoc: iddoc,
+                        idacu: idacu,
+                        nomtipo: nomtipo
+                    }
+                }).done(function () {
+                    $(a).closest("tr").remove();
+                }).fail(function () {});
+            }
+            return false;
+        });
+    });
 </script>    
