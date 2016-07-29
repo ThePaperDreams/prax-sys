@@ -2,6 +2,7 @@
 
 class CBBreadCrumbs extends CComplemento{
     public $_migas;
+    public $_opcionesHtml = [];
     
     public function inicializar() {
         if(isset($this->_migas) && count($this->_migas) > 0){
@@ -29,7 +30,12 @@ class CBBreadCrumbs extends CComplemento{
                 $opciones[] = CHtml::e("li", $v);
             }
         }
-        $this->html = CHtml::e('ul', implode('', $opciones), ['class' => 'breadcrumb']);
+        
+        $this->_opcionesHtml['class'] = 'breadcrumb ' . 
+                (isset($this->_opcionesHtml['class'])? 
+                $this->_opcionesHtml['class'] . 'hidden-xs' : 'hidden-xs');
+        
+        $this->html = CHtml::e('ul', implode('', $opciones), $this->_opcionesHtml);
     }
 
 }

@@ -169,6 +169,10 @@ Sis::Recursos()->recursoJs(['url' => $url . "/js/functions.js"]);
                 <div class="page-header">
                     <h4><?= $this->tituloPagina ?></h4>
                 </div>
+                <?php $this->complemento('!siscoms.bootstrap3.CBBreadCrumbs', [
+                    'migas' => $this->migas
+                ]) ?>
+                
                 <div class="col-sm-<?= count($this->opciones) > 0? '9' : '12' ?>">
                     <?= $this->contenido; ?>
                 </div>

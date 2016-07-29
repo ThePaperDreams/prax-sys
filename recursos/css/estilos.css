@@ -45,3 +45,11 @@
     box-shadow: none;
     color: white;
 }
+
+.breadcrumb.hidden-xs{
+    margin-bottom: 20px;
+}
+.dropdown-menu.profile-menu a{
+    padding: 10px 40px;
+    line-height: 10px;
+}
