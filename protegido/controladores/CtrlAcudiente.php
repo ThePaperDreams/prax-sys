@@ -18,42 +18,81 @@ class CtrlAcudiente extends CControlador {
     }
 
     public function accionCrear() {
+        $this->validarIdentificacion();
         $modelo = new Acudiente();
         $modelo2 = new TipoDocumento();
-        if (isset($this->_p['Acudientes'])) {
+        if (isset($this->_p['Acudientes'])) {            
             $modelo->atributos = $this->_p['Acudientes'];
             if ($modelo->guardar()) {
-                $this->asociarDocumentos($modelo);
+                $this->asociarDocumentos($modelo->id_acudiente);
+                Sis::Sesion()->flash("alerta", [
+                    'msg' => 'Guardado exitoso',
+                    'tipo' => 'success',
+                ]);
                 $this->redireccionar('inicio');
             }
         }
+        $url = Sis::crearUrl(['Acudiente/crear']);
         $this->mostrarVista('crear', ['modelo' => $modelo,
             'modelo2' => $modelo2,
+            'url'=>$url,
             'tiposIdentificaciones' => CHtml::modelolista(TipoIdentificacion::modelo()->listar(), "id_tipo_documento", "nombre"),
             'tiposDocumentos' => CHtml::modelolista(TipoDocumento::modelo()->listar(), "id_tipo", "nombre"),
         ]);
     }
     
-    public function asociarDocumentos($modelo, $acu = '') {
+    private function validarIdentificacion($id = null){
+        if(isset($this->_p['validarIdentificacion'])){
+            if($id === null){
+                $criterio = [
+                    'where' => "identificacion = '" . $this->_p['identificacion'] . "'"
+                ];
+            } else {
+                $criterio = [
+                    'where' => "id_acudiente <> $id AND identificacion = '" . $this->_p['identificacion'] . "'"
+                ];
+            }
+            $acudiente = Acudiente::modelo()->primer($criterio);
+            if($acudiente != null){
+                $error = true;
+            } else {
+                $error = false;
+            }
+            $this->json([
+                'error' => $error,
+            ]);
+            Sis::fin();
+        }
+    }
+    
+    public function asociarDocumentos($acu) {
         if (isset($_FILES['Documentos']) && isset($this->_p['TiposDocumentos'])) {
-            $ultacu = ($acu === '') ? $modelo->primer(["order" => "id_acudiente desc"])->id_acudiente : $acu;
             foreach ($this->_p['TiposDocumentos'] as $k => $v) {
                 $tipodoc = new TipoDocumento();
                 $nomtipo = $tipodoc->primer(["where" => "id_tipo=" . $v])->nombre;
                 $files = CArchivoCargado::instanciarTodasPorNombre('Documentos');
-                $rutaDestino = Sis::resolverRuta(Sis::crearCarpeta("!publico.acudientes.$ultacu"));
+                $rutaDestino = Sis::resolverRuta(Sis::crearCarpeta("!publico.acudientes.$acu"));
                 $files[$k]->guardar($rutaDestino, $nomtipo);
-                $doc = new Documento();
-                $doc->titulo = $nomtipo;
-                $doc->url = "publico/acudientes/" . $ultacu . "/" . $nomtipo . "." . $files[$k]->getExtension();
-                $doc->tipo_id = $v;
-                $doc->guardar();
-                $acudoc = new AcudienteDocumento();
-                $acudoc->acudiente_id = $ultacu;
-                $acudoc->documento_id = $doc->primer(["order" => "id_documento desc"])->id_documento;
-                $acudoc->guardar();
+                $doc = $this->asociarDocumento($nomtipo, $k, $v, $files);
+                $this->asociarAcudienteDocumento($acu, $doc);
             }
         }
+    }
+    
+    public function asociarDocumento($nomtipo, $k, $v, $files){
+        $doc = new Documento();
+        $doc->titulo = $nomtipo;
+        $doc->url = $nomtipo . "." . $files[$k]->getExtension();
+        $doc->tipo_id = $v;
+        $doc->guardar();                
+        return $doc;
+    }
+    
+    public function asociarAcudienteDocumento($acu, $doc){
+        $acudoc = new AcudienteDocumento();
+        $acudoc->acudiente_id = $acu;
+        $acudoc->documento_id = $doc->id_documento;
+        $acudoc->guardar();
     }
 
     /**
@@ -61,18 +100,24 @@ class CtrlAcudiente extends CControlador {
      * @param int $pk
      */
     public function accionEditar($pk) {
+        $this->validarIdentificacion($pk);
         $modelo = $this->cargarModelo($pk);
         $modelo2 = new TipoDocumento();
         if (isset($this->_p['Acudientes'])) {
             $modelo->atributos = $this->_p['Acudientes'];
-            $modelo->id_acudiente = $pk;
             if ($modelo->guardar()) {
-                $this->asociarDocumentos($modelo, $pk);
+                $this->asociarDocumentos($modelo->id_acudiente);
+                Sis::Sesion()->flash("alerta", [
+                    'msg' => 'Modificación exitosa',
+                    'tipo' => 'success',
+                ]);
                 $this->redireccionar('inicio');
             }
         }
+        $url = Sis::crearUrl(['Acudiente/editar', 'id' => $pk]);
         $this->mostrarVista('editar', ['modelo' => $modelo,
             'modelo2' => $modelo2,
+            'url'=>$url,
             'tiposIdentificaciones' => CHtml::modelolista(TipoIdentificacion::modelo()->listar(), "id_tipo_documento", "nombre"),
             'tiposDocumentos' => CHtml::modelolista(TipoDocumento::modelo()->listar(), "id_tipo", "nombre"),
         ]);
@@ -84,6 +129,7 @@ class CtrlAcudiente extends CControlador {
      */
     public function accionVer($pk) {
         $modelo = $this->cargarModelo($pk);
+        $modelo2 = new Documento();
         $this->mostrarVista('ver', ['modelo' => $modelo,
             'tiposIdentificaciones' => CHtml::modelolista(TipoIdentificacion::modelo()->listar(), "id_tipo_documento", "nombre"),
         ]);
@@ -102,6 +148,44 @@ class CtrlAcudiente extends CControlador {
         }
         $this->redireccionar('inicio');
     }
+    
+    public function accionEliminarAcudienteDocumento() {
+        $ad = new AcudienteDocumento();
+        $d = new Documento();
+        $a = new Acudiente();
+        if (isset($this->_p['idacudoc']) && isset($this->_p['iddoc']) && isset($this->_p['nomtipo']) && isset($this->_p['idacu'])) {
+            $ad->id = $this->_p['idacudoc'];
+            $d->id_documento = $this->_p['iddoc'];
+            $d->url = $this->_p['nomtipo'];
+            $a->id_acudiente = $this->_p['idacu'];
+            if ($ad->eliminar()) {
+                $this->accionEliminarDocumento($d, $a);
+            } else {            
+            }
+        }
+    } 
+    
+    public function accionEliminarDocumento($d, $a){
+        if ($d->eliminar()) {
+            $ruta = Sis::resolverRuta("!publico.acudientes.$a->id_acudiente" . "\\");
+            $ruta .= $d->url;
+            unlink($ruta);
+        }
+    }
+    
+    public function accionCambiarEstado($pk) {
+        $modelo = $this->cargarModelo($pk);
+        $modelo->estado = !$modelo->estado;
+        if ($modelo->guardar()) {
+            Sis::Sesion()->flash("alerta", [
+                'msg' => 'Cambio exitoso',
+                'tipo' => 'success',
+            ]);
+        } else {
+            # lógica para error al borrar
+        }
+        $this->redireccionar('inicio');
+    } 
 
     /**
      * Esta función permite cargar un modelo usando su primary key

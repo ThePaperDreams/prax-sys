@@ -1,4 +1,5 @@
 <?php 
+    $this->tituloPagina = "Registar Usuario";
     $this->migas = [
         'Home' => ['principal/inicio'],
         'Listar Usuarios' => ['Usuario/inicio'],        

@@ -17,7 +17,7 @@ $this->opciones = [
         <div class="panel-heading text-center">
             Ver detalles
         </div>
-        <table class="table table-bordered table-striped table-hover">
+        <table class="table table-bordered table-hover">
             <tbody>
                 <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('fecha_pago') ?></th>

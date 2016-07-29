@@ -1,9 +1,9 @@
 <?php
-$this->tituloPagina = "Registrar un Acudiente";
+$this->tituloPagina = "Registrar Acudiente";
 $this->migas = [
     'Home' => ['principal/inicio'],
     'Listar Acudientes' => ['Acudiente/inicio'],
-    'Crear'
+    'Registrar'
 ];
 
 $this->opciones = [
@@ -13,5 +13,5 @@ $this->opciones = [
 ];
 ?>
 <div class="col-sm-12">
-    <?php echo $this->mostrarVistaP('_formulario', ['modelo' => $modelo, 'modelo2' => $modelo2, 'tiposIdentificaciones' => $tiposIdentificaciones, 'tiposDocumentos' => $tiposDocumentos]); ?>
+    <?php echo $this->mostrarVistaP('_formulario', ['modelo' => $modelo, 'modelo2' => $modelo2, 'tiposIdentificaciones' => $tiposIdentificaciones, 'tiposDocumentos' => $tiposDocumentos, 'url' => $url]); ?>
 </div>

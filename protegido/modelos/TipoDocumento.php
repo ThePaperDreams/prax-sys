@@ -38,6 +38,7 @@ class TipoDocumento extends CModelo {
     public function filtros() {
         return [
             'requeridos' => 'nombre',
+            'seguros' => '*',
         ];
     }
 

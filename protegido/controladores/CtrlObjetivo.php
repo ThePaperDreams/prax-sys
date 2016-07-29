@@ -31,7 +31,8 @@ class CtrlObjetivo extends CControlador{
                 $this->redireccionar('inicio');
             }
         }
-        $this->mostrarVista('crear', ['modelo' => $modelo]);
+        $url = Sis::crearUrl(['objetivo/crear']);
+        $this->mostrarVista('crear', ['modelo' => $modelo, 'url' => $url]);
     }
     
     /**
@@ -39,7 +40,7 @@ class CtrlObjetivo extends CControlador{
      * @param int $pk
      */
     public function accionEditar($pk){
-        $this->validarObjetivo();   # esta función se usa para validar la existencia de un objetivo via ajax
+        $this->validarObjetivo($pk);   # esta función se usa para validar la existencia de un objetivo via ajax
         $modelo = $this->cargarModelo($pk);
         if(isset($this->_p['Objetivos'])){
             $modelo->atributos = $this->_p['Objetivos'];
@@ -51,14 +52,18 @@ class CtrlObjetivo extends CControlador{
                 $this->redireccionar('inicio');
             }
         }
-        $this->mostrarVista('editar', ['modelo' => $modelo]);
+        $url = Sis::crearUrl(['objetivo/editar', 'id' => $pk]);
+        $this->mostrarVista('editar', ['modelo' => $modelo, 'url' => $url]);
     }
     
-    private function validarObjetivo(){   
+    private function validarObjetivo($id = null){   
         if(isset($this->_p['obj'])){
             $nombre = $this->_p['obj'];
+            $criterio = $id === null? 
+                     "LOWER(titulo)=LOWER('$nombre')" : 
+                    "id_objetivo <> $id AND LOWER(titulo)=LOWER('$nombre')";
             $obj = Objetivo::modelo()->listar([
-                'where' => "LOWER(titulo)=LOWER('$nombre')",
+                'where' => $criterio,
             ]);
             $this->json([
                 'existe' => count($obj) > 0,

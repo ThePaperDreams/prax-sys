@@ -1,12 +1,13 @@
 <?php 
+    $this->tituloPagina = "Listar Tipos de Documentos";
     $this->migas = [
         'Home' => ['principal/inicio'],
-        'Listar TiposDocumento'
+        'Listar Tipos de Documentos'
     ];
     
     $this->opciones = [
         'elementos' => [
-            'Crear' => ['TipoDocumento/crear'],
+            'Registrar' => ['TipoDocumento/crear'],
         ]
     ];
 ?>

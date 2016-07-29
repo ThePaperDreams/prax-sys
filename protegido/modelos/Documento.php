@@ -108,4 +108,10 @@ class Documento extends CModelo {
     public function getDatos() {
         return $this->titulo;
     }
+    
+    public function getDocumento($id, $nombre, $clase) {        
+        $icono = CBoot::fa("file-text-o");
+        $url = Sis::UrlBase() . 'publico/' . strtolower($clase)  . 's/'.$id.'/'.$nombre;
+        return CHtml::link($icono . ' ' . $nombre , $url, ['download' => $nombre]);
+    }
 }

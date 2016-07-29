@@ -31,7 +31,7 @@ $formulario->abrir();
                 . 'if($.trim($("#Objetivos_titulo").val()) === ""){ return false; }'
                 . '$.ajax({'
                     . 'type:"POST",'
-                    . 'url:"' . Sis::crearUrl(['Objetivo/crear']) . '",'
+                    . 'url:"' . $url . '",'
                     . 'data:{'
                         . 'obj:$("#Objetivos_titulo").val(),'
                     . '},'

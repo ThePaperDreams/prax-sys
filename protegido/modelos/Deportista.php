@@ -21,6 +21,8 @@
  * Relaciones del modelo
  * @property EstadoDeportista $EstadoDeportista
  * @property TipoIdentificacion $TipoIdentificacion
+ * @property Documento[] $Documento
+ * @property Acudiente[] $Acudiente
  */
 class Deportista extends CModelo{
  
@@ -59,6 +61,16 @@ class Deportista extends CModelo{
             'requeridos' => 'identificacion,nombre1,apellido1,telefono1,fecha_nacimiento,tipo_documento_id',
         ];
     }
+    
+    public function getEtiquetaEstado(){        
+        if($this->estado_id == 1){
+            return CHtml::e('span', 'Activo', ['class' => 'label label-success']);
+        } else if($this->estado_id == 2){
+            return CHtml::e('span', 'Inactivo', ['class' => 'label label-danger']);
+        } else {
+            return CHtml::e('span', $this->EstadoDeportista->nombre, ['class' => 'label label-default']);
+        }
+    }
 
     public function getNombreDePila(){
         return $this->getDatos();
@@ -71,11 +83,12 @@ class Deportista extends CModelo{
     public function getDatos() {
         return $this->identificacion . " (" . $this->nombre1 . " " . $this->apellido1 . ")";
     }
-    
-   
-    
+    /**
+     * Esta función permite retornar los acudientes de un deportista
+     * @return Acudiente
+     */
     public function getAcudientes() {
-        $da = DeportistaAcudiente::modelo()->listar(["where" => "id_deportista=$this->id_deportista"]);
+        $da = $this->Acudiente;
         $acudientes = [];
         foreach ($da as $detalle) {
             $acudientes[] = $detalle->Acudiente;
@@ -84,7 +97,7 @@ class Deportista extends CModelo{
     }
     
     public function getDocumentos() {
-        $dc = DeportistaDocumento::modelo()->listar(["where" => "deportista_id=$this->id_deportista"]);
+        $dc = $this->Documento;
         $documentos = [];
         foreach ($dc as $detalle) {
             $documentos[] = $detalle->Documento;
@@ -102,6 +115,8 @@ class Deportista extends CModelo{
             # tipo de relación | modelo con que se relaciona | campo clave foranea
             'EstadoDeportista' => [self::PERTENECE_A, 'EstadoDeportista', 'estado_id'],
             'TipoIdentificacion' => [self::PERTENECE_A, 'TipoIdentificacion', 'tipo_documento_id'],
+            'Documento' => [self::CONTENGAN_A, 'DeportistaDocumento', 'deportista_id'],
+            'Acudiente' => [self::CONTENGAN_A, 'DeportistaAcudiente', 'deportista_id'],
         ];
     }
     

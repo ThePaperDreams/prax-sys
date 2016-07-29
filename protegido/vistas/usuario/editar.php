@@ -1,14 +1,15 @@
 <?php 
+    $this->tituloPagina = "Editar Usuario";
     $this->migas = [
         'Home' => ['principal/inicio'],
         'Listar Usuarios' => ['Usuario/inicio'],        
-        'Actualizar'
+        'Editar'
     ];
     
     $this->opciones = [
         'elementos' => [
             'Listar' => ['Usuario/inicio'],
-            'Crear' => ['Usuario/crear'],
+            'Registrar' => ['Usuario/crear'],
         ]
     ];    
 ?>

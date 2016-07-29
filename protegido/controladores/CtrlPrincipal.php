@@ -32,8 +32,8 @@ class CtrlPrincipal extends CControlador{
         if(isset($this->_p['login-usr']) && isset($this->_p['login-pwd'])){
             $comUsuario = new ComUsuario($this->_p['login-usr'], $this->_p['login-pwd']);
             $comUsuario->cargarConfiguracion();
-            if($comUsuario->autenticar()){           
-                Sis::apl()->usuario->iniciarSesion($comUsuario->ID, $comUsuario->usuario);
+            if($comUsuario->autenticar()){
+                Sis::apl()->usuario->iniciarSesion($comUsuario->ID, $comUsuario->nombres);
                 $this->redireccionar('inicio');
             }else {
                 Sis::Sesion()->flash('alerta', [

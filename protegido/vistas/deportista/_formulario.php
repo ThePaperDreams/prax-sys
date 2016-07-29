@@ -2,7 +2,6 @@
 $formulario = new CBForm(['id' => 'form-deportistas']);
 $formulario->abrir();
 ?>
-
 <div class="row">
     <div class="col-sm-6">
         <?php echo $formulario->lista($modelo, 'tipo_documento_id', $tiposIdentificaciones, ['label' => true, 'group' => true, 'defecto' => 'Tipo de documento']) ?>
@@ -49,34 +48,95 @@ $formulario->abrir();
 </div>
 
 <div class="row">
-    <div class="col-sm-8">
-        <?php echo $formulario->lista($modelo2, 'id_acudiente', $acudientes, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un Acudiente']) ?>
+    <div class="col-sm-6">
+        <?php echo $formulario->campoArchivo($modelo, 'foto', ['label' => true, 'group' => true]) ?>
     </div>
-    <div class="col-sm-4">
-        <?php echo CBoot::boton('Agregar Acudiente ' . CBoot::fa('plus'), 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'id' => 'btn-addAcu']) ?>
+    <div class="col-sm-6">
+        <?php echo $formulario->lista($modelo, 'estado_id', $estados, ['label' => true, 'group' => true]) ?>
     </div>
-</div>
-
-<div id="lst-acu" class="panel panel-default">
-    <div class="panel-heading">Acudientes</div>
-    <ul id="lis-acu" class="list-group">
-    </ul>
 </div>
 
 <div class="row">
-    <div class="col-sm-8">
-        <?php echo $formulario->lista($modelo3, 'id_tipo', $tiposDocumentos, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un Tipo Documento']) ?>
+    <div class="col-sm-4">
+        <?php echo $formulario->lista($modelo2, 'id_acudiente', $acudientes, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un Acudiente']) ?>
+    </div>
+    <div class="col-sm-2">
+        <?php echo CBoot::boton(CBoot::fa('plus') . ' Agregar', 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'id' => 'btn-addAcu']) ?>
     </div>
     <div class="col-sm-4">
-        <?php echo CBoot::boton('Agregar Documento ' . CBoot::fa('file-word-o'), 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'id' => 'btn-addDoc']) ?>
+        <?php echo $formulario->lista($modelo3, 'id_tipo', $tiposDocumentos, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un Tipo Documento']) ?>
+    </div>
+    <div class="col-sm-2">
+        <?php echo CBoot::boton(CBoot::fa('plus') . ' Agregar', 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'id' => 'btn-addDoc']) ?>
     </div>
 </div>
 
-<div id="lst-doc" class="panel panel-default">
-    <div class="panel-heading">Documentos</div>
-    <ul id="lis-doc" class="list-group">
-    </ul>
+<div class="row">
+    <div class="col-sm-6">
+        <div id="lst-acu" class="panel panel-default">
+            <div class="panel-heading">Acudientes</div>
+            <ul id="lis-acu" class="list-group">
+            </ul>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div id="lst-doc" class="panel panel-default">
+            <div class="panel-heading">Documentos</div>
+            <ul id="lis-doc" class="list-group">
+            </ul>
+        </div>
+    </div>
 </div>
+<?php if (!$modelo->nuevo): ?>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="panel panel-default">
+                <div class="panel-heading text-center">
+                    Acudientes asociados actualmente
+                </div>            
+                <table class="table table-bordered table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Acudiente</th>
+                            <th>Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-acudientes">
+                        <?php foreach ($modelo->Acudiente AS $dc): ?>
+                            <tr>
+                                <td titulo="<?= $dc->Acudiente->datos ?>"><?= $dc->Acudiente->datos ?></td>            
+                                <td class="col-sm-1 text-center text-danger-icon"><a class="delete" data-iddepacu="<?= $dc->id ?>" href="#"><i class="fa fa-ban"></i></a></td>
+                            </tr>
+                        <?php endforeach ?>
+                    </tbody>
+                </table>
+            </div>      
+        </div>    
+        <div class="col-sm-6">
+            <div class="panel panel-default">
+                <div class="panel-heading text-center">
+                    Documentos asociados actualmente
+                </div>            
+                <table class="table table-bordered table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Documento</th>
+                            <th>Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-documentos">
+                        <?php foreach ($modelo->Documento AS $dc): ?>
+                            <tr>
+                                <td titulo="<?= $dc->Documento->titulo ?>"><?= $dc->Documento->titulo ?></td>            
+                                <td class="col-sm-1 text-center text-danger-icon"><a class="eliminar" data-iddep="<?= $modelo->id_deportista ?>" data-nomtipo="<?= $dc->Documento->url ?>" data-iddoc="<?= $dc->documento_id ?>" data-iddepdoc="<?= $dc->id ?>" href="#"><i class="fa fa-ban"></i></a></td>
+                            </tr>
+                        <?php endforeach ?>
+                    </tbody>
+                </table>
+            </div>      
+        </div>
+    </div>
+<?php endif; ?>
 
 <div class="row">
     <div class="col-sm-offset-6 col-sm-3">
@@ -86,31 +146,77 @@ $formulario->abrir();
         <?php echo CBoot::boton(CBoot::fa('save') . ' ' . ($modelo->nuevo ? 'Guardar' : 'Actualizar'), 'success', ['class' => 'btn-block']); ?>
     </div>
 </div>
-
+<?php $formulario->cerrar(); ?>
 <script>
     $(function () {
         $("#btn-addAcu").click(function () {
             var m = $("#Acudientes_id_acudiente option:selected");
-            if (m.html() !== "Seleccione un Acudiente") {
+            var r = encontrarAcu(m.html());
+            var i = m.html() !== "Seleccione un Acudiente";
+            if (i && r) {
                 $("#lis-acu").append("<li class='list-group-item' data='" + m.val() + "'><button onclick='eliminar(this)' type='button'><i class='text-danger fa fa-trash'></i></button> " + m.html() + "</li>");
                 m.attr("disabled", "true");
                 $("#form-deportistas").append("<input hidden='' name='Acudientes[]' id='" + m.val() + "' value='" + m.val() + "'>");
+            } else if (i) {
+                alert("El deportista actualmente tiene asociado este acudiente");
             }
             $("#Acudientes_id_acudiente").val('').attr("selected", "selected");
         });
         $("#btn-addDoc").click(function () {
             var m = $("#TiposDocumento_id_tipo option:selected");
-            if (m.html() !== "Seleccione un Tipo Documento") {                
-                $("#lis-doc").append("<li class='list-group-item' d='" +m.val()+ "'><button onclick='borrar(this)' type='button'><i class='text-danger fa fa-trash'></i></button> "+m.html()+"<input type='file' name='Documentos[]'></li>");
+            var i = m.html() !== "Seleccione un Tipo Documento";
+            var r = encontrarDoc(m.html());
+            if (i && r) {
+                $("#lis-doc").append("<li class='list-group-item' d='" + m.val() + "'><button onclick='borrar(this)' type='button'><i class='text-danger fa fa-trash'></i></button> " + m.html() + "<input type='file' name='Documentos[]'></li>");
                 m.attr("disabled", "true");
                 $("#form-deportistas").append("<input hidden='' name='TiposDocumentos[]' id='td" + m.val() + "' value='" + m.val() + "'>");
+            } else if (i) {
+                alert("El deportista actualmente tiene asociado este documento");
             }
             $("#TiposDocumento_id_tipo").val('').attr("selected", "selected");
         });
         $("#birthday").datepicker({
             dateFormat: 'yy-mm-dd'
         });
-        $("#form-deportistas").attr('enctype','multipart/form-data');
+        $("#form-deportistas").attr('enctype', 'multipart/form-data');
+        $("a.eliminar").click(function () {
+            if (confirm('¿Está seguro de eliminar este documento?')) {
+                var a = $(this);
+                var iddepdoc = a.attr("data-iddepdoc");
+                var iddoc = a.attr("data-iddoc");
+                var iddep = a.attr("data-iddep");
+                var nomtipo = a.attr("data-nomtipo");
+                $.ajax({
+                    type: 'post',
+                    url: "<?php echo Sis::crearUrl(['Deportista/EliminarDeportistaDocumento']) ?>",
+                    data: {
+                        iddepdoc: iddepdoc,
+                        iddoc: iddoc,
+                        iddep: iddep,
+                        nomtipo: nomtipo
+                    }
+                }).done(function () {
+                    $(a).closest("tr").remove();
+                }).fail(function () {});
+            }
+            return false;
+        });
+        $("a.delete").click(function () {
+            if (confirm('¿Está seguro de eliminar este acudiente?')) {
+                var a = $(this);
+                var iddepacu = a.attr("data-iddepacu");
+                $.ajax({
+                    type: 'post',
+                    url: "<?php echo Sis::crearUrl(['Deportista/EliminarAcudiente']) ?>",
+                    data: {
+                        iddepacu: iddepacu
+                    }
+                }).done(function () {
+                    $(a).closest("tr").remove();
+                }).fail(function () {});
+            }
+            return false;
+        });
     });
     function eliminar(e) {
         var d = $(e).closest('li').attr('data');
@@ -132,6 +238,24 @@ $formulario->abrir();
         $(e).closest('li').remove();
         $("#td" + d).remove();
     }
+    function encontrarDoc(tit) {
+        var h = "", r = true;
+        $("#tabla-documentos td[titulo]").each(function (v, e) {
+            h = e.getAttribute("titulo");
+            if (h === tit) {
+                r = false;
+            }
+        });
+        return r;
+    }
+    function encontrarAcu(tit) {
+        var h = "", r = true;
+        $("#tabla-acudientes td[titulo]").each(function (v, e) {
+            h = e.getAttribute("titulo");
+            if (h === tit) {
+                r = false;
+            }
+        });
+        return r;
+    }
 </script>
-
-<?php $formulario->cerrar(); ?>

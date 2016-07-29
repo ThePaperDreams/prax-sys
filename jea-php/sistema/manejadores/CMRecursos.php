@@ -147,6 +147,11 @@ class CMRecursos {
      * @return boolean
      */
     public function registrarRecursoJS($recurso = [], $primario = false){
+        if(!isset($recurso['alias']) && isset($recurso['url'])){
+            $recurso['alias'] = basename($recurso['url']);
+        } else if(!isset($recurso['alias']) && isset($recurso['ruta'])){
+            $recurso['alias'] = basename($recurso['ruta']);
+        }
         # verificamos si el recurso ya fue registrado con ese alias, si es así no realizamos el registro del recurso        
         if(isset($this->aliasRegistrados[self::RE_JS]) && 
             $this->getJsAlias($recurso['alias']) !== false){
@@ -181,6 +186,11 @@ class CMRecursos {
      * @return boolean
      */
     public function registrarRecursoCSS($recurso = [], $primario = false){
+        if(!isset($recurso['alias']) && isset($recurso['url'])){
+            $recurso['alias'] = basename($recurso['url']);
+        } else if(!isset($recurso['alias']) && isset($recurso['ruta'])){
+            $recurso['alias'] = basename($recurso['ruta']);
+        }
         # verificamos si el recurso ya fue registrado con ese alias, si es así no lo incluimos
         if(isset($this->aliasRegistrados[self::RE_CSS]) && 
             $this->getCssAlias($recurso['alias']) !== false){

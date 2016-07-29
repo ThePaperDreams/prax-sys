@@ -49,6 +49,7 @@
     public function filtros() {
         return [
             'requeridos' => 'nombre',
+            'seguros'=>'*',
         ];
     }
 

@@ -14,9 +14,10 @@
  * @property string $clave
  * @property tinyint $recuperacion
  * @property tinyint $estado
+ * @property string $foto
  * 
  * Relaciones del modelo
- * @property FkTblUsuariosTblRoles1 $fkTblUsuariosTblRoles1
+ * @property Rol $Rol
  */
 class Usuario extends CModelo {
 
@@ -44,12 +45,14 @@ class Usuario extends CModelo {
             'clave',
             'recuperacion',
             'estado' => ['def' => '1'],
+            'foto',
         ];
     }
     
     public function filtros() {
         return [
             'requeridos' => 'rol_id,email,nombre_usuario,nombres,apellidos,clave',
+            'seguros'=>'*',
         ];
     }
 
@@ -81,11 +84,20 @@ class Usuario extends CModelo {
             'clave' => 'Clave',
             'recuperacion' => 'Recuperación',
             'estado' => 'Estado',
+            'foto' => 'Foto',
         ];
     }
 
     public function getNombreMasUsuario(){
         return $this->nombres . ' ' . $this->apellidos . " ($this->nombre_usuario)";
+    }
+    
+    public function getEtiquetaEstado(){
+        if($this->estado == 1){
+            return CHtml::e('span', 'Activo', ['class' => 'label label-success']);
+        } else if($this->estado == 0){
+            return CHtml::e('span', 'Inactivo', ['class' => 'label label-danger']);
+        }
     }
     
     /**

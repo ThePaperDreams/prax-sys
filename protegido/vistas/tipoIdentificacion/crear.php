@@ -1,8 +1,9 @@
 <?php 
+    $this->tituloPagina = "Registrar Tipo de Identificación";
     $this->migas = [
         'Home' => ['principal/inicio'],
-        'Listar TiposIdentificacion' => ['TipoIdentificacion/inicio'],        
-        'Crear'
+        'Listar Tipos de Identificación' => ['TipoIdentificacion/inicio'],        
+        'Registrar'
     ];
     
     $this->opciones = [
