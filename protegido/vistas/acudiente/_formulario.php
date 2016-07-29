@@ -146,6 +146,45 @@ $formulario->abrir();
             }
             return false;
         });
+        $("#form-acudientes").submit(function () {
+            validarIdentificacion();
+            return false;
+        });
+
+        function validarIdentificacion() {
+            var identificacion = $("#Acudientes_identificacion");
+            if (identificacion === "") {
+                return;
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: '<?php echo $url ?>',
+                data: {
+                    validarIdentificacion: true,
+                    identificacion: identificacion.val(),
+                },
+                success: function (respuesta) {
+                    if (respuesta.error == true) {
+                        mostrarAlert("error", "Ya existe esa Identificación");
+                    } else {
+                        document.getElementById("form-acudientes").submit();
+                    }
+                }
+            });
+
+        }
+
+        function mostrarAlert(tipo, msg) {
+            Lobibox.notify(tipo, {
+                size: 'mini',
+                showClass: 'bounceInRight',
+                hideClass: 'bounceOutRight',
+                msg: msg,
+                delay: 8000,
+                soundPath: '<?= Sis::UrlRecursos() ?>librerias/lobibox/sounds/',
+            });
+        }
     });
     function borrar(e) {
         var d = $(e).closest('li').attr('d');

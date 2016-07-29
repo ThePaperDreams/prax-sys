@@ -10,7 +10,7 @@
         'elementos' => [
             'Listar' => ['TipoDocumento/inicio'],
             'Registrar' => ['TipoDocumento/crear'],
-            'Editar' => ['TipoDocumento/editar', 'id' => $modelo->id_tipo],
+            'Actualizar' => ['TipoDocumento/editar', 'id' => $modelo->id_tipo],
         ]
     ];
 ?>

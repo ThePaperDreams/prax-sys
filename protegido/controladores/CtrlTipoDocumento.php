@@ -19,17 +19,47 @@ class CtrlTipoDocumento extends CControlador{
      * Esta función permite crear un nuevo registro
      */
     public function accionCrear(){
+        $this->validarNombre();
         $modelo = new TipoDocumento();
         if(isset($this->_p['TiposDocumento'])){
             $modelo->atributos = $this->_p['TiposDocumento'];
             if($modelo->guardar()){
-                # lógica para guardado exitoso
+                Sis::Sesion()->flash("alerta", [
+                    'msg' => 'Guardado exitoso',
+                    'tipo' => 'success',
+                ]);
                 $this->redireccionar('inicio');
             }
         }
+        $url = Sis::crearUrl(['TipoDocumento/crear']);
         $this->mostrarVista('crear', ['modelo' => $modelo,
+            'url'=>$url,
             'tiposDocumentos' => CHtml::modelolista(TipoDocumento::modelo()->listar(), "id_tipo", "nombre"),
         ]);
+    }
+    
+    private function validarNombre($id = null){
+        if(isset($this->_p['validarNombre'])){
+            if($id === null){
+                $criterio = [
+                    'where' => "LOWER(nombre) = LOWER('" . $this->_p['nombre'] . "')"
+                ];
+            } else {
+                $criterio = [
+                    'where' => "id_tipo <> $id AND LOWER(nombre) = LOWER('" . $this->_p['nombre'] . "')"
+                ];
+            }
+            $tipo_documento = TipoDocumento::modelo()->primer($criterio);
+            if($tipo_documento != null){
+                $error = true;
+            } else {
+                $error = false;
+            }
+            $this->json([
+                'error' => $error,
+            ]);
+            Sis::fin();
+        }
     }
     
     /**
@@ -37,15 +67,21 @@ class CtrlTipoDocumento extends CControlador{
      * @param int $pk
      */
     public function accionEditar($pk){
+        $this->validarNombre($pk);
         $modelo = $this->cargarModelo($pk);
         if(isset($this->_p['TiposDocumento'])){
             $modelo->atributos = $this->_p['TiposDocumento'];
             if($modelo->guardar()){
-                # lógica para guardado exitoso
+                Sis::Sesion()->flash("alerta", [
+                    'msg' => 'Modificación exitosa',
+                    'tipo' => 'success',
+                ]);
                 $this->redireccionar('inicio');
             }
         }
+        $url = Sis::crearUrl(['TipoDocumento/editar', 'id' => $pk]);
         $this->mostrarVista('editar', ['modelo' => $modelo,
+            'url'=>$url,
             'tiposDocumentos' => CHtml::modelolista(TipoDocumento::modelo()->listar(["where" => "id_tipo != $modelo->id_tipo"]), "id_tipo", "nombre"),
         ]);
     }

@@ -18,20 +18,51 @@ class CtrlAcudiente extends CControlador {
     }
 
     public function accionCrear() {
+        $this->validarIdentificacion();
         $modelo = new Acudiente();
         $modelo2 = new TipoDocumento();
         if (isset($this->_p['Acudientes'])) {            
             $modelo->atributos = $this->_p['Acudientes'];
             if ($modelo->guardar()) {
                 $this->asociarDocumentos($modelo->id_acudiente);
+                Sis::Sesion()->flash("alerta", [
+                    'msg' => 'Guardado exitoso',
+                    'tipo' => 'success',
+                ]);
                 $this->redireccionar('inicio');
             }
         }
+        $url = Sis::crearUrl(['Acudiente/crear']);
         $this->mostrarVista('crear', ['modelo' => $modelo,
             'modelo2' => $modelo2,
+            'url'=>$url,
             'tiposIdentificaciones' => CHtml::modelolista(TipoIdentificacion::modelo()->listar(), "id_tipo_documento", "nombre"),
             'tiposDocumentos' => CHtml::modelolista(TipoDocumento::modelo()->listar(), "id_tipo", "nombre"),
         ]);
+    }
+    
+    private function validarIdentificacion($id = null){
+        if(isset($this->_p['validarIdentificacion'])){
+            if($id === null){
+                $criterio = [
+                    'where' => "identificacion = '" . $this->_p['identificacion'] . "'"
+                ];
+            } else {
+                $criterio = [
+                    'where' => "id_acudiente <> $id AND identificacion = '" . $this->_p['identificacion'] . "'"
+                ];
+            }
+            $acudiente = Acudiente::modelo()->primer($criterio);
+            if($acudiente != null){
+                $error = true;
+            } else {
+                $error = false;
+            }
+            $this->json([
+                'error' => $error,
+            ]);
+            Sis::fin();
+        }
     }
     
     public function asociarDocumentos($acu) {
@@ -69,17 +100,24 @@ class CtrlAcudiente extends CControlador {
      * @param int $pk
      */
     public function accionEditar($pk) {
+        $this->validarIdentificacion($pk);
         $modelo = $this->cargarModelo($pk);
         $modelo2 = new TipoDocumento();
         if (isset($this->_p['Acudientes'])) {
             $modelo->atributos = $this->_p['Acudientes'];
             if ($modelo->guardar()) {
                 $this->asociarDocumentos($modelo->id_acudiente);
+                Sis::Sesion()->flash("alerta", [
+                    'msg' => 'Modificación exitosa',
+                    'tipo' => 'success',
+                ]);
                 $this->redireccionar('inicio');
             }
         }
+        $url = Sis::crearUrl(['Acudiente/editar', 'id' => $pk]);
         $this->mostrarVista('editar', ['modelo' => $modelo,
             'modelo2' => $modelo2,
+            'url'=>$url,
             'tiposIdentificaciones' => CHtml::modelolista(TipoIdentificacion::modelo()->listar(), "id_tipo_documento", "nombre"),
             'tiposDocumentos' => CHtml::modelolista(TipoDocumento::modelo()->listar(), "id_tipo", "nombre"),
         ]);

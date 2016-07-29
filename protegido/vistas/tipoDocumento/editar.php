@@ -3,7 +3,7 @@
     $this->migas = [
         'Home' => ['principal/inicio'],
         'Listar Tipos de Documentos' => ['TipoDocumento/inicio'],        
-        'Editar'
+        'Actualizar'
     ];
     
     $this->opciones = [
@@ -14,5 +14,5 @@
     ];    
 ?>
 <div class="col-sm-12">
-    <?php echo $this->mostrarVistaP('_formulario', ['modelo' => $modelo, 'tiposDocumentos' => $tiposDocumentos]); ?>
+    <?php echo $this->mostrarVistaP('_formulario', ['modelo' => $modelo, 'tiposDocumentos' => $tiposDocumentos, 'url' => $url]); ?>
 </div>
