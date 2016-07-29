@@ -221,7 +221,7 @@ class CFormulario {
      */
     private function esRequerido($modelo, $atributo){
         $filtros = $modelo->filtros();
-        $requeridos = isset($filtros['requeridos'])? $filtros['requeridos'] : [];
+        $requeridos = isset($filtros['requeridos'])? $filtros['requeridos'] : '';
         $campos = explode(',', trim($requeridos, ' '));
         return in_array($atributo, $campos);
     }
