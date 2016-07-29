@@ -30,3 +30,18 @@
 .abajo{
     margin-top: 25px;
 }
+
+.list-unstyled i{
+    font-size: 25px;
+    line-height: 45px;
+}
+
+#content{
+    padding: 10px 30px
+}
+
+/* Estilos del tema */
+.panel-default > .panel-heading, .panel-footer {
+    box-shadow: none;
+    color: white;
+}

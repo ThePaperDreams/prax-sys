@@ -7,7 +7,7 @@ return [
     'charset' => 'utf-8',
     'modoProduccion' => false,
     'apacheRewrite' => true,
-    // 'tema' => '',
+    'tema' => 's-admin',
     'importar' => [
         '!aplicacion.modelos',
         '!aplicacion.componentes',

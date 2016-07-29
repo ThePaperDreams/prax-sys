@@ -10,7 +10,7 @@ $this->migas = [
         <div class="panel-heading text-center">
             Ver detalles
         </div>
-        <table class="table table-bordered table-striped table-hover">
+        <table class="table table-bordered table-hover">
             <tbody>
                 <tr>
                     <th><?= $modelo->obtenerEtiqueta('fecha') ?></th>
@@ -33,7 +33,7 @@ $this->migas = [
         <div class="panel-heading">
             Categoría: <strong><?= $modelo->Categoria->nombre ?></strong>
         </div>
-        <table class="table table-bordered table-striped table-hover">
+        <table class="table table-bordered table-hover">
             <thead>
                 <tr>
                     <th>Deportista</th>
