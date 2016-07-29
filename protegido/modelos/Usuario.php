@@ -14,6 +14,7 @@
  * @property string $clave
  * @property tinyint $recuperacion
  * @property tinyint $estado
+ * @property string $foto
  * 
  * Relaciones del modelo
  * @property Rol $Rol
@@ -44,6 +45,7 @@ class Usuario extends CModelo {
             'clave',
             'recuperacion',
             'estado' => ['def' => '1'],
+            'foto',
         ];
     }
     
@@ -82,6 +84,7 @@ class Usuario extends CModelo {
             'clave' => 'Clave',
             'recuperacion' => 'Recuperación',
             'estado' => 'Estado',
+            'foto' => 'Foto',
         ];
     }
 

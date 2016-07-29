@@ -19,7 +19,7 @@ $this->opciones = [
         <div class="panel-heading text-center">
             Ver detalles
         </div>
-        <table class="table table-bordered table-striped table-hover">
+        <table class="table table-bordered table-hover">
             <tbody>
                 <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('categoria_id') ?></th>
@@ -46,7 +46,7 @@ $this->opciones = [
         <div class="panel-heading text-center">
             Objetivos del plan
         </div>
-        <table class="table table-bordered table-striped table-hover">
+        <table class="table table-bordered table-hover">
             <thead>
                 <tr>
                     <th>Título</th>
