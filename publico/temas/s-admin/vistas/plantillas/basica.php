@@ -46,7 +46,7 @@ Sis::Recursos()->recursoJs(['url' => $url . "/js/functions.js"]);
         <meta name="format-detection" content="telephone=no">
         
     </head>
-    <body id="skin-blur-lights">
+    <body id="skin-blur-ocean">
         <header id="header" class="media">
             <a href="#" id="menu-toggle"></a> 
             <a class="logo pull-left" href="<?= Sis::UrlBase() ?>"><?= Sis::apl()->nombre ?></a>
