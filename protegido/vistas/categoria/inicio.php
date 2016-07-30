@@ -15,12 +15,7 @@
 <?= $this->complemento('!siscoms.bootstrap3.CBGrid', [
     'modelo' => 'Categoria',
     # id_categoria, nombre, descripcion, cupo_maximo, cupo_minimo, tarifa, edad_minima, edad_maxima, estado, entrenador_id
-    'columnas' => [
-        'nombre',
-        'descripcion' => 'Resumen',
-        'cupo_rango' => 'CupoRango',
-        'edad_rango' => 'EdadRango',
-    ],
+    'columnas' => 'nombre, cupos, tarifaf, edad',
     'opciones' => true,
     'paginacion' => 10,
 ]) ?>

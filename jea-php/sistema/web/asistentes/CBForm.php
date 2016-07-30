@@ -58,6 +58,7 @@ class CBForm extends CFormulario{
         $opHtml = $this->obtenerOpciones($modelo, $atributo, $opciones);
         $label = $this->obtenerEtiqueta($opHtml);
         $requeridos = $this->getRequeridos($modelo);
+        $opHtml['data-err-target'] = "$atributo";
         $error = $this->obtenerError($requeridos, $atributo);
         if(isset($addons['pre'])){ $opHtml['pre'] = $addons['pre']; }
         if(isset($addons['pos'])){ $opHtml['pos'] = $addons['pos']; }
@@ -157,7 +158,7 @@ class CBForm extends CFormulario{
         if(!key_exists($campo, $r)){
             return '';
         }else {            
-            return CHtml::e('p', "El campo <b>" . $r[$campo] . "</b> no puede estar vacio", ['class' => 'text-danger form-requerido', 'style' => 'display:none', 'id' => 'err-' . $campo]);
+            return CHtml::e('p', "El campo <b>" . $r[$campo] . "</b> no puede estar vacio", ['id' => 'err-' . $campo, 'class' => 'text-danger form-requerido', 'style' => 'display:none', 'id' => 'err-' . $campo]);
         }
     }
     

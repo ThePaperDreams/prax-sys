@@ -23,7 +23,7 @@
     ],
     'opciones' => [
         ['i' => 'eye', 'url' => 'Matricula/ver&{id:pk}'],
-        ['i' => 'ban', 'url' => 'Matricula/anular&{id:pk}'],
+        ['i' => 'ban', 'url' => 'Matricula/anular&{id:pk}', 'visible' => '$m->estado == 1'],
     ],
     'paginacion' => 10,
 ]) ?>

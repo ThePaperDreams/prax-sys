@@ -16,6 +16,7 @@
  * @property int $entrenador_id
  * 
  * Relaciones del modelo
+ * @property Usuario $usuario
  */
 class Categoria extends CModelo {
 
@@ -36,14 +37,24 @@ class Categoria extends CModelo {
             'id_categoria' => ['pk'],
             'nombre',
             'descripcion',
-            'cupo_maximo',
-            'cupo_minimo',
-            'tarifa',
-            'edad_minima',
-            'edad_maxima',
+            'cupo_maximo' => ['def' => '0'],
+            'cupo_minimo' => ['def' => '0'],
+            'tarifa' => ['def' => '0'],
+            'edad_minima' => ['def' => '0'],
+            'edad_maxima' => ['def' => '0'],
             'estado' => ['def' => '1'],
             'entrenador_id',
         ];
+    }
+    
+    public function filtros() {
+        return [
+            'requeridos' => 'nombre,cupo_minimo,cupo_maximo,edad_minima,edad_maxima',
+        ];
+    }
+    
+    public function antesDeGuardar() {
+        if($this->tarifa == ""){ $this->tarifa = 0; }
     }
 
     /**
@@ -54,6 +65,7 @@ class Categoria extends CModelo {
         return [
                 # el formato es simple: 
                 # tipo de relación | modelo con que se relaciona | campo clave foranea
+            'Entrenador' => [self::PERTENECE_A, 'Usuario', 'entrenador_id'],
         ];
     }
 
@@ -66,29 +78,37 @@ class Categoria extends CModelo {
             'id_categoria' => 'Id Categoria',
             'nombre' => 'Nombre',
             'descripcion' => 'Descripcion',
-            'cupo_maximo' => 'Cupo Max.',
-            'cupo_minimo' => 'Cupo Min.',
+            'cupo_maximo' => 'Cupo Maximo',
+            'cupo_minimo' => 'Cupo Minimo',
             'tarifa' => 'Tarifa',
-            'edad_minima' => 'Edad Min.',
-            'edad_maxima' => 'Edad Max.',
+            'edad_minima' => 'Edad Minima',
+            'edad_maxima' => 'Edad Maxima',
             'estado' => 'Estado',
             'entrenador_id' => 'Entrenador Id',
-            'cupo_rango' => 'Cupo',
-            'edad_rango' => 'Edad',
+            'edad' => 'Edades',
+            'cupos' => 'Cupos',
+            'tarifaf' => 'Tarifa',
         ];
     }
     
-    public function getEdadRango(){
-        return $this->edad_minima . " - " . $this->edad_maxima;
+    public function getTarifaF(){
+        return "$ " . number_format($this->tarifa);
     }
-    
-    public function getCupoRango(){
-        return $this->cupo_minimo . ' - ' . $this->cupo_maximo;
+
+    public function getEdad() {
+        return "$this->edad_minima - $this->edad_maxima";
     }
-    
-    public function getResumen() {
-        return strlen($this->descripcion) > 50? 
-               substr($this->descripcion, 0, 50) . '...' : $this->descripcion;
+
+    public function getCupos() {
+        return "$this->cupo_minimo - $this->cupo_maximo";
+    }
+
+    public function getEtiquetaEstado(){
+        if($this->estado == 0){
+            return CHtml::e('span', 'Inactivo', ['class' => 'label label-default']); 
+        } else if($this->estado == 1){
+            return CHtml::e('span', 'Inactivo', ['class' => 'label label-activo']); 
+        }
     }
     
     public function getMatriculados(){

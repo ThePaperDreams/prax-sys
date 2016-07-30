@@ -8,44 +8,45 @@ Sis::Recursos()->recursoJs([
 $formulario = new CBForm(['id' => 'form-matriculas', 'opcionesHtml' => ['enctype' => 'multipart/form-data']]);
 $formulario->abrir();
 ?>
-<p>Los campos con <span class="text-danger">*</span>  son requeridos</p>
-<hr>
-<div class="panel panel-default">
-    <div class="panel-heading text-center">
-        Información de la matricula
-    </div>
-    <div class="panel-body">
-        <div class="row">
-            <div class="col-sm-6">
-                <input type="hidden" id="flag-dep" value="0">
-                <?php echo $formulario->lista($modelo, 'deportista_id', $deportistas, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un deportista']) ?>
+<div class="tile p-15">
+    <p>Los campos con <span class="text-danger">*</span>  son requeridos</p>
+    <hr>
+    <div class="panel panel-default">
+        <div class="panel-heading text-center">
+            Información de la matricula
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-6">
+                    <input type="hidden" id="flag-dep" value="0">
+                    <?php echo $formulario->lista($modelo, 'deportista_id', $deportistas, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un deportista']) ?>
+                </div>
+                <div class="col-sm-6">
+                    <?php echo $formulario->inputAddon($modelo, 'fecha_pago', 'text', ['label' => true, 'group' => true], ['pos' => CBoot::fa('calendar')]) ?>
+                </div>
             </div>
-            <div class="col-sm-6">
-                <?php echo $formulario->inputAddon($modelo, 'fecha_pago', 'text', ['label' => true, 'group' => true], ['pos' => CBoot::fa('calendar')]) ?>
+            <div class="row">
+                <div class="col-sm-12">
+                    <?php echo $formulario->campoArchivo($modelo, 'url_comprobante', ['label' => true, 'group' => true]) ?>            
+                </div>
+            </div>
+            <div class="form-group">                
+                <label class="control-label">Categoría <span id="cat-data" class="label label-default">0 / 0</span></label>
+                <?php echo $formulario->lista($modelo, 'categoria_id', $categorias, ['defecto' => 'Seleccionar una categoría']) ?>
             </div>
         </div>
-        <div class="row">
-            <div class="col-sm-12">
-                <?php echo $formulario->campoArchivo($modelo, 'url_comprobante', ['label' => true, 'group' => true]) ?>            
-            </div>
+        <div class="panel-footer">
+            <div class="row">
+                <div class="col-sm-offset-6 col-sm-3">
+                    <?php echo CHtml::link(CBoot::fa('undo').' Cancelar', ['matricula/inicio'], ['class' => 'btn btn-primary btn-block']); ?>
+                </div>
+                <div class="col-sm-3">
+                    <?php echo CBoot::boton(CBoot::fa('save') .' '. ($modelo->nuevo? 'Guardar' : 'Actualizar'), 'success', ['class' => 'btn-block', 'id' => 'btn-send']); ?>
+                </div>
+            </div>        
         </div>
-        <div class="form-group">                
-            <label class="control-label">Categoría <span id="cat-data" class="label label-default">0 / 0</span></label>
-            <?php echo $formulario->lista($modelo, 'categoria_id', $categorias, ['defecto' => 'Seleccionar una categoría']) ?>
-        </div>
-    </div>
-    <div class="panel-footer">
-        <div class="row">
-            <div class="col-sm-offset-6 col-sm-3">
-                <?php echo CHtml::link(CBoot::fa('undo').' Cancelar', ['matricula/inicio'], ['class' => 'btn btn-primary btn-block']); ?>
-            </div>
-            <div class="col-sm-3">
-                <?php echo CBoot::boton(CBoot::fa('save') .' '. ($modelo->nuevo? 'Guardar' : 'Actualizar'), 'success', ['class' => 'btn-block', 'id' => 'btn-send']); ?>
-            </div>
-        </div>        
     </div>
 </div>
-
 <?php $formulario->cerrar(); ?>
 <script>
     jQuery(function(){

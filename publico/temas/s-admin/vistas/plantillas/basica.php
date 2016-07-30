@@ -20,7 +20,6 @@ Sis::Recursos()->recursoCss(['url' => $url . "/css/calendar.css"]);
 Sis::Recursos()->recursoCss(['url' => $url . "/css/style.css"]);
 Sis::Recursos()->recursoCss(['url' => $url . "/css/icons.css"]);
 Sis::Recursos()->recursoCss(['url' => $url . "/css/generics.css"]);
-Sis::Recursos()->css('estilos');
 Sis::Recursos()->recursoJs(['url' => $url . "/js/jquery.easing.1.3.js"]);
 Sis::Recursos()->recursoJs(['url' => $url . "/js/charts/jquery.flot.js"]);
 Sis::Recursos()->recursoJs(['url' => $url . "/js/charts/jquery.flot.time.js"]);
@@ -36,6 +35,7 @@ Sis::Recursos()->recursoJs(['url' => $url . "/js/scroll.min.js"]);
 Sis::Recursos()->recursoJs(['url' => $url . "/js/calendar.min.js"]);
 Sis::Recursos()->recursoJs(['url' => $url . "/js/feeds.min.js"]);
 Sis::Recursos()->recursoJs(['url' => $url . "/js/functions.js"]);
+Sis::Recursos()->css('estilos');
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -117,6 +117,7 @@ Sis::Recursos()->recursoJs(['url' => $url . "/js/functions.js"]);
             'elementos' => [
                 ['texto' => '', 'url' => ['principal/inicio'], 'fa' => 'home'],
                 ['texto' => 'Formación', 'fa' => 'soccer-ball-o', 'elementos' => [
+                    ['texto' => 'Categorías de deportistas', 'url' => ['categoria/inicio']],
                     ['texto' => 'Objetivos', 'url' => ['objetivo/inicio']],
                     ['texto' => 'Planes de Trabajo', 'url' => ['PlanTrabajo/inicio']],
                     ['texto' => 'Matriculas', 'url' => ['Matricula/inicio']],
