@@ -1,20 +1,21 @@
 <?php 
+    $this->tituloPagina = "Listar Módulos";
     $this->migas = [
         'Home' => ['principal/inicio'],
-        'Listar EquiposTorneos'
+        'Listar Modulos'
     ];
     
     $this->opciones = [
         'elementos' => [
-            'Crear' => ['EquipoTorneo/crear'],
+            'Registrar' => ['Modulo/crear'],
         ]
     ];
 ?>
 
 <?= $this->complemento('!siscoms.bootstrap3.CBGrid', [
-    'modelo' => 'EquipoTorneo',
-    # id_et, equipo_id, torneo_id
-    'columnas' => 'id_et, equipo_id, torneo_id',
+    'modelo' => 'Modulo',
+    # id, nombre, descripcion
+    'columnas' => 'nombre, descripcion',
     'opciones' => true,
     'paginacion' => 10,
 ]) ?>

@@ -1,8 +1,9 @@
 <?php 
+    $this->tituloPagina = "Registrar Ruta";
     $this->migas = [
         'Home' => ['principal/inicio'],
         'Listar Rutas' => ['Ruta/inicio'],        
-        'Crear'
+        'Registrar'
     ];
     
     $this->opciones = [
@@ -12,5 +13,5 @@
     ];    
 ?>
 <div class="col-sm-12">    
-    <?php echo $this->mostrarVistaP('_formulario', ['modelo' => $modelo]); ?>
+    <?php echo $this->mostrarVistaP('_formulario', ['modelo' => $modelo, 'modulos'=>$modulos]); ?>
 </div>

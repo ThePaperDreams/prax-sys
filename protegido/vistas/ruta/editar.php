@@ -1,4 +1,5 @@
 <?php 
+    $this->tituloPagina = "Actualizar Ruta";
     $this->migas = [
         'Home' => ['principal/inicio'],
         'Listar Rutas' => ['Ruta/inicio'],        
@@ -8,10 +9,10 @@
     $this->opciones = [
         'elementos' => [
             'Listar' => ['Ruta/inicio'],
-            'Crear' => ['Ruta/crear'],
+            'Registrar' => ['Ruta/crear'],
         ]
     ];    
 ?>
 <div class="col-sm-12">    
-    <?php echo $this->mostrarVistaP('_formulario', ['modelo' => $modelo]); ?>
+    <?php echo $this->mostrarVistaP('_formulario', ['modelo' => $modelo, 'modulos'=>$modulos]); ?>
 </div>

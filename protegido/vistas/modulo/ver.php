@@ -1,16 +1,16 @@
 <?php
-$this->tituloPagina = "Ver Ruta";
+$this->tituloPagina = "Ver Módulo";
 $this->migas = [
     'Home' => ['principal/inicio'],
-    'Listar Rutas' => ['Ruta/inicio'],
+    'Listar Modulos' => ['Modulo/inicio'],
     'Ver'
 ];
 
 $this->opciones = [
     'elementos' => [
-        'Listar' => ['Ruta/inicio'],
-        'Registrar' => ['Ruta/crear'],
-        'Actualizar' => ['Ruta/editar', 'id' => $modelo->id_ruta],
+        'Listar' => ['Modulo/inicio'],
+        'Registrar' => ['Modulo/crear'],
+        'Actualizar' => ['Modulo/editar', 'id' => $modelo->id],
     ]
 ];
 ?>
@@ -26,15 +26,10 @@ $this->opciones = [
                     <td><?php echo $modelo->nombre; ?></td>
                 </tr>
                 <tr>
-                    <th><?php echo $modelo->obtenerEtiqueta('ruta') ?></th>
-                    <td><?php echo $modelo->ruta; ?></td>
-                </tr>
-                <tr>
-                    <th><?php echo $modelo->obtenerEtiqueta('modulo_id') ?></th>
-                    <td><?php echo $modelo->Modulo->nombre; ?></td>
+                    <th><?php echo $modelo->obtenerEtiqueta('descripcion') ?></th>
+                    <td><?php echo $modelo->descripcion; ?></td>
                 </tr>
             </tbody>
         </table>
-
     </div>
 </div>

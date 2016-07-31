@@ -2,13 +2,16 @@
 $formulario = new CBForm(['id' => 'form-deportistas']);
 $formulario->abrir();
 ?>
+<div class="tile p-15">
 <div class="row">
+    
     <div class="col-sm-6">
         <?php echo $formulario->lista($modelo, 'tipo_documento_id', $tiposIdentificaciones, ['label' => true, 'group' => true, 'defecto' => 'Tipo de documento']) ?>
     </div>
     <div class="col-sm-6">
         <?php echo $formulario->campoNumber($modelo, 'identificacion', ['label' => true, 'group' => true, 'autofocus' => true, 'min' => '0']) ?>
     </div>
+    
 </div>
 
 <div class="row">
@@ -58,13 +61,13 @@ $formulario->abrir();
 
 <div class="row">
     <div class="col-sm-4">
-        <?php echo $formulario->lista($modelo2, 'id_acudiente', $acudientes, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un Acudiente']) ?>
+        <?php echo $formulario->lista($modelo2, 'id_acudiente', $acudientes, ['label' => true, 'group' => true, 'defecto' => 'Acudiente']) ?>
     </div>
     <div class="col-sm-2">
         <?php echo CBoot::boton(CBoot::fa('plus') . ' Agregar', 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'id' => 'btn-addAcu']) ?>
     </div>
     <div class="col-sm-4">
-        <?php echo $formulario->lista($modelo3, 'id_tipo', $tiposDocumentos, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un Tipo Documento']) ?>
+        <?php echo $formulario->lista($modelo3, 'id_tipo', $tiposDocumentos, ['label' => true, 'group' => true, 'defecto' => 'Tipo de documento']) ?>
     </div>
     <div class="col-sm-2">
         <?php echo CBoot::boton(CBoot::fa('plus') . ' Agregar', 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'id' => 'btn-addDoc']) ?>
@@ -146,6 +149,7 @@ $formulario->abrir();
         <?php echo CBoot::boton(CBoot::fa('save') . ' ' . ($modelo->nuevo ? 'Guardar' : 'Actualizar'), 'success', ['class' => 'btn-block']); ?>
     </div>
 </div>
+    </div>
 <?php $formulario->cerrar(); ?>
 <script>
     $(function () {

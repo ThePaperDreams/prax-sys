@@ -7,10 +7,10 @@ $formulario->abrir();
 
 <div class="row">
     <div class="col-sm-9">
-        <?php echo $formulario->lista($modelo2, 'id_ruta', $rutas, ['label' => true, 'group' => true, 'autofocus' => true, 'defecto'=>'Seleccione una Ruta']) ?>
+        <?php echo $formulario->lista($ruta, 'id_ruta', $rutas, ['label' => true, 'group' => true, 'autofocus' => true, 'defecto'=>'']) ?>
     </div>
     <div class="col-sm-3">
-        <?php echo CBoot::boton('Agregar Ruta ' . CBoot::fa('location-arrow'), 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'id' => 'btn-addRut']) ?>
+        
     </div>
 </div>
 
@@ -21,6 +21,45 @@ $formulario->abrir();
 </div>
 
 <div class="row">
+    <div class="col-sm-6">
+        <?php echo $formulario->lista($modulo, 'id', $modulos, ['label' => true, 'group' => true, 'autofocus' => true, 'defecto'=>'']) ?>
+    </div>
+    <div class="col-sm-6">
+<div class="block-area" id="check">
+    <h3 class="block-title">Permisos</h3>
+    <!--<p>Default Checkbox</p>-->
+    <div class="checkbox m-b-5">
+        <label>
+            <input type="checkbox" checked>
+            This is an awesome sample Checkbox
+        </label>
+    </div>
+    <div class="clearfix"></div>
+    <div class="checkbox m-b-5">
+        <label>
+            <input type="checkbox">
+            This is another awesome sample Checkbox
+        </label>
+    </div>
+    <div class="clearfix"></div>
+    <div class="checkbox m-b-5">
+        <label>
+            <input type="checkbox">
+            One more awesome sample Checkbox
+        </label>
+    </div>
+</div>
+    </div>
+    
+    </div>
+
+<div class="row">
+    <?php echo "<pre>"; ?>
+    <?php var_dump($rutt); ?>
+</div>
+
+
+<div class="row">
     <div class="col-sm-offset-6 col-sm-3">
         <?php echo CHtml::link(CBoot::fa('undo').' Cancelar', ['rol/inicio'], ['class' => 'btn btn-primary btn-block']); ?>
     </div>
@@ -28,29 +67,32 @@ $formulario->abrir();
         <?php echo CBoot::boton(CBoot::fa('save') .' '. ($modelo->nuevo? 'Guardar' : 'Actualizar'), 'success', ['class' => 'btn-block']); ?>
     </div>
 </div>
-
+<?php $formulario->cerrar(); ?>
 <script>
     $(function () {
-        $("#btn-addRut").click(function () {
-            var m = $("#Rutas_id_ruta option:selected");
-            if (m.html() !== "Seleccione una Ruta") {                
-                $("#lis-rut").append("<li class='list-group-item' d='" +m.val()+ "'><button onclick='borrar(this)' type='button'><i class='text-danger fa fa-trash'></i></button> "+m.html()+"</li>");
-                m.attr("disabled", "true");
-                $("#form-roles").append("<input hidden='' name='Rutas[]' id='" + m.val() + "' value='" + m.val() + "'>");
-            }
-            $("#Rutas_id_ruta").val('').attr("selected", "selected");
+        $("#Modulos_id").change(function(){
+           //alert($(this).val());
+           var id = $(this).val();
+           $.ajax({
+              type: 'post',
+              url: "<?= $url ?>",
+              data: {
+                  id: id
+              }
+           }).done(function(resp){
+               //console.log(resp);
+               //console.log(resp);
+               var r = JSON.parse(resp);
+               console.log(r);
+               console.log(resp);
+               console.log(resp[0]['"_atributos":"CBaseModelo":"private"']);               
+               //console.log(resp[0].["_atributos":"CBaseModelo":private]);
+               //resp = JSON.parse(resp);
+               //console.log(resp);
+               /*$.each(resp, function(i, v){
+                  console.log(v); 
+               });*/
+           });
         });
     });
-    function borrar(e) {
-        var d = $(e).closest('li').attr('d');
-        $("#Rutas_id_ruta option:disabled").each(function (index) {
-            if ($(this).val() === d) {
-                $(this).removeAttr("disabled");
-            }
-        });
-        $(e).closest('li').remove();
-        $("#" + d).remove();
-    }
 </script>
-
-<?php $formulario->cerrar(); ?>

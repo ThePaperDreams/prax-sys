@@ -1,8 +1,9 @@
 <?php 
+    $this->tituloPagina = "Registrar Rol";
     $this->migas = [
         'Home' => ['principal/inicio'],
         'Listar Roles' => ['Rol/inicio'],        
-        'Crear'
+        'Registrar'
     ];
     
     $this->opciones = [
@@ -12,5 +13,5 @@
     ];    
 ?>
 <div class="col-sm-12">    
-    <?php echo $this->mostrarVistaP('_formulario', ['modelo' => $modelo, 'modelo2'=>$modelo2, 'rutas'=>$rutas]); ?>
+    <?php echo $this->mostrarVistaP('_formulario', ['modelo' => $modelo, 'rutt'=>$rutt, 'url' => $url, 'ruta'=>$ruta, 'modulo'=>$modulo, 'rutas'=>$rutas, 'modulos'=>$modulos]); ?>
 </div>

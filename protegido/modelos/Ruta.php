@@ -6,8 +6,10 @@
  * @property int $id_ruta
  * @property string $nombre
  * @property string $ruta
+ * @property int $modulo_id
  * 
  * Relaciones del modelo
+ * @property Modulos[] $Modulos
  */
  class Ruta extends CModelo{
  
@@ -28,17 +30,8 @@
 		'id_ruta' => ['pk'] , 
 		'nombre', 
 		'ruta', 
+		'modulo_id', 
         ];
-    }
-    
-    public function filtros() {
-        return[
-            'requeridos' => 'nombre, ruta',
-        ];
-    }
-    
-    public function getDatos(){
-        return $this->nombre . " (" . $this->ruta . ")";
     }
     
     /**
@@ -49,7 +42,8 @@
         return [
             # el formato es simple: 
             # tipo de relación | modelo con que se relaciona | campo clave foranea
-                    ];
+            	'Modulo' => [self::PERTENECE_A, 'Modulo', 'modulo_id'],
+        ];
     }
     
     /**
@@ -60,10 +54,18 @@
         return [
 		'id_ruta' => 'Ruta', 
 		'nombre' => 'Nombre', 
-		'ruta' => 'Path', 
+		'ruta' => 'Ruta', 
+		'modulo_id' => 'Módulo', 
         ];
     }
     
+    public function filtros(){
+        return [
+            'requeridos' => 'nombre,ruta,modulo_id',
+            'seguros' => '*',
+        ];
+    }
+        
     /**
      * Esta función permite listar todos los registros
      * @param array $criterio

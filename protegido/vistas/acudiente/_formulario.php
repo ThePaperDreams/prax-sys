@@ -101,10 +101,10 @@ $formulario->abrir();
 
 <div class="row">
     <div class="col-sm-offset-6 col-sm-3">
-        <?php echo CHtml::link(CBoot::fa('undo') . ' Cancelar', ['acudiente/inicio'], ['class' => 'btn btn-primary btn-block']); ?>
+        <?php echo CHtml::link(CBoot::fa('undo') . ' Cancelar', ['acudiente/inicio'], [ 'class' => 'btn btn-primary btn-block']); ?>
     </div>
     <div class="col-sm-3">
-        <?php echo CBoot::boton(CBoot::fa('save') . ' ' . ($modelo->nuevo ? 'Guardar' : 'Actualizar'), 'success', ['class' => 'btn-block']); ?>
+        <?php echo CBoot::boton(CBoot::fa('save') . ' ' . ($modelo->nuevo ? 'Guardar' : 'Actualizar'), 'success', ['id' => 'save-btn','class' => 'btn-block']); ?>
     </div>
 </div>
 <?php $formulario->cerrar(); ?>
@@ -149,9 +149,10 @@ $formulario->abrir();
         $("#form-acudientes").submit(function () {
             validarIdentificacion();
             return false;
-        });
-
-        function validarIdentificacion() {
+        });        
+    });
+    
+    function validarIdentificacion() {
             var identificacion = $("#Acudientes_identificacion");
             if (identificacion === "") {
                 return;
@@ -185,7 +186,7 @@ $formulario->abrir();
                 soundPath: '<?= Sis::UrlRecursos() ?>librerias/lobibox/sounds/',
             });
         }
-    });
+    
     function borrar(e) {
         var d = $(e).closest('li').attr('d');
         $("#TiposDocumento_id_tipo option:disabled").each(function (index) {

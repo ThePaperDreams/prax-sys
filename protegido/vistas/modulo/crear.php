@@ -1,16 +1,17 @@
 <?php 
+    $this->tituloPagina = "Registrar Módulo";
     $this->migas = [
         'Home' => ['principal/inicio'],
-        'Listar EquiposTorneos' => ['EquipoTorneo/inicio'],        
-        'Crear'
+        'Listar Modulos' => ['Modulo/inicio'],        
+        'Registrar'
     ];
     
     $this->opciones = [
         'elementos' => [
-            'Listar' => ['EquipoTorneo/inicio'],
+            'Listar' => ['Modulo/inicio'],
         ]
     ];    
 ?>
-<div class="col-sm-8">    
+<div class="col-sm-12">    
     <?php echo $this->mostrarVistaP('_formulario', ['modelo' => $modelo]); ?>
 </div>

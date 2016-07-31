@@ -53,3 +53,7 @@
     padding: 10px 40px;
     line-height: 10px;
 }
+
+.input-exception{
+    opacity: 1 !important;
+}

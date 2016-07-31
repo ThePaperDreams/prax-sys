@@ -21,21 +21,37 @@ class CtrlRol extends CControlador {
      */
     public function accionCrear() {
         $modelo = new Rol();
-        $modelo2 = new Ruta();
+        $ruta = new Ruta();
+        $modulo = new Modulo();
         if (isset($this->_p['Roles'])) {
             $modelo->atributos = $this->_p['Roles'];
             if ($modelo->guardar()) {
-                $this->asociarRutas($modelo);
+                //$this->asociarRutas($modelo);
                 $this->redireccionar('inicio');
             }
         }
+        $url = Sis::crearUrl(['Rol/modulos']);
         $this->mostrarVista('crear', ['modelo' => $modelo,
-            'modelo2' => $modelo2,
-            'rutas' => CHtml::modelolista(Ruta::modelo()->listar(), "id_ruta", "Datos"),
+            'ruta' => $ruta,
+            'modulo' => $modulo,
+            'url' => $url,
+            'rutas' => CHtml::modelolista(Ruta::modelo()->listar(), "id_ruta", "nombre"),
+            'modulos' => CHtml::modelolista(Modulo::modelo()->listar(), "id", "nombre"),
+            'rutt' => Ruta::modelo()->listar(),
         ]);
     }
+    
+    public function accionModulos(){
+        if (isset($this->_p['id'])) {
+            $criterios = ["where" => "modulo_id = '" . $this->_p['id'] . "'"];
+            $rutas = Ruta::modelo()->listar($criterios);
+            //echo "<pre>";
+            var_dump($rutas);
+            //echo json_encode($rutas);
+        }
+    }
 
-    public function asociarRutas($modelo, $rol = '') {
+    /*public function asociarRutas($modelo, $rol = '') {
         if (isset($this->_p['Rutas'])) {
             $ultrol = ($rol === '') ? $modelo->primer(["order" => "id_rol desc"])->id_rol : $rol;
             foreach ($this->_p['Rutas'] as $v) {
@@ -45,7 +61,7 @@ class CtrlRol extends CControlador {
                 $modelo2->guardar();
             }
         }
-    }
+    }*/
 
     /**
      * Esta función permite editar un registro existente

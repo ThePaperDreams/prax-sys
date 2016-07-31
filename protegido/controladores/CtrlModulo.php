@@ -1,17 +1,17 @@
 <?php
 /**
- * Este es el controlador Ruta, desde aquí se gestionan
- * todas las actividades que tengan que ver con Ruta
+ * Este es el controlador Modulo, desde aquí se gestionan
+ * todas las actividades que tengan que ver con Modulo
  * @author Jorge Alejandro Quiroz Serna <alejo.jko@gmail.com>
  * @version 1.0.0
  */
-class CtrlRuta extends CControlador{
+class CtrlModulo extends CControlador{
     
     /**
      * Esta función muestra el inicio y una tabla para listar los datos
      */
     public function accionInicio(){
-        $modelos = Ruta::modelo()->listar();        
+        $modelos = Modulo::modelo()->listar();        
         $this->mostrarVista('inicio', ['modelos' => $modelos]);
     }
     
@@ -19,17 +19,15 @@ class CtrlRuta extends CControlador{
      * Esta función permite crear un nuevo registro
      */
     public function accionCrear(){
-        $modelo = new Ruta();
-        if(isset($this->_p['Rutas'])){
-            $modelo->atributos = $this->_p['Rutas'];
+        $modelo = new Modulo();
+        if(isset($this->_p['Modulos'])){
+            $modelo->atributos = $this->_p['Modulos'];
             if($modelo->guardar()){
                 # lógica para guardado exitoso
                 $this->redireccionar('inicio');
             }
         }
-        $this->mostrarVista('crear', ['modelo' => $modelo,
-            'modulos' => CHtml::modelolista(Modulo::modelo()->listar(), "id", "nombre"),
-            ]);
+        $this->mostrarVista('crear', ['modelo' => $modelo]);
     }
     
     /**
@@ -38,16 +36,14 @@ class CtrlRuta extends CControlador{
      */
     public function accionEditar($pk){
         $modelo = $this->cargarModelo($pk);
-        if(isset($this->_p['Rutas'])){
-            $modelo->atributos = $this->_p['Rutas'];
+        if(isset($this->_p['Modulos'])){
+            $modelo->atributos = $this->_p['Modulos'];
             if($modelo->guardar()){
                 # lógica para guardado exitoso
                 $this->redireccionar('inicio');
             }
         }
-        $this->mostrarVista('editar', ['modelo' => $modelo,
-            'modulos' => CHtml::modelolista(Modulo::modelo()->listar(), "id", "nombre"),
-            ]);
+        $this->mostrarVista('editar', ['modelo' => $modelo]);
     }
     
     /**
@@ -76,9 +72,9 @@ class CtrlRuta extends CControlador{
     /**
      * Esta función permite cargar un modelo usando su primary key
      * @param int $pk
-     * @return Ruta
+     * @return Modulo
      */
     private function cargarModelo($pk){
-        return Ruta::modelo()->porPk($pk);
+        return Modulo::modelo()->porPk($pk);
     }
 }
