@@ -82,7 +82,10 @@ class Salida extends CModelo {
             return CHtml::e('span', 'Activo', ['class' => 'label label-success']);
         } else if ($this->estado == 0) {
             return CHtml::e('span', 'Inactivo', ['class' => 'label label-danger']);
-        } 
+        }  else if ($this->estado == 2) {
+            return CHtml::e('span', 'Devuelto', ['class' => 'label label-info']);
+        }
+        
     }
 
     /**
