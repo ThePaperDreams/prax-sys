@@ -26,6 +26,7 @@ $this->tituloPagina="Salida de implementos";
     ],
     'opciones' => [
         ["i"=>"eye","url"=>"Salida/ver&{id:pk}"],
+        ['i' => 'exchange', 'url' => 'Salida/entregar&{id:pk}', 'visible' => '$m->estado == 1'],
         ['i' => 'refresh', 'url' => 'Salida/anular&{id:pk}', 'visible' => '$m->estado == 1'],
     ],
     'paginacion' => 10,

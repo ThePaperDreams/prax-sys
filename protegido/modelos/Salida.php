@@ -13,6 +13,7 @@
  * @property tinyint $estado
  * 
  * Relaciones del modelo
+ * @property SalidaImplemento[] $Detalles
  */
 class Salida extends CModelo {
 

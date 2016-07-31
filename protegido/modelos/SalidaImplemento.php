@@ -9,6 +9,7 @@
  * @property int $implemento_id
  * @property int $cantidad
  * @property string $detalle
+ * @property int $cantidad_devuelta 
  * 
  * Relaciones del modelo
  * @property Implemento $Implemento
@@ -35,6 +36,7 @@ class SalidaImplemento extends CModelo {
             'implemento_id',
             'cantidad' => ['def' => '0'],
             'detalle',
+            'cantidad_devuelta',
         ];
     }
 
@@ -68,7 +70,7 @@ class SalidaImplemento extends CModelo {
     /**
      * Esta función permite listar todos los registros
      * @param array $criterio
-     * @return Salidas_implemento
+     * @return SalidaImplemento
      */
     public function listar($criterio = array()) {
         return parent::listar($criterio);
@@ -77,7 +79,7 @@ class SalidaImplemento extends CModelo {
     /**
      * Esta función permite obtener un registro por su primary key
      * @param int $pk
-     * @return Salidas_implemento
+     * @return SalidaImplemento
      */
     public function porPk($pk) {
         return parent::porPk($pk);
@@ -86,7 +88,7 @@ class SalidaImplemento extends CModelo {
     /**
      * Esta función permite obtener el primer registro
      * @param array $criterio
-     * @return Salidas_implemento
+     * @return SalidaImplemento
      */
     public function primer($criterio = array()) {
         return parent::primer($criterio);
@@ -95,7 +97,7 @@ class SalidaImplemento extends CModelo {
     /**
      * Esta función retorna una instancia del modelo tbl_salidas_implementos
      * @param string $clase
-     * @return Salidas_implemento
+     * @return SalidaImplemento
      */
     public static function modelo($clase = __CLASS__) {
         return parent::modelo($clase);
