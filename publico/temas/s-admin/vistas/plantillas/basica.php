@@ -141,6 +141,10 @@ Sis::Recursos()->css('estilos');
                         ['texto' => 'Roles', 'url' => ['Rol/inicio']],
                         ['texto' => 'Usuarios', 'url' => ['Usuario/inicio']]
                 ]],
+                ['texto' => 'Pagos', 'fa' => 'money', 'elementos' => [
+                    ['texto' => 'Registrar pago', 'url' => ['Pago/registrar']],
+                    ['texto' => 'Consultar pagos', 'url' => ['Pago/consultar']],
+                ]],
                 ['texto' => 'Configuración', 'fa' => 'cogs', 'elementos' => [
                         ['texto' => 'Rutas', 'url' => ['Ruta/inicio']],
                         ['texto' => 'Opciones de Menú', 'url' => ['Opmenu/inicio']],

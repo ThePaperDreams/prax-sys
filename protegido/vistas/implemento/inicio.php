@@ -26,8 +26,8 @@ $this->tituloPagina="Implementos";
     ],
     'opciones' => [
         ['i' => 'eye', 'url' => 'Implemento/ver&{id:pk}'],
-        ['i' => 'pencil', 'url' => 'Implemento/editar&{id:pk}'],
-        ['i' => 'refresh', 'url' => 'Implemento/anular&{id:pk}'],
+        ['i' => 'pencil', 'url' => 'Implemento/editar&{id:pk}', 'visible' => '$m->getEnPrestamo() == false'],
+        ['i' => 'refresh', 'url' => 'Implemento/anular&{id:pk}', 'visible' => '$m->getEnPrestamo() == false'],
     ],
     'paginacion' => 10,
 ]) ?>
