@@ -5,7 +5,7 @@ $formulario->abrir();
 ?>
 
 <?php echo $formulario->inputAddon($modelo, 'titulo', 'texto', ['label' => true, 'group' => true, 'autofocus' => true], 'font') ?>
-<?php echo $formulario->areaTexto($modelo, 'contenido', ['label' => true, 'group' => true]) ?>
+<?php echo $formulario->areaTexto($modelo, 'contenido', ['label' => true, 'group' => true, 'class' => 'textarea-content']) ?>
 <div class="form-group">
     <label>Tipos de Publicación</label>
     <div class="input-group">  
@@ -41,14 +41,9 @@ $formulario->abrir();
     });
     $( "#datepicker2" ).datepicker({
         dateFormat: 'yy-mm-dd',
-    });
-    $('#timepicker').timepicker({
-        showLeadingZero: false,
-        showPeriodLabels: false,
-    });
+    });    
+    $('.textarea-content').trumbowyg();
  });
-  
-  
- </script>
+</script> 
 
 <?php $formulario->cerrar(); ?>

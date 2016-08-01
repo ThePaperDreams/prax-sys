@@ -23,7 +23,9 @@ $formulario->abrir();
 <script>
     $(function(){
         $("#form-implementos").submit(function(){
-            validarNombre();
+            if(maxMin()){
+                validarNombre();
+            }
             return false;
         });
         
@@ -41,7 +43,7 @@ $formulario->abrir();
                 success: function(respuesta){
                     if(respuesta.error == true){
                         mostrarAlert("error", "Ya existe ese nombre");
-                    }
+                    }else{
                         document.getElementById("form-implementos").submit();
                     }
                 }
@@ -54,10 +56,26 @@ $formulario->abrir();
                 showClass: 'bounceInRight',
                 hideClass: 'bounceOutRight',
                 msg:msg,
-                delay: 8000,
+                delay: 5000,
                 soundPath: '<?= Sis::UrlRecursos() ?>librerias/lobibox/sounds/',
             });
         }
+        
+        function maxMin(){
+        var maximo = $('#Implementos_maximo_unidades').val();
+        var current = $('#Implementos_unidades').val();
+        var minimo = $('#Implementos_minimo_unidades').val();
+        if(maximo<current){
+            mostrarAlert('error','Unidades no puede superar al maximo');
+            if(minimo>maximo){
+            mostrarAlert('error','Unidades minimas no pueden superar al maximo');
+        }
+            return false;
+        }else{
+            return true;
+        }
+        
+    }
         
     });
 </script>

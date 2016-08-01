@@ -34,6 +34,12 @@ class DeportistaAcudiente extends CModelo {
         ];
     }
 
+    public function filtros() {
+        return [
+            'requeridos' => 'acudiente_id, deportista_id',
+        ];
+    }
+
     /**
      * Esta función retorna las relaciones con otros modelos
      * @return array

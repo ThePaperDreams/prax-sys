@@ -54,20 +54,6 @@ class CtrlSalida extends CControlador{
         $usuarios = CHtml::modeloLista(Usuario::modelo()->listar(), "id_usuario", "nombres");
         $this->mostrarVista('crear', ['modelo' => $modelo, 'usuarios' => $usuarios]);
     }
-    
-    public function accionAnular($pk) {
-        $modelo = $this->cargarModelo($pk);
-        $modelo->estado = !$modelo->estado;
-        if ($modelo->guardar()) {
-            Sis::Sesion()->flash("alerta", [
-                'msg' => 'Modificación exitosa',
-                'tipo' => 'success',
-            ]);
-        } else {
-            # lógica para error al borrar
-        }
-        $this->redireccionar('inicio');
-    }
 
     /**
      * Esta función permite ver detalladamente un registro existente
@@ -76,6 +62,22 @@ class CtrlSalida extends CControlador{
     public function accionVer($pk){
         $modelo = $this->cargarModelo($pk);
         $this->mostrarVista('ver', ['modelo' => $modelo]);
+    }
+    
+     public function accionAnular($pk) {
+        $modelo = $this->cargarModelo($pk);
+        $modelo->estado = $modelo->estado ==1 ? 0:1;
+        
+        if ($modelo->guardar()) {
+                Sis::Sesion()->flash("alerta", [
+                    'msg' => 'Cambio exitoso',
+                    'tipo' => 'success',
+                ]);
+        } else {
+            
+        }
+        
+        $this->redireccionar('inicio');
     }
 
     

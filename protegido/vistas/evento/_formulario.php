@@ -3,9 +3,9 @@ $formulario = new CBForm(['id' => 'form-eventos']);
 $formulario->abrir();
 ?>
 <?php echo $formulario->campoTexto($modelo, 'titulo', ['label' => true, 'group' => true, 'autofocus' => true]) ?>
-<?php echo $formulario->campoTexto($modelo, 'contenido', ['label' => true, 'group' => true]) ?>
-<?php echo $formulario->campoTexto($modelo, 'fecha_publicacion', ['label' => true, 'group' => true]) ?>
-<?php echo $formulario->campoTexto($modelo, 'fecha_disponibilidad', ['label' => true, 'group' => true]) ?>
+<?php echo $formulario->areaTexto($modelo, 'contenido', ['label' => true, 'group' => true, 'class' => 'textarea-content']) ?>
+<?php echo $formulario->campoTexto($modelo, 'fecha_publicacion', ['label' => true, 'group' => true, 'id' => 'datepicker']) ?>
+<?php echo $formulario->campoTexto($modelo, 'fecha_disponibilidad', ['label' => true, 'group' => true, 'id' => 'datepicker']) ?>
 <div class="form-group">
     <label>Tipos de Eventos</label>
     <div class="input-group">  
@@ -32,5 +32,17 @@ $formulario->abrir();
         <?php echo CBoot::boton(CBoot::fa('save') .' '. ($modelo->nuevo? 'Guardar' : 'Actualizar'), 'success', ['class' => 'btn-block']); ?>
     </div>
 </div>
+
+<script>
+  $(function() {
+    $( "#datepicker" ).datepicker({
+        dateFormat: 'yy-mm-dd',
+    });
+    $( "#datepicker2" ).datepicker({
+        dateFormat: 'yy-mm-dd',
+    });    
+    $('.textarea-content').trumbowyg();
+ });
+</script>
 
 <?php $formulario->cerrar(); ?>

@@ -14,7 +14,9 @@ $this->tituloPagina="Salida de implementos";
 
 <?= $this->complemento('!siscoms.bootstrap3.CBGrid', [
     'modelo' => 'Salida',
-    # id_salida, cantidad, fecha_realizacion, fecha_entrega, descripcion, responsable_id, estado
+    'criterios' => [
+        'order' => 'estado = 1 DESC'
+    ],
     'columnas' => [
         "fecha_realizacion",
         "fecha_entrega",
@@ -24,7 +26,7 @@ $this->tituloPagina="Salida de implementos";
     ],
     'opciones' => [
         ["i"=>"eye","url"=>"Salida/ver&{id:pk}"],
-        ['i' => 'refresh', 'url' => 'Salida/anular&{id:pk}'],
+        ['i' => 'refresh', 'url' => 'Salida/anular&{id:pk}', 'visible' => '$m->estado == 1'],
     ],
     'paginacion' => 10,
 ]) ?>
