@@ -142,5 +142,21 @@ class Matricula extends CModelo {
     public static function modelo($clase = __CLASS__) {
         return parent::modelo($clase);
     }
+    
+    /**
+     * 
+     * @return Deportista[]
+     */
+    public static function listarDeportistas(){
+        $matriculas = self::modelo()->listar([
+            'where' => 'estado = 1',
+        ]);
+        
+        $deportistas = [];
+        foreach ($matriculas AS $m){
+            $deportistas[] = $m->Deportista;
+        }
+        return $deportistas;
+    }
 
 }

@@ -1,7 +1,9 @@
 <?php
 $formulario = new CBForm(['id' => 'form-entradas']);
 $formulario->abrir();
+
 ?>
+<div class="tile p-15">
 <?php echo $formulario->lista($modelo, 'responsable_id', $usuarios, ['label' => true, 'group' => true, 'autofocus' => true, 'defecto' => 'Responsable id']) ?>
 <?php echo $formulario->areaTexto($modelo, 'descripcion', ['label' => true, 'group' => true]) ?>
 
@@ -81,3 +83,4 @@ $formulario->abrir();
     }
 </script>
 <?php $formulario->cerrar(); ?>
+</div>

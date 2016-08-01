@@ -2,7 +2,7 @@
 $formulario = new CBForm(['id' => 'form-implementos']);
 $formulario->abrir();
 ?>
-
+<div class="tile p-15">
 <?php echo $formulario->lista($modelo, 'categoria_id', $elementos, ['label' => true, 'group' => true, 'autofocus' => true, 'defecto' => 'Selecciona una categoría']) ?>
 <?php echo $formulario->campoTexto($modelo, 'nombre', ['label' => true, 'group' => true]) ?>
 <?php echo $formulario->areaTexto($modelo, 'descripcion', ['label' => true, 'group' => true]) ?>
@@ -20,6 +20,7 @@ $formulario->abrir();
 </div>
 
 <?php $formulario->cerrar(); ?>
+    </div>
 <script>
     $(function(){
         $("#form-implementos").submit(function(){

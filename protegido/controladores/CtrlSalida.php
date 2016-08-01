@@ -80,6 +80,56 @@ class CtrlSalida extends CControlador{
         $this->redireccionar('inicio');
     }
 
+    public function accionEntregar($pk){        
+        $salida = Salida::modelo()->porPk($pk);        
+        if(isset($this->_p['implementos'])){
+            $this->guardarEntrega($pk);
+        }
+        
+        $detalles = $salida->Detalles;
+
+        $this->vista('entregar', [
+            'modelo' => $salida,
+            'detalle' => $detalles,
+        ]);
+    }
+    
+    private function guardarEntrega($id){
+        $devoluciones = $this->_p['implementos']; # recibimos las devoluciones que envian en el formulario
+        $error = false;        # variable para controlar errores
+//        Sis::apl()->bd->begin(); # inicia la transacción
+        # recorremos las devoluciones
+        foreach($devoluciones['id'] AS $k=>$d){
+            $detalle = SalidaImplemento::modelo()->porPk($d); # instanciamos el detalle. Recordemos que un detalle tiene la información de el producto y cuantas unidades se prestaron
+            $detalle->cantidad_devuelta = $devoluciones['cantidad'][$k];
+            $error = !$detalle->guardar(); # si ocurrio un error al guardar el detalle
+            if($error == true){ break;} # si courrio error no continuamos con el ciclo
+            
+            $unidades = $detalle->Implemento->unidades; # capturamos las unidades actuales de ese implemento
+            $detalle->Implemento->unidades = intval($unidades) + intval($devoluciones['cantidad'][$k]); # actualizamos las unidades del implemento
+            $error = !$detalle->Implemento->guardar();
+            if($error == true){ break;}
+        }
+        # si no hubo error
+        if(!$error){
+            $salida = Salida::modelo()->porPk($id); # instanciamos la salida
+            $salida->estado = 2;
+            $salida->guardar();
+//            Sis::apl()->bd->commit();
+            Sis::Sesion()->flash("alerta", [
+                'msg' => 'Se registró correctamente la entrega',
+                'tipo' => 'success',
+            ]);
+            $this->redireccionar('inicio');
+        } else {
+            Sis::Sesion()->flash("alerta", [
+                'msg' => 'Error al registrar la entrega',
+                'tipo' => 'error',
+            ]);
+//            Sis::apl()->bd->rollback();
+        }
+        Sis::fin();
+    }
     
     /**
      * Esta función permite cargar un modelo usando su primary key

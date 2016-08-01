@@ -14,7 +14,7 @@
  * Relaciones del modelo
  */
  class Implemento extends CModelo{
- 
+     private $_enPrestamo = null;
     /**
      * Esta función retorna el nombre de la tabla representada por el modelo
      * @return string
@@ -75,7 +75,9 @@
         ];
     }
     public function getEtiquetaEstado(){
-        if($this->estado_id == 1){
+        if($this->getEnPrestamo()){
+            return CHtml::e('span', 'En préstamo', ['class' => 'label label-info']);
+        } else if($this->estado_id == 1){
             return CHtml::e('span', 'Activo', ['class' => 'label label-success']);
         } else if($this->estado_id == 0){
             return CHtml::e('span', 'Inactivo', ['class' => 'label label-danger']);
@@ -83,6 +85,21 @@
             return CHtml::e('span', 'Agotado', ['class' => 'label label-default']);
         }
     }
+    
+    public function getEnPrestamo(){
+        if($this->_enPrestamo === null){            
+            $sql = "SELECT
+                            t.id_si
+                    FROM
+                            tbl_salidas_implementos t
+                            JOIN tbl_salidas t2 ON t2.id_salida = t.salida_id
+                    WHERE t.implemento_id = $this->id_implemento AND t2.estado = 1;";
+            $resultados = Sis::apl()->bd->ejecutarComando($sql);
+            $this->_enPrestamo = count($resultados) > 0;
+        } 
+        return $this->_enPrestamo;
+    }
+    
     /**
      * Esta función permite listar todos los registros
      * @param array $criterio
