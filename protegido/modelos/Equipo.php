@@ -35,7 +35,6 @@
 		'estado' => ['def' => '1'] , 
 		'posicion', 
 		'entrenador_id', 
-		'deportista_id', 
         ];
     }
     
@@ -48,6 +47,7 @@
             # el formato es simple: 
             # tipo de relación | modelo con que se relaciona | campo clave foranea
             'Deportista' => [self::PERTENECE_A, 'Deportista', 'deportista_id'],
+            'Entrenador' => [self::PERTENECE_A, 'Usuario', 'usuario_id'],
         ];
     }
     
@@ -68,10 +68,32 @@
     }
     public function filtros() {
         return [
-            'requeridos' => 'cupo_maximo, cupo_minimo, estado, deportista_id,entrenador_id',
+            'requeridos' => 'cupo_maximo, cupo_minimo, entrenador_id',
             'seguros' => '*',
         ];
     }
+    
+    public function getEstadoEtiqueta(){
+        if($this->estado == 0){
+            return CHtml::e('span', 'Inactivo', ['class' => 'label label-danger']);
+        } else {
+            return CHtml::e('span', 'Activo', ['class' => 'label label-success']);
+        }
+    }    
+    
+    public function getTotalJugadores(){
+        return count($this->Deportista);
+    }
+    
+    public function getMDeportistas(){
+        $deportista = $this->Deportista;
+        $jugadores = [];
+        foreach ($deportista AS $d){
+            $jugadores[] = $d->jugador;
+        }
+        return $jugadores;
+    }
+    
     /**
      * Esta función permite listar todos los registros
      * @param array $criterio
