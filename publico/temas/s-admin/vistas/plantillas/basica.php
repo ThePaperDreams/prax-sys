@@ -136,6 +136,10 @@ Sis::Recursos()->css('estilos');
                     ['texto' => 'Entradas', 'url' => ['entrada/inicio']],
                     ['texto' => 'Salidas', 'url' => ['salida/inicio']],
                 ]],                
+                ['texto' => 'Pagos', 'fa' => 'cubes', 'elementos' => [
+                    ['texto' => 'Pagos', 'url' => ['Pago/pagosPendientes']],
+                    ['texto' => 'Implementos', 'url' => ['pago/consultar']],
+                ]],
                 ['texto' => 'Torneos', 'fa' => 'trophy', 'elementos' => [
                     ['texto' => 'Torneos', 'url' => ['torneo/inicio']],
                     ['texto' => 'Equipos', 'url' => ['Equipo/inicio']],                    
