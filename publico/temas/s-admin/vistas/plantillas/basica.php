@@ -136,7 +136,7 @@ Sis::Recursos()->css('estilos');
                     ['texto' => 'Entradas', 'url' => ['entrada/inicio']],
                     ['texto' => 'Salidas', 'url' => ['salida/inicio']],
                 ]],                
-                ['texto' => 'Pagos', 'fa' => 'cubes', 'elementos' => [
+                ['texto' => 'Pagos', 'fa' => 'money', 'elementos' => [
                     ['texto' => 'Pagos', 'url' => ['Pago/pagosPendientes']],
                     ['texto' => 'Implementos', 'url' => ['pago/consultar']],
                 ]],
