@@ -19,6 +19,7 @@ class CtrlCategoria extends CControlador{
      * Esta función permite crear un nuevo registro
      */
     public function accionCrear(){
+        $this->validarCategoria();
         $modelo = new Categoria();
         if(isset($this->_p['Categorias'])){
             $modelo->atributos = $this->_p['Categorias'];
@@ -30,10 +31,11 @@ class CtrlCategoria extends CControlador{
                 $this->redireccionar('inicio');
             }
         }
-        
+        $url = Sis::crearUrl(['categoria/crear']);
         $this->mostrarVista('crear', [
             'modelo' => $modelo,
-            'entrenadores' => CHtml::modeloLista(Usuario::modelo()->listar(), "id_usuario", "nombre"),
+            'entrenadores' => CHtml::modeloLista(Usuario::modelo()->listar(), "id_usuario", "nombres"),
+            'url' => $url,
         ]);
     }
     
@@ -42,8 +44,9 @@ class CtrlCategoria extends CControlador{
      * @param int $pk
      */
     public function accionEditar($pk){
+        $this->validarCategoria($pk);
         $modelo = $this->cargarModelo($pk);
-        if(isset($this->_p['Categorias'])){            
+        if(isset($this->_p['Categorias'])){
             $modelo->atributos = $this->_p['Categorias'];
             if($modelo->guardar()){
                 Sis::Sesion()->flash("alerta", [
@@ -53,10 +56,29 @@ class CtrlCategoria extends CControlador{
                 $this->redireccionar('inicio');
             }
         }
+        
+        $url = Sis::crearUrl(['categoria/editar', 'id' => $pk]);
         $this->mostrarVista('editar', [
             'modelo' => $modelo,
-            'entrenadores' => CHtml::modeloLista(Usuario::modelo()->listar(), "id_usuario", "nombre"),
+            'entrenadores' => CHtml::modeloLista(Usuario::modelo()->listar(), "id_usuario", "nombres"),
+            'url' => $url,
         ]);
+    }
+    
+    private function validarCategoria($id = null){
+        if(isset($this->_p['nombre'])){            
+            $nombre = $this->_p['nombre'];
+            $criterio = $id === null? 
+                     "LOWER(nombre)=LOWER('$nombre')" : 
+                    "id_categoria <> $id AND LOWER(nombre)=LOWER('$nombre')";
+            $model = Categoria::modelo()->listar([
+                'where' => $criterio,
+            ]);
+            $this->json([
+                'existe' => count($model) > 0,
+            ]);
+            Sis::fin();
+        }        
     }
     
     /**

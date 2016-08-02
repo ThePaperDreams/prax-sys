@@ -117,10 +117,17 @@ Sis::Recursos()->css('estilos');
             'brand' => Sis::apl()->nombre,
             'elementos' => [
                 ['texto' => '', 'url' => ['principal/inicio'], 'fa' => 'home'],
+                ['texto' => 'Deportistas', 'fa' => 'male', 'elementos' => [
+                        ['texto' => 'Acudientes', 'url' => ['Acudiente/inicio']],
+                        ['texto' => 'Deportistas', 'url' => ['Deportista/inicio']],
+                        ['texto' => 'Matriculas', 'url' => ['Matricula/inicio']],
+                        ['texto' => 'Lista de espera', 'url' => ['Deportista/verListaEspera']],
+                        ['texto' => 'Documentos', 'url' => ['Documento/inicio']]
+                ]],
                 ['texto' => 'Formación', 'fa' => 'soccer-ball-o', 'elementos' => [
+                    ['texto' => 'Categorías de deportistas', 'url' => ['categoria/inicio']],
                     ['texto' => 'Objetivos', 'url' => ['objetivo/inicio']],
                     ['texto' => 'Planes de Trabajo', 'url' => ['PlanTrabajo/inicio']],
-                    ['texto' => 'Matriculas', 'url' => ['Matricula/inicio']],
                     ['texto' => 'Asistencia', 'url' => ['asistencia/inicio']],
                 ]],
                 ['texto' => 'Control existencias', 'fa' => 'cubes', 'elementos' => [
@@ -128,12 +135,7 @@ Sis::Recursos()->css('estilos');
                     ['texto' => 'Implementos', 'url' => ['implemento/inicio']],
                     ['texto' => 'Entradas', 'url' => ['entrada/inicio']],
                     ['texto' => 'Salidas', 'url' => ['salida/inicio']],
-                ]],
-                ['texto' => 'Deportistas/Acudientes', 'fa' => 'male', 'elementos' => [
-                        ['texto' => 'Acudientes', 'url' => ['Acudiente/inicio']],
-                        ['texto' => 'Deportistas', 'url' => ['Deportista/inicio']],
-                        ['texto' => 'Documentos', 'url' => ['Documento/inicio']]
-                ]],
+                ]],                
                 ['texto' => 'Torneos', 'fa' => 'trophy', 'elementos' => [
                     ['texto' => 'Torneos', 'url' => ['torneo/inicio']],
                     ['texto' => 'Equipos', 'url' => ['Equipo/inicio']],                    
@@ -142,16 +144,13 @@ Sis::Recursos()->css('estilos');
                         ['texto' => 'Roles', 'url' => ['Rol/inicio']],
                         ['texto' => 'Usuarios', 'url' => ['Usuario/inicio']]
                 ]],
-                ['texto' => 'Pagos', 'fa' => 'money', 'elementos' => [
-                    ['texto' => 'Registrar pago', 'url' => ['Pago/registrar']],
-                    ['texto' => 'Consultar pagos', 'url' => ['Pago/consultar']],
-                ]],
                 ['texto' => 'Configuración', 'fa' => 'cogs', 'elementos' => [
                         ['texto' => 'Rutas', 'url' => ['Ruta/inicio']],
                         ['texto' => 'Opciones de Menú', 'url' => ['Opmenu/inicio']],
                         ['texto' => 'Tipos de Documentos', 'url' => ['TipoDocumento/inicio']],
                         ['texto' => 'Estados de Deportista', 'url' => ['EstadoDeportista/inicio']],
-                        ['texto' => 'Tipos de Identificación', 'url' => ['TipoIdentificacion/inicio']]
+                        ['texto' => 'Tipos de Identificación', 'url' => ['TipoIdentificacion/inicio']],
+                        ['texto' => 'Permisos', 'url' => ['Permiso/asignar']],
                 ]],
                 ['texto' => 'Publicaciones', 'fa' => 'newspaper-o', 'elementos' => [
                     ['texto' => 'Publicación', 'url' => ['publicacion/inicio']],
@@ -221,3 +220,4 @@ Sis::Recursos()->css('estilos');
         </script>
     </body>
 </html> 
+>>>>>>> jako

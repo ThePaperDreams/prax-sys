@@ -54,6 +54,21 @@
     line-height: 10px;
 }
 
+.tile hr{
+    margin-bottom: 15px;
+}
+
+.select2-container--open, .select2-dropdown--above, .select2-results, 
+.select2-search__field{
+    color: black !important;
+}
+
+.form-requerido{
+    text-shadow: none;
+    font-weight: 900;
+    background-color: rgba(255, 0, 0, 0.36);
+    padding: 3px 10px;
+    color: white;
 .input-exception{
     opacity: 1 !important;
 }

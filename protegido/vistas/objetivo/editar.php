@@ -13,6 +13,6 @@
         ]
     ];    
 ?>
-<div class="col-sm-8">    
+<div class="col-sm-10">
     <?php echo $this->mostrarVistaP('_formulario', ['modelo' => $modelo, 'url' => $url]); ?>
 </div>
