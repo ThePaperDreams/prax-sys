@@ -51,7 +51,7 @@ class CtrlPublicacion extends CControlador{
     public function accionInicio(){
         $modelos = Publicacion::modelo()->listar();        
         $this->mostrarVista('inicio', ['modelos' => $modelos,
-            'publc' => CHtml::modelolista(TipoPublicacion::modelo()->listar(), "id_tipo_publicacion", "nombre"),      
+            'public' => CHtml::modelolista(TipoPublicacion::modelo()->listar(), "id_tipo_publicacion", "nombre"),      
             'usuar' => CHtml::modelolista(Usuario::modelo()->listar(), "id_usuario", "nombre"),
             'estd' => CHtml::modelolista(EstadoPublicacion::modelo()->listar(), "id_estado", "nombre"),
             ]);

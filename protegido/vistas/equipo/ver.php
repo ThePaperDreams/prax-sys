@@ -20,35 +20,28 @@
         </div>
         <table class="table table-bordered table-striped table-hover">
             <tbody>
-                                <tr>
-                    <th><?php echo $modelo->obtenerEtiqueta('id_equipo') ?></th>
-                    <td><?php echo $modelo->id_equipo; ?></td>
-                </tr>
-                                <tr>
+                <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('cupo_maximo') ?></th>
                     <td><?php echo $modelo->cupo_maximo; ?></td>
                 </tr>
-                                <tr>
+                <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('cupo_minimo') ?></th>
                     <td><?php echo $modelo->cupo_minimo; ?></td>
                 </tr>
-                                <tr>
+                <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('estado') ?></th>
                     <td><?php echo $modelo->estado; ?></td>
                 </tr>
-                                <tr>
+                <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('posicion') ?></th>
                     <td><?php echo $modelo->posicion; ?></td>
                 </tr>
-                                <tr>
+                <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('entrenador_id') ?></th>
-                    <td><?php echo $modelo->entrenador_id; ?></td>
+                    <td><?php echo $modelo->Entrenador->nombre_usuario ?></td>
                 </tr>
-                                <tr>
-                    <th><?php echo $modelo->obtenerEtiqueta('deportista_id') ?></th>
-                    <td><?php echo $modelo->deportista_id; ?></td>
-                </tr>
-                            </tbody>
+                                
+            </tbody>
         </table>
 
     </div>

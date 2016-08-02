@@ -36,6 +36,7 @@ Sis::Recursos()->recursoJs(['url' => $url . "/js/scroll.min.js"]);
 Sis::Recursos()->recursoJs(['url' => $url . "/js/calendar.min.js"]);
 Sis::Recursos()->recursoJs(['url' => $url . "/js/feeds.min.js"]);
 Sis::Recursos()->recursoJs(['url' => $url . "/js/functions.js"]);
+Sis::Recursos()->recursoJs(['url' => $url . "/js/editor.min.js"]);
 ?>
 <!DOCTYPE HTML>
 <html>
