@@ -181,7 +181,7 @@ class Matricula extends CModelo {
         
         $deportistas = [];
         foreach ($matriculas AS $m){
-            $deportistas[] = $m->Deportista;
+            $deportistas[$m->id_matricula] = $m->Deportista->nombreCompleto;
         }
         return $deportistas;
     }

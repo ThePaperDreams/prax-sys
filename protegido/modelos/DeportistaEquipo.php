@@ -8,8 +8,8 @@
  * @property int $equipo_id
  * 
  * Relaciones del modelo
- * @property FkTblDeportistasEquiposTblEquipos1 $fkTblDeportistasEquiposTblEquipos1
- * @property FkTblDeportistasEquiposTblPersonas1 $fkTblDeportistasEquiposTblPersonas1
+ * @property Equipo $Equipo
+ * @property Deportista $Deportista
  */
  class DeportistaEquipo extends CModelo{
  
@@ -42,7 +42,7 @@
             # el formato es simple: 
             # tipo de relación | modelo con que se relaciona | campo clave foranea
             	'Equipo' => [self::PERTENECE_A, 'Equipo', 'equipo_id'],
-	'Deportista' => [self::PERTENECE_A, 'Deportista', 'deportista_id'],
+            'Deportista' => [self::PERTENECE_A, 'Deportista', 'deportista_id'],
         ];
     }
     

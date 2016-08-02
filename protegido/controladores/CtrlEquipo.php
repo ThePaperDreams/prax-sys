@@ -41,6 +41,7 @@ class CtrlEquipo extends CControlador{
         }
         $this->mostrarVista('crear', ['modelo' => $modelo,
             'deportista' => CHtml::modelolista(Deportista::modelo()->listar(), "id_deportista", "nombre1"),
+            'deportistas' => $modelo->getDeportistas(),
             'Entre' => CHtml::modelolista(Usuario::modelo()->listar(), "id_usuario", "nombre_usuario")    
             ]);
     }
@@ -86,6 +87,7 @@ class CtrlEquipo extends CControlador{
         }
         $this->mostrarVista('editar', ['modelo' => $modelo,
             'deportista' => CHtml::modelolista(Deportista::modelo()->listar(), "id_deportista", "nombre1"),
+            'deportistas' => $modelo->getDeportistas(),
             'Entre' => CHtml::modelolista(Usuario::modelo()->listar(), "id_usuario", "nombre_usuario")    
             ]);
     }

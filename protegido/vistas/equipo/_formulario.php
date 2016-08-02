@@ -7,7 +7,7 @@ $formulario->abrir();
 <?php echo $formulario->campoNumber($modelo, 'cupo_minimo', ['label' => true, 'group' => true]) ?>
 <?php echo $formulario->campoTexto($modelo, 'estado', ['label' => true, 'group' => true]) ?>
 <?php echo $formulario->campoTexto($modelo, 'posicion', ['label' => true, 'group' => true]) ?>
-<?php echo $formulario->lista($modelo, 'entrenador_id', $Entre, ['defecto' => 'Seleccione un entrenador']) ?>
+<?php echo $formulario->lista($modelo, 'entrenador_id', $Entre, ['label' => true, 'defecto' => 'Seleccione un entrenador']) ?>
 <div class="col-sm-8">
     <?php $jugadores = CHtml::modeloLista(Deportista::modelo()->listar(), "id_deportista", "nombre1"); ?>
     <?= CBoot::select('', $jugadores, ['defecto' => 'Seleccione un jugador', 'id' => 'lista-deportistas']) ?>
@@ -24,9 +24,9 @@ $formulario->abrir();
         </thead>
         <tbody id="tabla-deportistas">
             <?php if(!$modelo->nuevo): ?>
-                <?php foreach($modelo->Deportistas AS $d): ?>
-            <tr data-id="<?= $d->id_op ?>" data-obj="<?= $d->deportista_id ?>">
-                <td><?= $d->Deportista->nombre1 ?></td>
+                <?php foreach($deportistas AS $d): ?>
+            <tr data-id="<?= $d->id_deportista ?>" data-obj="<?= $d->id_deportista ?>">
+                <td><?= $d->nombre1 ?></td>
                 <td class="col-sm-1 text-center text-danger-icon"><i class="fa fa-ban" onclick="quitar($(this), true);" ></i></td>
             </tr>
                 <?php endforeach ?>
