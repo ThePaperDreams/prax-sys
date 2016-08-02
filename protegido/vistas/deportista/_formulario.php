@@ -1,17 +1,19 @@
 <?php
+Sis::Recursos()->recursoCss(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/css/fileinput.min.css']);
+Sis::Recursos()->recursoJs(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/js/fileinput.min.js']);
 $formulario = new CBForm(['id' => 'form-deportistas']);
 $formulario->abrir();
 ?>
 <div class="tile p-15">
-<div class="row">
-    
+<p>Los campos con <span class="text-danger">*</span>  son requeridos</p>
+
+<div class="row">    
     <div class="col-sm-6">
         <?php echo $formulario->lista($modelo, 'tipo_documento_id', $tiposIdentificaciones, ['label' => true, 'group' => true, 'defecto' => 'Tipo de documento']) ?>
     </div>
     <div class="col-sm-6">
         <?php echo $formulario->campoNumber($modelo, 'identificacion', ['label' => true, 'group' => true, 'autofocus' => true, 'min' => '0']) ?>
-    </div>
-    
+    </div>    
 </div>
 
 <div class="row">
@@ -46,7 +48,7 @@ $formulario->abrir();
         <?php echo $formulario->campoTexto($modelo, 'direccion', ['label' => true, 'group' => true]) ?>
     </div>
     <div class="col-sm-6">
-        <?php echo $formulario->campoTexto($modelo, 'fecha_nacimiento', ['label' => true, 'group' => true, 'id' => 'birthday']) ?>
+        <?php echo $formulario->campoTexto($modelo, 'fecha_nacimiento', ['label' => true, 'group' => true]) ?>
     </div>
 </div>
 
@@ -67,7 +69,7 @@ $formulario->abrir();
         <?php echo CBoot::boton(CBoot::fa('plus') . ' Agregar', 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'id' => 'btn-addAcu']) ?>
     </div>
     <div class="col-sm-4">
-        <?php echo $formulario->lista($modelo3, 'id_tipo', $tiposDocumentos, ['label' => true, 'group' => true, 'defecto' => 'Tipo de documento']) ?>
+        <?php echo $formulario->lista($modelo3, 'id_tipo', $tiposDocumentos, ['label' => true, 'group' => true, 'defecto' => 'Tipo de Documento']) ?>
     </div>
     <div class="col-sm-2">
         <?php echo CBoot::boton(CBoot::fa('plus') . ' Agregar', 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'id' => 'btn-addDoc']) ?>
@@ -76,14 +78,14 @@ $formulario->abrir();
 
 <div class="row">
     <div class="col-sm-6">
-        <div id="lst-acu" class="panel panel-default">
+        <div id="lst-acu" class="panel-default">
             <div class="panel-heading">Acudientes</div>
             <ul id="lis-acu" class="list-group">
             </ul>
         </div>
     </div>
     <div class="col-sm-6">
-        <div id="lst-doc" class="panel panel-default">
+        <div id="lst-doc" class="panel-default">
             <div class="panel-heading">Documentos</div>
             <ul id="lis-doc" class="list-group">
             </ul>
@@ -146,19 +148,20 @@ $formulario->abrir();
         <?php echo CHtml::link(CBoot::fa('undo') . ' Cancelar', ['deportista/inicio'], ['class' => 'btn btn-primary btn-block']); ?>
     </div>
     <div class="col-sm-3">
-        <?php echo CBoot::boton(CBoot::fa('save') . ' ' . ($modelo->nuevo ? 'Guardar' : 'Actualizar'), 'success', ['class' => 'btn-block']); ?>
+        <?php echo CBoot::boton(CBoot::fa('save') . ' ' . ($modelo->nuevo ? 'Guardar' : 'Actualizar'), 'success', ['class' => 'btn-block', 'id' => 'btn-send']); ?>
     </div>
 </div>
     </div>
 <?php $formulario->cerrar(); ?>
 <script>
     $(function () {
+        files();
         $("#btn-addAcu").click(function () {
             var m = $("#Acudientes_id_acudiente option:selected");
             var r = encontrarAcu(m.html());
-            var i = m.html() !== "Seleccione un Acudiente";
+            var i = m.html() !== "Acudiente";
             if (i && r) {
-                $("#lis-acu").append("<li class='list-group-item' data='" + m.val() + "'><button onclick='eliminar(this)' type='button'><i class='text-danger fa fa-trash'></i></button> " + m.html() + "</li>");
+                $("#lis-acu").append("<li class='list-group-item' data='" + m.val() + "'><button class='btn btn-primary' onclick='eliminar(this)' type='button'><i class='fa fa-trash'></i> " + m.html() + "</button></li>");
                 m.attr("disabled", "true");
                 $("#form-deportistas").append("<input hidden='' name='Acudientes[]' id='" + m.val() + "' value='" + m.val() + "'>");
             } else if (i) {
@@ -168,10 +171,11 @@ $formulario->abrir();
         });
         $("#btn-addDoc").click(function () {
             var m = $("#TiposDocumento_id_tipo option:selected");
-            var i = m.html() !== "Seleccione un Tipo Documento";
+            var i = m.html() !== "Tipo de Documento";
             var r = encontrarDoc(m.html());
             if (i && r) {
-                $("#lis-doc").append("<li class='list-group-item' d='" + m.val() + "'><button onclick='borrar(this)' type='button'><i class='text-danger fa fa-trash'></i></button> " + m.html() + "<input type='file' name='Documentos[]'></li>");
+                $("#lis-doc").append("<li class='list-group-item' d='" + m.val() + "'><button class='btn btn-primary' onclick='borrar(this)' type='button'><i class='fa fa-trash'></i> " + m.html() + "</button><input type='file' name='Documentos[]'></li>");
+                files();
                 m.attr("disabled", "true");
                 $("#form-deportistas").append("<input hidden='' name='TiposDocumentos[]' id='td" + m.val() + "' value='" + m.val() + "'>");
             } else if (i) {
@@ -179,7 +183,7 @@ $formulario->abrir();
             }
             $("#TiposDocumento_id_tipo").val('').attr("selected", "selected");
         });
-        $("#birthday").datepicker({
+        $("#Deportistas_fecha_nacimiento").datepicker({
             dateFormat: 'yy-mm-dd'
         });
         $("#form-deportistas").attr('enctype', 'multipart/form-data');
@@ -221,6 +225,13 @@ $formulario->abrir();
             }
             return false;
         });
+        $("#form-deportistas").submit(function () {
+            validarIdentificacion();
+            return false;
+        });
+        $("#Deportistas_fecha_nacimiento").change(function(){
+            validarFecha($(this));
+        });
     });
     function eliminar(e) {
         var d = $(e).closest('li').attr('data');
@@ -252,6 +263,14 @@ $formulario->abrir();
         });
         return r;
     }
+    function files(){
+        $("input[type=file]").fileinput({
+                    showPreview: false,
+                    showRemove: false,
+                    showUpload: false,
+                    browseLabel: "Seleccionar archivo",
+                });
+            }
     function encontrarAcu(tit) {
         var h = "", r = true;
         $("#tabla-acudientes td[titulo]").each(function (v, e) {
@@ -261,5 +280,60 @@ $formulario->abrir();
             }
         });
         return r;
+    }
+    
+    function validarIdentificacion() {
+            var identificacion = $("#Deportistas_identificacion");
+            if (identificacion === "") {
+                return;
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: '<?php echo $url ?>',
+                data: {
+                    validarIdentificacion: true,
+                    identificacion: identificacion.val(),
+                },
+                success: function (respuesta) {
+                    if (respuesta.error == true) {
+                        mostrarAlert("error", "Ya existe esa Identificación");
+                    } else {
+                        document.getElementById("form-deportistas").submit();
+                    }
+                }
+            });
+
+        }
+
+    function mostrarAlert(tipo, msg) {
+        Lobibox.notify(tipo, {
+            size: 'mini',
+            showClass: 'bounceInRight',
+            hideClass: 'bounceOutRight',
+            msg: msg,
+            delay: 8000,
+            soundPath: '<?= Sis::UrlRecursos() ?>librerias/lobibox/sounds/',
+        });
+    }
+
+    function parseDate(input) {
+        var parts = input.split('-');
+        // new Date(year, month [, day [, hours[, minutes[, seconds[, ms]]]]])
+        return new Date(parts[0], parts[1]-1, parts[2]); // Note: months are 0-based
+    }
+        
+    function validarFecha(fecha) {
+        var currDate = new Date();
+        var date = parseDate(fecha.val());
+        var tot = currDate.getFullYear() - date.getFullYear();
+        //console.log(tot);
+        if (tot <= 5 || tot > 17) {
+            mostrarAlert('error', 'Seleccione una fecha valida');
+            $('#btn-send').attr("disabled", "disabled");
+        } else {
+            mostrarAlert('success', 'Fecha valida');
+            $('#btn-send').removeAttr("disabled");
+        }
     }
 </script>

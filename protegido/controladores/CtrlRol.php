@@ -20,67 +20,63 @@ class CtrlRol extends CControlador {
      * Esta función permite crear un nuevo registro
      */
     public function accionCrear() {
+        $this->validarNombre();
         $modelo = new Rol();
-        $ruta = new Ruta();
-        $modulo = new Modulo();
         if (isset($this->_p['Roles'])) {
             $modelo->atributos = $this->_p['Roles'];
             if ($modelo->guardar()) {
-                //$this->asociarRutas($modelo);
+                $this->alertar('success','Registro Exitoso');
                 $this->redireccionar('inicio');
             }
         }
-        $url = Sis::crearUrl(['Rol/modulos']);
+        $url = Sis::crearUrl(['Rol/crear']);
         $this->mostrarVista('crear', ['modelo' => $modelo,
-            'ruta' => $ruta,
-            'modulo' => $modulo,
             'url' => $url,
-            'rutas' => CHtml::modelolista(Ruta::modelo()->listar(), "id_ruta", "nombre"),
-            'modulos' => CHtml::modelolista(Modulo::modelo()->listar(), "id", "nombre"),
-            'rutt' => Ruta::modelo()->listar(),
         ]);
     }
-    
-    public function accionModulos(){
-        if (isset($this->_p['id'])) {
-            $criterios = ["where" => "modulo_id = '" . $this->_p['id'] . "'"];
-            $rutas = Ruta::modelo()->listar($criterios);
-            //echo "<pre>";
-            var_dump($rutas);
-            //echo json_encode($rutas);
+
+    private function validarNombre($id = null){
+        if(isset($this->_p['validarNombre'])){
+            if($id === null){
+                $criterio = [
+                    'where' => "nombre = '" . $this->_p['nombre'] . "'"
+                ];
+            } else {
+                $criterio = [
+                    'where' => "id_rol <> $id AND nombre = '" . $this->_p['nombre'] . "'"
+                ];
+            }
+            $rol = Rol::modelo()->primer($criterio);
+            if($rol != null){
+                $error = true;
+            } else {
+                $error = false;
+            }
+            $this->json([
+                'error' => $error,
+            ]);
+            Sis::fin();
         }
     }
-
-    /*public function asociarRutas($modelo, $rol = '') {
-        if (isset($this->_p['Rutas'])) {
-            $ultrol = ($rol === '') ? $modelo->primer(["order" => "id_rol desc"])->id_rol : $rol;
-            foreach ($this->_p['Rutas'] as $v) {
-                $modelo2 = new RutaRol();
-                $modelo2->rol_id = $ultrol;
-                $modelo2->ruta_id = $v;
-                $modelo2->guardar();
-            }
-        }
-    }*/
 
     /**
      * Esta función permite editar un registro existente
      * @param int $pk
      */
     public function accionEditar($pk) {
+        $this->validarNombre($pk);
         $modelo = $this->cargarModelo($pk);
-        $modelo2 = new Ruta();
         if (isset($this->_p['Roles'])) {
             $modelo->atributos = $this->_p['Roles'];
             if ($modelo->guardar()) {
                 # lógica para guardado exitoso
-                $this->asociarRutas($modelo, $pk);
+                $this->alertar('success','Actualización Exitosa');
                 $this->redireccionar('inicio');
             }
         }
+        $url = Sis::crearUrl(['Rol/editar', 'id' => $pk]);
         $this->mostrarVista('editar', ['modelo' => $modelo,
-            'modelo2'=>$modelo2,
-            'rutas' => CHtml::modelolista(Ruta::modelo()->listar(), "id_ruta", "Datos"),
+            'url' => $url,
         ]);
     }
 
@@ -99,12 +95,22 @@ class CtrlRol extends CControlador {
      */
     public function accionEliminar($pk) {
         $modelo = $this->cargarModelo($pk);
-        if ($modelo->eliminar()) {
-            # lógica para borrado exitoso
-        } else {
-            # lógica para error al borrar
+        $rxr = RutaRol::modelo()->listar([
+            'where' => "rol_id=$pk",
+        ]);
+        if(count($rxr) > 0){
+            $this->alertar('error','No se puede eliminar');
+        }else if($modelo->eliminar()){
+            $this->alertar('success','Eliminación Exitosa');
         }
         $this->redireccionar('inicio');
+    }    
+    
+    private function alertar($tipo, $msj) {
+        Sis::Sesion()->flash("alerta", [
+            'msg' => $msj,
+            'tipo' => $tipo,
+        ]);
     }
 
     /**

@@ -67,18 +67,27 @@ class CtrlAcudiente extends CControlador {
     
     public function asociarDocumentos($acu) {
         if (isset($_FILES['Documentos']) && isset($this->_p['TiposDocumentos'])) {
+            foreach ($_FILES['Documentos']['name'] as $k => $v) {
+                if (empty($v)) {
+                    foreach ($_FILES['Documentos'] as $y => $x) {
+                        unset($_FILES['Documentos'][$y][$k]);
+                    }
+                }
+            }
             foreach ($this->_p['TiposDocumentos'] as $k => $v) {
                 $tipodoc = new TipoDocumento();
                 $nomtipo = $tipodoc->primer(["where" => "id_tipo=" . $v])->nombre;
                 $files = CArchivoCargado::instanciarTodasPorNombre('Documentos');
                 $rutaDestino = Sis::resolverRuta(Sis::crearCarpeta("!publico.acudientes.$acu"));
-                $files[$k]->guardar($rutaDestino, $nomtipo);
-                $doc = $this->asociarDocumento($nomtipo, $k, $v, $files);
-                $this->asociarAcudienteDocumento($acu, $doc);
+                if (isset($files[$k])) {
+                    $files[$k]->guardar($rutaDestino, $nomtipo);
+                    $doc = $this->asociarDocumento($nomtipo, $k, $v, $files);
+                    $this->asociarAcudienteDocumento($acu, $doc);
+                }
             }
         }
     }
-    
+
     public function asociarDocumento($nomtipo, $k, $v, $files){
         $doc = new Documento();
         $doc->titulo = $nomtipo;

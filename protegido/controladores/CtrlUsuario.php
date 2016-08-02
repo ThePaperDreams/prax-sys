@@ -20,18 +20,46 @@ class CtrlUsuario extends CControlador {
      * Esta función permite crear un nuevo registro
      */
     public function accionCrear() {
+        $this->validarUsuarioEmail();
         $modelo = new Usuario();
         if (isset($this->_p['Usuarios'])) {
             $modelo->atributos = $this->_p['Usuarios'];
             $modelo->clave = sha1($this->_p['Usuarios']['clave']);
             if ($modelo->guardar()) {
                 # lógica para guardado exitoso
+                $this->alertar('success','Registro Exitoso');
                 $this->redireccionar('inicio');
             }
         }
+        $url = Sis::crearUrl(['Usuario/crear']);
         $this->mostrarVista('crear', ['modelo' => $modelo,
-            'roles' => CHtml::modelolista(Rol::modelo()->listar(), "id_rol", "nombre"),
+            'url' => $url,
+            'roles' => CHtml::modeloLista(Rol::modelo()->listar(), 'id_rol', 'nombre'),
         ]);
+    }
+    
+    private function validarUsuarioEmail($id = null){
+        if(isset($this->_p['validarUsuarioEmail'])){
+            if($id === null){
+                $criterio = [
+                    'where' => "nombre_usuario = '" . $this->_p['usuario'] . "' OR email = '" . $this->_p['email'] . "'",
+                ];
+            } else {
+                $criterio = [
+                    'where' => "id_usuario <> $id AND nombre_usuario = '" . $this->_p['usuario'] . "' OR email = '" . $this->_p['email'] . "'",
+                ];
+            }
+            $usuario = Usuario::modelo()->primer($criterio);
+            if($usuario != null){
+                $error = true;
+            } else {
+                $error = false;
+            }
+            $this->json([
+                'error' => $error,
+            ]);
+            Sis::fin();
+        }
     }
 
     /**
@@ -39,17 +67,21 @@ class CtrlUsuario extends CControlador {
      * @param int $pk
      */
     public function accionEditar($pk) {
+        $this->validarUsuarioEmail($pk);
         $modelo = $this->cargarModelo($pk);
         if (isset($this->_p['Usuarios'])) {
             $modelo->atributos = $this->_p['Usuarios'];
             $modelo->clave = sha1($this->_p['Usuarios']['clave']);
             if ($modelo->guardar()) {
                 # lógica para guardado exitoso
+                $this->alertar('success','Actualización Exitosa');
                 $this->redireccionar('inicio');
             }
         }
+        $url = Sis::crearUrl(['Usuario/editar', 'id' => $pk]);
         $this->mostrarVista('editar', ['modelo' => $modelo,
-            'roles' => CHtml::modelolista(Rol::modelo()->listar(), "id_rol", "nombre"),
+            'url' => $url,
+            'roles' => CHtml::modeloLista(Rol::modelo()->listar(), 'id_rol', 'nombre'),
         ]);
     }
 
@@ -60,7 +92,6 @@ class CtrlUsuario extends CControlador {
     public function accionVer($pk) {
         $modelo = $this->cargarModelo($pk);
         $this->mostrarVista('ver', ['modelo' => $modelo,
-            'roles' => CHtml::modelolista(Rol::modelo()->listar(), "id_rol", "nombre"),
         ]);
     }
 
@@ -68,15 +99,19 @@ class CtrlUsuario extends CControlador {
         $modelo = $this->cargarModelo($pk);
         $modelo->estado = !$modelo->estado;
         if ($modelo->guardar()) {
-            Sis::Sesion()->flash("alerta", [
-                'msg' => 'Cambio exitoso',
-                'tipo' => 'success',
-            ]);
+            $this->alertar('success','Cambio de estado exitoso');
         } else {
             # lógica para error al borrar
         }
         $this->redireccionar('inicio');
     }    
+    
+    private function alertar($tipo, $msj){
+        Sis::Sesion()->flash("alerta", [
+                'msg' => $msj,
+                'tipo' => $tipo,
+            ]);
+    }
     
     /**
      * Esta función permite eliminar un registro existente
