@@ -1,13 +1,14 @@
 <?php
-$this->tituloPagina = "Listar Deportistas";
+$this->tituloPagina = "Lista de espera";
 $this->migas = [
     'Home' => ['principal/inicio'],
-    'Listar Deportistas'
+    'Listar Deportistas' => ['deportista/iniio'],
+    'Lista de espera',
 ];
 
 $this->opciones = [
     'elementos' => [
-        'Registrar' => ['Deportista/crear'],
+        'Registrar deportista' => ['Deportista/crear'],
     ]
 ];
 ?>
@@ -16,19 +17,16 @@ $this->opciones = [
 
 $this->complemento('!siscoms.bootstrap3.CBGrid', [
     'modelo' => 'Deportista',
+    'criterios' => [
+        'where' => 'estado_id = 4',
+    ],
 # id_deportista, identificacion, nombre1, nombre2, apellido1, apellido2, direccion, foto, telefono1, telefono2, fecha_nacimiento, estado_id, tipo_documento_id
      'columnas' => [
         'identificacion',
         'nombre1',
         'apellido1',
         'telefono1',
-        'estado_id' => 'EtiquetaEstado'
-    ],
-    'opciones' => [
-        ['i' => 'soccer-ball-o', 'url' => 'Deportista/fichaTecnica&{id:pk}'],
-        ['i' => 'eye', 'url' => 'Deportista/ver&{id:pk}'],
-        ['i' => 'pencil', 'url' => 'Deportista/editar&{id:pk}'],
-        ['i' => 'refresh', 'url' => 'Deportista/cambiarEstado&{id:pk}'],
+        'telefono2',
     ],
     'paginacion' => 10,
 ])

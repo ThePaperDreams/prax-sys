@@ -116,11 +116,17 @@ Sis::Recursos()->css('estilos');
             'brand' => Sis::apl()->nombre,
             'elementos' => [
                 ['texto' => '', 'url' => ['principal/inicio'], 'fa' => 'home'],
+                ['texto' => 'Deportistas/Acudientes', 'fa' => 'male', 'elementos' => [
+                        ['texto' => 'Acudientes', 'url' => ['Acudiente/inicio']],
+                        ['texto' => 'Deportistas', 'url' => ['Deportista/inicio']],
+                        ['texto' => 'Matriculas', 'url' => ['Matricula/inicio']],
+                        ['texto' => 'Lista de espera', 'url' => ['Deportista/verListaEspera']],
+                        ['texto' => 'Documentos', 'url' => ['Documento/inicio']]
+                ]],
                 ['texto' => 'Formación', 'fa' => 'soccer-ball-o', 'elementos' => [
                     ['texto' => 'Categorías de deportistas', 'url' => ['categoria/inicio']],
                     ['texto' => 'Objetivos', 'url' => ['objetivo/inicio']],
                     ['texto' => 'Planes de Trabajo', 'url' => ['PlanTrabajo/inicio']],
-                    ['texto' => 'Matriculas', 'url' => ['Matricula/inicio']],
                     ['texto' => 'Asistencia', 'url' => ['asistencia/inicio']],
                 ]],
                 ['texto' => 'Control existencias', 'fa' => 'cubes', 'elementos' => [
@@ -128,12 +134,7 @@ Sis::Recursos()->css('estilos');
                     ['texto' => 'Implementos', 'url' => ['implemento/inicio']],
                     ['texto' => 'Entradas', 'url' => ['entrada/inicio']],
                     ['texto' => 'Salidas', 'url' => ['salida/inicio']],
-                ]],
-                ['texto' => 'Deportistas/Acudientes', 'fa' => 'male', 'elementos' => [
-                        ['texto' => 'Acudientes', 'url' => ['Acudiente/inicio']],
-                        ['texto' => 'Deportistas', 'url' => ['Deportista/inicio']],
-                        ['texto' => 'Documentos', 'url' => ['Documento/inicio']]
-                ]],
+                ]],                
                 ['texto' => 'Torneos', 'fa' => 'trophy', 'elementos' => [
                     ['texto' => 'Torneos', 'url' => ['torneo/inicio']],
                     ['texto' => 'Equipos', 'url' => ['Equipo/inicio']],                    

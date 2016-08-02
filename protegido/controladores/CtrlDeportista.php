@@ -238,6 +238,24 @@ class CtrlDeportista extends CControlador {
         }
     }
 
+    public function accionFichaTecnica($pk){
+        $deportista = Deportista::modelo()->porPk($pk);
+        
+        $ficha = FichaTecnica::modelo()->primer(['where' => "deportista_id='$pk'"]);
+        if($ficha == null){
+            $ficha = new FichaTecnica();
+        }
+        
+        $this->vista('fichaTecnca',[
+            'deportista' => $deportista,
+            'ficha' => $ficha,
+        ]);
+    }
+    
+    public function accionVerListaEspera(){
+        $this->vista('verListaEspera');
+    }
+    
     /**
      * Esta función permite cargar un modelo usando su primary key
      * @param int $pk

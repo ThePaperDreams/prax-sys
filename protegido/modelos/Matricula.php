@@ -106,6 +106,33 @@ class Matricula extends CModelo {
             return CHtml::e("span", 'Ninguno', ['class' => 'label label-default']);
         }
     }   
+    
+    public static function getDeportistasSinMatricula(){
+        $matriculas = Matricula::modelo()->listar([
+            'where' => "estado = 1",
+        ]);
+        $ids = [];
+        foreach($matriculas AS $m){  $ids[] = $m->deportista_id; }
+        $deportistas = Deportista::modelo()->listar([
+            'where' => "id_deportista NOT IN (" . implode(',', $ids) . ")",
+        ]);
+        return $deportistas;
+                
+    }
+    /**
+     * 
+     * @return Deportista[]
+     */
+    public static function getDeportistasMatriculados(){
+        $matriculas = Matricula::modelo()->listar([
+            'where' => "estado = 1",
+        ]);
+        $deportistas = [];        
+        foreach($matriculas AS $m){  $deportistas[] = $m->Deportista; }
+        return $deportistas;                
+    }
+    
+    
 
     /**
      * Esta función permite listar todos los registros
