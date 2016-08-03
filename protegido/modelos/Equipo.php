@@ -83,7 +83,7 @@
     }
     public function filtros() {
         return [
-            'requeridos' => 'cupo_maximo, cupo_minimo, entrenador_id',
+            'requeridos' => 'nombre,cupo_maximo, cupo_minimo, entrenador_id',
             'seguros' => '*',
         ];
     }

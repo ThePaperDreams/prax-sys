@@ -14,7 +14,7 @@
 <?= $this->complemento('!siscoms.bootstrap3.CBGrid', [
     'modelo' => 'Equipo',
     # id_equipo, cupo_maximo, cupo_minimo, estado, posicion, entrenador_id, deportista_id
-    'columnas' => 'nombre, cupo_maximo, cupo_minimo, posicion',
+    'columnas' => ['nombre', 'cupo_maximo', 'cupo_minimo', 'posicion',],
     'opciones' => true,
     'paginacion' => 10,
 ]) ?>

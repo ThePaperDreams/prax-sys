@@ -1,5 +1,5 @@
 <?php 
-$formulario = new CBForm(['id' => 'form-torneos']);
+$formulario = new CBForm(['id' => 'form-torneos', 'opcionesHtml' =>['enctype' => 'multipart/form-data']]);
 $formulario->abrir();
 ?>
 <div class="tile p-15">
@@ -32,7 +32,7 @@ $formulario->abrir();
         <?php echo $formulario->campoArchivo($modelo, 'tabla_posiciones', ['label' => true, 'group' => true]) ?>
     </div>
     <div class="col-sm-6">
-        <?php echo $formulario->campoTexto($modelo, 'equipo_id', ['label' => true, 'group' => true]) ?>
+        <?php echo $formulario->lista($modelo, 'equipo_id', $mEquipo, ['label'=> true,'defecto' => 'Seleccione el equipo a participar en el torneo']) ?>
     </div>
 </div>
 <div class="row">

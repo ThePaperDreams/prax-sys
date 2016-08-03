@@ -39,8 +39,8 @@
         return [
             # el formato es simple: 
             # tipo de relación | modelo con que se relaciona | campo clave foranea
-            'Equipos' => [self::PERTENECE_A, 'FkTblEquiposTorneosTblEquipos1', 'equipo_id'],
-            'Torneos' => [self::PERTENECE_A, 'FkTblEquiposTorneosTblTorneos1', 'torneo_id'],
+            'Equipos' => [self::PERTENECE_A, 'Equipo', 'equipo_id'],
+            'Torneos' => [self::PERTENECE_A, 'Torneo', 'torneo_id'],
         ];
     }
     
@@ -64,8 +64,9 @@
     public function listar($criterio = array()) {
         return parent::listar($criterio);
     }
-    
-    /**
+   
+
+        /**
      * Esta función permite obtener un registro por su primary key
      * @param int $pk
      * @return EquipoTorneo

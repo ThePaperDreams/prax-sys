@@ -50,7 +50,7 @@ $this->opciones = [
                 </tr>
                 <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('tabla_posiciones') ?></th>
-                    <td><?php echo $modelo->tabla_posiciones; ?></td>
+                    <td><?php echo $modelo->getTabla(); ?></td>
                 </tr>
                 <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('equipo_id') ?></th>

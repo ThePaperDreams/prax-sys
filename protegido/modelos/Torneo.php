@@ -112,6 +112,12 @@
     public function primer($criterio = array()) {
         return parent::primer($criterio);
     } 
+    
+    public function getTabla() {
+        $icono = CBoot::fa("download");
+        $url = Sis::UrlBase().'publico/imagenes/torneos/fotos/'.$this->tabla_posiciones;
+        return CHtml::link($icono.' '.$this->tabla_posiciones,$url,['download'=>$this->tabla_posiciones]);
+    }
 
     /**
      * Esta función retorna una instancia del modelo tbl_torneos

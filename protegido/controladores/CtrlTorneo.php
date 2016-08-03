@@ -11,8 +11,10 @@ class CtrlTorneo extends CControlador{
      * Esta función muestra el inicio y una tabla para listar los datos
      */
     public function accionInicio(){
-        $modelos = Torneo::modelo()->listar();        
-        $this->mostrarVista('inicio', ['modelos' => $modelos]);
+        $modelos = Torneo::modelo()->listar();
+        $this->mostrarVista('inicio', ['modelos' => $modelos,
+            'mEquipo' => CHtml::modelolista(Equipo::modelo()->listar(), "id_equipo", "nombre"),
+            ]);
     }
     
     /**
@@ -22,13 +24,16 @@ class CtrlTorneo extends CControlador{
         $modelo = new Torneo();
         if(isset($this->_p['Torneos'])){
             $modelo->atributos = $this->_p['Torneos'];
-            $modelo->tabla_posiciones = $this->asociarFoto($modelo->nombre); 
+            
             if($modelo->guardar()){
                 # lógica para guardado exitoso
+                $this->asociarFoto(); 
                 $this->redireccionar('inicio');
             }
         }
-        $this->mostrarVista('crear', ['modelo' => $modelo]);
+        $this->mostrarVista('crear', ['modelo' => $modelo,
+            'mEquipo' => CHtml::modelolista(Equipo::modelo()->listar(), "id_equipo", "nombre"),
+            ]);
     }
     
     /**
@@ -41,10 +46,13 @@ class CtrlTorneo extends CControlador{
             $modelo->atributos = $this->_p['Torneos'];
             if($modelo->guardar()){
                 # lógica para guardado exitoso
+                $this->asociarFoto(); 
                 $this->redireccionar('inicio');
             }
         }
-        $this->mostrarVista('editar', ['modelo' => $modelo]);
+        $this->mostrarVista('editar', ['modelo' => $modelo,
+            'mEquipo' => CHtml::modelolista(Equipo::modelo()->listar(), "id_equipo", "nombre"),
+            ]);
     }
     
     /**
@@ -53,7 +61,9 @@ class CtrlTorneo extends CControlador{
      */
     public function accionVer($pk){
         $modelo = $this->cargarModelo($pk);
-        $this->mostrarVista('ver', ['modelo' => $modelo]);
+        $this->mostrarVista('ver', ['modelo' => $modelo,
+            'mEquipo' => CHtml::modelolista(Equipo::modelo()->listar(), "id_equipo", "nombre"),
+                 ]);
     }
     
     /**
@@ -70,22 +80,18 @@ class CtrlTorneo extends CControlador{
         $this->redireccionar('inicio');
     }
     
-    public function asociarFoto($dep){
-        if (empty($_FILES['torneos']['name']['tabla_posiciones']) === false) {
+    public function asociarFoto(){
+        if ($_FILES['Torneos']['error'] !== UPLOAD_ERR_OK) {
             $files = CArchivoCargado::instanciarModelo('Torneos', 'tabla_posiciones');
             $rutaDestino = Sis::resolverRuta(Sis::crearCarpeta("!publico.imagenes.torneos.fotos"));
             $rutaThumbs = Sis::resolverRuta(Sis::crearCarpeta("!publico.imagenes.torneos.fotos.thumbs"));
-            $nom = "Foto_$dep";
+            $nom = $files->getNombre();
             if($files->guardar($rutaDestino, $nom)){
                 $files->thumbnail($rutaThumbs, [
                     'tamanio' => '400',
                     'tipo' => strtolower($files->getExtension()),
                 ]);
-            }      
-            $nom .= ".".$files->getExtension();
-            return $nom;
-        }else{
-            return "";
+            }
         }
         
     }
