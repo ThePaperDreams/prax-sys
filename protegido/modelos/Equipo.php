@@ -31,6 +31,7 @@
     public function atributos() {
         return [
 		'id_equipo' => ['pk'] , 
+                'nombre',
 		'cupo_maximo', 
 		'cupo_minimo', 
 		'estado' => ['def' => '1'] , 
@@ -71,6 +72,7 @@
     public function etiquetasAtributos() {
         return [
 		'id_equipo' => 'Id Equipo', 
+                'nombre' => 'Nombre',
 		'cupo_maximo' => 'Cupo Máximo', 
 		'cupo_minimo' => 'Cupo Mínimo', 
 		'estado' => 'Estado', 

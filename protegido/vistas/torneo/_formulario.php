@@ -8,15 +8,15 @@ $formulario->abrir();
         <?php echo $formulario->campoTexto($modelo, 'nombre', ['label' => true, 'group' => true]) ?>
     </div>
     <div class="col-sm-6">
-        <?php echo $formulario->campoNumber($modelo, 'cupo_maximo', ['label' => true, 'group' => true, 'autofocus' => true]) ?>
+        <?php echo $formulario->campoNumber($modelo, 'cupo_maximo', ['label' => true, 'group' => true, 'autofocus' => true , 'min'=> 1, 'max'=> 3]) ?>
     </div>
 </div>
 <div class="row">
     <div class="col-sm-6">    
-        <?php echo $formulario->campoNumber($modelo, 'cupo_minimo', ['label' => true, 'group' => true]) ?>
+        <?php echo $formulario->campoNumber($modelo, 'cupo_minimo', ['label' => true, 'group' => true, 'min'=> 1, 'max'=> 3]) ?>
     </div>
     <div class="col-sm-6">
-        <?php echo $formulario->campoNumber($modelo, 'edad_maxima', ['label' => true, 'group' => true]) ?>
+        <?php echo $formulario->campoNumber($modelo, 'edad_maxima', ['label' => true, 'group' => true, 'min'=> 5, 'max'=> 16]) ?>
     </div>
 </div>
 <div class="row">
@@ -56,10 +56,6 @@ $formulario->abrir();
     });
     $( "#datepicker2" ).datepicker({
         dateFormat: 'yy-mm-dd',
-    });
-    $('#timepicker').timepicker({
-        showLeadingZero: false,
-        showPeriodLabels: false,
     });
  });
   

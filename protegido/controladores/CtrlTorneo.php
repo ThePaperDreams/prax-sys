@@ -22,6 +22,7 @@ class CtrlTorneo extends CControlador{
         $modelo = new Torneo();
         if(isset($this->_p['Torneos'])){
             $modelo->atributos = $this->_p['Torneos'];
+            $modelo->tabla_posiciones = $this->asociarFoto($modelo->nombre); 
             if($modelo->guardar()){
                 # lógica para guardado exitoso
                 $this->redireccionar('inicio');
@@ -67,6 +68,26 @@ class CtrlTorneo extends CControlador{
             # lógica para error al borrar
         }
         $this->redireccionar('inicio');
+    }
+    
+    public function asociarFoto($dep){
+        if (empty($_FILES['torneos']['name']['tabla_posiciones']) === false) {
+            $files = CArchivoCargado::instanciarModelo('Torneos', 'tabla_posiciones');
+            $rutaDestino = Sis::resolverRuta(Sis::crearCarpeta("!publico.imagenes.torneos.fotos"));
+            $rutaThumbs = Sis::resolverRuta(Sis::crearCarpeta("!publico.imagenes.torneos.fotos.thumbs"));
+            $nom = "Foto_$dep";
+            if($files->guardar($rutaDestino, $nom)){
+                $files->thumbnail($rutaThumbs, [
+                    'tamanio' => '400',
+                    'tipo' => strtolower($files->getExtension()),
+                ]);
+            }      
+            $nom .= ".".$files->getExtension();
+            return $nom;
+        }else{
+            return "";
+        }
+        
     }
     
     /**

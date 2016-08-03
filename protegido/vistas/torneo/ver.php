@@ -18,7 +18,7 @@ $this->opciones = [
         <div class="panel-heading text-center">
             Ver detalles
         </div>
-        <table class="table table-bordered table-striped table-hover">
+        <table class="table table-bordered">
             <tbody>
                 <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('nombre') ?></th>
@@ -35,10 +35,6 @@ $this->opciones = [
                 <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('edad_maxima') ?></th>
                     <td><?php echo $modelo->edad_maxima; ?></td>
-                </tr>
-                <tr>
-                    <th><?php echo $modelo->obtenerEtiqueta('edad_minima') ?></th>
-                    <td><?php echo $modelo->edad_minima; ?></td>
                 </tr>
                 <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('fecha_inicio') ?></th>

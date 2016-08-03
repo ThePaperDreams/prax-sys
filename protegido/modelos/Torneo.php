@@ -37,7 +37,6 @@
 		'cupo_maximo', 
 		'cupo_minimo', 
 		'edad_maxima', 
-		'edad_minima', 
 		'fecha_inicio', 
 		'fecha_fin', 
 		'nombre', 
@@ -70,7 +69,6 @@
 		'cupo_maximo' => 'Cupo Máximo', 
 		'cupo_minimo' => 'Cupo Mínimo', 
 		'edad_maxima' => 'Edad Máxima', 
-		'edad_minima' => 'Edad Mínima', 
 		'fecha_inicio' => 'Fecha de Inicio', 
 		'fecha_fin' => 'Fecha de Fin', 
 		'nombre' => 'Nombre', 
@@ -83,7 +81,7 @@
     public function filtros() {
         return [
             'requeridos' => 'nombre,cupo_minimo,cupo_maximo,edad_maxima,fecha_inicio',
-            'seguros' => 'nombre,cupo_minimo,cupo_maximo,edad_maxima,fecha_inicio',
+            'seguros' => '*',
         ];
     }
     
