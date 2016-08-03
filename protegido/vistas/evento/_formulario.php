@@ -2,37 +2,52 @@
 $formulario = new CBForm(['id' => 'form-eventos']);
 $formulario->abrir();
 ?>
-<?php echo $formulario->campoTexto($modelo, 'titulo', ['label' => true, 'group' => true, 'autofocus' => true]) ?>
-<?php echo $formulario->areaTexto($modelo, 'contenido', ['label' => true, 'group' => true, 'class' => 'textarea-content']) ?>
-<?php echo $formulario->campoTexto($modelo, 'fecha_publicacion', ['label' => true, 'group' => true, 'id' => 'datepicker']) ?>
-<?php echo $formulario->campoTexto($modelo, 'fecha_disponibilidad', ['label' => true, 'group' => true, 'id' => 'datepicker']) ?>
-<div class="form-group">
-    <label>Tipos de Eventos</label>
-    <div class="input-group">  
-        <?php echo $formulario->lista($modelo, 'tipo_id', $TipoEvento, ['defecto' => 'Seleccione un tipo']) ?>
-    <div class="input-group-addon"><i class="fa fa-qrcode"></i></div>
-    </div>
-</div>
-<?php echo $formulario->campoTexto($modelo, 'lugar', ['label' => true, 'group' => true]) ?>
-<?php echo $formulario->campoTexto($modelo, 'hora', ['label' => true, 'group' => true]) ?>
- <div class="form-group">
-    <label>Estado</label>
-    <div class="input-group">
-        
-        <?php echo $formulario->lista($modelo, 'estado', $Estado, ['defecto' => 'Seleccione un estado para el evento']) ?>
-        <div class="input-group-addon"><i class="fa fa-list-ul"></i></div>
-    </div>
-</div>
+<div class="tile p-15">
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#listar" aria-controls="listar" role="tab" data-toggle="tab">Contenido</a></li>
+        <li role="presentation"><a href="#cargar" aria-controls="cargar" role="tab" data-toggle="tab">Evento</a></li>
+    </ul>
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="listar">
+            <div class="form-group">
+                <?php echo $formulario->campoTexto($modelo, 'titulo', ['label' => true, 'group' => true, 'autofocus' => true]) ?>
+                <?php echo $formulario->areaTexto($modelo, 'contenido', ['label' => true, 'group' => true, 'class' => 'summernote']) ?>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="cargar">
+            <div class="row" id="tab-imagenes">
+                <?php echo $formulario->campoTexto($modelo, 'fecha_publicacion', ['label' => true, 'group' => true, 'id' => 'datepicker']) ?>
+                <?php echo $formulario->campoTexto($modelo, 'fecha_disponibilidad', ['label' => true, 'group' => true, 'id' => 'datepicker']) ?>
+                <div class="form-group">
+                    <label>Tipos de Eventos</label>
+                    <div class="input-group">  
+                        <?php echo $formulario->lista($modelo, 'tipo_id', $TipoEvento, ['defecto' => 'Seleccione un tipo']) ?>
+                    <div class="input-group-addon"><i class="fa fa-qrcode"></i></div>
+                    </div>
+                </div>
+                <?php echo $formulario->campoTexto($modelo, 'lugar', ['label' => true, 'group' => true]) ?>
+                <?php echo $formulario->campoTexto($modelo, 'hora', ['label' => true, 'group' => true]) ?>
+                 <div class="form-group">
+                    <label>Estado</label>
+                    <div class="input-group">
 
-<div class="row">
-    <div class="col-sm-offset-6 col-sm-3">
-        <?php echo CHtml::link(CBoot::fa('undo').' Cancelar', ['evento/inicio'], ['class' => 'btn btn-primary btn-block']); ?>
-    </div>
-    <div class="col-sm-3">
-        <?php echo CBoot::boton(CBoot::fa('save') .' '. ($modelo->nuevo? 'Guardar' : 'Actualizar'), 'success', ['class' => 'btn-block']); ?>
-    </div>
-</div>
+                        <?php echo $formulario->lista($modelo, 'estado', $Estado, ['defecto' => 'Seleccione un estado para el evento']) ?>
+                        <div class="input-group-addon"><i class="fa fa-list-ul"></i></div>
+                    </div>
+                </div>
 
+                <div class="row">
+                    <div class="col-sm-offset-6 col-sm-3">
+                        <?php echo CHtml::link(CBoot::fa('undo').' Cancelar', ['evento/inicio'], ['class' => 'btn btn-primary btn-block']); ?>
+                    </div>
+                    <div class="col-sm-3">
+                        <?php echo CBoot::boton(CBoot::fa('save') .' '. ($modelo->nuevo? 'Guardar' : 'Actualizar'), 'success', ['class' => 'btn-block']); ?>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </div>    
+</div>
 <script>
   $(function() {
     $( "#datepicker" ).datepicker({
@@ -41,7 +56,9 @@ $formulario->abrir();
     $( "#datepicker2" ).datepicker({
         dateFormat: 'yy-mm-dd',
     });    
-    $('.textarea-content').trumbowyg();
+    $(document).ready(function() {
+    $('.summernote').summernote();
+    });
  });
 </script>
 

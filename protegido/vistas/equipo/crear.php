@@ -12,5 +12,5 @@
     ];    
 ?>
 <div class="col-sm-8">    
-    <?php echo $this->mostrarVistaP('_formulario', ['modelo' => $modelo]); ?>
+    <?php echo $this->mostrarVistaP('_formulario', ['modelo' => $modelo, 'Entre' => $Entre, 'deportista' => $deportista, 'deportistas' => $deportistas]); ?>
 </div>

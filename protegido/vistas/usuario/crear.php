@@ -3,7 +3,7 @@
     $this->migas = [
         'Home' => ['principal/inicio'],
         'Listar Usuarios' => ['Usuario/inicio'],        
-        'Crear'
+        'Registrar'
     ];
     
     $this->opciones = [
@@ -13,5 +13,5 @@
     ];    
 ?>
 <div class="col-sm-12">    
-    <?php echo $this->mostrarVistaP('_formulario', ['modelo' => $modelo, 'roles'=>$roles]); ?>
+    <?php echo $this->mostrarVistaP('_formulario', ['modelo' => $modelo, 'roles' => $roles, 'url' => $url]); ?>
 </div>

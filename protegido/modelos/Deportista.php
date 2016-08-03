@@ -17,6 +17,7 @@
  * @property string $fecha_nacimiento
  * @property int $estado_id
  * @property int $tipo_documento_id
+ * @property string $nombreCompleto
  * 
  * Relaciones del modelo
  * @property EstadoDeportista $EstadoDeportista
@@ -71,7 +72,9 @@ class Deportista extends CModelo{
             return CHtml::e('span', $this->EstadoDeportista->nombre, ['class' => 'label label-default']);
         }
     }
-
+    public function getNombreCompleto(){
+        return "$this->nombre1 $this->nombre2 $this->apellido1 $this->apellido2";
+    }
     public function getNombreDePila(){
         return $this->getDatos();
     }

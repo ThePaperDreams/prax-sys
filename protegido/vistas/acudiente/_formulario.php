@@ -1,9 +1,13 @@
 <?php
+Sis::Recursos()->recursoCss(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/css/fileinput.min.css']);
+Sis::Recursos()->recursoJs(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/js/fileinput.min.js']);
 $formulario = new CBForm(['id' => 'form-acudientes']);
 $formulario->abrir();
 ?>
+
+<div class="tile p-15">
 <p>Los campos con <span class="text-danger">*</span>  son requeridos</p>
-<hr>
+
 <div class="row">
     <div class="col-sm-6">
         <?php echo $formulario->lista($modelo, 'tipo_doc_id', $tiposIdentificaciones, ['label' => true, 'group' => true, 'defecto' => 'Tipo de documento']) ?>
@@ -51,7 +55,7 @@ $formulario->abrir();
 
 <div class="row">
     <div class="col-sm-4">
-        <?php echo $formulario->lista($modelo2, 'id_tipo', $tiposDocumentos, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un Tipo Documento']) ?>
+        <?php echo $formulario->lista($modelo2, 'id_tipo', $tiposDocumentos, ['label' => true, 'group' => true, 'defecto' => 'Seleccione Tipo Documento']) ?>
     </div>
     <div class="col-sm-2">
         <?php echo CBoot::boton(CBoot::fa('plus-circle') . ' Agregar', 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'id' => 'btn-addDoc']) ?>
@@ -64,7 +68,7 @@ $formulario->abrir();
             <div class="row">
             <div class="col-sm-6">
             <?php endif; ?>
-            <div id="lst-doc" class="panel panel-default">
+            <div id="lst-doc" class="panel-default">
                 <div class="panel-heading">Documentos</div>
                 <ul id="lis-doc" class="list-group">
                 </ul>
@@ -107,15 +111,22 @@ $formulario->abrir();
         <?php echo CBoot::boton(CBoot::fa('save') . ' ' . ($modelo->nuevo ? 'Guardar' : 'Actualizar'), 'success', ['id' => 'save-btn','class' => 'btn-block']); ?>
     </div>
 </div>
+            </div>
 <?php $formulario->cerrar(); ?>
 <script>
     $(function () {
         $("#btn-addDoc").click(function () {
             var m = $("#TiposDocumento_id_tipo option:selected");
             var r = encontrar(m.html());
-            var i = m.html() !== "Seleccione un Tipo Documento";
+            var i = m.html() !== "Seleccione Tipo Documento";
             if (i && r) {
-                $("#lis-doc").append("<li class='list-group-item' d='" + m.val() + "'><button onclick='borrar(this)' type='button'><i class='text-danger fa fa-trash'></i></button> " + m.html() + "<input type='file' name='Documentos[]'></li>");
+                $("#lis-doc").append("<li class='list-group-item' d='" + m.val() + "'><button class='btn btn-primary' onclick='borrar(this)' type='button'><i class='fa fa-trash'> </i> " + m.html() + "</button><input type='file' name='Documentos[]'></li>");
+                $("input[type=file]").fileinput({
+                    showPreview: false,
+                    showRemove: false,
+                    showUpload: false,
+                    browseLabel: "Seleccionar archivo",
+                });
                 m.attr("disabled", "true");
                 $("#form-acudientes").append("<input hidden='' name='TiposDocumentos[]' id='td" + m.val() + "' value='" + m.val() + "'>");
             } else if (i) {
@@ -149,9 +160,9 @@ $formulario->abrir();
         $("#form-acudientes").submit(function () {
             validarIdentificacion();
             return false;
-        });        
+        });
     });
-    
+
     function validarIdentificacion() {
             var identificacion = $("#Acudientes_identificacion");
             if (identificacion === "") {
@@ -186,7 +197,7 @@ $formulario->abrir();
                 soundPath: '<?= Sis::UrlRecursos() ?>librerias/lobibox/sounds/',
             });
         }
-    
+
     function borrar(e) {
         var d = $(e).closest('li').attr('d');
         $("#TiposDocumento_id_tipo option:disabled").each(function (index) {

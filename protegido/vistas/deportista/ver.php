@@ -73,8 +73,8 @@ $this->opciones = [
     <div id="thumb" class="col-sm-3">
         <div class="thumbnail">
             <img src="<?= Sis::UrlBase() ?>publico/imagenes/deportistas/fotos/<?= $modelo->foto . '?t=' . time(); ?>" alt="">
-            <div class="caption">
-                <p class="text-center"><button id="btn-eliminar" href="#" class="btn btn-danger" role="button"><i class="fa fa-trash"></i></button></p>
+            <div class="caption text-center">
+                <button id="btn-eliminar" class="btn btn-primary" type="button"><i class="fa fa-trash"></i></button>
             </div>
         </div>
     </div>

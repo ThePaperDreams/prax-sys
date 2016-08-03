@@ -98,9 +98,13 @@ class CFormulario {
                     'var enviar = true;' . 
                     '$("[requerido]").each(function(k, v){' . 
                         'var elemento = $(v);' . 
-                        'var error = elemento.closest(".form-group").parent().find(".form-requerido");' . 
+                        'if(elemento.attr("data-err-target") !== undefined){' .
+                            'var error = $("#err-" + elemento.attr("data-err-target"));' . 
+                        '} else {' . 
+                            'var error = elemento.closest(".form-group").parent().find(".form-requerido");' . 
+                        '}' .
                         'if($.trim(elemento.val()) === ""){' . 
-                            'enviar = false;                    ' . 
+                            'enviar = false;' . 
                             'error.show();' . 
                         '}else {' . 
                             'error.hide();' . 

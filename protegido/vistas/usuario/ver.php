@@ -10,7 +10,7 @@ $this->opciones = [
     'elementos' => [
         'Listar' => ['Usuario/inicio'],
         'Registrar' => ['Usuario/crear'],
-        'Editar' => ['Usuario/editar', 'id' => $modelo->id_usuario],
+        'Actualizar' => ['Usuario/editar', 'id' => $modelo->id_usuario],
     ]
 ];
 ?>
@@ -31,7 +31,7 @@ $this->opciones = [
                 </tr>
                 <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('rol_id') ?></th>
-                    <td><?php echo $roles["$modelo->rol_id"]; ?></td>
+                    <td><?php echo $modelo->Rol->nombre; ?></td>
                 </tr>
                 <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('nombre_usuario') ?></th>

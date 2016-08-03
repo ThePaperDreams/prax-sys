@@ -1,7 +1,8 @@
 <?php 
+$this->tituloPagina = "Actualizar categoría";
     $this->migas = [
         'Home' => ['principal/inicio'],
-        'Listar Categorias' => ['Categoria/inicio'],        
+        'Listar Categorías' => ['Categoria/inicio'],
         'Actualizar'
     ];
     
@@ -13,5 +14,5 @@
     ];    
 ?>
 <div class="col-sm-12">    
-    <?php echo $this->mostrarVistaP('_formulario', ['modelo' => $modelo, 'entrenadores' => $entrenadores]); ?>
+    <?php echo $this->mostrarVistaP('_formulario', ['modelo' => $modelo, 'url' => $url, 'entrenadores' => $entrenadores]); ?>
 </div>

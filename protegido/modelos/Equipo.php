@@ -12,9 +12,10 @@
  * @property int $deportista_id
  * 
  * Relaciones del modelo
+ * @property DeportistaEquipo[] $DllDeportistas
  */
  class Equipo extends CModelo{
- 
+    private $_deportistas = null;
     /**
      * Esta función retorna el nombre de la tabla representada por el modelo
      * @return string
@@ -35,7 +36,6 @@
 		'estado' => ['def' => '1'] , 
 		'posicion', 
 		'entrenador_id', 
-		'deportista_id', 
         ];
     }
     
@@ -48,7 +48,20 @@
             # el formato es simple: 
             # tipo de relación | modelo con que se relaciona | campo clave foranea
             'Deportista' => [self::PERTENECE_A, 'Deportista', 'deportista_id'],
+            'Entrenador' => [self::PERTENECE_A, 'Usuario', 'usuario_id'],
+            'DllDeportistas' => [self::CONTENGAN_A, 'DeportistaEquipo', 'equipo_id'],
         ];
+    }
+    
+    public function getDeportistas(){
+        if($this->_deportistas == null){
+            $this->_deportistas = [];
+            $dllDeportista = $this->DllDeportistas;
+            foreach ($dllDeportista AS $d){
+                $this->_deportistas[] = $d->Deportista;
+            }
+        }
+        return $this->_deportistas;
     }
     
     /**
@@ -68,10 +81,32 @@
     }
     public function filtros() {
         return [
-            'requeridos' => 'cupo_maximo, cupo_minimo, estado, deportista_id,entrenador_id',
+            'requeridos' => 'cupo_maximo, cupo_minimo, entrenador_id',
             'seguros' => '*',
         ];
     }
+    
+    public function getEstadoEtiqueta(){
+        if($this->estado == 0){
+            return CHtml::e('span', 'Inactivo', ['class' => 'label label-danger']);
+        } else {
+            return CHtml::e('span', 'Activo', ['class' => 'label label-success']);
+        }
+    }    
+    
+    public function getTotalJugadores(){
+        return count($this->Deportista);
+    }
+    
+    public function getMDeportistas(){
+        $deportista = $this->Deportista;
+        $jugadores = [];
+        foreach ($deportista AS $d){
+            $jugadores[] = $d->jugador;
+        }
+        return $jugadores;
+    }
+    
     /**
      * Esta función permite listar todos los registros
      * @param array $criterio

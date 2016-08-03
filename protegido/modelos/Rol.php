@@ -37,15 +37,6 @@
         return ['requeridos'=>'nombre,desarrollador',];
     }
     
-    public function getRutas() {
-        $rr = RutaRol::modelo()->listar(["where" => "rol_id=$this->id_rol"]);
-        $rutas = [];
-        foreach ($rr as $detalle) {
-            $rutas[] = $detalle->Ruta;
-        }
-        return $rutas;
-    }
-    
     /**
      * Esta función retorna las relaciones con otros modelos
      * @return array

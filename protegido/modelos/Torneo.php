@@ -56,7 +56,7 @@
         return [
             # el formato es simple: 
             # tipo de relación | modelo con que se relaciona | campo clave foranea
-            'Equipo' => [self::PERTENECE_A, 'EquipoTorneo', 'equipo_id'],
+            'Equipo' => [self::CONTENGAN_A, 'EquipoTorneo', 'equipo_id'],
                     ];
     }
     
@@ -82,10 +82,11 @@
     
     public function filtros() {
         return [
-            'requeridos' => 'nombre,cupo_minimo,cupo_maximo,edad_maxima,edad_minima,fecha_inicio',
-            'seguros' => 'nombre,cupo_minimo,cupo_maximo,edad_maxima,edad_minima,fecha_inicio',
+            'requeridos' => 'nombre,cupo_minimo,cupo_maximo,edad_maxima,fecha_inicio',
+            'seguros' => 'nombre,cupo_minimo,cupo_maximo,edad_maxima,fecha_inicio',
         ];
     }
+    
     
     /**
      * Esta función permite listar todos los registros

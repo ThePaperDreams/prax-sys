@@ -13,5 +13,5 @@
     ];    
 ?>
 <div class="col-sm-12">    
-    <?php echo $this->mostrarVistaP('_formulario', ['modelo' => $modelo, 'rutt'=>$rutt, 'url' => $url, 'ruta'=>$ruta, 'modulo'=>$modulo, 'rutas'=>$rutas, 'modulos'=>$modulos]); ?>
+    <?php echo $this->mostrarVistaP('_formulario', ['modelo' => $modelo, 'url' => $url]); ?>
 </div>

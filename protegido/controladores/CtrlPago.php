@@ -9,12 +9,12 @@ class CtrlPago extends CControlador{
         
         $deportistas = Matricula::listarDeportistas();
         $this->vista("pagosPendientes", [
-            'deportistas' => CHtml::modeloLista($deportistas, "id_deportista", "nombreDePila"),
+            'deportistas' => $deportistas,
         ]);
     }
     
     public function consultarPagos(){
-        $id = 1;
+        $id = $this->_p['idDep'];
         $matricula = Matricula::modelo()->porPk($id);
         $fechaMatricula = new DateTime($matricula->fecha_pago);
         $fechaInicio = new DateTime($fechaMatricula->format('Y-m'));

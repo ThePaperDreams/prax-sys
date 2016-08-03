@@ -25,6 +25,7 @@ $this->complemento('!siscoms.bootstrap3.CBGrid', [
         'estado_id' => 'EtiquetaEstado'
     ],
     'opciones' => [
+        ['i' => 'soccer-ball-o', 'url' => 'Deportista/fichaTecnica&{id:pk}'],
         ['i' => 'eye', 'url' => 'Deportista/ver&{id:pk}'],
         ['i' => 'pencil', 'url' => 'Deportista/editar&{id:pk}'],
         ['i' => 'refresh', 'url' => 'Deportista/cambiarEstado&{id:pk}'],

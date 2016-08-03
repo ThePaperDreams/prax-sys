@@ -54,6 +54,13 @@
         ];
     }
     
+    public function filtros() {
+        return [
+            'requeridos' => 'nombre',
+            'seguros' => '*',
+        ];
+    }
+    
     /**
      * Esta función permite listar todos los registros
      * @param array $criterio

@@ -140,6 +140,24 @@ class CtrlMatricula extends CControlador {
         }
         $this->redireccionar('inicio');
     }
+    
+    public function accionListaDeEspera(){
+        if(isset($this->_p['deportista'])){
+            $deportista = Deportista::modelo()->porPk($this->_p['deportista']);
+            $deportista->estado_id = 4;
+            if($deportista->guardar()){
+                Sis::Sesion()->flash("alerta", [
+                    'msg' => 'Se envió a lista de espera el deportista',
+                    'tipo' => 'success',
+                ]);
+                $this->redireccionar('deportista/verListaEspera');
+            }
+        }
+        $deportistas = Matricula::getDeportistasSinMatricula();
+        $this->vista("listaEspera", [
+            'deportistas' => CHtml::modeloLista($deportistas, "id_deportista", "nombreDePila"),
+        ]);
+    }        
 
     /**
      * Esta función permite cargar un modelo usando su primary key

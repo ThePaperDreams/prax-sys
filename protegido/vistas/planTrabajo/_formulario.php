@@ -2,70 +2,73 @@
 $formulario = new CBForm(['id' => 'form-planestrabajo']);
 $formulario->abrir();
 ?>
-<p>Los campos con <span class="text-danger">*</span>  son requeridos</p>
-<hr>
-<div class="row">
-    <div class="col-sm-6">
-        <div class="panel panel-default">
-            <div class="panel-heading text-center">
-                Información del plan de trabajo
-            </div>
-            <div class="panel-body">
-                <?=  $formulario->inputAddon($modelo, 'fecha_aplicacion', 'text', ['label' => true, 'group' => true, 'autofocus' => true], ['pos' => CBoot::fa('calendar')]) ?>
-                <?=  $formulario->listaM($modelo, 'categoria_id', 'Categoria' ,'id_categoria', 'nombre', ['label' => true, 'group' => true, 'defecto' => 'Selecione una categoría']) ?>
-                <?=  $formulario->areaTexto($modelo, 'descripcion', ['label' => true, 'group' => true, 'rows' => 5]) ?>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-6">
-        <div class="panel panel-default">
-            <div class="panel-heading text-center">
-                Objetivos del plan de trabajo
-            </div>
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-sm-8">
-                        <?php $objetivos = CHtml::modeloLista(Objetivo::modelo()->listar(), "id_objetivo", "titulo"); ?>
-                        <?= CBoot::select('', $objetivos, ['defecto' => 'Seleccione un objetivo', 'id' => 'lista-objetivos']) ?>
-                    </div>
-                    <div class="col-sm-4">
-                        <?= CBoot::boton( CBoot::fa('plus-circle') . " Agregar ", 'default', ['class' => 'btn-block', 'id' => 'btn-agregar']) ?>
-                    </div>
+<div class="tile p-15">
+    <p>Los campos con <span class="text-danger">*</span>  son requeridos</p>
+    <hr>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="panel panel-default">
+                <div class="panel-heading text-center">
+                    Información del plan de trabajo
                 </div>
-                <hr>
-                <table class="table table-bordered table-condensed">
-                    <thead>
-                        <tr>
-                            <th>Titulo</th>
-                            <th>&nbsp;</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabla-objetivos">
-                        <?php if(!$modelo->nuevo): ?>
-                            <?php foreach($modelo->Detalles AS $detalle): ?>
-                        <tr data-id="<?= $detalle->id_op ?>" data-obj="<?= $detalle->objetivo_id ?>">
-                            <td><?= $detalle->Objetivo->titulo ?></td>
-                            <td class="col-sm-1 text-center text-danger-icon"><i class="fa fa-ban" onclick="quitar($(this), true);" ></i></td>
-                        </tr>
-                            <?php endforeach ?>
-                        <?php endif ?>
-                    </tbody>
-                </table>
+                <div class="panel-body">
+                    <?=  $formulario->inputAddon($modelo, 'fecha_aplicacion', 'text', ['label' => true, 'group' => true, 'autofocus' => true], ['pos' => CBoot::fa('calendar')]) ?>
+                    <?=  $formulario->listaM($modelo, 'categoria_id', 'Categoria' ,'id_categoria', 'nombre', ['label' => true, 'group' => true, 'defecto' => 'Selecione una categoría']) ?>
+                    <?=  $formulario->areaTexto($modelo, 'descripcion', ['label' => true, 'group' => true, 'rows' => 5]) ?>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="panel panel-default">
+                <div class="panel-heading text-center">
+                    Objetivos del plan de trabajo
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <?php $objetivos = CHtml::modeloLista(Objetivo::modelo()->listar(), "id_objetivo", "titulo"); ?>
+                            <?= CBoot::select('', $objetivos, ['defecto' => 'Seleccione un objetivo', 'id' => 'lista-objetivos']) ?>
+                        </div>
+                        <div class="col-sm-4">
+                            <?= CBoot::boton( CBoot::fa('plus-circle') . " Agregar ", 'default', ['class' => 'btn-block', 'id' => 'btn-agregar']) ?>
+                        </div>
+                    </div>
+                    <hr>
+                    <table class="table table-bordered table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Titulo</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-objetivos">
+                            <?php if(!$modelo->nuevo): ?>
+                                <?php foreach($modelo->Detalles AS $detalle): ?>
+                            <tr data-id="<?= $detalle->id_op ?>" data-obj="<?= $detalle->objetivo_id ?>">
+                                <td><?= $detalle->Objetivo->titulo ?></td>
+                                <td class="col-sm-1 text-center text-danger-icon"><i class="fa fa-ban" onclick="quitar($(this), true);" ></i></td>
+                            </tr>
+                                <?php endforeach ?>
+                            <?php endif ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div id="objetivos-eliminados"></div>
-<hr>
+    <div id="objetivos-eliminados"></div>
+    <hr>
 
-<div class="row">
-    <div class="col-sm-offset-3 col-sm-3">
-        <?=  CHtml::link(CBoot::fa('undo').' Cancelar', ['planTrabajo/inicio'], ['class' => 'btn btn-primary btn-block']); ?>
-    </div>
-    <div class="col-sm-3">
-        <?=  CBoot::boton(CBoot::fa('save') .' '. ($modelo->nuevo? 'Guardar' : 'Actualizar'), 'success', ['id' => 'btn-send', 'class' => 'btn-block']); ?>
+    <div class="row">
+        <div class="col-sm-offset-3 col-sm-3">
+            <?=  CHtml::link(CBoot::fa('undo').' Cancelar', ['planTrabajo/inicio'], ['class' => 'btn btn-primary btn-block']); ?>
+        </div>
+        <div class="col-sm-3">
+            <?=  CBoot::boton(CBoot::fa('save') .' '. ($modelo->nuevo? 'Guardar' : 'Actualizar'), 'success', ['id' => 'btn-send', 'class' => 'btn-block']); ?>
+        </div>
     </div>
 </div>
+
 
 <?php $formulario->cerrar(); ?>
 
