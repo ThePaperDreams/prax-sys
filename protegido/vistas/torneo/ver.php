@@ -54,7 +54,7 @@ $this->opciones = [
                 </tr>
                 <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('equipo_id') ?></th>
-                    <td><?php echo $modelo->equipo_id; ?></td>
+                    <td><?php echo $modelo->Equipo->nombre; ?></td>
                 </tr>
             </tbody>
         </table>

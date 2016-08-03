@@ -55,7 +55,7 @@
         return [
             # el formato es simple: 
             # tipo de relación | modelo con que se relaciona | campo clave foranea
-            'Equipo' => [self::CONTENGAN_A, 'EquipoTorneo', 'equipo_id'],
+            'Equipo' => [self::PERTENECE_A, 'Equipo', 'equipo_id'],
                     ];
     }
     

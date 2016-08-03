@@ -19,6 +19,7 @@
         'cupo_minimo', 
         'edad_maxima',  
         'fecha_inicio',
+        'equipo_id'=>'Equipo->nombre'
     ],
     'opciones' => true,
     'paginacion' => 10,
