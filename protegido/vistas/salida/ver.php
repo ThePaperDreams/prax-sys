@@ -18,7 +18,7 @@ $this->opciones = [
         <div class="panel-heading text-center">
             Ver detalles
         </div>
-        <table class="table table-bordered table-striped table-hover">
+        <table class="table table-bordered">
             <tbody>
                 <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('fecha_realizacion') ?></th>
@@ -51,7 +51,7 @@ $this->opciones = [
         <div class="panel-heading text-center">
             Cantidad
         </div>
-        <table class="table table-bordered table-striped table-hover">
+        <table class="table table-bordered">
             <thead>
                 <tr>
                     <th>Implemento</th>
