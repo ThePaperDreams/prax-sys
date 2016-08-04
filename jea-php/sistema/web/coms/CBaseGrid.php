@@ -13,6 +13,9 @@
  */
 abstract class CBaseGrid extends CComplemento{
     protected $_filtros = null;
+    /**
+     * @var CModelo
+     */
     protected $_modelo;
     protected $_paginacion = 10;
     protected $_columnas;    
@@ -54,8 +57,13 @@ abstract class CBaseGrid extends CComplemento{
             $this->totalPaginas = ceil(intval($this->total) / intval($this->_paginacion));
             $this->cModelo = new $this->_modelo();
             $this->mEtiquetas = $this->cModelo->etiquetasAtributos();
-        } else if($this->_modelo instanceof CModelo){
-            # lógica si se pasa un módelo
+        } else if(is_array($this->_modelo) && count($this->_modelo) > 0){
+            $clase = get_class($this->_modelo[0]);
+            $this->cModelo = new $clase;
+            $this->modelos = $this->_modelo;
+            $this->mEtiquetas = $this->cModelo->etiquetasAtributos();
+            $this->total = count($this->cModelo);
+            $this->totalPaginas = ceil(intval($this->total) / intval($this->_paginacion));
         }
     }
     
