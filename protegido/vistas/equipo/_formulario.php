@@ -13,11 +13,12 @@ $formulario->abrir();
             <?php echo $formulario->campoNumber($modelo, 'cupo_maximo', ['label' => true, 'group' => true]) ?>
             <?php echo $formulario->campoNumber($modelo, 'cupo_minimo', ['label' => true, 'group' => true]) ?>
             <?php echo $formulario->campoTexto($modelo, 'estado', ['label' => true, 'group' => true]) ?>
-            <?php echo $formulario->campoTexto($modelo, 'posicion', ['label' => true, 'group' => true]) ?>
-            <?php echo $formulario->lista($modelo, 'entrenador_id', $Entre, ['label' => true, 'defecto' => 'Seleccione un entrenador']) ?>
+            <?php echo $formulario->campoTexto($modelo, 'posicion', ['label' => true, 'group' => true]) ?>     
         </div>
         <div role="tabpanel" class="tab-pane" id="cargar">
             <div class="row" id="tab-imagenes">
+                <?php echo $formulario->lista($modelo, 'entrenador_id', $Entre, ['label' => true, 'defecto' => 'Seleccione un entrenador']) ?>
+                <br>
                 <div class="col-sm-8">
                     <?php $jugadores = CHtml::modeloLista(Deportista::modelo()->listar(), "id_deportista", "nombre1"); ?>
                     <?= CBoot::select('', $jugadores, ['defecto' => 'Seleccione un jugador', 'id' => 'lista-deportistas']) ?>

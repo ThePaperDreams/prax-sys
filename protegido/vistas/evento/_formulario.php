@@ -49,17 +49,30 @@ $formulario->abrir();
     </div>    
 </div>
 <script>
-  $(function() {
+$(document).ready(function() {
+    $('.summernote').summernote();
     $( "#datepicker" ).datepicker({
         dateFormat: 'yy-mm-dd',
     });
     $( "#datepicker2" ).datepicker({
         dateFormat: 'yy-mm-dd',
     });    
-    $(document).ready(function() {
-    $('.summernote').summernote();
+    
+    $("#datapicker").change(function(){
+            validarFecha($(this));
+        });
     });
- });
+ 
+ function validarFecha(fecha) {
+        var currDate = new Date();
+        var date = Date.parse(fecha.val());
+        if (date >= currDate) {
+            $('#btn-send').removeAttr("disabled");
+        } else {
+            alert("Por favor seleccione una fecha mayor a la de hoy");
+            $('#btn-send').attr("disabled", "disabled");
+        }
+    }
 </script>
 
 <?php $formulario->cerrar(); ?>

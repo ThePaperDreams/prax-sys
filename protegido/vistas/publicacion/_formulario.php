@@ -50,7 +50,9 @@ $formulario->abrir();
 </div>    
 
 <script>
-  $(function() {
+    
+    $(document).ready(function() {
+    $('.summernote').summernote();
     $( "#datepicker" ).datepicker({
         dateFormat: 'yy-mm-dd',
     });
@@ -58,13 +60,10 @@ $formulario->abrir();
         dateFormat: 'yy-mm-dd',
     });    
     
-    $(document).ready(function() {
-    $('.summernote').summernote();
     $("#datapicker").change(function(){
             validarFecha($(this));
         });
     });
- });
  
  function validarFecha(fecha) {
         var currDate = new Date();
