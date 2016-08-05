@@ -19,7 +19,7 @@
     'columnas' => [
         'fecha',
         'valorFormateado',
-        'url_comprobante',
+        'url_comprobante' => 'UrlDescarga',
         'estado' => 'EtiquetaEstado',
         'descuento',        
         'matricula_id' => 'MatriculaPago->Deportista->nombreCompleto',
