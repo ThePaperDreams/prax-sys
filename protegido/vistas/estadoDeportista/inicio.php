@@ -20,12 +20,3 @@
     'paginacion' => 10,
 ])
 ?>
-<script>
-    $(function(){
-        $("a[href*='eliminar']").click(function(){
-            if (confirm('¿Seguro que desea eliminar este registro?') === false) {
-                return false;
-            }
-        });
-    });
-</script>

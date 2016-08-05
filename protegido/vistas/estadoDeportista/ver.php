@@ -10,7 +10,7 @@
         'elementos' => [
             'Listar' => ['EstadoDeportista/inicio'],
             'Registrar' => ['EstadoDeportista/crear'],
-            'Editar' => ['EstadoDeportista/editar', 'id' => $modelo->id_estado],
+            'Actualizar' => ['EstadoDeportista/editar', 'id' => $modelo->id_estado],
         ]
     ];
 ?>

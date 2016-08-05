@@ -190,15 +190,19 @@ class CtrlDeportista extends CControlador {
             }
         }
     }
+    
+    private function alertar($tipo, $msj){
+        Sis::Sesion()->flash("alerta", [
+            'msg' => $msj,
+            'tipo' => $tipo,
+        ]);
+    }
 
     public function accionCambiarEstado($pk) {
         $modelo = $this->cargarModelo($pk);
         $modelo->estado_id = ($modelo->estado_id != 2) ? 2 : 1;
         if ($modelo->guardar()) {
-            Sis::Sesion()->flash("alerta", [
-                'msg' => 'Cambio exitoso',
-                'tipo' => 'success',
-            ]);
+            $this->alertar('success', 'Cambio exitoso');            
         } else {
             # lógica para error al borrar
         }

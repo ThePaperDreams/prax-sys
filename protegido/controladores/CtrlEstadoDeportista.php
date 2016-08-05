@@ -19,15 +19,41 @@ class CtrlEstadoDeportista extends CControlador{
      * Esta función permite crear un nuevo registro
      */
     public function accionCrear(){
+        $this->validarNombre();
         $modelo = new EstadoDeportista();
         if(isset($this->_p['EstadoDeportistas'])){
             $modelo->atributos = $this->_p['EstadoDeportistas'];
             if($modelo->guardar()){
-                # lógica para guardado exitoso
+                $this->alertar('success', 'Registro exitoso');
                 $this->redireccionar('inicio');
             }
         }
-        $this->mostrarVista('crear', ['modelo' => $modelo]);
+        $url = Sis::crearUrl(['EstadoDeportista/crear']);
+        $this->mostrarVista('crear', ['modelo' => $modelo, 'url' => $url]);
+    }
+    
+    private function validarNombre($id = null){
+        if(isset($this->_p['validarNombre'])){
+            if($id === null){
+                $criterio = [
+                    'where' => "nombre = '" . $this->_p['nombre'] . "'"
+                ];
+            } else {
+                $criterio = [
+                    'where' => "id_estado <> $id AND nombre = '" . $this->_p['nombre'] . "'"
+                ];
+            }
+            $ea = EstadoDeportista::modelo()->primer($criterio);
+            if($ea != null){
+                $error = true;
+            } else {
+                $error = false;
+            }
+            $this->json([
+                'error' => $error,
+            ]);
+            Sis::fin();
+        }
     }
     
     /**
@@ -35,15 +61,17 @@ class CtrlEstadoDeportista extends CControlador{
      * @param int $pk
      */
     public function accionEditar($pk){
+        $this->validarNombre($pk);
         $modelo = $this->cargarModelo($pk);
         if(isset($this->_p['EstadoDeportistas'])){
             $modelo->atributos = $this->_p['EstadoDeportistas'];
             if($modelo->guardar()){
-                # lógica para guardado exitoso
+                $this->alertar('success', 'Actualización exitosa');
                 $this->redireccionar('inicio');
             }
         }
-        $this->mostrarVista('editar', ['modelo' => $modelo]);
+        $url = Sis::crearUrl(['EstadoDeportista/editar', 'id' => $pk]);
+        $this->mostrarVista('editar', ['modelo' => $modelo, 'url' => $url]);
     }
     
     /**
@@ -61,12 +89,24 @@ class CtrlEstadoDeportista extends CControlador{
      */
     public function accionEliminar($pk){
         $modelo = $this->cargarModelo($pk);
-        if($modelo->eliminar()){
-            # lógica para borrado exitoso
+        $deps = Deportista::modelo()->listar([
+            'where' => "estado_id=$pk",
+        ]);
+        if (count($deps) > 0) {
+            $this->alertar('error', 'No se puede eliminar');
         } else {
-            # lógica para error al borrar
-        }
+            if ($modelo->eliminar()) {
+                $this->alertar('success', 'Estado de deportista eliminado');
+            }
+        }        
         $this->redireccionar('inicio');
+    }
+    
+    private function alertar($tipo, $msj) {
+        Sis::Sesion()->flash("alerta", [
+            'msg' => $msj,
+            'tipo' => $tipo,
+        ]);
     }
     
     /**

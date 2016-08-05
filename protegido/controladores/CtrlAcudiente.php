@@ -25,10 +25,7 @@ class CtrlAcudiente extends CControlador {
             $modelo->atributos = $this->_p['Acudientes'];
             if ($modelo->guardar()) {
                 $this->asociarDocumentos($modelo->id_acudiente);
-                Sis::Sesion()->flash("alerta", [
-                    'msg' => 'Guardado exitoso',
-                    'tipo' => 'success',
-                ]);
+                $this->alertar('success','Guardado exitoso');                
                 $this->redireccionar('inicio');
             }
         }
@@ -116,10 +113,7 @@ class CtrlAcudiente extends CControlador {
             $modelo->atributos = $this->_p['Acudientes'];
             if ($modelo->guardar()) {
                 $this->asociarDocumentos($modelo->id_acudiente);
-                Sis::Sesion()->flash("alerta", [
-                    'msg' => 'Modificación exitosa',
-                    'tipo' => 'success',
-                ]);
+                $this->alertar('success', 'Modificación exitosa');                
                 $this->redireccionar('inicio');
             }
         }
@@ -184,17 +178,26 @@ class CtrlAcudiente extends CControlador {
     
     public function accionCambiarEstado($pk) {
         $modelo = $this->cargarModelo($pk);
-        $modelo->estado = !$modelo->estado;
-        if ($modelo->guardar()) {
-            Sis::Sesion()->flash("alerta", [
-                'msg' => 'Cambio exitoso',
-                'tipo' => 'success',
-            ]);
+        $da = DeportistaAcudiente::modelo()->listar([
+            'where' => "id_acudiente=$pk",
+        ]);
+        if (count($da) > 0) {
+            $this->alertar('error', 'No se puede Inactivar');
         } else {
-            # lógica para error al borrar
+            $modelo->estado = !$modelo->estado;
+            if ($modelo->guardar()) {
+                $this->alertar('success', 'Cambio de estado exitoso');
+            }            
         }
         $this->redireccionar('inicio');
-    } 
+    }
+
+    private function alertar($tipo, $msj) {
+        Sis::Sesion()->flash("alerta", [
+            'msg' => $msj,
+            'tipo' => $tipo,
+        ]);
+    }
 
     /**
      * Esta función permite cargar un modelo usando su primary key

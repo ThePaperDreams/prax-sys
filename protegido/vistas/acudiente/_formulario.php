@@ -1,7 +1,7 @@
 <?php
 Sis::Recursos()->recursoCss(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/css/fileinput.min.css']);
 Sis::Recursos()->recursoJs(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/js/fileinput.min.js']);
-$formulario = new CBForm(['id' => 'form-acudientes']);
+$formulario = new CBForm(['id' => 'form-acudientes', 'opcionesHtml' => ['enctype' => 'multipart/form-data']]);
 $formulario->abrir();
 ?>
 
@@ -133,8 +133,7 @@ $formulario->abrir();
                 alert("El acudiente actualmente tiene este documento");
             }
             $("#TiposDocumento_id_tipo").val('').attr("selected", "selected");
-        });
-        $("#form-acudientes").attr('enctype', 'multipart/form-data');
+        });        
         $(".eliminar").click(function () {
             if (confirm('¿Está seguro de eliminar este documento?')) {
                 var a = $(this);
@@ -164,20 +163,19 @@ $formulario->abrir();
     });
 
     function validarIdentificacion() {
-            var identificacion = $("#Acudientes_identificacion");
+            var identificacion = $("#Acudientes_identificacion").val();
             if (identificacion === "") {
                 return;
             }
-
             $.ajax({
                 type: 'POST',
                 url: '<?php echo $url ?>',
                 data: {
                     validarIdentificacion: true,
-                    identificacion: identificacion.val(),
+                    identificacion: identificacion,
                 },
                 success: function (respuesta) {
-                    if (respuesta.error == true) {
+                    if (respuesta.error === true) {
                         mostrarAlert("error", "Ya existe esa Identificación");
                     } else {
                         document.getElementById("form-acudientes").submit();

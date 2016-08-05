@@ -1,7 +1,7 @@
 <?php
 Sis::Recursos()->recursoCss(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/css/fileinput.min.css']);
 Sis::Recursos()->recursoJs(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/js/fileinput.min.js']);
-$formulario = new CBForm(['id' => 'form-usuarios']);
+$formulario = new CBForm(['id' => 'form-usuarios', 'opcionesHtml' => ['enctype' => 'multipart/form-data']]);
 $formulario->abrir();
 ?>
 
@@ -36,13 +36,13 @@ $formulario->abrir();
 
     <div class="row">
         <div class="col-sm-6">
-            <?php echo $formulario->campoPassword($modelo, 'clave', ['label' => true, 'group' => true]) ?>
+            <?php echo $formulario->campoPassword($modelo, 'clave', ['label' => true, 'group' => true, 'value' => '']) ?>
         </div>
         <div class="col-sm-6">
             <div class="form-group">
                 <label for="confirmar-clave">Confirmar Clave <span class="text-danger">*</span></label>
                 <p class="text-danger form-requerido" style="display:none" id="err-clave">El campo <b>Confirmar Clave</b> no puede estar vacio</p>
-                <?= CBoot::passwordField('', ['requerido' => '1', 'class' => 'form-group', 'id' => 'confirmar-clave']) ?>
+                <?= CBoot::passwordField('', ['requerido' => '1', 'class' => 'form-group', 'id' => 'confirmar-clave', 'value' => '']) ?>
             </div>
         </div>
     </div>
@@ -75,9 +75,32 @@ $formulario->abrir();
             }
             return false;
         });
-<?php if (!$modelo->nuevo): ?>
-            $("#Usuarios_clave").val('');
-<?php endif; ?>
+        function validarUsuarioEmail() {
+        var email = $("#Usuarios_email").val();
+        var usuario = $("#Usuarios_nombre_usuario").val();
+        if (email === "" || usuario === "") {
+            return false;
+        }
+        $.ajax({
+            type: 'POST',
+            url: '<?php echo $url ?>',
+            data: {
+                validarUsuarioEmail: true,
+                usuario: usuario,
+                email: email,
+            },
+            success: function (respuesta) {
+                if (respuesta.error === true) {
+                    mostrarAlert("error", "Ya existe ese Usuario o Email");
+                    $("#Usuarios_nombre_usuario").focus().select();
+                } else {                    
+                    document.getElementById("form-usuarios").submit();
+                }
+            }
+        });
+    }
+        $("#Usuarios_clave").val('');
+        $("#confirmar-clave").val('');
     });
 
     function validarClave() {
@@ -89,32 +112,7 @@ $formulario->abrir();
             mostrarAlert("error", "Las Constraseñas no son iguales");
             return false;
         }
-    }
-
-    function validarUsuarioEmail() {
-        var email = $("#Usuarios_email");
-        var usuario = $("#Usuarios_nombre_usuario");
-        if (email === "" || usuario === "") {
-            return;
-        }
-
-        $.ajax({
-            type: 'POST',
-            url: '<?php echo $url ?>',
-            data: {
-                validarUsuarioEmail: true,
-                usuario: usuario.val(),
-                email: email.val(),
-            },
-            success: function (respuesta) {
-                if (respuesta.error == true) {
-                    mostrarAlert("error", "Ya existe ese Usuario o Email");
-                } else {
-                    document.getElementById("form-usuarios").submit();
-                }
-            }
-        });
-    }
+    }   
 
     function mostrarAlert(tipo, msg) {
         Lobibox.notify(tipo, {

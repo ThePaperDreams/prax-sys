@@ -25,27 +25,25 @@ $formulario->abrir();
         });
     });
     function validarNombre() {
-            var nombre = $("#Roles_nombre");
+            var nombre = $("#Roles_nombre").val();
             if (nombre === "") {
                 return;
             }
-
             $.ajax({
                 type: 'POST',
                 url: '<?php echo $url ?>',
                 data: {
                     validarNombre: true,
-                    nombre: nombre.val(),
+                    nombre: nombre,
                 },
                 success: function (respuesta) {
-                    if (respuesta.error == true) {
+                    if (respuesta.error === true) {
                         mostrarAlert("error", "Ya existe ese Nombre");
                     } else {
                         document.getElementById("form-roles").submit();
                     }
                 }
             });
-
         }
 
         function mostrarAlert(tipo, msg) {

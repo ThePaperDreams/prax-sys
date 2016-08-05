@@ -1,7 +1,7 @@
 <?php
 Sis::Recursos()->recursoCss(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/css/fileinput.min.css']);
 Sis::Recursos()->recursoJs(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/js/fileinput.min.js']);
-$formulario = new CBForm(['id' => 'form-deportistas']);
+$formulario = new CBForm(['id' => 'form-deportistas', 'opcionesHtml' => ['enctype' => 'multipart/form-data']]);
 $formulario->abrir();
 ?>
 <div class="tile p-15">
@@ -48,7 +48,7 @@ $formulario->abrir();
         <?php echo $formulario->campoTexto($modelo, 'direccion', ['label' => true, 'group' => true]) ?>
     </div>
     <div class="col-sm-6">
-        <?php echo $formulario->campoTexto($modelo, 'fecha_nacimiento', ['label' => true, 'group' => true]) ?>
+            <?php echo $formulario->campoTexto($modelo, 'fecha_nacimiento', ['label' => true, 'group' => true]) ?>
     </div>
 </div>
 
@@ -186,7 +186,6 @@ $formulario->abrir();
         $("#Deportistas_fecha_nacimiento").datepicker({
             dateFormat: 'yy-mm-dd'
         });
-        $("#form-deportistas").attr('enctype', 'multipart/form-data');
         $("a.eliminar").click(function () {
             if (confirm('¿Está seguro de eliminar este documento?')) {
                 var a = $(this);
@@ -226,6 +225,10 @@ $formulario->abrir();
             return false;
         });
         $("#form-deportistas").submit(function () {
+            if (validarAcudiente() < 1) {
+                mostrarAlert('error', 'Mínimo un acudiente');
+                return false;
+            }
             validarIdentificacion();
             return false;
         });
@@ -265,12 +268,12 @@ $formulario->abrir();
     }
     function files(){
         $("input[type=file]").fileinput({
-                    showPreview: false,
-                    showRemove: false,
-                    showUpload: false,
-                    browseLabel: "Seleccionar archivo",
-                });
-            }
+            showPreview: false,
+            showRemove: false,
+            showUpload: false,
+            browseLabel: "Seleccionar archivo",
+        });
+    }
     function encontrarAcu(tit) {
         var h = "", r = true;
         $("#tabla-acudientes td[titulo]").each(function (v, e) {
@@ -283,28 +286,26 @@ $formulario->abrir();
     }
     
     function validarIdentificacion() {
-            var identificacion = $("#Deportistas_identificacion");
-            if (identificacion === "") {
-                return;
-            }
-
-            $.ajax({
-                type: 'POST',
-                url: '<?php echo $url ?>',
-                data: {
-                    validarIdentificacion: true,
-                    identificacion: identificacion.val(),
-                },
-                success: function (respuesta) {
-                    if (respuesta.error == true) {
-                        mostrarAlert("error", "Ya existe esa Identificación");
-                    } else {
-                        document.getElementById("form-deportistas").submit();
-                    }
-                }
-            });
-
+        var identificacion = $("#Deportistas_identificacion").val();
+        if (identificacion === "") {
+            return false;
         }
+        $.ajax({
+            type: 'POST',
+            url: '<?php echo $url ?>',
+            data: {
+                validarIdentificacion: true,
+                identificacion: identificacion,
+            },
+            success: function (respuesta) {
+                if (respuesta.error === true) {
+                    mostrarAlert("error", "Ya existe esa Identificación");
+                } else {
+                    document.getElementById("form-deportistas").submit();
+                }
+            }
+        });
+    }
 
     function mostrarAlert(tipo, msg) {
         Lobibox.notify(tipo, {
@@ -316,19 +317,15 @@ $formulario->abrir();
             soundPath: '<?= Sis::UrlRecursos() ?>librerias/lobibox/sounds/',
         });
     }
-
-    function parseDate(input) {
-        var parts = input.split('-');
-        // new Date(year, month [, day [, hours[, minutes[, seconds[, ms]]]]])
-        return new Date(parts[0], parts[1]-1, parts[2]); // Note: months are 0-based
+    
+    function validarAcudiente(){
+        var x = $('#lis-acu li').length;
+        return x;
     }
         
     function validarFecha(fecha) {
-        var currDate = new Date();
-        var date = parseDate(fecha.val());
-        var tot = currDate.getFullYear() - date.getFullYear();
-        //console.log(tot);
-        if (tot <= 5 || tot > 17) {
+        var anios = new Date(new Date - new Date(fecha.val())).getFullYear()-1970;       
+        if (anios < 5 || anios > 17) {
             mostrarAlert('error', 'Seleccione una fecha valida');
             $('#btn-send').attr("disabled", "disabled");
         } else {

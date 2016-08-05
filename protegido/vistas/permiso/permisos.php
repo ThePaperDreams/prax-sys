@@ -34,7 +34,6 @@
         </div>
     </div>
 </div>
-
 <script>
     $(function(){
         
@@ -78,8 +77,6 @@
         var checked = obj.prop("checked");
         var id = obj.attr("data-exist") != undefined? obj.attr("data-id") : 0;
         var ruta = obj.attr("data-id-ruta") != undefined? obj.attr("data-id-ruta") : 0;
-        // mierd se me olvido como coge uno un check seleccionado ajajaj
-        // 
         $.ajax({
             'url' : '<?= Sis::CrearUrl(['permiso/asignar']) ?>',
             'type' : 'POST',
