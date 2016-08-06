@@ -1,4 +1,5 @@
 <?php
+$this->tituloPagina="Crear entrada de implementos";
 $formulario = new CBForm(['id' => 'form-entradas']);
 $formulario->abrir();
 

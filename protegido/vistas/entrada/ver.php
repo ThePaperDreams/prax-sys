@@ -13,12 +13,12 @@ $this->opciones = [
     ]
 ];
 ?>
-<div class="col-sm-8">
+<div class="col-sm-6">
     <div class="panel panel-default">
         <div class="panel-heading text-center">
             Ver detalles
         </div>
-        <table class="table table-bordered table-striped table-hover">
+        <table class="table table-bordered">
             <tbody>
                 <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('fecha_realizacion') ?></th>

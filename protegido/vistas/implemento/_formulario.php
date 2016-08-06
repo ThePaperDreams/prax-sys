@@ -31,7 +31,7 @@ $formulario->abrir();
         });
         
         function validarNombre(){
-            var nombre = $("#Implementos_nombre");
+            var nombre = $("#Implementos_nombre").val();
             if(nombre === ""){ return; }
             
             $.ajax({
@@ -39,7 +39,7 @@ $formulario->abrir();
                 url: '<?= $url ?>',
                 data: {
                     validarNombre: true,
-                    nombre : nombre.val(),
+                    nombre : nombre,
                 }, 
                 success: function(respuesta){
                     if(respuesta.error == true){
