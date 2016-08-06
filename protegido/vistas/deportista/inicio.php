@@ -22,7 +22,7 @@ $this->complemento('!siscoms.bootstrap3.CBGrid', [
         'nombre1',
         'apellido1',
         'telefono1',
-        'estado_id' => 'EtiquetaEstado'
+        'estado_id' => ['valor' => 'EtiquetaEstado', 'opciones' => ['class' => 'text-center']] 
     ],
     'opciones' => [
         ['i' => 'soccer-ball-o', 'url' => 'Deportista/fichaTecnica&{id:pk}'],
