@@ -107,7 +107,7 @@ class Categoria extends CModelo {
         if($this->estado == 0){
             return CHtml::e('span', 'Inactivo', ['class' => 'label label-default']); 
         } else if($this->estado == 1){
-            return CHtml::e('span', 'Inactivo', ['class' => 'label label-activo']); 
+            return CHtml::e('span', 'Inactivo', ['class' => 'label label-success']); 
         }
     }
     

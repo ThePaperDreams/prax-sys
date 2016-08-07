@@ -18,8 +18,8 @@
     'columnas' => [
         'descripcion' => 'Resumen',
         'fecha_aplicacion',
-        'estado' => 'EstadoEtiqueta',
-        'total_objetivos' => 'TotalObjetivos',
+        'estado' => ['valor' => 'EstadoEtiqueta', 'opciones' => ['class' => 'text-center']],
+        'total_objetivos' => ['valor' => 'TotalObjetivos', 'opciones' => ['class' => 'text-center']],
     ],
     'opciones' => [
         ['i' => 'eye', 'url' => 'PlanTrabajo/ver&{id:pk}'],

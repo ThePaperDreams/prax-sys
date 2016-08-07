@@ -107,7 +107,7 @@ $formulario->abrir();
         var objText = $("#lista-objetivos option:selected").text();
         var tdObj = $("<td/>").css('display', 'none').html(objText);
         var input = $("<input/>", {type: 'hidden', name:"objetivos[]"}).val(objetivo);
-        var icon = $("<i/>", {class: 'fa fa-ban'}).click(function(){quitar($(this))});
+        var icon = $("<i/>", {class: 'fa fa-trash'}).click(function(){quitar($(this))});
         var tdOpc = $("<td/>", {class: 'col-sm-1 text-center text-danger-icon'})
                 .css('display', 'none').append(input, icon);
         var tr = $("<tr>", {'data-obj':objetivo})

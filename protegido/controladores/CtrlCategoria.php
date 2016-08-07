@@ -96,13 +96,20 @@ class CtrlCategoria extends CControlador{
      */
     public function accionEliminar($pk){
         $modelo = $this->cargarModelo($pk);
-        if($modelo->eliminar()){
+        try{
+            if($modelo->eliminar()){
+                Sis::Sesion()->flash("alerta", [
+                    'msg' => 'Se eliminó correctamente',
+                    'tipo' => 'success',
+                ]);
+            } else {
+                # lógica para error al borrar
+            }            
+        } catch (Exception $ex) {
             Sis::Sesion()->flash("alerta", [
-                'msg' => 'Se eliminó correctamente',
-                'tipo' => 'success',
+                'msg' => 'Ocurrió un error al eliminar la categoría Error #00001',
+                'tipo' => 'error',
             ]);
-        } else {
-            # lógica para error al borrar
         }
         $this->redireccionar('inicio');
     }
