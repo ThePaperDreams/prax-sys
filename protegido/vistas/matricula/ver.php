@@ -1,4 +1,5 @@
 <?php
+$this->tituloPagina = "Ver matricula";
 $this->migas = [
     'Home' => ['principal/inicio'],
     'Ver Matriculas' => ['Matricula/inicio'],

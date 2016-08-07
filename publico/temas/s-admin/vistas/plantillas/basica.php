@@ -182,6 +182,9 @@ Sis::Recursos()->Js('comunes');
             <section id="content" class="container">
                 <div class="page-header">
                     <h4><?= $this->tituloPagina ?></h4>
+                    <span id="icono-ayuda">
+                        <i class="fa fa-question-circle" title="Ayuda"></i>
+                    </span>
                 </div>
                 <?php $this->complemento('!siscoms.bootstrap3.CBBreadCrumbs', [
                     'migas' => $this->migas

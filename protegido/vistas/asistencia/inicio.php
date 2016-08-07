@@ -1,4 +1,5 @@
 <?php 
+    $this->tituloPagina = "Asistencias tomadas";
     $this->migas = [
         'Home' => ['principal/inicio'],
         'Listar Asistencia'
@@ -20,7 +21,7 @@
         'realizada_por' => 'Usuario->nombreMasUsuario'
     ],
     'opciones' => [
-        ['i' => 'eye', 'url' => 'asistencia/ver&{id:pk}'],
+        ['i' => 'eye', 'title' => 'Ver', 'url' => 'asistencia/ver&{id:pk}'],
     ],
     'paginacion' => 10,
 ]) ?>

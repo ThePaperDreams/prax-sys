@@ -1,4 +1,5 @@
 <?php 
+    $this->tituloPagina = "Tomar asistencia";
     $this->migas = [
         'Home' => ['principal/inicio'],
         'Listar Asistencia' => ['Asistencia/inicio'],        

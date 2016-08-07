@@ -12,7 +12,7 @@
        var y = tr.offset().top;
        
        var cortina = jQuery("<div/>",{class:'modal-courtain'}).css("display", "none");
-       var panel = jQuery("<div/>", {class: 'panel panel-default'}).css("display", "none");
+       var panel = jQuery("<div/>", {class: 'panel panel-primary panel-faltas'}).css("display", "none");
        var heading = jQuery("<div/>", {class: 'panel-heading text-center'});
        var body = jQuery("<div/>", {class: 'panel-body'});
        var footer = jQuery("<div/>", {class: 'panel-footer text-center'});

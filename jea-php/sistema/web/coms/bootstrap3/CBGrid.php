@@ -19,7 +19,10 @@ class CBGrid extends CBaseGrid{
 
     public function crearCabecera() {
         $this->ths = $this->encabezados();
-        $tr = CHtml::e('tr', implode('', $this->ths));
+        $infoText = 'Total registros: ' . $this->total;
+        $info = CHtml::e('th', $infoText, ['colspan' => count($this->ths)]);
+        $tr = CHtml::e('tr', $info);
+        $tr .= CHtml::e('tr', implode('', $this->ths));
         $this->cabecera = CHtml::e('thead', $tr . $this->filtros);
     }
     

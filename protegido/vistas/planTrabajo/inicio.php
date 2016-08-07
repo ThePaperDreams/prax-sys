@@ -22,9 +22,9 @@
         'total_objetivos' => ['valor' => 'TotalObjetivos', 'opciones' => ['class' => 'text-center']],
     ],
     'opciones' => [
-        ['i' => 'eye', 'url' => 'PlanTrabajo/ver&{id:pk}'],
-        ['i' => 'pencil', 'url' => 'PlanTrabajo/editar&{id:pk}'],
-        ['i' => 'trash', 'url' => 'PlanTrabajo/eliminar&{id:pk}', 'visible' => '$m->estado == 1', 'opciones' => ['class' => 'op-eliminar']],
+        ['i' => 'eye', 'title' => 'Ver', 'url' => 'PlanTrabajo/ver&{id:pk}'],
+        ['i' => 'pencil', 'title' => 'Editar', 'url' => 'PlanTrabajo/editar&{id:pk}'],
+        ['i' => 'trash', 'title' => 'Eliminar', 'url' => 'PlanTrabajo/eliminar&{id:pk}', 'visible' => '$m->estado == 1', 'opciones' => ['class' => 'op-eliminar']],
     ],
     'paginacion' => 10,
 ]) ?>
