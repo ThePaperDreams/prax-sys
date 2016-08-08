@@ -128,7 +128,8 @@ Sis::Recursos()->Js('comunes');
                         ['texto' => 'Deportistas', 'url' => ['Deportista/inicio']],
                         ['texto' => 'Matriculas', 'url' => ['Matricula/inicio']],
                         ['texto' => 'Lista de espera', 'url' => ['Deportista/verListaEspera']],
-                        ['texto' => 'Documentos', 'url' => ['Documento/inicio']]
+                        ['texto' => 'Documentos', 'url' => ['Documento/inicio']],
+                        ['texto' => 'Préstamo', 'url' => ['PrestamoDeportista/inicio']],
                 ]],
                 ['texto' => 'Formación', 'fa' => 'soccer-ball-o', 'elementos' => [
                     ['texto' => 'Categorías de deportistas', 'url' => ['categoria/inicio']],
@@ -182,9 +183,11 @@ Sis::Recursos()->Js('comunes');
             <section id="content" class="container">
                 <div class="page-header">
                     <h4><?= $this->tituloPagina ?></h4>
+                    <?php if($this->ayuda != ""): ?>
                     <span id="icono-ayuda">
-                        <i class="fa fa-question-circle" title="Ayuda"></i>
+                        <i class="fa fa-question-circle" title="Ayuda" data-help="<?= $this->ayuda ?>" data-help-title="<?= $this->ayudaTitulo ?>"></i>
                     </span>
+                    <?php endif ?>
                 </div>
                 <?php $this->complemento('!siscoms.bootstrap3.CBBreadCrumbs', [
                     'migas' => $this->migas
@@ -230,7 +233,97 @@ Sis::Recursos()->Js('comunes');
                     soundPath: '<?= Sis::UrlRecursos() ?>librerias/lobibox/sounds/',
                 });
             }
+            $(function(){
+                $("#icono-ayuda i").click(function(){
+                    var ayuda = $(this).attr("data-help");
+                    var ayudaTitulo = $(this).attr("data-help-title");
+                    if(!ayudaTitulo){
+                        ayudaTitulo = "Ayuda";
+                    }
+                    $.ajax({
+                        type: 'POST',
+                        url: '<?= Sis::CrearUrl(['Ayuda/getAyuda']) ?>',
+                        data: {
+                            'ayuda': ayuda,
+                        },
+                        success: function(obj){
+                            abrirCortinaAyuda(ayudaTitulo, obj.body);
+                        }
+                    });
+                    
+                });
+            });
+            
+//            function traerAyuda(ayuda){
+//                
+////                $.ajax({
+////                    
+////                });
+//            }
+            
+            function abrirCortinaAyuda(title, body){                
+                var html = '<div id="cortina-ayuda" class="cortina" style="display:none">' + 
+                                '<div class="p-modal" style="display:none">' + 
+                                    '<div class="p-modal-header">' +                                         
+                                    title + 
+                                    '</div>' + 
+                                    '<div class="p-modal-body">' + 
+                                    body +
+                                    '</div>' +
+                                    '<div class="p-modal-footer">' + 
+                                        '<button id="btn-close-window" class="btn btn-primary">Salir</button>' + 
+                                    '</div>' + 
+                                '</div>' + 
+                            '</div>';
+                $("body").append(html);
+                var cortina = $("#cortina-ayuda");
+                var modal = cortina.find(".p-modal");
+                var wh = $(window).height();
+                var offset = wh * 0.1;
+                var modalH = 0;
+                var closeWindow = function(){
+                    modal.animate({
+                        top: (offset + 100) + "px",
+                    }, 100).animate({
+                        top: -modalH + 'px',
+                    }, 200, function(){
+                        cortina.fadeOut(function(){
+                            cortina.remove();
+                            $("body").css({
+                                'overflow': 'auto',
+                            });
+                        });
+                    });
+                };
+                
+                cortina.fadeIn(function(){                    
+                    modalH = modal.height();
+                    modal.css({
+                        top: -modalH + "px",
+                        display: 'inherit',
+                    });
+                    modal.animate({
+                        top: (offset) + 'px',
+                    });
+                });
+                
+                cortina.click(function(){                    
+                   closeWindow();
+                });
+                
+                modal.click(function(e){
+                    e.stopPropagation();
+                });
+                var button = $("#btn-close-window");
+                button.click(function(){
+                    closeWindow();
+                });
+                $("body").css({
+                    'overflow': 'hidden',
+                });
+            }
+                
         </script>
+        
     </body>
-</html> 
->>>>>>> jako
+</html>

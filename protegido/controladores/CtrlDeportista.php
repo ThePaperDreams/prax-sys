@@ -283,11 +283,37 @@ class CtrlDeportista extends CControlador {
         $ficha = FichaTecnica::modelo()->primer(['where' => "deportista_id='$pk'"]);
         if($ficha == null){
             $ficha = new FichaTecnica();
+            $ficha->deportista_id = $pk;
+            $ficha->entrenador_id = 1;
+        }
+        
+        
+        if(isset($this->_p['ajx'])){
+            $ficha->atributos = $this->_p['ficha'];
+            $this->json([
+                'error' => !$ficha->guardar(),
+            ]);
+            Sis::fin();
         }
         
         $this->vista('fichaTecnca',[
             'deportista' => $deportista,
             'ficha' => $ficha,
+            'piernas' => [
+                        'Izquierda',
+                        'Derecha',
+                        'Ambas'
+                    ],
+            'gruposS' => [
+                        'O-' => 'O-',
+                        'O+' => 'O+',
+                        'A-' => 'A-',
+                        'A+' => 'A+',
+                        'B-' => 'B-',
+                        'B+' => 'B+',
+                        'AB-' => 'AB-',
+                        'AB+' => 'AB+',
+                    ],
         ]);
     }
     

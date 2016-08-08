@@ -62,15 +62,21 @@ class PrestamoDeportista extends CModelo {
     public function etiquetasAtributos() {
         return [
             'id_prestamo' => 'Id Prestamo',
-            'clubOrigen' => 'ClubOrigen',
-            'clubDestino' => 'ClubDestino',
-            'fecha_inicio' => 'Fecha Inicio',
-            'fecha_fin' => 'Fecha Fin',
+            'clubOrigen' => 'Club de origen',
+            'clubDestino' => 'Club de destino',
+            'fecha_inicio' => 'Fecha inicio',
+            'fecha_fin' => 'Fecha fin',
             'estado' => 'Estado',
-            'deportista_id' => 'Deportista Id',
-            'tipo_prestamo' => 'Tipo Prestamo',
+            'deportista_id' => 'Deportista',
+            'tipo_prestamo' => 'Tipo prestamo',
             'nombreDeportista' => 'Deportista',
             'etiquetaTipo' => 'Tipo',
+        ];
+    }
+    
+    public function filtros() {
+        return [
+            'requeridos' => 'clubOrigen,clubDestino,fecha_inicio,fecha_fin,deportista_id,tipo_prestamo',
         ];
     }
     

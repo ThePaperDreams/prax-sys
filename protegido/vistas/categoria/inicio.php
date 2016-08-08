@@ -1,4 +1,7 @@
 <?php 
+    $this->ayuda = "categoria/inicio";
+    $this->ayudaTitulo = "Listado de categorías";
+    
     $this->tituloPagina = "Lista de categorías";
     $this->migas = [
         'Home' => ['principal/inicio'],
