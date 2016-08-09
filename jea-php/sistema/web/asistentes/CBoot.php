@@ -271,7 +271,7 @@ final class CBoot {
      * @param array $opciones
      * @return String
      */
-    public function selectM($seleccion, $modelo, $valor, $texto, $opciones = []){
+    public static function selectM($seleccion, $modelo, $valor, $texto, $opciones = []){
         $modelos = call_user_func([$modelo, "modelo"])->listar();
         $items = CHtml::modeloLista($modelos, $valor, $texto);
         return self::select($seleccion, $items, $opciones);
