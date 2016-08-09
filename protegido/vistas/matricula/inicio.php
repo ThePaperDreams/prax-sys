@@ -1,4 +1,5 @@
 <?php 
+    $this->tituloPagina = "Listar matriculas";
     $this->migas = [
         'Home' => ['principal/inicio'],
         'Listar Matriculas'
@@ -7,7 +8,7 @@
     $this->opciones = [
         'elementos' => [
             'Matricular deportista' => ['Matricula/matricular'],
-            'Lista de espera' => ['Matricula/verListaDeEspera'],
+            'Lista de espera' => ['Deportista/verListaEspera'],
         ]
     ];
 ?>
@@ -26,8 +27,8 @@
         'categoria_id' => 'Categoria->nombre',
     ],
     'opciones' => [
-        ['i' => 'eye', 'url' => 'Matricula/ver&{id:pk}'],
-        ['i' => 'ban', 'url' => 'Matricula/anular&{id:pk}', 'visible' => '$m->estado == 1'],
+        ['i' => 'eye', 'title' => 'Ver', 'url' => 'Matricula/ver&{id:pk}'],
+        ['i' => 'ban', 'title' => 'Editar', 'url' => 'Matricula/anular&{id:pk}', 'visible' => '$m->estado == 1'],
     ],
     'paginacion' => 10,
 ]) ?>

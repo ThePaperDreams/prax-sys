@@ -30,12 +30,8 @@ Sis::Recursos()->css('estilos');
         <meta name="format-detection" content="telephone=no">
         
     </head>
-    <body id="skin-blur-ocean">
-        <section id="login">
-            <header>
-                <h1><?= Sis::apl()->nombre ?></h1>
-            </header>
-        
+    <body id="skin-cloth">
+        <section id="login">        
             <div class="clearfix"></div>            
             <!-- Login -->
             <?= $this->contenido ?>

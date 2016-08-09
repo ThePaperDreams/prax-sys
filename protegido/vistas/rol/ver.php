@@ -11,6 +11,7 @@ $this->opciones = [
         'Listar' => ['Rol/inicio'],
         'Registrar' => ['Rol/crear'],
         'Actualizar' => ['Rol/editar', 'id' => $modelo->id_rol],
+        'Asignar permisos' => ['Permiso/asignar'],
     ]
 ];
 ?>

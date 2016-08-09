@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Este modelo es la representación de la tabla tbl_fichas_tecnicas
  *
@@ -15,12 +16,13 @@
  * @property float $valoracion
  * @property string $rh
  * @property int $deportista_id
+ * @property string lesiones
  * 
  * Relaciones del modelo
  * @property FkTblFichasTecnicasTblPersonas1 $fkTblFichasTecnicasTblPersonas1
  */
- class FichaTecnica extends CModelo{
- 
+class FichaTecnica extends CModelo {
+
     /**
      * Esta función retorna el nombre de la tabla representada por el modelo
      * @return string
@@ -35,54 +37,67 @@
      */
     public function atributos() {
         return [
-            'id_ficha_tecnica' => ['pk'] ,
-                'amonestacion' => ['def' => '0'] ,
-                'dorsal',
-                'expulsion',
-                'fecha_actualizacion',
-                'peso',
-                'pierna_habil',
-                'entrenador_id',
-                'talla',
-                'valoracion',
-                'rh',
-                'deportista_id',
-            ];
+            'id_ficha_tecnica' => ['pk'],
+            'amonestacion' => ['def' => '0'],
+            'dorsal',
+            'expulsion',
+            'fecha_actualizacion',
+            'peso',
+            'pierna_habil',
+            'entrenador_id',
+            'talla',
+            'valoracion',
+            'rh',
+            'deportista_id',
+            'lesiones',
+        ];
     }
-    
+
     /**
      * Esta función retorna las relaciones con otros modelos
      * @return array
      */
-    protected function relaciones() {        
+    protected function relaciones() {
         return [
             # el formato es simple: 
             # tipo de relación | modelo con que se relaciona | campo clave foranea
-            	'fkTblFichasTecnicasTblPersonas1' => [self::PERTENECE_A, 'FkTblFichasTecnicasTblPersonas1', 'deportista_id'],
+            'fkTblFichasTecnicasTblPersonas1' => [self::PERTENECE_A, 'FkTblFichasTecnicasTblPersonas1', 'deportista_id'],
         ];
     }
-    
+
     /**
      * Esta función retorna un alias dado a cada uno de los atributos del modelo
      * @return string
      */
     public function etiquetasAtributos() {
         return [
-		'id_ficha_tecnica' => 'Id Ficha Tecnica', 
-		'amonestacion' => 'Amonestacion', 
-		'dorsal' => 'Dorsal', 
-		'expulsion' => 'Expulsion', 
-		'fecha_actualizacion' => 'Fecha Actualizacion', 
-		'peso' => 'Peso', 
-		'pierna_habil' => 'Pierna Habil', 
-		'entrenador_id' => 'Entrenador Id', 
-		'talla' => 'Talla', 
-		'valoracion' => 'Valoracion', 
-		'rh' => 'Rh', 
-		'deportista_id' => 'Deportista Id', 
+            'id_ficha_tecnica' => 'Id Ficha Tecnica',
+            'amonestacion' => 'Amonestacion',
+            'dorsal' => 'Dorsal',
+            'expulsion' => 'Expulsion',
+            'fecha_actualizacion' => 'Fecha Actualizacion',
+            'peso' => 'Peso',
+            'pierna_habil' => 'Pierna Habil',
+            'entrenador_id' => 'Entrenador Id',
+            'talla' => 'Talla',
+            'valoracion' => 'Valoracion',
+            'rh' => 'Rh',
+            'deportista_id' => 'Deportista Id',
+            'lesiones' => 'Lesiones',
         ];
     }
     
+    
+    public function getPiernaStr(){
+        if($this->pierna_habil == 0){
+            return "Izquierda";
+        } else if($this->pierna_habil == 1){
+            return "Derecha";
+        } else {
+            return "Ambas";
+        }
+    }
+
     /**
      * Esta función permite listar todos los registros
      * @param array $criterio
@@ -91,7 +106,7 @@
     public function listar($criterio = array()) {
         return parent::listar($criterio);
     }
-    
+
     /**
      * Esta función permite obtener un registro por su primary key
      * @param int $pk
@@ -100,7 +115,7 @@
     public function porPk($pk) {
         return parent::porPk($pk);
     }
-    
+
     /**
      * Esta función permite obtener el primer registro
      * @param array $criterio
@@ -108,7 +123,7 @@
      */
     public function primer($criterio = array()) {
         return parent::primer($criterio);
-    } 
+    }
 
     /**
      * Esta función retorna una instancia del modelo tbl_fichas_tecnicas
@@ -118,4 +133,5 @@
     public static function modelo($clase = __CLASS__) {
         return parent::modelo($clase);
     }
+
 }

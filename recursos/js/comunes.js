@@ -2,7 +2,7 @@ var teclasEspeciales = [8, 16, 17, 18, 35, 36, 37, 38, 39, 40, 116];
 
 $(function(){
     aSelect2($("[data-s2]"));
-    aDate($("[data-date]"));
+    aDate($(".campo-fecha, [data-date='1']"));
     soloNumeros($(".solo-numeros"));
 });
 
@@ -27,7 +27,14 @@ function aDate(elementos, data){
     if(data === null || data === undefined){
         data = { dateFormat : 'yy-mm-dd' };
     }
-    elementos.datepicker(data);
+//    elementos.datepicker();
+    $.each(elementos, function(k, v){
+        $(v).datepicker({
+            language: 'es',
+            dateFormat: 'yyyy-mm-dd',
+        });
+    });
+//    elementos.datepicker(data);
 }
 
 function aSelect2(elementos, data){

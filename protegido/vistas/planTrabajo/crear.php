@@ -1,7 +1,8 @@
 <?php 
+    $this->tituloPagina = "Registrar plan de trabajo";
     $this->migas = [
         'Home' => ['principal/inicio'],
-        'Listar PlanesTrabajo' => ['PlanTrabajo/inicio'],        
+        'Listar Planes de trabajo' => ['PlanTrabajo/inicio'],        
         'Crear'
     ];
     

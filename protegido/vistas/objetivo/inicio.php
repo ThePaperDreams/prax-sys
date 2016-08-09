@@ -1,4 +1,6 @@
 <?php 
+    $this->ayuda = "objetivos/inicio";
+    $this->ayudaTitulo = "Listado de objetivos";
     $this->tituloPagina = "Listar objetivos";
     $this->migas = [
         'Home' => ['principal/inicio'],

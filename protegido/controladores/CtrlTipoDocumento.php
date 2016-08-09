@@ -24,10 +24,7 @@ class CtrlTipoDocumento extends CControlador{
         if(isset($this->_p['TiposDocumento'])){
             $modelo->atributos = $this->_p['TiposDocumento'];
             if($modelo->guardar()){
-                Sis::Sesion()->flash("alerta", [
-                    'msg' => 'Guardado exitoso',
-                    'tipo' => 'success',
-                ]);
+                $this->alertar('success', 'Guardado Exitoso');                
                 $this->redireccionar('inicio');
             }
         }
@@ -35,6 +32,13 @@ class CtrlTipoDocumento extends CControlador{
         $this->mostrarVista('crear', ['modelo' => $modelo,
             'url'=>$url,
             'tiposDocumentos' => CHtml::modelolista(TipoDocumento::modelo()->listar(), "id_tipo", "nombre"),
+        ]);
+    }
+    
+    private function alertar($tipo, $msj) {
+        Sis::Sesion()->flash("alerta", [
+            'msg' => $msj,
+            'tipo' => $tipo,
         ]);
     }
     
@@ -72,10 +76,7 @@ class CtrlTipoDocumento extends CControlador{
         if(isset($this->_p['TiposDocumento'])){
             $modelo->atributos = $this->_p['TiposDocumento'];
             if($modelo->guardar()){
-                Sis::Sesion()->flash("alerta", [
-                    'msg' => 'Modificación exitosa',
-                    'tipo' => 'success',
-                ]);
+                $this->alertar('success', 'Modificación exitosa');                
                 $this->redireccionar('inicio');
             }
         }
@@ -92,9 +93,7 @@ class CtrlTipoDocumento extends CControlador{
      */
     public function accionVer($pk){
         $modelo = $this->cargarModelo($pk);
-        $this->mostrarVista('ver', ['modelo' => $modelo,
-            'tiposDocumentos' => CHtml::modeloLista(TipoDocumento::modelo()->listar(), "id_tipo", "nombre"),
-        ]);
+        $this->mostrarVista('ver', ['modelo' => $modelo]);
     }
     
     /**
@@ -103,10 +102,16 @@ class CtrlTipoDocumento extends CControlador{
      */
     public function accionEliminar($pk){
         $modelo = $this->cargarModelo($pk);
-        if($modelo->eliminar()){
-            # lógica para borrado exitoso
-        } else {
-            # lógica para error al borrar
+        $doc = Documento::modelo()->listar([
+            'where' => "tipo_id=$pk",
+        ]);
+        $tipodoc = TipoDocumento::modelo()->listar([
+            'where' => "padre_id=$pk",
+        ]);
+        if(count($doc) > 0 || count($tipodoc) > 0){
+            $this->alertar('error','No se puede eliminar');
+        }else if($modelo->eliminar()){
+            $this->alertar('success','Eliminación Exitosa');
         }
         $this->redireccionar('inicio');
     }

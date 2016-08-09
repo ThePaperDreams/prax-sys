@@ -45,7 +45,7 @@ class CtrlDeportista extends CControlador {
                 $dep = $this->id_deportista;
                 $this->asociarAcudientes($dep);
                 $this->asociarDocumentos($dep);
-                $this->alertar('success','Registro Exitoso');
+                $this->alertar('success', 'Registro Exitoso');
                 $this->redireccionar('inicio');
             }
         }
@@ -53,7 +53,7 @@ class CtrlDeportista extends CControlador {
         $this->mostrarVista('crear', ['modelo' => $modelo,
             'modelo2' => $modelo2,
             'modelo3' => $modelo3,
-            'url'=>$url,
+            'url' => $url,
             'tiposIdentificaciones' => CHtml::modelolista(TipoIdentificacion::modelo()->listar(), "id_tipo_documento", "nombre"),
             'acudientes' => CHtml::modelolista(Acudiente::modelo()->listar(), "id_acudiente", "Datos"),
             'tiposDocumentos' => CHtml::modelolista(TipoDocumento::modelo()->listar(), "id_tipo", "nombre"),
@@ -76,23 +76,23 @@ class CtrlDeportista extends CControlador {
 
     public function asociarDocumentos($dep) {
         if (isset($_FILES['Documentos']) && isset($this->_p['TiposDocumentos'])) {
-            foreach ($_FILES['Documentos']['name'] as $k => $v) {
+            /*foreach ($_FILES['Documentos']['name'] as $k => $v) {
                 if (empty($v)) {
                     foreach ($_FILES['Documentos'] as $y => $x) {
                         unset($_FILES['Documentos'][$y][$k]);
                     }
                 }
-            }
+            }*/
             foreach ($this->_p['TiposDocumentos'] as $k => $v) {
                 $tipodoc = new TipoDocumento();
                 $nomtipo = $tipodoc->primer(["where" => "id_tipo=" . $v])->nombre;
                 $files = CArchivoCargado::instanciarTodasPorNombre('Documentos');
                 $rutaDestino = Sis::resolverRuta(Sis::crearCarpeta("!publico.deportistas.$dep"));
-                if (isset($files[$k])) {
+               // if (isset($files[$k])) {
                     $files[$k]->guardar($rutaDestino, $nomtipo);
                     $doc = $this->asociarDocumento($nomtipo, $k, $v, $files);
                     $this->asociarDeportistaDocumento($dep, $doc);
-                }
+                //}
             }
         }
     }
@@ -129,7 +129,7 @@ class CtrlDeportista extends CControlador {
             if ($modelo->guardar()) {
                 $this->asociarAcudientes($pk);
                 $this->asociarDocumentos($pk);
-                $this->alertar('success','Actualización Exitosa');
+                $this->alertar('success', 'Actualización Exitosa');
                 $this->redireccionar('inicio');
             }
         }
@@ -191,14 +191,18 @@ class CtrlDeportista extends CControlador {
         }
     }
 
+    private function alertar($tipo, $msj) {
+        Sis::Sesion()->flash("alerta", [
+            'msg' => $msj,
+            'tipo' => $tipo,
+        ]);
+    }
+
     public function accionCambiarEstado($pk) {
         $modelo = $this->cargarModelo($pk);
         $modelo->estado_id = ($modelo->estado_id != 2) ? 2 : 1;
         if ($modelo->guardar()) {
-            Sis::Sesion()->flash("alerta", [
-                'msg' => 'Cambio exitoso',
-                'tipo' => 'success',
-            ]);
+            $this->alertar('success', 'Cambio exitoso');
         } else {
             # lógica para error al borrar
         }
@@ -230,8 +234,9 @@ class CtrlDeportista extends CControlador {
      */
     public function accionEliminar($pk) {
         $modelo = $this->cargarModelo($pk);
-        if ($modelo->eliminar()) {            
-        } else {            
+        if ($modelo->eliminar()) {
+            
+        } else {
             # lógica para error al borrar
         }
         $this->redireccionar('inicio');
@@ -252,10 +257,10 @@ class CtrlDeportista extends CControlador {
             unlink($path);
         }
     }
-    
-    private function validarIdentificacion($id = null){
-        if(isset($this->_p['validarIdentificacion'])){
-            if($id === null){
+
+    private function validarIdentificacion($id = null) {
+        if (isset($this->_p['validarIdentificacion'])) {
+            if ($id === null) {
                 $criterio = [
                     'where' => "identificacion = '" . $this->_p['identificacion'] . "'"
                 ];
@@ -265,7 +270,7 @@ class CtrlDeportista extends CControlador {
                 ];
             }
             $deportista = Deportista::modelo()->primer($criterio);
-            if($deportista != null){
+            if ($deportista != null) {
                 $error = true;
             } else {
                 $error = false;
@@ -277,24 +282,50 @@ class CtrlDeportista extends CControlador {
         }
     }
 
-    public function accionFichaTecnica($pk){
+    public function accionFichaTecnica($pk) {
         $deportista = Deportista::modelo()->porPk($pk);
-        
+
         $ficha = FichaTecnica::modelo()->primer(['where' => "deportista_id='$pk'"]);
-        if($ficha == null){
+        if ($ficha == null) {
             $ficha = new FichaTecnica();
+            $ficha->deportista_id = $pk;
+            $ficha->entrenador_id = 1;
         }
         
-        $this->vista('fichaTecnca',[
+        
+        if(isset($this->_p['ajx'])){
+            $ficha->atributos = $this->_p['ficha'];
+            $this->json([
+                'error' => !$ficha->guardar(),
+            ]);
+            Sis::fin();
+        }
+
+        $this->vista('fichaTecnca', [
             'deportista' => $deportista,
             'ficha' => $ficha,
+            'piernas' => [
+                        'Izquierda',
+                        'Derecha',
+                        'Ambas'
+                    ],
+            'gruposS' => [
+                        'O-' => 'O-',
+                        'O+' => 'O+',
+                        'A-' => 'A-',
+                        'A+' => 'A+',
+                        'B-' => 'B-',
+                        'B+' => 'B+',
+                        'AB-' => 'AB-',
+                        'AB+' => 'AB+',
+                    ],
         ]);
     }
-    
-    public function accionVerListaEspera(){
+
+    public function accionVerListaEspera() {
         $this->vista('verListaEspera');
     }
-    
+
     /**
      * Esta función permite cargar un modelo usando su primary key
      * @param int $pk

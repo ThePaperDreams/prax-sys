@@ -8,7 +8,11 @@ $this->migas = [
 ?>
 <div class="tile p-15">
     <div class="page-header">
-        <h4><?= $deportista->nombreCompleto ?></h4>
+        <div class="row">
+            <div class="col-sm-12">
+                <h4><?= $deportista->nombreCompleto ?></h4>
+            </div>
+        </div>
     </div>
     <div class="row">
         <div class="col-sm-2">
@@ -62,54 +66,141 @@ $this->migas = [
 </div>
 
 <div class="tile p-15">
-    <div class="row">        
-        <div class="col-sm-6">
-            <div class="page-header">
-                <h5>Información de formación</h5>
+    <div id="f-t-info">
+        <div class="row">               
+            <div class="col-sm-6">
+                <div class="page-header">
+                    <h5>Información de formación</h5>
+                </div>
+                <table class="table">
+                    <tr>
+                        <th class="text-right">Dorsal:</th>
+                        <td id="s-dorsal" class="edit-cell" data-input-edit-cell="true">
+                            <?= $ficha->dorsal ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-right">Pierna hábil:</th>
+                        <td id="s-pierna" class="edit-cell" data-input-edit-cell="true">
+                            <?= $ficha->piernaStr ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-right">Valoración:</th>
+                        <td id="s-valor" ><?= $ficha->valoracion ?></td>
+                    </tr>
+                    <tr>
+                        <th class="text-right">Faltas este mes:</th>
+                        <td id="s-faltas"><?= $ficha->faltas ?></td>
+                    </tr>
+                </table>
             </div>
-            <table class="table">
-                <tr>
-                    <th class="text-right">Dorsal:</th>
-                    <td><?= $ficha->dorsal ?></td>
-                </tr>
-                <tr>
-                    <th class="text-right">Pierna hábil:</th>
-                    <td><?= $ficha->piernaStr ?></td>
-                </tr>
-                <tr>
-                    <th class="text-right">Valoración:</th>
-                    <td><?= $ficha->valoracion ?></td>
-                </tr>
-                <tr>
-                    <th class="text-right">Faltas este mes:</th>
-                    <td><?= $ficha->faltas ?></td>
-                </tr>
-            </table>
-        </div>
-        <div class="col-sm-6">
-            <div class="page-header">
-                <h5>Información de física</h5>
+            <div class="col-sm-6">
+                <div class="page-header">
+                    <h5>Información de física</h5>
+                </div>
+                <table class="table">
+                    <tr>
+                        <th class="text-right">Lesiones</th>
+                        <td id="s-lesiones"><?= $ficha->lesiones ?></td>
+                    </tr>
+                    <tr>
+                        <th class="text-right">Talla:</th>
+                        <td id="s-talla"><?= $ficha->talla ?></td>
+                    </tr>
+                    <tr>
+                        <th class="text-right">Peso:</th>
+                        <td id="s-peso"><?= $ficha->peso ?></td>
+                    </tr>
+                    <tr>
+                        <th class="text-right">RH</th>
+                        <td id="s-rh"><?= $ficha->rh ?></td>
+                    </tr>
+                </table>
             </div>
-            <table class="table">
-                <tr>
-                    <th class="text-right">Lesiones</th>
-                    <td><?= $ficha->leciones ?></td>
-                </tr>
-                <tr>
-                    <th class="text-right">Talla:</th>
-                    <td><?= $ficha->talla ?></td>
-                </tr>
-                <tr>
-                    <th class="text-right">Peso:</th>
-                    <td><?= $ficha->peso ?></td>
-                </tr>
-                <tr>
-                    <th class="text-right">RH</th>
-                    <td><?= $ficha->rh ?></td>
-                </tr>
-            </table>
         </div>
+        <div class="row">
+            <div class="col-sm-offset-4 col-sm-4 text-center">
+                <?= CBoot::boton('Editar ' . CBoot::fa('pencil'), 'primary btn-block', ['id' => 'btn-editar']) ?>
+            </div>
+        </div>        
     </div>
+    <!-- fin info -->
+    <div id="f-t-form" style="display: none">
+        <div class="row">               
+            <div class="col-sm-6">
+                <div class="page-header">
+                    <input type="hidden" id="nuevo" value="<?= $ficha->nuevo? '1' : '0' ?>">
+                    <input type="hidden" id="id-ficha" value="<?= $ficha->id_ficha_tecnica ?>">
+                    <h5>Información de formación</h5>
+                </div>
+                <table class="table">
+                    <tr>
+                        <th class="text-right">Dorsal:</th>
+                        <td class="edit-cell" data-input-edit-cell="true" data-val="<?= $ficha->dorsal ?>">
+                            <?= CBoot::text($ficha->dorsal, ['id' => 'dorsal']) ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-right">Pierna hábil:</th>
+                        <td class="edit-cell" data-input-edit-cell="true" data-val="<?= $ficha->pierna_habil ?>">
+                            <?= CBoot::select($ficha->pierna_habil, $piernas, ['id' => 'pierna-habil']) ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-right">Valoración:</th>
+                        <td>
+                            <?= CBoot::number($ficha->valoracion, ['id' => 'valoracion']) ?>
+                        </td>
+                        
+                    </tr>
+                    <tr>
+                        <th class="text-right">Faltas este mes:</th>
+                        <td><?= $ficha->faltas ?></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-sm-6">
+                <div class="page-header">
+                    <h5>Información de física</h5>
+                </div>
+                <table class="table">
+                    <tr>
+                        <th class="text-right">Lesiones</th>
+                        <td>
+                            <?= $ficha->leciones ?>
+                            <?= CBoot::textArea($ficha->lesiones, ['id' => 'lesiones']) ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-right">Talla:</th>
+                        <td>
+                            <?= CBoot::number($ficha->talla, ['id' => 'talla']) ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-right">Peso:</th>
+                        <td>
+                            <?= CBoot::number($ficha->peso, ['id' => 'valoracion']) ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-right">RH</th>
+                        <td>
+                            <?= CBoot::select($ficha->rh, $gruposS, ['id' => 'rh']) ?>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-offset-4 col-sm-4 text-center">
+                <?= CBoot::boton('Cancelar ', 'default', ['id' => 'btn-cancelar']) ?> 
+                <?= CBoot::boton('Actualizar ' . CBoot::fa('pencil'), 'success', ['id' => 'btn-actualizar']) ?>
+            </div>
+        </div> 
+    </div>
+    <!-- fin form -->
 </div>
 
 <div class="tile p-15">
@@ -159,3 +250,66 @@ $this->migas = [
         </div>
     </div>
 </div>
+<script>
+    $(function(){
+        $("#btn-editar").click(function(){
+            $("#f-t-info").slideUp(function(){
+                $("#f-t-form").slideDown();
+            });        
+        });
+        
+        $("#btn-cancelar").click(function(){
+            $("#f-t-form").slideUp(function(){
+                $("#f-t-info").slideDown();
+            });        
+        });
+        
+        $("#btn-actualizar").click(function(){
+            guardarFicha();
+        });
+    });
+    
+    function guardarFicha(){
+        var dorsal = $("#dorsal").val();
+        var pierna = $("#pierna-habil").val();
+        var valor = $("#valoracion").val();
+        var lesion = $("#lesiones").val();
+        var talla = $("#talla").val();
+        var peso = $("#peso").val();
+        var rh = $("#rh").val();
+        var nuevo = $("#nuevo").val() === '1'? true : false;
+        
+        $.ajax({
+            'type' : 'POST',
+            'url' : '<?= Sis::crearUrl(['Deportista/fichaTecnica', 'id'=>$this->_g['id']]) ?>',
+           data: {
+               'ajx' : true,
+               'ficha' : {
+                   dorsal: dorsal,
+                   pierna_habil: pierna,
+                   valoracion: valor,
+                   lesiones: lesion,
+                   peso: peso,
+                   rh: rh,                   
+               },
+               nuevo: nuevo,
+           }, 
+           success: function(obj){
+               if(obj.error === false){
+                   $("#s-dorsal").text(dorsal);
+                   $("#s-pierna").text($("#pierna-habil option:selected").text());
+                   $("#s-valor").text(valor);
+                   $("#s-lesiones").text(lesion);
+                   $("#s-talla").text(talla);
+                   $("#s-peso").text(peso);
+                   $("#s-rh").text(rh);
+                   lobiAlert("success", "Se guardaron correctamente los datos");
+               } else {
+                   lobiAlert("error", "Ocurrió un error al guardar la ficha");
+               }
+           }
+        });
+        
+        
+    }
+</script>

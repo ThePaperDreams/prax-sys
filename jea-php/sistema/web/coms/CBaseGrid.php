@@ -13,6 +13,9 @@
  */
 abstract class CBaseGrid extends CComplemento{
     protected $_filtros = null;
+    /**
+     * @var CModelo
+     */
     protected $_modelo;
     protected $_paginacion = 10;
     protected $_columnas;    
@@ -54,8 +57,13 @@ abstract class CBaseGrid extends CComplemento{
             $this->totalPaginas = ceil(intval($this->total) / intval($this->_paginacion));
             $this->cModelo = new $this->_modelo();
             $this->mEtiquetas = $this->cModelo->etiquetasAtributos();
-        } else if($this->_modelo instanceof CModelo){
-            # lógica si se pasa un módelo
+        } else if(is_array($this->_modelo) && count($this->_modelo) > 0){
+            $clase = get_class($this->_modelo[0]);
+            $this->cModelo = new $clase;
+            $this->modelos = $this->_modelo;
+            $this->mEtiquetas = $this->cModelo->etiquetasAtributos();
+            $this->total = count($this->cModelo);
+            $this->totalPaginas = ceil(intval($this->total) / intval($this->_paginacion));
         }
     }
     
@@ -111,12 +119,16 @@ abstract class CBaseGrid extends CComplemento{
      */
     protected function construirColsFila(&$cols, $modelo){
         foreach($this->tColumnas AS $k=>$v){
-            if(is_string($k)){
+            $opciones = [];
+            if(is_string($k) && is_array($v)){
+                $valor = isset($v['valor'])? $modelo->$v['valor'] : '';
+                $opciones = isset($v['opciones'])? $v['opciones'] : [];
+            } else if(is_string($k)){
                 $valor = $this->evaluarExpFila($modelo, $v);
             } else {
                 $valor = $modelo->$v;
             }
-            $cols[] = CHtml::e("td", $valor);
+            $cols[] = CHtml::e("td", $valor, $opciones);
         }
     }
     
@@ -136,9 +148,9 @@ abstract class CBaseGrid extends CComplemento{
         if($this->_opciones == true && !is_array($this->_opciones)){
             $controlador = Sis::apl()->controlador->ID;
             $this->_opciones = [
-                ['i' => 'eye', 'url' => $controlador . '/ver&{id:pk}'],
-                ['i' => 'pencil', 'url' => $controlador . '/editar&{id:pk}'],
-                ['i' => 'trash', 'url' => $controlador . '/eliminar&{id:pk}', 'opciones' => ['class' => 'op-eliminar']],
+                ['i' => 'eye', 'title' => 'Ver', 'url' => $controlador . '/ver&{id:pk}'],
+                ['i' => 'pencil', 'title' => 'Editar', 'url' => $controlador . '/editar&{id:pk}'],
+                ['i' => 'trash', 'title' => 'Eliminar', 'url' => $controlador . '/eliminar&{id:pk}', 'opciones' => ['class' => 'op-eliminar']],
             ];
             $this->scriptConfirmar();
         }
@@ -148,6 +160,7 @@ abstract class CBaseGrid extends CComplemento{
         $opciones = [];
         foreach ($this->_opciones AS $v){
             $opsHtml = isset($v['opciones'])? $v['opciones'] : [];
+            if(isset($v['title'])){ $opsHtml['title'] = $v['title']; }
             if(isset($v['visible']) && !$this->evaluarExpVisible($v['visible'], $modelo)){ continue; }
             
             if(key_exists('i', $v)){
@@ -158,7 +171,7 @@ abstract class CBaseGrid extends CComplemento{
                 $opciones[] = CHtml::link('', $this->evaluarExpresion($v['url'], $modelo), $opsHtml);
             }
         }
-        $columnas[] = CHtml::e("td", implode(' ', $opciones), ['class' => 'text-center']);
+        $columnas[] = CHtml::e("td", implode(' ', $opciones), ['class' => 'text-center table-options']);
     }
     
     private function evaluarExpVisible($exp, &$m){

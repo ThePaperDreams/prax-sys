@@ -15,18 +15,12 @@
 <?= $this->complemento('!siscoms.bootstrap3.CBGrid', [
     'modelo' => 'TipoDocumento',
     # id_tipo, nombre, descripcion, padre_id
-    'columnas' => 'id_tipo, nombre, descripcion',
+    'columnas' => ['nombre','padre_id' => 'TDocumento->nombre'],
+    /*'columnas' => [
+        'nombre',
+        'padre_id' => 'TDocumento->nombre'
+    ],*/
     'opciones' => true,
     'paginacion' => 10,
 ])
 ?>
-
-<script>
-    $(function(){
-        $("a[href*='eliminar']").click(function(){
-            if (confirm('¿Seguro que desea eliminar este registro?') === false) {
-                return false;
-            }
-        });
-    });
-</script>

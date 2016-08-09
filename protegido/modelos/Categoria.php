@@ -78,13 +78,13 @@ class Categoria extends CModelo {
             'id_categoria' => 'Id Categoria',
             'nombre' => 'Nombre',
             'descripcion' => 'Descripcion',
-            'cupo_maximo' => 'Cupo Maximo',
-            'cupo_minimo' => 'Cupo Minimo',
+            'cupo_maximo' => 'Cupo máximo',
+            'cupo_minimo' => 'Cupo mínimo',
             'tarifa' => 'Tarifa',
-            'edad_minima' => 'Edad Minima',
-            'edad_maxima' => 'Edad Maxima',
+            'edad_minima' => 'Edad mínima',
+            'edad_maxima' => 'Edad máxima',
             'estado' => 'Estado',
-            'entrenador_id' => 'Entrenador Id',
+            'entrenador_id' => 'Entrenador',
             'edad' => 'Edades',
             'cupos' => 'Cupos',
             'tarifaf' => 'Tarifa',
@@ -107,7 +107,7 @@ class Categoria extends CModelo {
         if($this->estado == 0){
             return CHtml::e('span', 'Inactivo', ['class' => 'label label-default']); 
         } else if($this->estado == 1){
-            return CHtml::e('span', 'Inactivo', ['class' => 'label label-activo']); 
+            return CHtml::e('span', 'Inactivo', ['class' => 'label label-success']); 
         }
     }
     

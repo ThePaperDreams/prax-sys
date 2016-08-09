@@ -1,7 +1,7 @@
 <?php 
 Sis::Recursos()->recursoCss(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/css/fileinput.min.css']);
 Sis::Recursos()->recursoJs(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/js/fileinput.min.js']);
-$this->tituloPagina="Pagos pendientes";
+$this->tituloPagina="Registrar pago";
     $this->migas = [
         'Home' => ['principal/inicio'],
         'Registrar pago',
@@ -47,7 +47,7 @@ $formulario->abrir();
 
 <div class="row">
     <div class="col-sm-offset-6 col-sm-3">
-        <?php echo CHtml::link(CBoot::fa('undo').' Cancelar', ['pago/inicio'], ['class' => 'btn btn-primary btn-block']); ?>
+        <?php echo CHtml::link(CBoot::fa('undo').' Cancelar', ['pago/pagosPendientes'], ['class' => 'btn btn-primary btn-block']); ?>
     </div>
     <div class="col-sm-3">
         <?php echo CBoot::boton(CBoot::fa('save') .' '. ($modelo->nuevo? 'Guardar' : 'Actualizar'), 'success', ['class' => 'btn-block']); ?>
