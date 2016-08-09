@@ -3,12 +3,12 @@ $formulario = new CBForm(['id' => 'form-salidas']);
 $formulario->abrir();
 ?>
 <div class="tile p-15">
-<?php echo $formulario->lista($modelo, 'responsable_id', $usuarios, ['label' => true, 'group' => true, 'autofocus' => true, 'defecto' => 'Responsable id']) ?>
+<?php echo $formulario->lista($modelo, 'responsable_id', $usuarios, ['label' => true, 'group' => true, 'autofocus' => true, 'defecto' => 'Seleccione un Responsable']) ?>
 <?php echo $formulario->areaTexto($modelo, 'descripcion', ['label' => true, 'group' => true]) ?>
 <?php echo $formulario->campoTexto($modelo, 'fecha_entrega', ['label' => true, 'group' => true]) ?>
 <div>
     <div class="form-group">
-        <?= CBoot::selectM('', 'Implemento', 'id_implemento', 'nombre', ['label' => 'Implementos', 'group' => true, 'autofocus' => true, 'defecto' => 'Seleccione un implemento', 'id' => 'selectId']) ?>   
+        <?= CBoot::selectM('', 'Implemento', 'id_implemento', 'nombre', ['label' => 'Implementos', 'group' => true, 'autofocus' => true, 'defecto' => 'Seleccione un Implemento', 'id' => 'selectId']) ?>   
     </div>    
     <div class="form-group"style="">
         <span style="font-size:12px" class="label label-default">Unidades: <i id="total-unidades">0</i></span>

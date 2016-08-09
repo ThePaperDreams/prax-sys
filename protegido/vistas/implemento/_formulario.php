@@ -3,7 +3,7 @@ $formulario = new CBForm(['id' => 'form-implementos']);
 $formulario->abrir();
 ?>
 <div class="tile p-15">
-<?php echo $formulario->lista($modelo, 'categoria_id', $elementos, ['label' => true, 'group' => true, 'autofocus' => true, 'defecto' => 'Selecciona una categoría']) ?>
+<?php echo $formulario->lista($modelo, 'categoria_id', $elementos, ['label' => true, 'group' => true, 'autofocus' => true, 'defecto' => 'Selecciona una Categoría']) ?>
 <?php echo $formulario->campoTexto($modelo, 'nombre', ['label' => true, 'group' => true]) ?>
 <?php echo $formulario->areaTexto($modelo, 'descripcion', ['label' => true, 'group' => true]) ?>
 <?php echo $formulario->campoNumber($modelo, 'unidades', ['label' => true, 'group' => true,'min'=>'0']) ?>

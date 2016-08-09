@@ -14,7 +14,7 @@
 ?>
 
 <?= $this->complemento('!siscoms.bootstrap3.CBGrid', [
-    'modelo' => $pagos,
+    'modelo' => 'Pago',
     # id_plan_trabajo, descripcion, fecha_aplicacion, estado, categoria_id
     'columnas' => [
         'fecha',

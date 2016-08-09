@@ -5,12 +5,12 @@ $formulario->abrir();
 
 ?>
 <div class="tile p-15">
-<?php echo $formulario->lista($modelo, 'responsable_id', $usuarios, ['label' => true, 'group' => true, 'autofocus' => true, 'defecto' => 'Responsable id']) ?>
+<?php echo $formulario->lista($modelo, 'responsable_id', $usuarios, ['label' => true, 'group' => true, 'autofocus' => true, 'defecto' => 'Seleccione un Responsable']) ?>
 <?php echo $formulario->areaTexto($modelo, 'descripcion', ['label' => true, 'group' => true]) ?>
 
 <div>
     <div class="form-group">
-        <?= CBoot::selectM('', 'Implemento', 'id_implemento', 'nombre', ['label'=>'Implementos','defecto' => 'Seleccione un implemento', 'id' => 'selectId']) ?>  
+        <?= CBoot::selectM('', 'Implemento', 'id_implemento', 'nombre', ['label'=>'Implementos','defecto' => 'Seleccione un Implemento', 'id' => 'selectId']) ?>  
     </div>
     <?= CBoot::number(0, ['min' => 0,'label'=>'Cantidad', 'group' => true, 'id' => 'cant']); ?>     
     <?= CBoot::boton('Agregar ' . CBoot::fa('plus-circle'), 'default', ['group' => true, 'id' => 'btnAgregar']) ?>
