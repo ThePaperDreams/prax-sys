@@ -22,10 +22,6 @@
         <table class="table table-bordered table-striped table-hover">
             <tbody>
                 <tr>
-                    <th><?php echo $modelo->obtenerEtiqueta('id_estado') ?></th>
-                    <td><?php echo $modelo->id_estado; ?></td>
-                </tr>
-                <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('nombre') ?></th>
                     <td><?php echo $modelo->nombre; ?></td>
                 </tr>

@@ -57,6 +57,7 @@ class CtrlDocumento extends CControlador{
      * @param int $pk
      */
     public function accionVer($pk){
+        $this->redireccionar('inicio');
         $modelo = $this->cargarModelo($pk);
         $this->mostrarVista('ver', ['modelo' => $modelo,
             'tiposDocumentos' => CHtml::modeloLista(TipoDocumento::modelo()->listar(), "id_tipo", "nombre"),

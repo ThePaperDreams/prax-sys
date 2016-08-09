@@ -10,7 +10,7 @@
         'elementos' => [
             'Listar' => ['TipoIdentificacion/inicio'],
             'Registrar' => ['TipoIdentificacion/crear'],
-            'Editar' => ['TipoIdentificacion/editar', 'id' => $modelo->id_tipo_documento],
+            'Actualizar' => ['TipoIdentificacion/editar', 'id' => $modelo->id_tipo_documento],
         ]
     ];
 ?>
@@ -21,10 +21,6 @@
         </div>
         <table class="table table-bordered table-striped table-hover">
             <tbody>
-                <tr>
-                    <th><?php echo $modelo->obtenerEtiqueta('id_tipo_documento') ?></th>
-                    <td><?php echo $modelo->id_tipo_documento; ?></td>
-                </tr>
                 <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('nombre') ?></th>
                     <td><?php echo $modelo->nombre; ?></td>

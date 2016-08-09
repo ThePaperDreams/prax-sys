@@ -114,4 +114,14 @@ class Documento extends CModelo {
         $url = Sis::UrlBase() . 'publico/' . strtolower($clase)  . 's/'.$id.'/'.$nombre;
         return CHtml::link($icono . ' ' . $nombre , $url, ['download' => $nombre]);
     }
+    
+    public function getDocumentos(){
+        if($this->url_comprobante !== "" && $this->url_comprobante !== null){
+            $icono = CBoot::fa("file-text-o");
+            $url = Sis::UrlBase() . 'publico/documentos/comprobantes/matriculas/' . $this->url_comprobante;
+            return CHtml::link('Descargar ' . $icono, $url, ['target' => '_blank', 'download' => $this->url_comprobante]);
+        } else {
+            return CHtml::e("span", 'Ninguno', ['class' => 'label label-default']);
+        }
+    }
 }

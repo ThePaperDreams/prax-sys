@@ -36,8 +36,8 @@ $formulario->abrir();
                 url: '<?php echo $url ?>',
                 data: {
                     validarNombreRuta: true,
-                    ruta: ruta,
-                    nombre: nombre,
+                    ruta: $.trim(ruta),
+                    nombre: $.trim(nombre),
                 },
                 success: function (respuesta) {
                     if (respuesta.error === true) {

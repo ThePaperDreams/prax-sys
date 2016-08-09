@@ -64,23 +64,14 @@ class CtrlAcudiente extends CControlador {
     
     public function asociarDocumentos($acu) {
         if (isset($_FILES['Documentos']) && isset($this->_p['TiposDocumentos'])) {
-            foreach ($_FILES['Documentos']['name'] as $k => $v) {
-                if (empty($v)) {
-                    foreach ($_FILES['Documentos'] as $y => $x) {
-                        unset($_FILES['Documentos'][$y][$k]);
-                    }
-                }
-            }
             foreach ($this->_p['TiposDocumentos'] as $k => $v) {
                 $tipodoc = new TipoDocumento();
                 $nomtipo = $tipodoc->primer(["where" => "id_tipo=" . $v])->nombre;
                 $files = CArchivoCargado::instanciarTodasPorNombre('Documentos');
                 $rutaDestino = Sis::resolverRuta(Sis::crearCarpeta("!publico.acudientes.$acu"));
-                if (isset($files[$k])) {
-                    $files[$k]->guardar($rutaDestino, $nomtipo);
-                    $doc = $this->asociarDocumento($nomtipo, $k, $v, $files);
-                    $this->asociarAcudienteDocumento($acu, $doc);
-                }
+                $files[$k]->guardar($rutaDestino, $nomtipo);
+                $doc = $this->asociarDocumento($nomtipo, $k, $v, $files);
+                $this->asociarAcudienteDocumento($acu, $doc);
             }
         }
     }
@@ -132,7 +123,6 @@ class CtrlAcudiente extends CControlador {
      */
     public function accionVer($pk) {
         $modelo = $this->cargarModelo($pk);
-        $modelo2 = new Documento();
         $this->mostrarVista('ver', ['modelo' => $modelo,
             'tiposIdentificaciones' => CHtml::modelolista(TipoIdentificacion::modelo()->listar(), "id_tipo_documento", "nombre"),
         ]);

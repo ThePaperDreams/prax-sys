@@ -15,7 +15,7 @@
 <?= $this->complemento('!siscoms.bootstrap3.CBGrid', [
     'modelo' => 'EstadoDeportista',
     # id_estado, nombre, descripcion, icono, etiqueta
-    'columnas' => 'id_estado, nombre, descripcion',
+    'columnas' => 'nombre, descripcion',
     'opciones' => true,
     'paginacion' => 10,
 ])

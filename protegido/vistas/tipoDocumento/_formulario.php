@@ -2,6 +2,8 @@
 $formulario = new CBForm(['id' => 'form-tiposdocumento']);
 $formulario->abrir();
 ?>
+<div class="tile p-15">
+<p>Los campos con <span class="text-danger">*</span>  son requeridos</p>
 <?php echo $formulario->campoTexto($modelo, 'nombre', ['label' => true, 'group' => true, 'autofocus' => true]) ?>
 <?php echo $formulario->areaTexto($modelo, 'descripcion', ['label' => true, 'group' => true]) ?>
 <?php echo $formulario->lista($modelo, 'padre_id', $tiposDocumentos, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un tipo de documento']) ?>
@@ -14,6 +16,7 @@ $formulario->abrir();
         <?php echo CBoot::boton(CBoot::fa('save') . ' ' . ($modelo->nuevo ? 'Guardar' : 'Actualizar'), 'success', ['class' => 'btn-block']); ?>
     </div>
 </div>
+</div>
 <?php $formulario->cerrar(); ?>
 <script>
     $(function () {
@@ -23,7 +26,7 @@ $formulario->abrir();
         });
 
         function validarNombre() {
-            var nombre = $("#TiposDocumento_nombre");
+            var nombre = $("#TiposDocumento_nombre").val();
             if (nombre === "") {
                 return;
             }
@@ -33,10 +36,10 @@ $formulario->abrir();
                 url: '<?php echo $url ?>',
                 data: {
                     validarNombre: true,
-                    nombre: nombre.val(),
+                    nombre: $.trim(nombre),
                 },
                 success: function (respuesta) {
-                    if (respuesta.error == true) {
+                    if (respuesta.error === true) {
                         mostrarAlert("error", "Ya existe ese nombre");
                     } else {
                         document.getElementById("form-tiposdocumento").submit();

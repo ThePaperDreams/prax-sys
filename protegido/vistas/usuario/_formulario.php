@@ -86,8 +86,8 @@ $formulario->abrir();
             url: '<?php echo $url ?>',
             data: {
                 validarUsuarioEmail: true,
-                usuario: usuario,
-                email: email,
+                usuario: $.trim(usuario),
+                email: $.trim(email),
             },
             success: function (respuesta) {
                 if (respuesta.error === true) {
