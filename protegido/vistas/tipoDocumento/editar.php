@@ -1,5 +1,5 @@
 <?php 
-    $this->tituloPagina = "Editar Tipo de Documento";
+    $this->tituloPagina = "Actualizar Tipo de Documento";
     $this->migas = [
         'Home' => ['principal/inicio'],
         'Listar Tipos de Documentos' => ['TipoDocumento/inicio'],        

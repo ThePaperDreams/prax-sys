@@ -144,8 +144,8 @@ Sis::Recursos()->Js('comunes');
                     ['texto' => 'Salidas', 'url' => ['salida/inicio']],
                 ]],                
                 ['texto' => 'Pagos', 'fa' => 'money', 'elementos' => [
-                    ['texto' => 'Pagos', 'url' => ['Pago/pagosPendientes']],
-                    ['texto' => 'Implementos', 'url' => ['pago/consultar']],
+                    ['texto' => 'Pagos pendientes', 'url' => ['Pago/pagosPendientes']],
+                    ['texto' => 'Consultar pagos', 'url' => ['pago/consultar']],
                 ]],
                 ['texto' => 'Torneos', 'fa' => 'trophy', 'elementos' => [
                     ['texto' => 'Torneos', 'url' => ['torneo/inicio']],

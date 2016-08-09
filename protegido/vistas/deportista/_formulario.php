@@ -1,112 +1,109 @@
 <?php
 Sis::Recursos()->recursoCss(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/css/fileinput.min.css']);
 Sis::Recursos()->recursoJs(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/js/fileinput.min.js']);
-$formulario = new CBForm(['id' => 'form-deportistas']);
+$formulario = new CBForm(['id' => 'form-deportistas', 'opcionesHtml' => ['enctype' => 'multipart/form-data']]);
 $formulario->abrir();
 ?>
 <div class="tile p-15">
 <p>Los campos con <span class="text-danger">*</span>  son requeridos</p>
-
-<div class="row">    
-    <div class="col-sm-6">
-        <?php echo $formulario->lista($modelo, 'tipo_documento_id', $tiposIdentificaciones, ['label' => true, 'group' => true, 'defecto' => 'Tipo de documento']) ?>
-    </div>
-    <div class="col-sm-6">
-        <?php echo $formulario->campoNumber($modelo, 'identificacion', ['label' => true, 'group' => true, 'autofocus' => true, 'min' => '0']) ?>
-    </div>    
-</div>
-
-<div class="row">
-    <div class="col-sm-6">
-        <?php echo $formulario->campoTexto($modelo, 'nombre1', ['label' => true, 'group' => true]) ?>
-    </div>
-    <div class="col-sm-6">
-        <?php echo $formulario->campoTexto($modelo, 'nombre2', ['label' => true, 'group' => true]) ?>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-sm-6">
-        <?php echo $formulario->campoTexto($modelo, 'apellido1', ['label' => true, 'group' => true]) ?>
-    </div>
-    <div class="col-sm-6">
-        <?php echo $formulario->campoTexto($modelo, 'apellido2', ['label' => true, 'group' => true]) ?>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-sm-6">
-        <?php echo $formulario->campoNumber($modelo, 'telefono1', ['label' => true, 'group' => true, 'min' => '0']) ?>
-    </div>
-    <div class="col-sm-6">
-        <?php echo $formulario->campoNumber($modelo, 'telefono2', ['label' => true, 'group' => true, 'min' => '0']) ?>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-sm-6">
-        <?php echo $formulario->campoTexto($modelo, 'direccion', ['label' => true, 'group' => true]) ?>
-    </div>
-    <div class="col-sm-6">
-        <?php echo $formulario->campoTexto($modelo, 'fecha_nacimiento', ['label' => true, 'group' => true, 'class' => 'campo-fecha']) ?>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-sm-6">
-        <?php echo $formulario->campoArchivo($modelo, 'foto', ['label' => true, 'group' => true]) ?>
-    </div>
-    <div class="col-sm-6">
-        <?php echo $formulario->lista($modelo, 'estado_id', $estados, ['label' => true, 'group' => true]) ?>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-sm-4">
-        <?php echo $formulario->lista($modelo2, 'id_acudiente', $acudientes, ['label' => true, 'group' => true, 'defecto' => 'Acudiente']) ?>
-    </div>
-    <div class="col-sm-2">
-        <?php echo CBoot::boton(CBoot::fa('plus') . ' Agregar', 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'id' => 'btn-addAcu']) ?>
-    </div>
-    <div class="col-sm-4">
-        <?php echo $formulario->lista($modelo3, 'id_tipo', $tiposDocumentos, ['label' => true, 'group' => true, 'defecto' => 'Tipo de Documento']) ?>
-    </div>
-    <div class="col-sm-2">
-        <?php echo CBoot::boton(CBoot::fa('plus') . ' Agregar', 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'id' => 'btn-addDoc']) ?>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-sm-6">
-        <div id="lst-acu" class="panel-default">
-            <div class="panel-heading">Acudientes</div>
-            <ul id="lis-acu" class="list-group">
-            </ul>
+<ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#formulario" aria-controls="formulario" role="tab" data-toggle="tab">Deportista</a></li>
+    <li role="presentation"><a href="#acudientes" aria-controls="acudientes" role="tab" data-toggle="tab">Acudientes</a></li>
+    <li role="presentation"><a href="#documentos" aria-controls="documentos" role="tab" data-toggle="tab">Documentos</a></li>
+</ul>
+<div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="formulario">
+        <div class="row">    
+            <div class="col-sm-6">
+                <?php echo $formulario->lista($modelo, 'tipo_documento_id', $tiposIdentificaciones, ['label' => true, 'group' => true, 'defecto' => 'Tipo de documento']) ?>
+            </div>
+            <div class="col-sm-6">
+                <?php echo $formulario->campoNumber($modelo, 'identificacion', ['label' => true, 'group' => true, 'autofocus' => true, 'min' => '0']) ?>
+            </div>    
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <?php echo $formulario->campoTexto($modelo, 'nombre1', ['label' => true, 'group' => true]) ?>
+            </div>
+            <div class="col-sm-6">
+                <?php echo $formulario->campoTexto($modelo, 'nombre2', ['label' => true, 'group' => true]) ?>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <?php echo $formulario->campoTexto($modelo, 'apellido1', ['label' => true, 'group' => true]) ?>
+            </div>
+            <div class="col-sm-6">
+                <?php echo $formulario->campoTexto($modelo, 'apellido2', ['label' => true, 'group' => true]) ?>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <?php echo $formulario->campoNumber($modelo, 'telefono1', ['label' => true, 'group' => true, 'min' => '0']) ?>
+            </div>
+            <div class="col-sm-6">
+                <?php echo $formulario->campoNumber($modelo, 'telefono2', ['label' => true, 'group' => true, 'min' => '0']) ?>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <?php echo $formulario->campoTexto($modelo, 'direccion', ['label' => true, 'group' => true]) ?>
+            </div>
+            <div class="col-sm-6">
+                    <?php echo $formulario->campoTexto($modelo, 'fecha_nacimiento', ['label' => true, 'group' => true, 'class' => 'campo-fecha']) ?>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <?php echo $formulario->campoArchivo($modelo, 'foto', ['label' => true, 'group' => true]) ?>
+            </div>
+            <div class="col-sm-6">
+                <?php echo $formulario->lista($modelo, 'estado_id', $estados, ['label' => true, 'group' => true]) ?>
+            </div>
+        </div>        
+        <div class="row">
+            <div class="col-sm-offset-6 col-sm-3">
+                <?php echo CHtml::link(CBoot::fa('undo') . ' Cancelar', ['deportista/inicio'], ['class' => 'btn btn-primary btn-block']); ?>
+            </div>
+            <div class="col-sm-3">
+                <?php echo CBoot::boton(CBoot::fa('save') . ' ' . ($modelo->nuevo ? 'Guardar' : 'Actualizar'), 'success', ['class' => 'btn-block', 'id' => 'btn-send']); ?>
+            </div>
         </div>
     </div>
-    <div class="col-sm-6">
-        <div id="lst-doc" class="panel-default">
-            <div class="panel-heading">Documentos</div>
-            <ul id="lis-doc" class="list-group">
-            </ul>
+    
+    <div role="tabpanel" class="tab-pane" id="acudientes">
+        <div class="row">
+            <div class="col-sm-4">
+                <?php echo $formulario->lista($modelo2, 'id_acudiente', $acudientes, ['label' => true, 'group' => true, 'defecto' => 'Acudiente']) ?>
+            </div>
+            <div class="col-sm-2">
+                <?php echo CBoot::boton(CBoot::fa('plus') . ' Agregar', 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'id' => 'btn-addAcu']) ?>
+            </div>
         </div>
-    </div>
-</div>
-<?php if (!$modelo->nuevo): ?>
-    <div class="row">
-        <div class="col-sm-6">
-            <div class="panel panel-default">
-                <div class="panel-heading text-center">
-                    Acudientes asociados actualmente
-                </div>            
-                <table class="table table-bordered table-condensed">
-                    <thead>
-                        <tr>
-                            <th>Acudiente</th>
-                            <th>Eliminar</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabla-acudientes">
+        <?php if ($modelo->nuevo): ?>
+            <div class="row">
+                <div class="col-sm-12">
+        <?php else: ?>
+            <div class="row">
+                <div class="col-sm-6">
+        <?php endif; ?>
+            <div id="lst-acu" class="panel-default">
+                <div class="panel-heading">Acudientes</div>
+                <ul id="lis-acu" class="list-group"></ul>
+                </div>
+            </div>
+        <?php if (!$modelo->nuevo): ?>
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading text-center">Acudientes asociados actualmente</div>            
+                        <table class="table table-bordered table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Acudiente</th>
+                                <th>Eliminar</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-acudientes">
                         <?php foreach ($modelo->Acudiente AS $dc): ?>
                             <tr>
                                 <td titulo="<?= $dc->Acudiente->datos ?>"><?= $dc->Acudiente->datos ?></td>            
@@ -117,41 +114,58 @@ $formulario->abrir();
                 </table>
             </div>      
         </div>    
+        <?php endif; ?>
+            </div>
+                </div>
+        
+    <div role="tabpanel" class="tab-pane" id="documentos">
+        <div class="row">
+            <div class="col-sm-4">
+                <?php echo $formulario->lista($modelo3, 'id_tipo', $tiposDocumentos, ['label' => true, 'group' => true, 'defecto' => 'Tipo de Documento']) ?>
+            </div>
+            <div class="col-sm-2">
+                <?php echo CBoot::boton(CBoot::fa('plus') . ' Agregar', 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'id' => 'btn-addDoc']) ?>
+            </div>
+        </div>
+    <?php if ($modelo->nuevo): ?>
+        <div class="row">
+            <div class="col-sm-12">
+    <?php else: ?>
+        <div class="row">
+            <div class="col-sm-6">
+    <?php endif; ?>
+                <div id="lst-doc" class="panel-default">
+                    <div class="panel-heading">Documentos</div>
+                        <ul id="lis-doc" class="list-group"></ul>
+                    </div>
+                </div>
+    <?php if (!$modelo->nuevo): ?>        
         <div class="col-sm-6">
             <div class="panel panel-default">
-                <div class="panel-heading text-center">
-                    Documentos asociados actualmente
-                </div>            
-                <table class="table table-bordered table-condensed">
-                    <thead>
-                        <tr>
-                            <th>Documento</th>
-                            <th>Eliminar</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabla-documentos">
-                        <?php foreach ($modelo->Documento AS $dc): ?>
+                <div class="panel-heading text-center">Documentos asociados actualmente</div>            
+                    <table class="table table-bordered table-condensed">
+                        <thead>
                             <tr>
-                                <td titulo="<?= $dc->Documento->titulo ?>"><?= $dc->Documento->titulo ?></td>            
-                                <td class="col-sm-1 text-center text-danger-icon"><a class="eliminar" data-iddep="<?= $modelo->id_deportista ?>" data-nomtipo="<?= $dc->Documento->url ?>" data-iddoc="<?= $dc->documento_id ?>" data-iddepdoc="<?= $dc->id ?>" href="#"><i class="fa fa-ban"></i></a></td>
+                                <th>Documento</th>
+                                <th>Eliminar</th>
                             </tr>
-                        <?php endforeach ?>
-                    </tbody>
-                </table>
-            </div>      
+                        </thead>
+                        <tbody id="tabla-documentos">
+                            <?php foreach ($modelo->Documento AS $dc): ?>
+                                <tr>
+                                    <td titulo="<?= $dc->Documento->titulo ?>"><?= $dc->Documento->titulo ?></td>            
+                                    <td class="col-sm-1 text-center text-danger-icon"><a class="eliminar" data-iddep="<?= $modelo->id_deportista ?>" data-nomtipo="<?= $dc->Documento->url ?>" data-iddoc="<?= $dc->documento_id ?>" data-iddepdoc="<?= $dc->id ?>" href="#"><i class="fa fa-ban"></i></a></td>
+                                </tr>
+                            <?php endforeach ?>
+                        </tbody>
+                    </table>
+                </div>      
+            </div>
+    <?php endif; ?>
         </div>
+            </div>            
     </div>
-<?php endif; ?>
-
-<div class="row">
-    <div class="col-sm-offset-6 col-sm-3">
-        <?php echo CHtml::link(CBoot::fa('undo') . ' Cancelar', ['deportista/inicio'], ['class' => 'btn btn-primary btn-block']); ?>
-    </div>
-    <div class="col-sm-3">
-        <?php echo CBoot::boton(CBoot::fa('save') . ' ' . ($modelo->nuevo ? 'Guardar' : 'Actualizar'), 'success', ['class' => 'btn-block', 'id' => 'btn-send']); ?>
-    </div>
-</div>
-    </div>
+    </div>    
 <?php $formulario->cerrar(); ?>
 <script>
     $(function () {
@@ -183,7 +197,6 @@ $formulario->abrir();
             }
             $("#TiposDocumento_id_tipo").val('').attr("selected", "selected");
         });
-        $("#form-deportistas").attr('enctype', 'multipart/form-data');
         $("a.eliminar").click(function () {
             if (confirm('¿Está seguro de eliminar este documento?')) {
                 var a = $(this);
@@ -223,7 +236,11 @@ $formulario->abrir();
             return false;
         });
         $("#form-deportistas").submit(function () {
-            validarIdentificacion();
+            if (validarAcudiente()) {
+                if (validarDocumentos()) {
+                    validarIdentificacion();                    
+                }
+            }
             return false;
         });
         $("#Deportistas_fecha_nacimiento").change(function(){
@@ -262,12 +279,12 @@ $formulario->abrir();
     }
     function files(){
         $("input[type=file]").fileinput({
-                    showPreview: false,
-                    showRemove: false,
-                    showUpload: false,
-                    browseLabel: "Seleccionar archivo",
-                });
-            }
+            showPreview: false,
+            showRemove: false,
+            showUpload: false,
+            browseLabel: "Seleccionar archivo",
+        });
+    }
     function encontrarAcu(tit) {
         var h = "", r = true;
         $("#tabla-acudientes td[titulo]").each(function (v, e) {
@@ -280,28 +297,26 @@ $formulario->abrir();
     }
     
     function validarIdentificacion() {
-            var identificacion = $("#Deportistas_identificacion");
-            if (identificacion === "") {
-                return;
-            }
-
-            $.ajax({
-                type: 'POST',
-                url: '<?php echo $url ?>',
-                data: {
-                    validarIdentificacion: true,
-                    identificacion: identificacion.val(),
-                },
-                success: function (respuesta) {
-                    if (respuesta.error == true) {
-                        mostrarAlert("error", "Ya existe esa Identificación");
-                    } else {
-                        document.getElementById("form-deportistas").submit();
-                    }
-                }
-            });
-
+        var identificacion = $("#Deportistas_identificacion").val();
+        if (identificacion === "") {
+            return false;
         }
+        $.ajax({
+            type: 'POST',
+            url: '<?php echo $url ?>',
+            data: {
+                validarIdentificacion: true,
+                identificacion: $.trim(identificacion),
+            },
+            success: function (respuesta) {
+                if (respuesta.error === true) {
+                    mostrarAlert("error", "Ya existe esa Identificación");
+                } else {
+                    document.getElementById("form-deportistas").submit();
+                }
+            }
+        });
+    }
 
     function mostrarAlert(tipo, msg) {
         Lobibox.notify(tipo, {
@@ -313,19 +328,33 @@ $formulario->abrir();
             soundPath: '<?= Sis::UrlRecursos() ?>librerias/lobibox/sounds/',
         });
     }
-
-    function parseDate(input) {
-        var parts = input.split('-');
-        // new Date(year, month [, day [, hours[, minutes[, seconds[, ms]]]]])
-        return new Date(parts[0], parts[1]-1, parts[2]); // Note: months are 0-based
+    
+    function validarAcudiente(){
+        var resp = true;
+        var x = $('#lis-acu li').length;
+        if (x < 1) {
+            resp = false;
+            lobiAlert('error', 'Mínimo un acudiente');   
+        }
+        return resp;
+    }
+    
+    function validarDocumentos(){
+        var resp = true;
+        $("#lis-doc li input").each(function(){  
+            if ($(this).val() === "") {
+                resp = false;
+            }
+        });
+        if (!resp) {
+            lobiAlert('error', 'Debes subir los documentos');
+        }
+        return resp;
     }
         
     function validarFecha(fecha) {
-        var currDate = new Date();
-        var date = parseDate(fecha.val());
-        var tot = currDate.getFullYear() - date.getFullYear();
-        //console.log(tot);
-        if (tot <= 5 || tot > 17) {
+        var anios = new Date(new Date - new Date(fecha.val())).getFullYear()-1970;       
+        if (anios < 5 || anios > 17) {
             mostrarAlert('error', 'Seleccione una fecha valida');
             $('#btn-send').attr("disabled", "disabled");
         } else {

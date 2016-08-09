@@ -10,7 +10,7 @@
  * @property int $padre_id
  *
  * Relaciones del modelo
- * @property TipoDocumento $TipoDocumento
+ * @property TDocumento $TDocumento
  */
 class TipoDocumento extends CModelo {
 
@@ -50,7 +50,7 @@ class TipoDocumento extends CModelo {
         return [
             # el formato es simple:
             # tipo de relación | modelo con que se relaciona | campo clave foranea
-            'TipoDocumento' => [self::PERTENECE_A, 'TipoDocumento', 'padre_id'],
+            'TDocumento' => [self::PERTENECE_A, 'TipoDocumento', 'padre_id'],
         ];
     }
 

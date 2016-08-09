@@ -34,7 +34,6 @@
         </div>
     </div>
 </div>
-
 <script>
     $(function(){
         
@@ -65,7 +64,7 @@
             success: function(obj){
                 if(obj.error === true){
                     // Muestra el error
-                    console.log("Error al consultar los permisos");
+                    lobiAlert('error', 'Error al consultar los permisos');
                 } else {
                     $("#table-permisos tbody").html(obj.html);
                 }
@@ -78,8 +77,6 @@
         var checked = obj.prop("checked");
         var id = obj.attr("data-exist") != undefined? obj.attr("data-id") : 0;
         var ruta = obj.attr("data-id-ruta") != undefined? obj.attr("data-id-ruta") : 0;
-        // mierd se me olvido como coge uno un check seleccionado ajajaj
-        // 
         $.ajax({
             'url' : '<?= Sis::CrearUrl(['permiso/asignar']) ?>',
             'type' : 'POST',
@@ -97,11 +94,11 @@
             success: function(res){
                 if(res.error === false){
                     // Muestra el error
-                    console.log("Se guardó correctamente el permiso");
+                    lobiAlert('success', 'Se guardó correctamente el permiso');                    
                     obj.attr("data-exist", "1");
                     obj.attr("data-id", res.id);
                 } else {
-                    console.log("Error al guarda el permiso");
+                    lobiAlert('error', 'Error al guarda el permiso');
                 }
                 obj.removeAttr("disabled");
             }

@@ -25,15 +25,18 @@ class CtrlPago extends CControlador{
                 
         $intervalo = DateInterval::createFromDateString("1 month");
         $periodo = new DatePeriod($fechaInicio, $intervalo, $fechaFin);
+        
         $html = "";
         
         foreach($periodo AS $meses){
             $d = $meses->format('d');
             $m = $meses->format('m');
             $y = $meses->format('Y');
-            
+//            echo "matricula_id= '$id' AND fecha = '$y-$m-$d' AND estado = 1<br>";
+//            continue;
             $pago = Pago::modelo()->primer(['where' => "matricula_id= '$id' AND fecha = '$y-$m-$d' AND estado = 1"]);
             if($pago !== null){ continue; }
+            
             $html .= '<tr>';
             $html .= '<td>pago pendiente para el mes  ' . $m . ' de ' . $y . '</td>';
             $html .= "<td>$y-$m-$d</td>";
@@ -43,8 +46,9 @@ class CtrlPago extends CControlador{
                     . '<button class="btn btn-primary">Registrar pago</button>'
                     . '</a>'
                     . '</td>';
-            $html .= '</tr>';                        
+            $html .= '</tr>';
         }
+        
         $this->json([
             'error' => false,
             'html' => $html,
@@ -99,6 +103,30 @@ class CtrlPago extends CControlador{
     }
     
     public function accionConsultar(){
+        $pagos = Pago::modelo()->listar([
+//            'where' => 'estado=1',
+        ]);
         
+        $this->vista('consultarPagos',[
+            'pagos' => $pagos,
+        ]);
+    }
+    
+    public function accionAnular($id){
+        $modelo = Pago::modelo()->porPk($id);
+        $modelo->estado = $modelo->estado == 1? 0 : 1;
+        $modelo->guardar();
+        Sis::Sesion()->flash("alerta", [
+                'msg' => 'Guardado exitoso',
+                'tipo' => 'success',
+            ]);
+        $this->redireccionar('pago/consultar');
+    }
+    
+    public function accionVer($pk){
+        $modelo = Pago::modelo()->porPk($pk);
+        $this->vista('ver', [
+            'modelo' => $modelo
+        ]);
     }
 }

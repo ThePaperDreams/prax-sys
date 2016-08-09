@@ -22,11 +22,16 @@ class CtrlUsuario extends CControlador {
     public function accionCrear() {
         $this->validarUsuarioEmail();
         $modelo = new Usuario();
+        /*echo "<pre>";
+        var_dump($this->_p, $_FILES['Usuarios']);
+        exit();*/
         if (isset($this->_p['Usuarios'])) {
             $modelo->atributos = $this->_p['Usuarios'];
+            $modelo->foto = $modelo->nombre_usuario;
             $modelo->clave = sha1($this->_p['Usuarios']['clave']);
             if ($modelo->guardar()) {
                 # lógica para guardado exitoso
+                $this->guardarFoto($modelo->nombre_usuario);
                 $this->alertar('success','Registro Exitoso');
                 $this->redireccionar('inicio');
             }
@@ -38,6 +43,15 @@ class CtrlUsuario extends CControlador {
         ]);
     }
     
+    private function guardarFoto($usuario) {
+        if ($_FILES['Usuarios']['error'] !== UPLOAD_ERR_OK) {
+            $foto = CArchivoCargado::instanciarModelo('Usuarios','foto');
+            $ruta = Sis::resolverRuta(Sis::crearCarpeta("!publico.imagenes.usuarios"));
+            $nombre = $usuario . $foto->getExtension();
+            $foto->guardar($ruta, $nombre);
+        }
+    }
+
     private function validarUsuarioEmail($id = null){
         if(isset($this->_p['validarUsuarioEmail'])){
             if($id === null){
@@ -74,6 +88,7 @@ class CtrlUsuario extends CControlador {
             $modelo->clave = sha1($this->_p['Usuarios']['clave']);
             if ($modelo->guardar()) {
                 # lógica para guardado exitoso
+                $this->guardarFoto($modelo->nombre_usuario);
                 $this->alertar('success','Actualización Exitosa');
                 $this->redireccionar('inicio');
             }
@@ -110,7 +125,7 @@ class CtrlUsuario extends CControlador {
         Sis::Sesion()->flash("alerta", [
                 'msg' => $msj,
                 'tipo' => $tipo,
-            ]);
+        ]);
     }
     
     /**
