@@ -1,4 +1,4 @@
-<p>Diligencia todos los campos del formulario marcados con un <span class="required">*</span> </p>
+<p>Diligencia todos los campos del formulario marcados con un <span class="text-danger">*</span> </p>
 <p></p>
 <div class="well">
     <h5><strong>Nombre: </strong></h5>

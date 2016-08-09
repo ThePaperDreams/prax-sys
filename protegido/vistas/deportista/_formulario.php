@@ -48,7 +48,7 @@ $formulario->abrir();
         <?php echo $formulario->campoTexto($modelo, 'direccion', ['label' => true, 'group' => true]) ?>
     </div>
     <div class="col-sm-6">
-        <?php echo $formulario->campoTexto($modelo, 'fecha_nacimiento', ['label' => true, 'group' => true]) ?>
+        <?php echo $formulario->campoTexto($modelo, 'fecha_nacimiento', ['label' => true, 'group' => true, 'class' => 'campo-fecha']) ?>
     </div>
 </div>
 
@@ -182,9 +182,6 @@ $formulario->abrir();
                 alert("El deportista actualmente tiene asociado este documento");
             }
             $("#TiposDocumento_id_tipo").val('').attr("selected", "selected");
-        });
-        $("#Deportistas_fecha_nacimiento").datepicker({
-            dateFormat: 'yy-mm-dd'
         });
         $("#form-deportistas").attr('enctype', 'multipart/form-data');
         $("a.eliminar").click(function () {
