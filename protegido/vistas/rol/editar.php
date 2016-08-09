@@ -10,6 +10,7 @@
         'elementos' => [
             'Listar' => ['Rol/inicio'],
             'Registrar' => ['Rol/crear'],
+            'Asignar permisos' => ['Permiso/asignar'],
         ]
     ];    
 ?>

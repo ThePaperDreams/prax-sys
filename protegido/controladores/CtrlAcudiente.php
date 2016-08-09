@@ -25,10 +25,7 @@ class CtrlAcudiente extends CControlador {
             $modelo->atributos = $this->_p['Acudientes'];
             if ($modelo->guardar()) {
                 $this->asociarDocumentos($modelo->id_acudiente);
-                Sis::Sesion()->flash("alerta", [
-                    'msg' => 'Guardado exitoso',
-                    'tipo' => 'success',
-                ]);
+                $this->alertar('success','Guardado exitoso');                
                 $this->redireccionar('inicio');
             }
         }
@@ -67,23 +64,14 @@ class CtrlAcudiente extends CControlador {
     
     public function asociarDocumentos($acu) {
         if (isset($_FILES['Documentos']) && isset($this->_p['TiposDocumentos'])) {
-            foreach ($_FILES['Documentos']['name'] as $k => $v) {
-                if (empty($v)) {
-                    foreach ($_FILES['Documentos'] as $y => $x) {
-                        unset($_FILES['Documentos'][$y][$k]);
-                    }
-                }
-            }
             foreach ($this->_p['TiposDocumentos'] as $k => $v) {
                 $tipodoc = new TipoDocumento();
                 $nomtipo = $tipodoc->primer(["where" => "id_tipo=" . $v])->nombre;
                 $files = CArchivoCargado::instanciarTodasPorNombre('Documentos');
                 $rutaDestino = Sis::resolverRuta(Sis::crearCarpeta("!publico.acudientes.$acu"));
-                if (isset($files[$k])) {
-                    $files[$k]->guardar($rutaDestino, $nomtipo);
-                    $doc = $this->asociarDocumento($nomtipo, $k, $v, $files);
-                    $this->asociarAcudienteDocumento($acu, $doc);
-                }
+                $files[$k]->guardar($rutaDestino, $nomtipo);
+                $doc = $this->asociarDocumento($nomtipo, $k, $v, $files);
+                $this->asociarAcudienteDocumento($acu, $doc);
             }
         }
     }
@@ -116,10 +104,7 @@ class CtrlAcudiente extends CControlador {
             $modelo->atributos = $this->_p['Acudientes'];
             if ($modelo->guardar()) {
                 $this->asociarDocumentos($modelo->id_acudiente);
-                Sis::Sesion()->flash("alerta", [
-                    'msg' => 'Modificación exitosa',
-                    'tipo' => 'success',
-                ]);
+                $this->alertar('success', 'Modificación exitosa');                
                 $this->redireccionar('inicio');
             }
         }
@@ -138,7 +123,6 @@ class CtrlAcudiente extends CControlador {
      */
     public function accionVer($pk) {
         $modelo = $this->cargarModelo($pk);
-        $modelo2 = new Documento();
         $this->mostrarVista('ver', ['modelo' => $modelo,
             'tiposIdentificaciones' => CHtml::modelolista(TipoIdentificacion::modelo()->listar(), "id_tipo_documento", "nombre"),
         ]);
@@ -184,17 +168,26 @@ class CtrlAcudiente extends CControlador {
     
     public function accionCambiarEstado($pk) {
         $modelo = $this->cargarModelo($pk);
-        $modelo->estado = !$modelo->estado;
-        if ($modelo->guardar()) {
-            Sis::Sesion()->flash("alerta", [
-                'msg' => 'Cambio exitoso',
-                'tipo' => 'success',
-            ]);
+        $da = DeportistaAcudiente::modelo()->listar([
+            'where' => "id_acudiente=$pk",
+        ]);
+        if (count($da) > 0) {
+            $this->alertar('error', 'No se puede Inactivar');
         } else {
-            # lógica para error al borrar
+            $modelo->estado = !$modelo->estado;
+            if ($modelo->guardar()) {
+                $this->alertar('success', 'Cambio de estado exitoso');
+            }            
         }
         $this->redireccionar('inicio');
-    } 
+    }
+
+    private function alertar($tipo, $msj) {
+        Sis::Sesion()->flash("alerta", [
+            'msg' => $msj,
+            'tipo' => $tipo,
+        ]);
+    }
 
     /**
      * Esta función permite cargar un modelo usando su primary key

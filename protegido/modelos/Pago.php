@@ -131,5 +131,4 @@ class Pago extends CModelo {
     public static function modelo($clase = __CLASS__) {
         return parent::modelo($clase);
     }
-
-}
+ }

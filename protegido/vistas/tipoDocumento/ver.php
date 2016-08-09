@@ -22,10 +22,6 @@
         <table class="table table-bordered table-striped table-hover">
             <tbody>
                 <tr>
-                    <th><?php echo $modelo->obtenerEtiqueta('id_tipo') ?></th>
-                    <td><?php echo $modelo->id_tipo; ?></td>
-                </tr>
-                <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('nombre') ?></th>
                     <td><?php echo $modelo->nombre; ?></td>
                 </tr>
@@ -35,7 +31,7 @@
                 </tr>
                 <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('padre_id') ?></th>
-                    <td><?php echo ($modelo->padre_id != 0) ? $tiposDocumentos["$modelo->padre_id"] . " (Id: $modelo->padre_id)" : ""; ?></td>
+                    <td><?php echo $modelo->TDocumento->nombre; ?></td>
                 </tr>
             </tbody>
         </table>

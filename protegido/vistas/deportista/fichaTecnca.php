@@ -70,11 +70,24 @@ $this->migas = [
             <table class="table">
                 <tr>
                     <th class="text-right">Dorsal:</th>
-                    <td><?= $ficha->dorsal ?></td>
+                    <td class="edit-cell" data-input-edit-cell="true" data-val="<?= $ficha->dorsal ?>">
+                        <?= $ficha->dorsal ?>
+                        <?= CBoot::text('', ['id' => 'dorsal', 'style' => 'display:none', 'class' => 'data-control-edit', 'data-type' => 'text']); ?>
+                    </td>
                 </tr>
                 <tr>
                     <th class="text-right">Pierna hábil:</th>
-                    <td><?= $ficha->piernaStr ?></td>
+                    <td class="edit-cell" data-input-edit-cell="true" data-val="<?= $ficha->pierna_habil ?>">
+                        <?= $ficha->piernaStr ?>
+                        <?php 
+                        $pierna_habil = [
+                            'Izquierda', 
+                            'Derecha',
+                            'Abmas'
+                        ];                        
+                        ?>
+                        <?= CBoot::select('', $pierna_habil, ['id' => 'pierna-habil', 'style' => 'display:none', 'class' => 'data-control-edit', 'data-type' => 'select', 'defecto' => 'Seleccione una opción']) ?>
+                    </td>
                 </tr>
                 <tr>
                     <th class="text-right">Valoración:</th>
@@ -159,3 +172,42 @@ $this->migas = [
         </div>
     </div>
 </div>
+
+<script>
+    $(function(){
+        $("[data-input-edit-cell]").dblclick(function(){
+            editCell($(this));
+        });
+    });
+    
+    function editCell(obj){
+        var value = obj.attr("data-val");
+        var control = obj.find(".data-control-edit");
+        var type = control.attr("data-type");
+        
+        if(type === "text"){
+            obj.html(control);
+            control.val(value);
+            control.slideDown().focus().select();            
+            control.blur(function(e){
+                guardarTxt(e, obj, control);
+            });
+        } else if(type === "select"){
+            obj.html(control);
+            control.val(value);
+            control.slideDown();
+            control.change(function(e, obj, control){
+                guardarSelect(e, obj, control);
+            });
+        }
+    }
+    
+    function guardarTxt(e, obj, control){
+        var val = control.val();
+        obj.html(val);
+        control.unbind("blur keydown");
+        control.css("display", "none");
+        obj.append(control);
+        obj.attr("data-val", val);
+    }
+</script>

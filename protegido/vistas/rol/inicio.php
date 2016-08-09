@@ -8,6 +8,7 @@
     $this->opciones = [
         'elementos' => [
             'Registrar' => ['Rol/crear'],
+            'Asignar permisos' => ['Permiso/asignar'],
         ]
     ];
 ?>

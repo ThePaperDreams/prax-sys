@@ -2,6 +2,8 @@
 $formulario = new CBForm(['id' => 'form-tiposidentificacion']);
 $formulario->abrir();
 ?>
+<div class="tile p-15">
+<p>Los campos con <span class="text-danger">*</span>  son requeridos</p>
 <?php echo $formulario->campoTexto($modelo, 'nombre', ['label' => true, 'group' => true, 'autofocus' => true]) ?>
 <?php echo $formulario->campoTexto($modelo, 'abreviatura', ['label' => true, 'group' => true]) ?>
 
@@ -13,5 +15,49 @@ $formulario->abrir();
         <?php echo CBoot::boton(CBoot::fa('save') .' '. ($modelo->nuevo? 'Guardar' : 'Actualizar'), 'success', ['class' => 'btn-block']); ?>
     </div>
 </div>
-
+</div>
 <?php $formulario->cerrar(); ?>
+<script>
+    $(function () {
+        $("#form-tiposidentificacion").submit(function () {
+            validarNombre();
+            return false;
+        });
+
+        function validarNombre() {
+            var nombre = $("#TiposIdentificacion_nombre").val();
+            if (nombre === "") {
+                return;
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: '<?php echo $url ?>',
+                data: {
+                    validarNombre: true,
+                    nombre: $.trim(nombre),
+                },
+                success: function (respuesta) {
+                    if (respuesta.error === true) {
+                        mostrarAlert("error", "Ya existe ese nombre");
+                    } else {
+                        document.getElementById("form-tiposidentificacion").submit();
+                    }
+                }
+            });
+
+        }
+
+        function mostrarAlert(tipo, msg) {
+            Lobibox.notify(tipo, {
+                size: 'mini',
+                showClass: 'bounceInRight',
+                hideClass: 'bounceOutRight',
+                msg: msg,
+                delay: 8000,
+                soundPath: '<?= Sis::UrlRecursos() ?>librerias/lobibox/sounds/',
+            });
+        }
+
+    });
+</script>

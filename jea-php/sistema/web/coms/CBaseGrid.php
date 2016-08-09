@@ -119,12 +119,16 @@ abstract class CBaseGrid extends CComplemento{
      */
     protected function construirColsFila(&$cols, $modelo){
         foreach($this->tColumnas AS $k=>$v){
-            if(is_string($k)){
+            $opciones = [];
+            if(is_string($k) && is_array($v)){
+                $valor = isset($v['valor'])? $modelo->$v['valor'] : '';
+                $opciones = isset($v['opciones'])? $v['opciones'] : [];
+            } else if(is_string($k)){
                 $valor = $this->evaluarExpFila($modelo, $v);
             } else {
                 $valor = $modelo->$v;
             }
-            $cols[] = CHtml::e("td", $valor);
+            $cols[] = CHtml::e("td", $valor, $opciones);
         }
     }
     
