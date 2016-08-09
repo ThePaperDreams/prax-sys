@@ -21,10 +21,10 @@ $formulario->abrir();
 </div>
 <div class="row">
     <div class="col-sm-6">
-        <?php echo $formulario->inputAddon($modelo, 'fecha_inicio', 'texto', ['label' => true, 'group' => true, 'id' => 'datepicker'], 'calendar') ?>
+        <?php echo $formulario->inputAddon($modelo, 'fecha_inicio', 'texto', ['label' => true, 'group' => true, 'class' => 'campo-fecha'], 'calendar') ?>
     </div>
     <div class="col-sm-6">
-        <?php echo $formulario->inputAddon($modelo, 'fecha_fin','texto', ['label' => true, 'group' => true, 'id' => 'datepicker2'],'calendar-check-o') ?> 
+        <?php echo $formulario->inputAddon($modelo, 'fecha_fin','texto', ['label' => true, 'group' => true, 'class' => 'campo-fecha'],'calendar-check-o') ?> 
     </div>
 </div>
 <div class="row">
@@ -50,13 +50,7 @@ $formulario->abrir();
     </div>
 </div>
 <script>
-  $(document).ready(function() {
-    $("#datepicker").datepicker({
-        dateFormat: 'yy-mm-dd',
-    });
-    $( "#datepicker2" ).datepicker({
-        dateFormat: 'yy-mm-dd',
-    });    
+  $(document).ready(function() {  
         
     $("#cant").keyup(function(){
         var limite = parseInt($("#total-unidades").html());

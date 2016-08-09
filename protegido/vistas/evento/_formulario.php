@@ -16,8 +16,8 @@ $formulario->abrir();
         </div>
         <div role="tabpanel" class="tab-pane" id="cargar">
             <div class="row" id="tab-imagenes">
-                <?php echo $formulario->campoTexto($modelo, 'fecha_publicacion', ['label' => true, 'group' => true, 'id' => 'datepicker']) ?>
-                <?php echo $formulario->campoTexto($modelo, 'fecha_disponibilidad', ['label' => true, 'group' => true, 'id' => 'datepicker']) ?>
+                <?php echo $formulario->campoTexto($modelo, 'fecha_publicacion', ['label' => true, 'group' => true, 'class' => 'campo-fecha']) ?>
+                <?php echo $formulario->campoTexto($modelo, 'fecha_disponibilidad', ['label' => true, 'group' => true, 'class' => 'campo-fecha']) ?>
                 <div class="form-group">
                     <label>Tipos de Eventos</label>
                     <div class="input-group">  
@@ -51,14 +51,7 @@ $formulario->abrir();
 <script>
 $(document).ready(function() {
     $('.summernote').summernote();
-    $( "#datepicker" ).datepicker({
-        dateFormat: 'yy-mm-dd',
-    });
-    $( "#datepicker2" ).datepicker({
-        dateFormat: 'yy-mm-dd',
-    });    
-    
-    $("#datapicker").change(function(){
+    $(".campo-fecha").change(function(){
             validarFecha($(this));
         });
     });

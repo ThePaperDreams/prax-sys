@@ -25,9 +25,11 @@ $formulario->abrir();
                     </div>
                 </div>    
                 <?php echo $formulario->inputAddon($modelo, 'consecutivo','texto', ['label' => true, 'group' => true], 'list-ol') ?>
-                <?php echo $formulario->inputAddon($modelo, 'fecha_publicacion', 'texto', ['label' => true, 'group' => true, 'id' => 'datepicker'], 'calendar') ?>
-                <?php echo $formulario->inputAddon($modelo, 'fecha_disponibilidad','texto', ['label' => true, 'group' => true, 'id' => 'datepicker2'],'calendar-check-o') ?>
-                 <div class="form-group">
+                <div class="input-icon datetime-pick date-only">
+                    <?php echo $formulario->inputAddon($modelo, 'fecha_publicacion', 'texto', ['label' => true, 'group' => true,  'class' => 'campo-fecha'], 'calendar') ?>
+                    <?php echo $formulario->inputAddon($modelo, 'fecha_disponibilidad','texto', ['label' => true, 'group' => true, 'class' => 'campo-fecha'],'calendar-check-o') ?>
+                </div>    
+                <div class="form-group">
                     <label>Estado</label>
                     <div class="input-group">
 
@@ -52,15 +54,9 @@ $formulario->abrir();
 <script>
     
     $(document).ready(function() {
-    $('.summernote').summernote();
-    $( "#datepicker" ).datepicker({
-        dateFormat: 'yy-mm-dd',
-    });
-    $( "#datepicker2" ).datepicker({
-        dateFormat: 'yy-mm-dd',
-    });    
+    $('.summernote').summernote();    
     
-    $("#datapicker").change(function(){
+    $(".campo-fecha").change(function(){
             validarFecha($(this));
         });
     });
