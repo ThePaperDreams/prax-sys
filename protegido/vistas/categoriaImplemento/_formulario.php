@@ -25,7 +25,7 @@ $formulario->abrir();
         });
 
         function validarNombre() {
-            var nombre = $("#CategoriasImplementos_nombre");
+            var nombre = $("#CategoriasImplementos_nombre").val();
             if (nombre === "") {
                 return;
             }
@@ -35,7 +35,7 @@ $formulario->abrir();
                 url: '<?= $url ?>',
                 data: {
                     validarNombre: true,
-                    nombre: nombre.val(),
+                    nombre: nombre,
                 },
                 success: function (respuesta) {
                     if (respuesta.error == true) {

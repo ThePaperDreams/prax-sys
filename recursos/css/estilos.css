@@ -69,7 +69,10 @@
     background-color: rgba(255, 0, 0, 0.36);
     padding: 3px 10px;
     color: white;
-    }
+}
 .input-exception{
     opacity: 1 !important;
+}
+[data-input-edit-cell].edit-cell{
+    cursor: pointer;
 }

@@ -12,8 +12,8 @@ $formulario->abrir();
                     Información del plan de trabajo
                 </div>
                 <div class="panel-body">
-                    <?=  $formulario->inputAddon($modelo, 'fecha_aplicacion', 'text', ['label' => true, 'group' => true, 'autofocus' => true], ['pos' => CBoot::fa('calendar')]) ?>
-                    <?=  $formulario->listaM($modelo, 'categoria_id', 'Categoria' ,'id_categoria', 'nombre', ['label' => true, 'group' => true, 'defecto' => 'Selecione una categoría']) ?>
+                    <?=  $formulario->inputAddon($modelo, 'fecha_aplicacion', 'text', ['class' => 'campo-fecha', 'label' => true, 'group' => true, 'autofocus' => true], ['pos' => CBoot::fa('calendar')]) ?>
+                    <?=  $formulario->listaM($modelo, 'categoria_id', 'Categoria' ,'id_categoria', 'nombre', ['class' => 'campo-fecha', 'label' => true, 'group' => true, 'defecto' => 'Selecione una categoría']) ?>
                     <?=  $formulario->areaTexto($modelo, 'descripcion', ['label' => true, 'group' => true, 'rows' => 5]) ?>
                 </div>
             </div>
@@ -74,9 +74,10 @@ $formulario->abrir();
 
 <script>
     $(function(){
-        $("#PlanesTrabajo_fecha_aplicacion").datepicker({
-            dateFormat: 'yy-mm-dd'
-        });
+//        $("#PlanesTrabajo_fecha_aplicacion").datepicker({
+//            dateFormat: 'yy-mm-dd'
+//        });
+        
         $("#btn-agregar").click(function(){
             if($("#lista-objetivos").val() !== ""){
                 agregar();

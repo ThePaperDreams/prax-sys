@@ -1,7 +1,7 @@
 <?php 
 Sis::Recursos()->recursoCss(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/css/fileinput.min.css']);
 Sis::Recursos()->recursoJs(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/js/fileinput.min.js']);
-$this->tituloPagina="Pagos pendientes";
+$this->tituloPagina="Registrar pago";
     $this->migas = [
         'Home' => ['principal/inicio'],
         'Registrar pago',

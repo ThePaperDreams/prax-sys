@@ -6,13 +6,17 @@ Sis::Recursos()->AwesomeFont();
 Sis::Recursos()->Select2();
 Sis::Recursos()->JQueryUI();
 Sis::Recursos()->Js('personalizados');
-Sis::Recursos()->Js('comunes');
 Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . 'librerias/lobibox/css/animate.css']);
 Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . 'librerias/lobibox/css/lobibox.css']);
 Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . 'librerias/Trumbowyg/ui/trumbowyg.css']);
 Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . 'librerias/lobibox/js/lobibox.js']);
 Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . 'librerias/lobibox/js/notifications.js']);
 Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . 'librerias/Trumbowyg/trumbowyg.js']);
+Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . "/librerias/air-datepicker/js/datepicker.min.js"]);
+Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . "/librerias/air-datepicker/js/i18n/datepicker.es.js"]);
+Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . "/librerias/air-datepicker/css/datepicker.min.css"]);
+
+
 $url = Sis::ap()->getTema()->getUrlBase();
 Sis::Recursos()->recursoCss(['url' => $url . "/css/animate.css"]);
 Sis::Recursos()->recursoCss(['url' => $url . "/css/form.css"]);
@@ -28,6 +32,7 @@ Sis::Recursos()->recursoJs(['url' => $url . "/js/charts/jquery.flot.resize.min.j
 Sis::Recursos()->recursoJs(['url' => $url . "/js/sparkline.min.js"]);
 Sis::Recursos()->recursoJs(['url' => $url . "/js/easypiechart.js"]);
 Sis::Recursos()->recursoJs(['url' => $url . "/js/charts.js"]);
+Sis::Recursos()->recursoJs(['url' => $url . "/js/datetimepicker.min.js"]);
 Sis::Recursos()->recursoJs(['url' => $url . "/js/maps/jvectormap.min.js"]);
 Sis::Recursos()->recursoJs(['url' => $url . "/js/maps/usa.js"]);
 Sis::Recursos()->recursoJs(['url' => $url . "/js/icheck.js"]);
@@ -37,6 +42,7 @@ Sis::Recursos()->recursoJs(['url' => $url . "/js/feeds.min.js"]);
 Sis::Recursos()->recursoJs(['url' => $url . "/js/functions.js"]);
 Sis::Recursos()->recursoJs(['url' => $url . "/js/editor.min.js"]);
 Sis::Recursos()->css('estilos');
+Sis::Recursos()->Js('comunes');
 ?>
 <!DOCTYPE HTML>
 <html>

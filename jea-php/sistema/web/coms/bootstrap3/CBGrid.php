@@ -32,7 +32,7 @@ class CBGrid extends CBaseGrid{
                 $nombreColumna = $c;
             }
             if(key_exists($nombreColumna, $this->mEtiquetas)){
-                $ths[] = CHtml::e('th', $this->mEtiquetas[$nombreColumna]);
+                $ths[] = CHtml::e('th', $this->mEtiquetas[$nombreColumna], ['class' => 'text-center']);
             }
         }
         

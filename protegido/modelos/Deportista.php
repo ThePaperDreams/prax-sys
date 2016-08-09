@@ -108,6 +108,13 @@ class Deportista extends CModelo{
         return $documentos;
     }
     
+    public function getEdad(){
+        $fechaActual = new DateTime(); # creamos la fecha actual
+        $fechaNacimiento = new DateTime($this->fecha_nacimiento);
+        $diferencia = $fechaNacimiento->diff($fechaActual);
+        return $diferencia->y;
+    }
+    
     /**
      * Esta función retorna las relaciones con otros modelos
      * @return array
