@@ -66,14 +66,15 @@ $formulario->abrir();
         var maximo = $('#Implementos_maximo_unidades').val();
         var current = $('#Implementos_unidades').val();
         var minimo = $('#Implementos_minimo_unidades').val();
-        if(maximo<current){
+        if(parseInt(maximo) >parseInt(current)){
             mostrarAlert('error','Unidades no puede superar al maximo');
-            if(minimo>maximo){
-            mostrarAlert('error','Unidades minimas no pueden superar al maximo');
+            return false;
         }
+        if(parseInt(maximo) < parseInt(minimo)){
+            mostrarAlert('error','Unidades minimas no pueden superar al maximo');
             return false;
         }else{
-            return true;
+        return true;
         }
         
     }

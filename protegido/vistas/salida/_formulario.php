@@ -5,7 +5,7 @@ $formulario->abrir();
 <div class="tile p-15">
 <?php echo $formulario->lista($modelo, 'responsable_id', $usuarios, ['label' => true, 'group' => true, 'autofocus' => true, 'defecto' => 'Seleccione un Responsable']) ?>
 <?php echo $formulario->areaTexto($modelo, 'descripcion', ['label' => true, 'group' => true]) ?>
-<?php echo $formulario->campoTexto($modelo, 'fecha_entrega', ['label' => true, 'group' => true]) ?>
+<?php echo $formulario->campoTexto($modelo, 'fecha_entrega', ['label' => true, 'group' => true, 'class'=>'campo-fecha']) ?>
 <div>
     <div class="form-group">
         <?= CBoot::selectM('', 'Implemento', 'id_implemento', 'nombre', ['label' => 'Implementos', 'group' => true, 'autofocus' => true, 'defecto' => 'Seleccione un Implemento', 'id' => 'selectId']) ?>   
@@ -54,17 +54,24 @@ $formulario->abrir();
             Agregar();
             return false;
         });
-        $("#Salidas_fecha_entrega").datepicker({
-            dateFormat: 'yy-mm-dd',
+        
+        $("#form-salidas").submit(function(){
+            if($("[data-implemento]").length === 0){
+                lobiAlert("error", "Añada por lo menos un implemento");
+                return false;
+            }
         });
-         $("#Salidas_fecha_entrega").change(function(){
+        
+        $("#Salidas_fecha_entrega").change(function(){
             validarFecha($(this));
         });
+        
         $("#selectId").change(function(){
             if($(this).val() !== ""){
                 traerDatosImplemento($(this).val());
             }
         });
+        
         $("#cant").keyup(function(){
             var limite = parseInt($("#total-unidades").html());
             if($(this).val() > limite){
@@ -73,6 +80,8 @@ $formulario->abrir();
                 cant.val(limite);
             }
         });
+        
+            
     });
    
    function traerDatosImplemento(id){
@@ -108,7 +117,7 @@ $formulario->abrir();
         var hidden = '<input type="hidden" name="articulo[]" value="'+valor+'"><input type="hidden" name="cantity[]" value="'+cantidad+'">';
         
         var datosTabla = $("#datosTabla");
-        var fila = '<tr id="remover-' + valor + '"><td>' + nombre + hidden + '</td><td>' + cantidad + '</td><td class="text-danger-icon text-center col-sm-1"><i class="fa fa-ban" onclick="Quitar(' + valor + ')" ></i></td></tr>';
+        var fila = '<tr data-implemento="true" id="remover-' + valor + '"><td>' + nombre + hidden + '</td><td>' + cantidad + '</td><td class="text-danger-icon text-center col-sm-1"><i class="fa fa-ban" onclick="Quitar(' + valor + ')" ></i></td></tr>';
         datosTabla.append(fila);
 
     }
@@ -120,11 +129,12 @@ $formulario->abrir();
     function validarFecha(fecha) {
         var currDate = new Date();
         var date = Date.parse(fecha.val());
-        if (date >= currDate) {
-            $('#btn-send').removeAttr("disabled");
-        } else {
-            alert("Por favor seleccione una fecha mayor a la de hoy");
+        if (date < currDate) {
+            lobiAlert("error", "Por favor seleccione una fecha mayor a la de hoy");
             $('#btn-send').attr("disabled", "disabled");
+        } 
+        if(date > currDate) {
+            $('#btn-send').removeAttr("disabled");
         }
     }
 </script>

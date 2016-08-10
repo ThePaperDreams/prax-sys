@@ -53,6 +53,13 @@ $formulario->abrir();
             Agregar();
             return false;
         });
+        
+        $("#form-entradas").submit(function(){
+            if($("[data-implemento]").length === 0){
+                lobiAlert("error", "Añada por lo menos un implemento");
+                return false;
+            }
+        });
     });
 
     function Agregar() {
@@ -73,7 +80,7 @@ $formulario->abrir();
         var hidden = '<input type="hidden" name="articulo[]" value="'+valor+'"><input type="hidden" name="cantity[]" value="'+cantidad+'">';
 
         var datosTabla = $("#datosTabla");
-        var fila = '<tr id="remover-' + valor + '"><td>' + nombre + hidden + '</td><td>' + cantidad + '</td><td class="text-danger-icon text-center col-sm-1"><i class="fa fa-ban" onclick="Quitar(' + valor + ')" ></i></td></tr>';
+        var fila = '<tr data-implemento="true" id="remover-' + valor + '"><td>' + nombre + hidden + '</td><td>' + cantidad + '</td><td class="text-danger-icon text-center col-sm-1"><i class="fa fa-ban" onclick="Quitar(' + valor + ')" ></i></td></tr>';
         datosTabla.append(fila);
 
     }
