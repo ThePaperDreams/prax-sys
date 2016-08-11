@@ -12,9 +12,17 @@
     ];    
     
 ?>
+<div class="row">
+    <div class="col-lg-6">
+<?php
+$icon=  CBoot::fa('file-pdf-o');
+echo CBoot::boton('Generar pdf '.$icon,'primary',['id'=>'generar_pdf','group'=>true]);
+?>
+        </div>
+</div>
 
 <?= $this->complemento('!siscoms.bootstrap3.CBGrid', [
-    'modelo' => $pagos,
+    'modelo' => 'Pago',
     # id_plan_trabajo, descripcion, fecha_aplicacion, estado, categoria_id
     'columnas' => [
         'fecha',
