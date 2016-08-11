@@ -30,7 +30,7 @@
         });
         $("#logo").hide();
         
-        var delay = 300;
+        var delay = 500;
         setTimeout(function(){
             $("#usuario").animate({
                 position: "relative",
@@ -40,7 +40,7 @@
                     position: "relative",
                     right: "0%",
                 }, delay, function(){
-                    $("#logo").fadeIn(delay);
+                    $("#logo").fadeIn(delay + 200);
                 });
             });            
             

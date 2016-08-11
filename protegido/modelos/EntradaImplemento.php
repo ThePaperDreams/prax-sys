@@ -37,7 +37,7 @@ class EntradaImplemento extends CModelo {
             'detalle',
         ];
     }
-
+    
     /**
      * Esta función retorna las relaciones con otros modelos
      * @return array

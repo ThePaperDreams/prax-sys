@@ -11,7 +11,17 @@ class CtrlPrincipal extends CControlador{
         $this->vista('ejemploFormularios');
     }
     
-    public function accionInicio(){
+    public function accionInicio(){        
+        # instanciamos el pdf
+//        $pdf = Sis::apl()->mpdf->crear();
+        # obtenemos el html generado por una vista y lo guardamos en un string
+//        $texto = $this->vistaP('prueba');
+        # Imprimimos el html
+//        $pdf->writeHtml($texto);
+        # Enviar el archivo pdf
+//        $pdf->Output();
+//        Sis::fin();
+        
         $this->mostrarVista('inicio');
     }
 
