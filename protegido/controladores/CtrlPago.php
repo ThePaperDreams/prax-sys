@@ -14,6 +14,7 @@ class CtrlPago extends CControlador{
     }
     
     public function consultarPagos(){
+        
         $id = $this->_p['idDep'];
         $matricula = Matricula::modelo()->porPk($id);
         $fechaMatricula = new DateTime($matricula->fecha_pago);
@@ -102,7 +103,18 @@ class CtrlPago extends CControlador{
         return true;
     }
     
-    public function accionConsultar(){
+    public function accionGenerarReporte() {
+        $pagos = Pago::modelo()->listar([
+            'where' => 'estado=1',
+        ]);
+        
+        $pdf = Sis::apl()->mpdf->crear();
+        $texto = $this->vistaP('pdfPago', ['pagos' => $pagos]);
+        $pdf->writeHtml($texto);
+        $pdf->Output("Pago_de_mensualidades.pdf", 'I');
+    }
+    
+    public function accionConsultar(){           
         $pagos = Pago::modelo()->listar([
 //            'where' => 'estado=1',
         ]);
