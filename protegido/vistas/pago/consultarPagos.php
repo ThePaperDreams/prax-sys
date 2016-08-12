@@ -12,6 +12,8 @@
     ];    
     
 ?>
+
+
 <div class="row">
     <div class="col-lg-6">
         <a href="<?= Sis::crearUrl(['pago/generarReporte']) ?>" target="_blank">
@@ -36,8 +38,8 @@
         'matricula_id' => 'MatriculaPago->Deportista->nombreCompleto',
     ],
     'opciones' => [
-        ['i' => 'eye', 'url' => 'pago/ver&{id:pk}'],
-        ['i' => 'refresh', 'url' => 'pago/anular&{id:pk}', 'visible' => '$m->estado == 1', 'opciones' => ['class' => 'op-eliminar']],
+        ['i' => 'eye', 'title' => 'Ver','url' => 'pago/ver&{id:pk}'],
+        ['i' => 'refresh', 'title' => 'Cambiar estado','url' => 'pago/anular&{id:pk}', 'visible' => '$m->estado == 1', 'opciones' => ['class' => 'op-eliminar']],
     ],
     'paginacion' => 10,
 ]) ?>

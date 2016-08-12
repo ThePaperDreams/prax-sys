@@ -26,9 +26,9 @@ $this->complemento('!siscoms.bootstrap3.CBGrid', [
         'estado' => 'EtiquetaEstado',
     ],
     'opciones' => [
-        ['i'=>'eye','url'=>'Categoriaimplemento/ver&{id:pk}'],
-        ['i'=>'pencil','url'=>'Categoriaimplemento/editar&{id:pk}'],
-        ['i'=>'refresh','url'=>'Categoriaimplemento/anular&{id:pk}'],
+        ['i'=>'eye', 'title' => 'Ver','url'=>'Categoriaimplemento/ver&{id:pk}'],
+        ['i'=>'pencil','title' => 'Editar','url'=>'Categoriaimplemento/editar&{id:pk}'],
+        ['i'=>'refresh','title' => 'Cambiar estado','url'=>'Categoriaimplemento/anular&{id:pk}'],
     ],
     'paginacion' => 10,
 ])
