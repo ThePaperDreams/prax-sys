@@ -11,6 +11,7 @@
     ];
 ?>
 
+<?php $this->abrirSeccion("antes-de-opciones") ?>
 <div class="row">
     <div class="col-lg-6">
         <a href="<?= Sis::crearUrl(['torneo/generarReporte']) ?>" target="_blank">
@@ -22,6 +23,7 @@
         </div>
 </div>
 <div class="p-5"></div>
+<?php $this->cerrarSeccion()?>
 
 <?= $this->complemento('!siscoms.bootstrap3.CBGrid', [
     'modelo' => 'Torneo',

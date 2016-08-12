@@ -24,10 +24,10 @@ class CtrlTorneo extends CControlador{
         $modelo = new Torneo();
         if(isset($this->_p['Torneos'])){
             $modelo->atributos = $this->_p['Torneos'];
+            $this->asociarFoto($modelo); 
             
             if($modelo->guardar()){
                 # lógica para guardado exitoso
-                $this->asociarFoto(); 
                 $this->redireccionar('inicio');
             }
         }
@@ -42,10 +42,12 @@ class CtrlTorneo extends CControlador{
     public function accionEditar($pk){
         $modelo = $this->cargarModelo($pk);
         if(isset($this->_p['Torneos'])){
+            
             $modelo->atributos = $this->_p['Torneos'];
+            $this->asociarFoto($modelo); 
+            
             if($modelo->guardar()){
                 # lógica para guardado exitoso
-                $this->asociarFoto(); 
                 $this->redireccionar('inicio');
             }
         }
@@ -86,13 +88,18 @@ class CtrlTorneo extends CControlador{
         $this->redireccionar('inicio');
     }
     
-    public function asociarFoto(){
+    /**
+     * Esta función permite cargar la tabla de posiciones de un torneo
+     * @param Torneo $modelo
+     */
+    public function asociarFoto(&$modelo){
         if ($_FILES['Torneos']['error'] !== UPLOAD_ERR_OK) {
             $files = CArchivoCargado::instanciarModelo('Torneos', 'tabla_posiciones');
             $rutaDestino = Sis::resolverRuta(Sis::crearCarpeta("!publico.imagenes.torneos.fotos"));
             $rutaThumbs = Sis::resolverRuta(Sis::crearCarpeta("!publico.imagenes.torneos.fotos.thumbs"));
             $nom = $files->getNombre();
             if($files->guardar($rutaDestino, $nom)){
+                $modelo->tabla_posiciones =  $nom . "." . $files->getExtension();
                 $files->thumbnail($rutaThumbs, [
                     'tamanio' => '400',
                     'tipo' => strtolower($files->getExtension()),
