@@ -14,12 +14,15 @@
 ?>
 <div class="row">
     <div class="col-lg-6">
-<?php
-$icon=  CBoot::fa('file-pdf-o');
-echo CBoot::boton('Generar pdf '.$icon,'primary',['id'=>'generar_pdf','group'=>true]);
-?>
+        <a href="<?= Sis::crearUrl(['pago/generarReporte']) ?>" target="_blank">
+        <?php
+        $icon=  CBoot::fa('file-pdf-o');
+        echo CBoot::boton('Generar pdf '.$icon,'primary',['id'=>'generar_pdf']);
+        ?>
+        </a>
         </div>
 </div>
+<div class="p-5"></div>
 
 <?= $this->complemento('!siscoms.bootstrap3.CBGrid', [
     'modelo' => 'Pago',
