@@ -44,6 +44,10 @@
                     <th><?php echo $modelo->obtenerEtiqueta('entrenador_id') ?></th>
                     <td><?php echo $modelo->Entrenador->nombre_usuario ?></td>
                 </tr>
+                <tr>
+                    <th><?php echo $modelo->obtenerEtiqueta('torneo_id') ?></th>
+                    <td><?php echo $modelo->mTorneo->nombre ?></td>
+                </tr>
                                 
             </tbody>
         </table>
