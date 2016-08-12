@@ -53,6 +53,15 @@ class CtrlTorneo extends CControlador{
             ]);
     }
     
+    public function accionGenerarReporte() {
+        $torneos = Torneo::modelo()->listar();
+        
+        $pdf = Sis::apl()->mpdf->crear();
+        $texto = $this->vistaP('pdfTorneos', ['torneos' => $torneos]);
+        $pdf->writeHtml($texto);
+        $pdf->Output("Torneos.pdf", 'I');
+    }
+    
     /**
      * Esta función permite ver detalladamente un registro existente
      * @param int $pk

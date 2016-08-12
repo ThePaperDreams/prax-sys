@@ -1,4 +1,6 @@
 <?php
+
+
 $this->migas = [
     'Home' => ['principal/inicio'],
     'Listar Torneos' => ['Torneo/inicio'],
@@ -13,6 +15,8 @@ $this->opciones = [
     ]
 ];
 ?>
+
+
 <div class="col-sm-8">
     <div class="panel panel-primary">
         <div class="panel-heading text-center">
