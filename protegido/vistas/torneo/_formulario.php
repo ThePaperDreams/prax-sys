@@ -31,12 +31,8 @@ $formulario->abrir();
     <div class="col-sm-6">
         <?php echo $formulario->campoArchivo($modelo, 'tabla_posiciones', ['label' => true, 'group' => true]) ?>
     </div>
+    
     <div class="col-sm-6">
-        <?php echo $formulario->lista($modelo, 'equipo_id', $mEquipo, ['label'=> true,'defecto' => 'Seleccione el equipo a participar en el torneo']) ?>
-    </div>
-</div>
-<div class="row">
-    <div class="col-sm-12">
         <?php echo $formulario->areaTexto($modelo, 'observaciones', ['label' => true, 'group' => true]) ?> 
     </div>
 </div>    

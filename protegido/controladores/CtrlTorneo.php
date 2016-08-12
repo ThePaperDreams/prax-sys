@@ -13,7 +13,7 @@ class CtrlTorneo extends CControlador{
     public function accionInicio(){
         $modelos = Torneo::modelo()->listar();
         $this->mostrarVista('inicio', ['modelos' => $modelos,
-            'mEquipo' => CHtml::modelolista(Equipo::modelo()->listar(), "id_equipo", "nombre"),
+            
             ]);
     }
     
@@ -32,7 +32,6 @@ class CtrlTorneo extends CControlador{
             }
         }
         $this->mostrarVista('crear', ['modelo' => $modelo,
-            'mEquipo' => CHtml::modelolista(Equipo::modelo()->listar(), "id_equipo", "nombre"),
             ]);
     }
     
@@ -51,7 +50,6 @@ class CtrlTorneo extends CControlador{
             }
         }
         $this->mostrarVista('editar', ['modelo' => $modelo,
-            'mEquipo' => CHtml::modelolista(Equipo::modelo()->listar(), "id_equipo", "nombre"),
             ]);
     }
     
@@ -62,8 +60,7 @@ class CtrlTorneo extends CControlador{
     public function accionVer($pk){
         $modelo = $this->cargarModelo($pk);
         $this->mostrarVista('ver', ['modelo' => $modelo,
-            'mEquipo' => CHtml::modelolista(Equipo::modelo()->listar(), "id_equipo", "nombre"),
-                 ]);
+        ]);
     }
     
     /**

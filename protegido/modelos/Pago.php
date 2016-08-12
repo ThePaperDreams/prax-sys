@@ -74,17 +74,24 @@ class Pago extends CModelo {
         ];
     }
     
+    public function filtros() {
+        return[
+           'requeridos'=>'valor_cancelado,url_comprobante' 
+            
+        ];
+    }
+    
     public function getEtiquetaEstado(){
         if($this->estado == 1){
             return CHtml::e('span', 'Activo', ['class' => 'label label-success']);
         } else if($this->estado == 0){
-            return CHtml::e('span', 'Anulado', ['class' => 'label label-default']);
+            return CHtml::e('span', 'Anulado', ['class' => 'label label-danger']);
         }
     }
     
     public function getUrlDescarga(){
         if($this->url_comprobante !== ""){
-            $span = CHtml::e("span", 'Descargar', ['class' => 'label label-success']);
+            $span = CHtml::e("span", 'Descargar', ['class' => 'label label-primary']);
             $url = Sis::UrlBase() . 'publico/documentos/pagos/' . $this->url_comprobante;
             return CHtml::link($span, $url, ['target' => '_blank', 'download' => $this->url_comprobante]);
         } else {

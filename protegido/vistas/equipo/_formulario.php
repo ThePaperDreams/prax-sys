@@ -12,8 +12,9 @@ $formulario->abrir();
             <?php echo $formulario->campoTexto($modelo, 'nombre', ['label' => true, 'group' => true, 'autofocus' => true]) ?>
             <?php echo $formulario->campoNumber($modelo, 'cupo_maximo', ['label' => true, 'group' => true]) ?>
             <?php echo $formulario->campoNumber($modelo, 'cupo_minimo', ['label' => true, 'group' => true]) ?>
-            <?php echo $formulario->campoTexto($modelo, 'estado', ['label' => true, 'group' => true]) ?>
-            <?php echo $formulario->campoTexto($modelo, 'posicion', ['label' => true, 'group' => true]) ?>     
+            <?php echo $formulario->campoTexto($modelo, 'estado', ['label' => true, 'group' => true]) ?>         
+            <?php echo $formulario->campoTexto($modelo, 'posicion', ['label' => true, 'group' => true]) ?> 
+            <?php echo $formulario->lista($modelo, 'torneo_id', $mTorneo, ['label'=> true,'defecto' => 'Seleccione el torneo en el participa el equipo']) ?>
         </div>
         <div role="tabpanel" class="tab-pane" id="cargar">
             <div class="row" id="tab-imagenes">

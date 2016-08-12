@@ -42,7 +42,6 @@
 		'nombre', 
 		'observaciones', 
 		'tabla_posiciones', 
-		'equipo_id', 
         ];
     }
     
@@ -55,7 +54,7 @@
         return [
             # el formato es simple: 
             # tipo de relación | modelo con que se relaciona | campo clave foranea
-            'Equipo' => [self::PERTENECE_A, 'Equipo', 'equipo_id'],
+            
                     ];
     }
     
@@ -73,8 +72,7 @@
 		'fecha_fin' => 'Fecha de Fin', 
 		'nombre' => 'Nombre', 
 		'observaciones' => 'Observaciones', 
-		'tabla_posiciones' => 'Tabla de Posiciones', 
-		'equipo_id' => 'Equipo', 
+		'tabla_posiciones' => 'Tabla de Posiciones',  
         ];
     }
     
