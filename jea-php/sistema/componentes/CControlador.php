@@ -12,8 +12,15 @@
 abstract class CControlador extends CComponenteAplicacion{
     const CONTENIDO = 'Content-Type';
     const JSON = 'application/json';
-    
+    /**
+     * Esta variable almacena las secciones creadas en la aplicación
+     * @var array 
+     */
     protected $secciones = [];
+    /**
+     * Esta variable almacena el nombre de la sección abierta
+     * @var string
+     */
     protected $seccionActiva = "";
     
     /**
