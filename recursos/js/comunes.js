@@ -32,6 +32,9 @@ function aDate(elementos, data){
         $(v).datepicker({
             language: 'es',
             dateFormat: 'yyyy-mm-dd',
+            onSelect: function(fd, d, picker){
+                $(v).change();
+            }
         });
     });
 //    elementos.datepicker(data);

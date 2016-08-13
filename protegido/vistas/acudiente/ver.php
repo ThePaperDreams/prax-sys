@@ -13,46 +13,62 @@ $this->opciones = [
     ]
 ];
 ?>
+<div class="tile p-15">
+<div class="row">
+    <div class="panel-heading">
+        <h4>Detalles del Acudiente</h4>
+    </div>
 <div class="col-sm-6">
     <div class="panel panel-default">
-        <div class="panel-heading text-center">
+        <!--<div class="panel-heading text-center">
             Ver detalles
-        </div>
-        <table class="table table-bordered table-striped table-hover">
+        </div>-->
+        <table class="table table-bordered table-hover">
             <tbody>
                 <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('tipo_doc_id') ?></th>
-                    <td><?php echo $tiposIdentificaciones["$modelo->tipo_doc_id"]; ?></td>
-                </tr>
-                <tr>
-                    <th><?php echo $modelo->obtenerEtiqueta('identificacion') ?></th>
-                    <td><?php echo $modelo->identificacion; ?></td>
+                    <td><?php echo $modelo->TipoIdentificacion->nombre; ?></td>
                 </tr>
                 <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('nombre1') ?></th>
                     <td><?php echo $modelo->nombre1; ?></td>
                 </tr>
                 <tr>
-                    <th><?php echo $modelo->obtenerEtiqueta('nombre2') ?></th>
-                    <td><?php echo $modelo->nombre2; ?></td>
-                </tr>
-                <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('apellido1') ?></th>
                     <td><?php echo $modelo->apellido1; ?></td>
-                </tr>
-                <tr>
-                    <th><?php echo $modelo->obtenerEtiqueta('apellido2') ?></th>
-                    <td><?php echo $modelo->apellido2; ?></td>
-                </tr>
-                <tr>
-                    <th><?php echo $modelo->obtenerEtiqueta('direccion') ?></th>
-                    <td><?php echo $modelo->direccion; ?></td>
                 </tr>
                 <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('telefono1') ?></th>
                     <td><?php echo $modelo->telefono1; ?></td>
                 </tr>
+                <tr>                    
+                    <th><?php echo $modelo->obtenerEtiqueta('direccion') ?></th>
+                    <td><?php echo $modelo->direccion; ?></td>
+                </tr>                
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="col-sm-6">
+    <div class="panel panel-default">
+        <!--<div class="panel-heading text-center">
+            Ver detalles
+        </div>-->
+        <table class="table table-bordered table-hover">
+            <tbody>                
                 <tr>
+                    <th><?php echo $modelo->obtenerEtiqueta('identificacion') ?></th>
+                    <td><?php echo $modelo->identificacion; ?></td>
+                </tr>
+                <tr>
+                    <th><?php echo $modelo->obtenerEtiqueta('nombre2') ?></th>
+                    <td><?php echo $modelo->nombre2; ?></td>
+                </tr>
+                <tr>
+                    <th><?php echo $modelo->obtenerEtiqueta('apellido2') ?></th>
+                    <td><?php echo $modelo->apellido2; ?></td>
+                </tr>
+                <tr>                    
                     <th><?php echo $modelo->obtenerEtiqueta('telefono2') ?></th>
                     <td><?php echo $modelo->telefono2; ?></td>
                 </tr>
@@ -64,13 +80,17 @@ $this->opciones = [
         </table>
     </div>
 </div>
-<div class="col-sm-6">
+</div>
+</div>
+
+<div class="row">
+<div class="col-sm-12">
     <div class="panel panel-default">
-        <div class="panel-heading text-center">
-            <h4 class="panel-title"><a data-toggle="collapse" href="#collapse3">Documentos asociados actualmente <i class="fa fa-chevron-down"></i></a></h4>
-        </div>  
-        <div id="collapse3" class="panel-collapse collapse">
-            <table class="table">
+        <div class="panel-heading text-center">            
+            <a href="#docs" class="collapsed" role="button" data-toggle="collapse" aria-controls="docs">Documentos asociados actualmente <i class="fa fa-chevron-down"></i></a>            
+        </div>          
+        <div id="docs" class="panel-collapse collapse">
+            <table class="table table-bordered table-hover">
                 <thead>
                     <tr>
                         <th>Descargar</th>
@@ -80,7 +100,8 @@ $this->opciones = [
                 <tbody id="tabla-documentos">
                     <?php foreach ($modelo->Detalles AS $dc): ?>
                         <tr>
-                            <td><?= $dc->Documento->getDocumento($modelo->id_acudiente, $dc->Documento->url, get_class($modelo)); ?></td>            
+                            <td><?php echo $dc->Documento->getDocumento($modelo->id_acudiente, $dc->Documento->url, get_class($modelo)); ?></td>
+                            <!--<td><?php #echo $dc->Documento->getDocumento($dc->Documento->url, $dc->Documento->titulo); ?></td>-->
                             <td class="col-sm-1 text-center text-danger-icon"><a class="eliminar" data-idacu="<?= $modelo->id_acudiente ?>" data-nomtipo="<?= $dc->Documento->url ?>" data-iddoc="<?= $dc->documento_id ?>" data-idacudoc="<?= $dc->id ?>" href="#"><i class="fa fa-ban"></i></a></td>
                         </tr>
                     <?php endforeach ?>
@@ -88,6 +109,7 @@ $this->opciones = [
             </table>
         </div>
     </div>
+</div>
 </div>
 <script>
     $(function () {

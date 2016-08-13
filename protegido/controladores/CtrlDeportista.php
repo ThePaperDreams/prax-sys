@@ -42,7 +42,14 @@ class CtrlDeportista extends CControlador {
             $modelo->atributos = $this->_p['Deportistas'];
             $modelo->foto = $this->asociarFoto($modelo->identificacion);
             if ($modelo->guardar()) {
-                $dep = $this->id_deportista;
+                $dep = $modelo->id_deportista;
+                /*echo "<pre>";
+                var_dump($this->_p['Acudient']);
+                foreach ($this->_p['Acudient'] as $k => $v) {
+                    echo "Hola " . $v;                    
+            }
+                exit();
+*/
                 $this->asociarAcudientes($dep);
                 $this->asociarDocumentos($dep);
                 $this->alertar('success', 'Registro Exitoso');
@@ -62,14 +69,12 @@ class CtrlDeportista extends CControlador {
     }
 
     public function asociarAcudientes($dep) {
-        if (isset($this->_p['Acudientes'])) {
-            foreach ($this->_p['Acudientes'] as $v) {
-                if ($v) {
-                    $modelo4 = new DeportistaAcudiente();
-                    $modelo4->deportista_id = $dep;
-                    $modelo4->acudiente_id = $v;
-                    $modelo4->guardar();
-                }
+        if (isset($this->_p['Acudient'])) {
+            foreach ($this->_p['Acudient'] as $v) {
+                $modelo4 = new DeportistaAcudiente();
+                $modelo4->deportista_id = $dep;
+                $modelo4->acudiente_id = $v;
+                $modelo4->guardar();
             }
         }
     }
@@ -152,7 +157,6 @@ class CtrlDeportista extends CControlador {
     public function accionVer($pk) {
         $modelo = $this->cargarModelo($pk);
         $this->mostrarVista('ver', ['modelo' => $modelo,
-            'tiposIdentificaciones' => CHtml::modelolista(TipoIdentificacion::modelo()->listar(), "id_tipo_documento", "nombre"),
         ]);
     }
 
@@ -210,7 +214,7 @@ class CtrlDeportista extends CControlador {
     }
 
     public function asociarFoto($dep) {
-        if (empty($_FILES['Deportistas']['name']['foto']) === false) {
+        if ($_FILES['Deportistas']['error'] !== UPLOAD_ERR_OK) {
             $files = CArchivoCargado::instanciarModelo('Deportistas', 'foto');
             $rutaDestino = Sis::resolverRuta(Sis::crearCarpeta("!publico.imagenes.deportistas.fotos"));
             $rutaThumbs = Sis::resolverRuta(Sis::crearCarpeta("!publico.imagenes.deportistas.fotos.thumbs"));
@@ -246,7 +250,7 @@ class CtrlDeportista extends CControlador {
         $dep = $this->_p['dep'];
         $nom = $this->_p['nom'];
         $modelo = $this->cargarModelo($dep);
-        $modelo->foto = null;
+        $modelo->foto = "";
         if ($modelo->guardar()) {
             $ruta = Sis::resolverRuta("!publico.imagenes.deportistas.fotos");
             $ruta .= DS . $nom;

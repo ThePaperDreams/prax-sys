@@ -70,16 +70,17 @@ class CtrlAcudiente extends CControlador {
                 $files = CArchivoCargado::instanciarTodasPorNombre('Documentos');
                 $rutaDestino = Sis::resolverRuta(Sis::crearCarpeta("!publico.acudientes.$acu"));
                 $files[$k]->guardar($rutaDestino, $nomtipo);
-                $doc = $this->asociarDocumento($nomtipo, $k, $v, $files);
+                $doc = $this->asociarDocumento($nomtipo, $k, $v, $files, $acu);
                 $this->asociarAcudienteDocumento($acu, $doc);
             }
         }
     }
 
-    public function asociarDocumento($nomtipo, $k, $v, $files){
+    public function asociarDocumento($nomtipo, $k, $v, $files, $acu){
         $doc = new Documento();
         $doc->titulo = $nomtipo;
         $doc->url = $nomtipo . "." . $files[$k]->getExtension();
+        //$doc->url = "publico/acudientes/$acu/" . $nomtipo . "." . $files[$k]->getExtension();
         $doc->tipo_id = $v;
         $doc->guardar();                
         return $doc;
@@ -124,7 +125,6 @@ class CtrlAcudiente extends CControlador {
     public function accionVer($pk) {
         $modelo = $this->cargarModelo($pk);
         $this->mostrarVista('ver', ['modelo' => $modelo,
-            'tiposIdentificaciones' => CHtml::modelolista(TipoIdentificacion::modelo()->listar(), "id_tipo_documento", "nombre"),
         ]);
     }
 

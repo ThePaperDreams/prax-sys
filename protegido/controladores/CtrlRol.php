@@ -58,6 +58,17 @@ class CtrlRol extends CControlador {
             Sis::fin();
         }
     }
+    
+    public function accionCambiarEstado($pk) {
+        $modelo = $this->cargarModelo($pk);
+        $modelo->estado = !$modelo->estado;
+        if ($modelo->guardar()) {
+            $this->alertar('success', 'Cambio exitoso');
+        } else {
+            # lógica para error al borrar
+        }
+        $this->redireccionar('inicio');
+    }
 
     /**
      * Esta función permite editar un registro existente

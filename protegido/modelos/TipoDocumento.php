@@ -84,7 +84,15 @@ class TipoDocumento extends CModelo {
     public function porPk($pk) {
         return parent::porPk($pk);
     }
-
+    
+    public function getNombrePadre(){
+        if($this->TDocumento == null){
+            return null;
+        } else {            
+            return $this->TDocumento->nombre;
+        }
+    }
+    
     /**
      * Esta función permite obtener el primer registro
      * @param array $criterio

@@ -109,19 +109,18 @@ class Documento extends CModelo {
         return $this->titulo;
     }
     
-    public function getDocumento($id, $nombre, $clase) {        
-        $icono = CBoot::fa("file-text-o");
-        $url = Sis::UrlBase() . 'publico/' . strtolower($clase)  . 's/'.$id.'/'.$nombre;
-        return CHtml::link($icono . ' ' . $nombre , $url, ['download' => $nombre]);
+    // Usado en Acudientes y Deportistas
+    public function getDocumento($id, $ruta, $clase) {        
+        $icono = CBoot::fa("cloud-download");
+        $url = Sis::UrlBase() . 'publico/' . strtolower($clase)  . 's/'.$id.'/'.$ruta;
+        //$url = Sis::UrlBase() . $ruta;
+        return CHtml::link($icono . ' ' . $this->titulo, $url, ['target' => '_blank', 'download' => $ruta]);
     }
     
+    // Usado en Documentos
     public function getDocumentos(){
-        if($this->url_comprobante !== "" && $this->url_comprobante !== null){
-            $icono = CBoot::fa("file-text-o");
-            $url = Sis::UrlBase() . 'publico/documentos/comprobantes/matriculas/' . $this->url_comprobante;
-            return CHtml::link('Descargar ' . $icono, $url, ['target' => '_blank', 'download' => $this->url_comprobante]);
-        } else {
-            return CHtml::e("span", 'Ninguno', ['class' => 'label label-default']);
-        }
+        $icono = CBoot::fa("cloud-download");
+        $url = Sis::UrlBase() . $this->url;
+        return CHtml::link($icono . " $this->titulo", $url, ['target' => '_blank', 'download' => $this->url]);
     }
 }

@@ -8,7 +8,7 @@ $formulario->abrir();
 <p>Los campos con <span class="text-danger">*</span>  son requeridos</p>
 <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active"><a href="#formulario" aria-controls="formulario" role="tab" data-toggle="tab">Deportista</a></li>
-    <li role="presentation"><a href="#acudientes" aria-controls="acudientes" role="tab" data-toggle="tab">Acudientes</a></li>
+    <li role="presentation"><a href="#acus" aria-controls="acus" role="tab" data-toggle="tab">Acudientes</a></li>
     <li role="presentation"><a href="#documentos" aria-controls="documentos" role="tab" data-toggle="tab">Documentos</a></li>
 </ul>
 <div class="tab-content">
@@ -50,10 +50,10 @@ $formulario->abrir();
                 <?php echo $formulario->campoTexto($modelo, 'direccion', ['label' => true, 'group' => true]) ?>
             </div>
             <div class="col-sm-6">
-                    <?php echo $formulario->campoTexto($modelo, 'fecha_nacimiento', ['label' => true, 'group' => true, 'class' => 'campo-fecha']) ?>
+                <?php echo $formulario->campoTexto($modelo, 'fecha_nacimiento', ['label' => true, 'group' => true, 'class' => 'campo-fecha']) ?>
             </div>
         </div>
-        <div class="row">
+        <div class="row">            
             <div class="col-sm-6">
                 <?php echo $formulario->campoArchivo($modelo, 'foto', ['label' => true, 'group' => true]) ?>
             </div>
@@ -61,17 +61,9 @@ $formulario->abrir();
                 <?php echo $formulario->lista($modelo, 'estado_id', $estados, ['label' => true, 'group' => true]) ?>
             </div>
         </div>        
-        <div class="row">
-            <div class="col-sm-offset-6 col-sm-3">
-                <?php echo CHtml::link(CBoot::fa('undo') . ' Cancelar', ['deportista/inicio'], ['class' => 'btn btn-primary btn-block']); ?>
-            </div>
-            <div class="col-sm-3">
-                <?php echo CBoot::boton(CBoot::fa('save') . ' ' . ($modelo->nuevo ? 'Guardar' : 'Actualizar'), 'success', ['class' => 'btn-block', 'id' => 'btn-send']); ?>
-            </div>
-        </div>
     </div>
     
-    <div role="tabpanel" class="tab-pane" id="acudientes">
+    <div role="tabpanel" class="tab-pane" id="acus">
         <div class="row">
             <div class="col-sm-4">
                 <?php echo $formulario->lista($modelo2, 'id_acudiente', $acudientes, ['label' => true, 'group' => true, 'defecto' => 'Acudiente']) ?>
@@ -163,9 +155,17 @@ $formulario->abrir();
             </div>
     <?php endif; ?>
         </div>
-            </div>            
+    </div>            
+</div>
+    <div class="row">
+        <div class="col-sm-offset-6 col-sm-3">
+            <?php echo CHtml::link(CBoot::fa('undo') . ' Cancelar', ['deportista/inicio'], ['class' => 'btn btn-primary btn-block']); ?>
+        </div>
+        <div class="col-sm-3">
+            <?php echo CBoot::boton(CBoot::fa('save') . ' ' . ($modelo->nuevo ? 'Guardar' : 'Actualizar'), 'success', ['class' => 'btn-block', 'id' => 'btn-send']); ?>
+        </div>
     </div>
-    </div>    
+</div>    
 <?php $formulario->cerrar(); ?>
 <script>
     $(function () {
@@ -175,9 +175,9 @@ $formulario->abrir();
             var r = encontrarAcu(m.html());
             var i = m.html() !== "Acudiente";
             if (i && r) {
-                $("#lis-acu").append("<li class='list-group-item' data='" + m.val() + "'><button class='btn btn-primary' onclick='eliminar(this)' type='button'><i class='fa fa-trash'></i> " + m.html() + "</button></li>");
+                $("#lis-acu").append("<li class='list-group-item' data='" + m.val() + "'><button class='btn btn-block btn-primary' onclick='eliminar(this)' type='button'><i class='fa fa-trash'></i> " + m.html() + "</button></li>");
                 m.attr("disabled", "true");
-                $("#form-deportistas").append("<input hidden='' name='Acudientes[]' id='" + m.val() + "' value='" + m.val() + "'>");
+                $("#form-deportistas").append("<input hidden='' name='Acudient[]' id='" + m.val() + "' value='" + m.val() + "'>");
             } else if (i) {
                 alert("El deportista actualmente tiene asociado este acudiente");
             }
@@ -327,12 +327,13 @@ $formulario->abrir();
             delay: 8000,
             soundPath: '<?= Sis::UrlRecursos() ?>librerias/lobibox/sounds/',
         });
-    }
+    }    
     
     function validarAcudiente(){
         var resp = true;
         var x = $('#lis-acu li').length;
-        if (x < 1) {
+        var y = $('#tabla-acudientes tr').length;
+        if (x < 1 && y === 0) {
             resp = false;
             lobiAlert('error', 'Mínimo un acudiente');   
         }
@@ -354,6 +355,7 @@ $formulario->abrir();
         
     function validarFecha(fecha) {
         var anios = new Date(new Date - new Date(fecha.val())).getFullYear()-1970;       
+        console.log(anios);
         if (anios < 5 || anios > 17) {
             mostrarAlert('error', 'Seleccione una fecha valida');
             $('#btn-send').attr("disabled", "disabled");

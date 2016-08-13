@@ -15,7 +15,8 @@
 <?= $this->complemento('!siscoms.bootstrap3.CBGrid', [
     'modelo' => 'TipoDocumento',
     # id_tipo, nombre, descripcion, padre_id
-    'columnas' => ['nombre','padre_id' => 'TDocumento->nombre'],
+//    'columnas' => 'nombre,padre_id',
+    'columnas' => ['nombre','padre_id' => 'NombrePadre'],
     /*'columnas' => [
         'nombre',
         'padre_id' => 'TDocumento->nombre'

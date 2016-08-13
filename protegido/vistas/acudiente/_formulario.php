@@ -52,15 +52,7 @@ $formulario->abrir();
             <div class="col-sm-6">
                 <?php echo $formulario->campoTexto($modelo, 'email', ['label' => true, 'group' => true]) ?>
             </div>
-        </div>            
-        <div class="row">
-            <div class="col-sm-offset-6 col-sm-3">
-                <?php echo CHtml::link(CBoot::fa('undo') . ' Cancelar', ['acudiente/inicio'], [ 'class' => 'btn btn-primary btn-block']); ?>
-            </div>
-            <div class="col-sm-3">
-                <?php echo CBoot::boton(CBoot::fa('save') . ' ' . ($modelo->nuevo ? 'Guardar' : 'Actualizar'), 'success', ['id' => 'save-btn', 'class' => 'btn-block']); ?>
-            </div>
-        </div>            
+        </div>                    
     </div>
         
     <div role="tabpanel" class="tab-pane" id="documentos">
@@ -107,8 +99,16 @@ $formulario->abrir();
                         </div>
                     </div>    
         <?php endif ?>
-                </div>
             </div>
+    </div>
+</div>
+    <div class="row">
+        <div class="col-sm-offset-6 col-sm-3">
+            <?php echo CHtml::link(CBoot::fa('undo') . ' Cancelar', ['acudiente/inicio'], [ 'class' => 'btn btn-primary btn-block']); ?>
+        </div>
+        <div class="col-sm-3">
+            <?php echo CBoot::boton(CBoot::fa('save') . ' ' . ($modelo->nuevo ? 'Guardar' : 'Actualizar'), 'success', ['id' => 'save-btn', 'class' => 'btn-block']); ?>
+        </div>
     </div>
 </div>
 <?php $formulario->cerrar(); ?>
