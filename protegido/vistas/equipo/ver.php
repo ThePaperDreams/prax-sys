@@ -18,8 +18,12 @@
         <div class="panel-heading text-center">
             Ver detalles
         </div>
-        <table class="table table-bordered table-striped table-hover">
+        <table class="table table-bordered">
             <tbody>
+                <tr>
+                    <th><?php echo $modelo->obtenerEtiqueta('nombre') ?></th>
+                    <td><?php echo $modelo->nombre; ?></td>
+                </tr>
                 <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('cupo_maximo') ?></th>
                     <td><?php echo $modelo->cupo_maximo; ?></td>
@@ -39,6 +43,10 @@
                 <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('entrenador_id') ?></th>
                     <td><?php echo $modelo->Entrenador->nombre_usuario ?></td>
+                </tr>
+                <tr>
+                    <th><?php echo $modelo->obtenerEtiqueta('torneo_id') ?></th>
+                    <td><?php echo $modelo->mTorneo->nombre ?></td>
                 </tr>
                                 
             </tbody>

@@ -32,6 +32,7 @@ final class CBoot {
     public static function boton($nombre = '', $tipo = 'default', $opciones = []) {
         $clase = "btn btn-$tipo";
         $opciones['class'] = isset($opciones['class'])? "$clase " . $opciones['class'] : $clase;
+        if(!isset($opciones['id'])){ $opciones['id'] = 'btn-send'; }
         if(isset($opciones['group']) && $opciones['group'] == true){
             unset($opciones['group']);
             return CHtml::e('div',CHtml::boton($nombre, $opciones), ['class' => 'form-group']);
@@ -270,7 +271,7 @@ final class CBoot {
      * @param array $opciones
      * @return String
      */
-    public function selectM($seleccion, $modelo, $valor, $texto, $opciones = []){
+    public static function selectM($seleccion, $modelo, $valor, $texto, $opciones = []){
         $modelos = call_user_func([$modelo, "modelo"])->listar();
         $items = CHtml::modeloLista($modelos, $valor, $texto);
         return self::select($seleccion, $items, $opciones);

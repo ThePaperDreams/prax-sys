@@ -16,8 +16,8 @@ $formulario->abrir();
         </div>
         <div role="tabpanel" class="tab-pane" id="cargar">
             <div class="row" id="tab-imagenes">
-                <?php echo $formulario->campoTexto($modelo, 'fecha_publicacion', ['label' => true, 'group' => true, 'id' => 'datepicker']) ?>
-                <?php echo $formulario->campoTexto($modelo, 'fecha_disponibilidad', ['label' => true, 'group' => true, 'id' => 'datepicker']) ?>
+                <?php echo $formulario->campoTexto($modelo, 'fecha_publicacion', ['label' => true, 'group' => true, 'class' => 'campo-fecha']) ?>
+                <?php echo $formulario->campoTexto($modelo, 'fecha_disponibilidad', ['label' => true, 'group' => true, 'class' => 'campo-fecha']) ?>
                 <div class="form-group">
                     <label>Tipos de Eventos</label>
                     <div class="input-group">  
@@ -49,17 +49,23 @@ $formulario->abrir();
     </div>    
 </div>
 <script>
-  $(function() {
-    $( "#datepicker" ).datepicker({
-        dateFormat: 'yy-mm-dd',
-    });
-    $( "#datepicker2" ).datepicker({
-        dateFormat: 'yy-mm-dd',
-    });    
-    $(document).ready(function() {
+$(document).ready(function() {
     $('.summernote').summernote();
+    $(".campo-fecha").change(function(){
+            validarFecha($(this));
+        });
     });
- });
+ 
+ function validarFecha(fecha) {
+        var currDate = new Date();
+        var date = Date.parse(fecha.val());
+        if (date >= currDate) {
+            $('#btn-send').removeAttr("disabled");
+        } else {
+            alert("Por favor seleccione una fecha mayor a la de hoy");
+            $('#btn-send').attr("disabled", "disabled");
+        }
+    }
 </script>
 
 <?php $formulario->cerrar(); ?>

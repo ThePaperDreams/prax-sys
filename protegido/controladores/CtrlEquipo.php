@@ -13,8 +13,13 @@ class CtrlEquipo extends CControlador{
     public function accionInicio(){
         $modelos = Equipo::modelo()->listar();        
         $this->mostrarVista('inicio', ['modelos' => $modelos,
-        'deportista' => CHtml::modelolista(Deportista::modelo()->listar(), "id_deportista", "nombre1"),
-        'Entre' => CHtml::modelolista(Usuario::modelo()->listar(), "id_usuario", "nombre_usuario")    
+        'deportista' => CHtml::modelolista(Deportista::modelo()->listar()
+        /*'deportista' => CHtml::modelolista(Deportista::modelo()->listar([
+            'where' => '',
+        ])*/        
+        , "id_deportista", "nombre1"),
+        'Entre' => CHtml::modelolista(Usuario::modelo()->listar(), "id_usuario", "nombre_usuario"),
+        'mTorneo' => CHtml::modelolista(Torneo::modelo()->listar(), "id_torneo", "nombre"),      
         ]);    
     }
     
@@ -42,7 +47,8 @@ class CtrlEquipo extends CControlador{
         $this->mostrarVista('crear', ['modelo' => $modelo,
             'deportista' => CHtml::modelolista(Deportista::modelo()->listar(), "id_deportista", "nombre1"),
             'deportistas' => $modelo->getDeportistas(),
-            'Entre' => CHtml::modelolista(Usuario::modelo()->listar(), "id_usuario", "nombre_usuario")    
+            'Entre' => CHtml::modelolista(Usuario::modelo()->listar(), "id_usuario", "nombre_usuario"),
+            'mTorneo' => CHtml::modelolista(Torneo::modelo()->listar(), "id_torneo", "nombre"),  
             ]);
     }
     
@@ -88,7 +94,8 @@ class CtrlEquipo extends CControlador{
         $this->mostrarVista('editar', ['modelo' => $modelo,
             'deportista' => CHtml::modelolista(Deportista::modelo()->listar(), "id_deportista", "nombre1"),
             'deportistas' => $modelo->getDeportistas(),
-            'Entre' => CHtml::modelolista(Usuario::modelo()->listar(), "id_usuario", "nombre_usuario")    
+            'Entre' => CHtml::modelolista(Usuario::modelo()->listar(), "id_usuario", "nombre_usuario"),
+            'mTorneo' => CHtml::modelolista(Torneo::modelo()->listar(), "id_torneo", "nombre"),  
             ]);
     }
     
@@ -99,8 +106,10 @@ class CtrlEquipo extends CControlador{
     public function accionVer($pk){
         $modelo = $this->cargarModelo($pk);
         $this->mostrarVista('ver', ['modelo' => $modelo,
-        'deportista' => $modelo->MDeportistas,
-        'Entre' => CHtml::modelolista(Usuario::modelo()->listar(), "id_usuario", "nombre_usuario")       
+        /*'deportista' => $modelo->MDeportistas,*/
+        'deportistas' => $modelo->getDeportistas(),    
+        'Entre' => CHtml::modelolista(Usuario::modelo()->listar(), "id_usuario", "nombre_usuario"),
+        'mTorneo' => CHtml::modelolista(Torneo::modelo()->listar(), "id_torneo", "nombre"),    
         ]);
         
     }

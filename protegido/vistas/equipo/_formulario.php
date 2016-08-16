@@ -3,47 +3,62 @@ $formulario = new CBForm(['id' => 'form-equipos']);
 $formulario->abrir();
 ?>
 <div class="tile p-15">
-<?php echo $formulario->campoNumber($modelo, 'cupo_maximo', ['label' => true, 'group' => true, 'autofocus' => true]) ?>
-<?php echo $formulario->campoNumber($modelo, 'cupo_minimo', ['label' => true, 'group' => true]) ?>
-<?php echo $formulario->campoTexto($modelo, 'estado', ['label' => true, 'group' => true]) ?>
-<?php echo $formulario->campoTexto($modelo, 'posicion', ['label' => true, 'group' => true]) ?>
-<?php echo $formulario->lista($modelo, 'entrenador_id', $Entre, ['label' => true, 'defecto' => 'Seleccione un entrenador']) ?>
-<div class="col-sm-8">
-    <?php $jugadores = CHtml::modeloLista(Deportista::modelo()->listar(), "id_deportista", "nombre1"); ?>
-    <?= CBoot::select('', $jugadores, ['defecto' => 'Seleccione un jugador', 'id' => 'lista-deportistas']) ?>
-</div>    
-    <div class="col-sm-4">
-    <?= CBoot::boton( CBoot::fa('plus-circle') . " Agregar ", 'default', ['class' => 'btn-block', 'id' => 'btn-agregar']) ?>
-    </div>
-    <table class="table table-bordered table-condensed">
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>&nbsp;</th>
-            </tr>
-        </thead>
-        <tbody id="tabla-deportistas">
-            <?php if(!$modelo->nuevo): ?>
-                <?php foreach($deportistas AS $d): ?>
-            <tr data-id="<?= $d->id_deportista ?>" data-obj="<?= $d->id_deportista ?>">
-                <td><?= $d->nombre1 ?></td>
-                <td class="col-sm-1 text-center text-danger-icon"><i class="fa fa-ban" onclick="quitar($(this), true);" ></i></td>
-            </tr>
-                <?php endforeach ?>
-                <?php endif ?>
-            </tbody>
-        </table>
-    <div id="deportistas-eliminados"></div>
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#listar" aria-controls="listar" role="tab" data-toggle="tab">Información del Equipo</a></li>
+        <li role="presentation"><a href="#cargar" aria-controls="cargar" role="tab" data-toggle="tab">Plantilla</a></li>
+    </ul>
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="listar">
+            <?php echo $formulario->campoTexto($modelo, 'nombre', ['label' => true, 'group' => true, 'autofocus' => true]) ?>
+            <?php echo $formulario->campoNumber($modelo, 'cupo_maximo', ['label' => true, 'group' => true]) ?>
+            <?php echo $formulario->campoNumber($modelo, 'cupo_minimo', ['label' => true, 'group' => true]) ?>
+            <?php echo $formulario->campoTexto($modelo, 'estado', ['label' => true, 'group' => true]) ?>         
+            <?php echo $formulario->campoTexto($modelo, 'posicion', ['label' => true, 'group' => true]) ?> 
+            <?php echo $formulario->lista($modelo, 'torneo_id', $mTorneo, ['label'=> true,'defecto' => 'Seleccione el torneo en el participa el equipo']) ?>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="cargar">
+            <div class="row" id="tab-imagenes">
+                <?php echo $formulario->lista($modelo, 'entrenador_id', $Entre, ['label' => true, 'defecto' => 'Seleccione un entrenador']) ?>
+                <br>
+                <div class="col-sm-8">
+                    <?php $jugadores = CHtml::modeloLista(Deportista::modelo()->listar(), "id_deportista", "nombre1"); ?>
+                    <?= CBoot::select('', $jugadores, ['defecto' => 'Seleccione un jugador', 'id' => 'lista-deportistas']) ?>
+                </div>    
+                    <div class="col-sm-4">
+                    <?= CBoot::boton( CBoot::fa('plus-circle') . " Agregar ", 'default', ['class' => 'btn-block', 'id' => 'btn-agregar']) ?>
+                    </div>
+                    <table class="table table-bordered table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-deportistas">
+                            <?php if(!$modelo->nuevo): ?>
+                                <?php foreach($deportistas AS $d): ?>
+                            <tr data-id="<?= $d->id_deportista ?>" data-obj="<?= $d->id_deportista ?>">
+                                <td><?= $d->nombre1 ?></td>
+                                <td class="col-sm-1 text-center text-danger-icon"><i class="fa fa-ban" onclick="quitar($(this), true);" ></i></td>
+                            </tr>
+                                <?php endforeach ?>
+                                <?php endif ?>
+                            </tbody>
+                        </table>
+                    <div id="deportistas-eliminados"></div>
 
-    <div class="row">
-        <div class="col-sm-offset-6 col-sm-3">
-            <?php echo CHtml::link(CBoot::fa('undo').' Cancelar', ['equipo/inicio'], ['class' => 'btn btn-primary btn-block']); ?>
-        </div>
-        <div class="col-sm-3">
-            <?php echo CBoot::boton(CBoot::fa('save') .' '. ($modelo->nuevo? 'Guardar' : 'Actualizar'), 'success', ['class' => 'btn-block']); ?>
+                    <div class="row">
+                        <div class="col-sm-offset-6 col-sm-3">
+                            <?php echo CHtml::link(CBoot::fa('undo').' Cancelar', ['equipo/inicio'], ['class' => 'btn btn-primary btn-block']); ?>
+                        </div>
+                        <div class="col-sm-3">
+                            <?php echo CBoot::boton(CBoot::fa('save') .' '. ($modelo->nuevo? 'Guardar' : 'Actualizar'), 'success', ['class' => 'btn-block']); ?>
+                        </div>
+                    </div>
+                </div>
         </div>
     </div>
-</div>
+</div>      
 
 <?php $formulario->cerrar(); ?>
 

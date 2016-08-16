@@ -25,6 +25,10 @@
         'tarifaf' => ['valor' => 'tarifaf', 'opciones' => ['class' => 'text-center']],
         'edad' => ['valor' => 'edad', 'opciones' => ['class' => 'text-center']],
     ],
-    'opciones' => true,
+    'opciones' => [
+        ['i' => 'eye', 'url' => 'categoria/ver&{id:pk}', 'title' => 'Ver'],
+        ['i' => 'pencil', 'url' => 'categoria/editar&{id:pk}', 'title' => 'Actualizar'],
+        ['i' => 'remove', 'url' => 'categoria/cambiarEstado&{id:pk}', 'title' => 'Cambiar estado'],
+    ],
     'paginacion' => 10,
 ]) ?>

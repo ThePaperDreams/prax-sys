@@ -11,8 +11,10 @@ class CtrlTorneo extends CControlador{
      * Esta función muestra el inicio y una tabla para listar los datos
      */
     public function accionInicio(){
-        $modelos = Torneo::modelo()->listar();        
-        $this->mostrarVista('inicio', ['modelos' => $modelos]);
+        $modelos = Torneo::modelo()->listar();
+        $this->mostrarVista('inicio', ['modelos' => $modelos,
+            
+            ]);
     }
     
     /**
@@ -22,12 +24,15 @@ class CtrlTorneo extends CControlador{
         $modelo = new Torneo();
         if(isset($this->_p['Torneos'])){
             $modelo->atributos = $this->_p['Torneos'];
+            
             if($modelo->guardar()){
                 # lógica para guardado exitoso
+                $this->asociarFoto(); 
                 $this->redireccionar('inicio');
             }
         }
-        $this->mostrarVista('crear', ['modelo' => $modelo]);
+        $this->mostrarVista('crear', ['modelo' => $modelo,
+            ]);
     }
     
     /**
@@ -40,10 +45,21 @@ class CtrlTorneo extends CControlador{
             $modelo->atributos = $this->_p['Torneos'];
             if($modelo->guardar()){
                 # lógica para guardado exitoso
+                $this->asociarFoto(); 
                 $this->redireccionar('inicio');
             }
         }
-        $this->mostrarVista('editar', ['modelo' => $modelo]);
+        $this->mostrarVista('editar', ['modelo' => $modelo,
+            ]);
+    }
+    
+    public function accionGenerarReporte() {
+        $torneos = Torneo::modelo()->listar();
+        
+        $pdf = Sis::apl()->mpdf->crear();
+        $texto = $this->vistaP('pdfTorneos', ['torneos' => $torneos]);
+        $pdf->writeHtml($texto);
+        $pdf->Output("Torneos.pdf", 'I');
     }
     
     /**
@@ -52,7 +68,8 @@ class CtrlTorneo extends CControlador{
      */
     public function accionVer($pk){
         $modelo = $this->cargarModelo($pk);
-        $this->mostrarVista('ver', ['modelo' => $modelo]);
+        $this->mostrarVista('ver', ['modelo' => $modelo,
+        ]);
     }
     
     /**
@@ -67,6 +84,22 @@ class CtrlTorneo extends CControlador{
             # lógica para error al borrar
         }
         $this->redireccionar('inicio');
+    }
+    
+    public function asociarFoto(){
+        if ($_FILES['Torneos']['error'] !== UPLOAD_ERR_OK) {
+            $files = CArchivoCargado::instanciarModelo('Torneos', 'tabla_posiciones');
+            $rutaDestino = Sis::resolverRuta(Sis::crearCarpeta("!publico.imagenes.torneos.fotos"));
+            $rutaThumbs = Sis::resolverRuta(Sis::crearCarpeta("!publico.imagenes.torneos.fotos.thumbs"));
+            $nom = $files->getNombre();
+            if($files->guardar($rutaDestino, $nom)){
+                $files->thumbnail($rutaThumbs, [
+                    'tamanio' => '400',
+                    'tipo' => strtolower($files->getExtension()),
+                ]);
+            }
+        }
+        
     }
     
     /**

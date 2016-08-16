@@ -13,6 +13,17 @@ abstract class CControlador extends CComponenteAplicacion{
     const CONTENIDO = 'Content-Type';
     const JSON = 'application/json';
     /**
+     * Esta variable almacena las secciones creadas en la aplicación
+     * @var array 
+     */
+    protected $secciones = [];
+    /**
+     * Esta variable almacena el nombre de la sección abierta
+     * @var string
+     */
+    protected $seccionActiva = "";
+    
+    /**
      * Instancia de la ación llamada para el controlador
      * @var CAccion 
      */
@@ -332,4 +343,34 @@ abstract class CControlador extends CComponenteAplicacion{
         $this->cabecera(self::CONTENIDO, self::JSON);
         echo json_encode($json);
     }
+    
+    /**
+     * Esta función permite imprimir una seccion.
+     * Las secciones son fragmentos de código que pueden ser impresos en 
+     * determinadas partes
+     * @param string $nombreSeccion
+     */
+    protected function seccion($nombreSeccion){
+        if(key_exists($nombreSeccion, $this->secciones)){
+            echo $this->secciones[$nombreSeccion];
+        }
+    }
+    
+    /**
+     * Esta función declara la apertura de una sección
+     * @param string $nombreSeccion
+     */
+    protected function abrirSeccion($nombreSeccion){
+        $this->seccionActiva = $nombreSeccion;
+        ob_start();
+    }
+    
+    /**
+     * Esta función declara el cierre de una sección.
+     */
+    protected function cerrarSeccion(){
+        $contenido = ob_get_clean();
+        $this->secciones[$this->seccionActiva] = $contenido;
+        $this->seccionActiva = "";
+    }    
 }

@@ -37,13 +37,11 @@
 		'cupo_maximo', 
 		'cupo_minimo', 
 		'edad_maxima', 
-		'edad_minima', 
 		'fecha_inicio', 
 		'fecha_fin', 
 		'nombre', 
 		'observaciones', 
 		'tabla_posiciones', 
-		'equipo_id', 
         ];
     }
     
@@ -56,7 +54,7 @@
         return [
             # el formato es simple: 
             # tipo de relación | modelo con que se relaciona | campo clave foranea
-            'Equipo' => [self::CONTENGAN_A, 'EquipoTorneo', 'equipo_id'],
+            
                     ];
     }
     
@@ -70,20 +68,18 @@
 		'cupo_maximo' => 'Cupo Máximo', 
 		'cupo_minimo' => 'Cupo Mínimo', 
 		'edad_maxima' => 'Edad Máxima', 
-		'edad_minima' => 'Edad Mínima', 
 		'fecha_inicio' => 'Fecha de Inicio', 
 		'fecha_fin' => 'Fecha de Fin', 
 		'nombre' => 'Nombre', 
 		'observaciones' => 'Observaciones', 
-		'tabla_posiciones' => 'Tabla de Posiciones', 
-		'equipo_id' => 'Equipo', 
+		'tabla_posiciones' => 'Tabla de Posiciones',  
         ];
     }
     
     public function filtros() {
         return [
             'requeridos' => 'nombre,cupo_minimo,cupo_maximo,edad_maxima,fecha_inicio',
-            'seguros' => 'nombre,cupo_minimo,cupo_maximo,edad_maxima,fecha_inicio',
+            'seguros' => '*',
         ];
     }
     
@@ -114,6 +110,12 @@
     public function primer($criterio = array()) {
         return parent::primer($criterio);
     } 
+    
+    public function getTabla() {
+        $icono = CBoot::fa("download");
+        $url = Sis::UrlBase().'publico/imagenes/torneos/fotos/'.$this->tabla_posiciones;
+        return CHtml::link($icono.' '.$this->tabla_posiciones,$url,['download'=>$this->tabla_posiciones]);
+    }
 
     /**
      * Esta función retorna una instancia del modelo tbl_torneos

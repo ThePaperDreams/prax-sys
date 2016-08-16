@@ -48,6 +48,9 @@ return [
     ],   
     
     'extensiones' => [
-        
+        'mpdf' => [
+            'ruta' => '!ext.MPDF',
+            'clase' => 'MpdfExt',
+        ],
     ],
 ];

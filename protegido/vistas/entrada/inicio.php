@@ -25,8 +25,8 @@ $this->tituloPagina="Entrada de implementos";
         "estado"=>'EtiquetaEstado',
     ],
     'opciones' => [
-        ["i"=>"eye","url"=>"Entrada/ver&{id:pk}"],
-        ["i"=>"refresh","url"=>"Entrada/anular&{id:pk}", 'visible' => '$m->estado == 1']
+        ["i"=>"eye", 'title' => 'Ver',"url"=>"Entrada/ver&{id:pk}"],
+        ["i"=>"refresh", 'title' => 'Cambiar estado',"url"=>"Entrada/anular&{id:pk}", 'visible' => '$m->estado == 1']
     ],
     'paginacion' => 10,
 ]) ?>

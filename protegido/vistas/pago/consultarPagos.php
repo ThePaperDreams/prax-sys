@@ -13,8 +13,21 @@
     
 ?>
 
+
+<div class="row">
+    <div class="col-lg-6">
+        <a href="<?= Sis::crearUrl(['pago/generarReporte']) ?>" target="_blank">
+        <?php
+        $icon=  CBoot::fa('file-pdf-o');
+        echo CBoot::boton('Generar pdf '.$icon,'primary',['id'=>'generar_pdf']);
+        ?>
+        </a>
+        </div>
+</div>
+<div class="p-5"></div>
+
 <?= $this->complemento('!siscoms.bootstrap3.CBGrid', [
-    'modelo' => $pagos,
+    'modelo' => 'Pago',
     # id_plan_trabajo, descripcion, fecha_aplicacion, estado, categoria_id
     'columnas' => [
         'fecha',
@@ -25,8 +38,8 @@
         'matricula_id' => 'MatriculaPago->Deportista->nombreCompleto',
     ],
     'opciones' => [
-        ['i' => 'eye', 'url' => 'pago/ver&{id:pk}'],
-        ['i' => 'refresh', 'url' => 'pago/anular&{id:pk}', 'visible' => '$m->estado == 1', 'opciones' => ['class' => 'op-eliminar']],
+        ['i' => 'eye', 'title' => 'Ver','url' => 'pago/ver&{id:pk}'],
+        ['i' => 'refresh', 'title' => 'Cambiar estado','url' => 'pago/anular&{id:pk}', 'visible' => '$m->estado == 1', 'opciones' => ['class' => 'op-eliminar']],
     ],
     'paginacion' => 10,
 ]) ?>

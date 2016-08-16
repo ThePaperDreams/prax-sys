@@ -192,6 +192,9 @@ Sis::Recursos()->Js('comunes');
                 <?php $this->complemento('!siscoms.bootstrap3.CBBreadCrumbs', [
                     'migas' => $this->migas
                 ]) ?>
+                <div class="col-sm-12">                    
+                    <?= $this->seccion("antes-de-opciones") ?>
+                </div>
                 
                 <div class="col-sm-<?= count($this->opciones) > 0? '9' : '12' ?>">
                     <?= $this->contenido; ?>

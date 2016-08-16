@@ -91,6 +91,23 @@ class CtrlCategoria extends CControlador{
         $this->mostrarVista('ver', ['modelo' => $modelo]);
     }
     
+    public function accionCambiarEstado($pk){
+        $modelo = $this->cargarModelo($pk);
+        $modelo->estado = $modelo->estado == 1? 0 : 1;
+        if($modelo->guardar()){
+            Sis::Sesion()->flash("alerta", [
+                'msg' => 'Se cambió exitosametne el estado',
+                'tipo' => 'success',
+            ]);
+        } else {
+            Sis::Sesion()->flash("alerta", [
+                'msg' => 'Ocurrió un error al cambiar el estado',
+                'tipo' => 'Error',
+            ]);
+        }
+        $this->redireccionar('inicio');
+    }
+    
     /**
      * Esta función permite eliminar un registro existente
      * @param int $pk

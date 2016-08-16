@@ -1,4 +1,6 @@
 <?php
+
+
 $this->migas = [
     'Home' => ['principal/inicio'],
     'Listar Torneos' => ['Torneo/inicio'],
@@ -13,12 +15,14 @@ $this->opciones = [
     ]
 ];
 ?>
+
+
 <div class="col-sm-8">
     <div class="panel panel-primary">
         <div class="panel-heading text-center">
             Ver detalles
         </div>
-        <table class="table table-bordered table-striped table-hover">
+        <table class="table table-bordered">
             <tbody>
                 <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('nombre') ?></th>
@@ -37,10 +41,6 @@ $this->opciones = [
                     <td><?php echo $modelo->edad_maxima; ?></td>
                 </tr>
                 <tr>
-                    <th><?php echo $modelo->obtenerEtiqueta('edad_minima') ?></th>
-                    <td><?php echo $modelo->edad_minima; ?></td>
-                </tr>
-                <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('fecha_inicio') ?></th>
                     <td><?php echo $modelo->fecha_inicio; ?></td>
                 </tr>
@@ -54,11 +54,7 @@ $this->opciones = [
                 </tr>
                 <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('tabla_posiciones') ?></th>
-                    <td><?php echo $modelo->tabla_posiciones; ?></td>
-                </tr>
-                <tr>
-                    <th><?php echo $modelo->obtenerEtiqueta('equipo_id') ?></th>
-                    <td><?php echo $modelo->equipo_id; ?></td>
+                    <td><?php echo $modelo->getTabla(); ?></td>
                 </tr>
             </tbody>
         </table>

@@ -31,6 +31,7 @@
     public function atributos() {
         return [
 		'id_equipo' => ['pk'] , 
+                'nombre',
 		'cupo_maximo', 
 		'cupo_minimo', 
 		'estado' => ['def' => '1'] , 
@@ -48,8 +49,9 @@
             # el formato es simple: 
             # tipo de relación | modelo con que se relaciona | campo clave foranea
             'Deportista' => [self::PERTENECE_A, 'Deportista', 'deportista_id'],
-            'Entrenador' => [self::PERTENECE_A, 'Usuario', 'usuario_id'],
+            'Entrenador' => [self::PERTENECE_A, 'Usuario', 'entrenador_id'],
             'DllDeportistas' => [self::CONTENGAN_A, 'DeportistaEquipo', 'equipo_id'],
+            'mTorneo' => [self::PERTENECE_A, 'Torneo', 'torneo_id'],
         ];
     }
     
@@ -71,17 +73,19 @@
     public function etiquetasAtributos() {
         return [
 		'id_equipo' => 'Id Equipo', 
+                'nombre' => 'Nombre',
 		'cupo_maximo' => 'Cupo Máximo', 
 		'cupo_minimo' => 'Cupo Mínimo', 
 		'estado' => 'Estado', 
 		'posicion' => 'Posición', 
 		'entrenador_id' => 'Entrenador', 
-		'deportista_id' => 'Deportistas', 
+		'deportista_id' => 'Deportistas',
+                'torneo_id' => 'Torneo',
         ];
     }
     public function filtros() {
         return [
-            'requeridos' => 'cupo_maximo, cupo_minimo, entrenador_id',
+            'requeridos' => 'nombre,cupo_maximo, cupo_minimo, entrenador_id',
             'seguros' => '*',
         ];
     }
@@ -98,14 +102,14 @@
         return count($this->Deportista);
     }
     
-    public function getMDeportistas(){
+    /*public function getMDeportistas(){
         $deportista = $this->Deportista;
         $jugadores = [];
         foreach ($deportista AS $d){
             $jugadores[] = $d->jugador;
         }
         return $jugadores;
-    }
+    }*/
     
     /**
      * Esta función permite listar todos los registros

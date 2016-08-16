@@ -27,7 +27,6 @@ function aDate(elementos, data){
     if(data === null || data === undefined){
         data = { dateFormat : 'yy-mm-dd' };
     }
-//    elementos.datepicker();
     $.each(elementos, function(k, v){
         $(v).datepicker({
             language: 'es',
@@ -37,7 +36,6 @@ function aDate(elementos, data){
             }
         });
     });
-//    elementos.datepicker(data);
 }
 
 function aSelect2(elementos, data){

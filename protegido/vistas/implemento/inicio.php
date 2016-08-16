@@ -25,9 +25,9 @@ $this->tituloPagina="Implementos";
         "maximo_unidades"
     ],
     'opciones' => [
-        ['i' => 'eye', 'url' => 'Implemento/ver&{id:pk}'],
-        ['i' => 'pencil', 'url' => 'Implemento/editar&{id:pk}', 'visible' => '$m->getEnPrestamo() == false'],
-        ['i' => 'refresh', 'url' => 'Implemento/anular&{id:pk}', 'visible' => '$m->getEnPrestamo() == false'],
+        ['i' => 'eye', 'title' => 'Ver','url' => 'Implemento/ver&{id:pk}'],
+        ['i' => 'pencil', 'title' => 'Editar', 'url' => 'Implemento/editar&{id:pk}', 'visible' => '$m->getEnPrestamo() == false'],
+        ['i' => 'refresh', 'title' => 'Cambiar estado','url' => 'Implemento/anular&{id:pk}', 'visible' => '$m->getEnPrestamo() == false'],
     ],
     'paginacion' => 10,
 ]) ?>
