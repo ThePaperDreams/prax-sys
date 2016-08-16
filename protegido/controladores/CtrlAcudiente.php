@@ -169,7 +169,7 @@ class CtrlAcudiente extends CControlador {
     public function accionCambiarEstado($pk) {
         $modelo = $this->cargarModelo($pk);
         $da = DeportistaAcudiente::modelo()->listar([
-            'where' => "id_acudiente=$pk",
+            'where' => "acudiente_id=$pk",
         ]);
         if (count($da) > 0) {
             $this->alertar('error', 'No se puede Inactivar');
