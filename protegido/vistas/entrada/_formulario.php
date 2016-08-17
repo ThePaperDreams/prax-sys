@@ -56,9 +56,10 @@ $formulario->abrir();
         
         $("#form-entradas").submit(function(){
             if($("[data-implemento]").length === 0){
-                lobiAlert("error", "Añada por lo menos un implemento");
-                return false;
-            }
+                lobiAlert("error", "Añada por lo menos un implemento");   
+            }else if(validarEnt()){   
+                } 
+            return false;
         });
     });
 
@@ -88,6 +89,16 @@ $formulario->abrir();
     function Quitar(idFila) {
         var fila = $("#remover-" +idFila);
         fila.remove();
+    }
+    
+    function validarEnt(){
+        var cant = $("#cant").val();
+        if(parseInt(cant)=== 0){
+            mostrarAlert('error','Unidades maximas no pueden ser cero');
+            return false;
+        }else{
+            return true;
+        }
     }
 </script>
 <?php $formulario->cerrar(); ?>

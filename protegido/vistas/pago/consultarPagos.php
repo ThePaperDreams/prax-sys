@@ -26,6 +26,7 @@
     </div>
 </div>
 <div class="p-5"></div>
+
 <?php $this->cerrarSeccion() ?>
 
 <?= $this->complemento('!siscoms.bootstrap3.CBGrid', [
