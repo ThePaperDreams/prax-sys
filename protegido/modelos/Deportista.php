@@ -116,6 +116,22 @@ class Deportista extends CModelo{
     }
     
     /**
+     * 
+     * @return FichaTecnica
+     */
+    public function getFicha(){
+        $ficha = FichaTecnica::modelo()->primer([
+            'where' => 'deportista_id',
+        ]);
+        if($ficha == null){ 
+            $ficha = new FichaTecnica();
+            $ficha->deportista_id = $this->id_deportista;
+        }
+        
+        return $ficha;
+    }
+    
+    /**
      * Esta función retorna las relaciones con otros modelos
      * @return array
      */

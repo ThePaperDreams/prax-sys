@@ -321,6 +321,47 @@ class CtrlDeportista extends CControlador {
                     ],
         ]);
     }
+    
+    public function accionSeguimiento($pk){
+        $deportista = Deportista::modelo()->porPk($pk);
+        $ficha = $deportista->getFicha();
+        $seguimiento = new Seguimiento();
+        
+        if(isset($this->_p['ajx_snd'])){
+            $this->guardarSeguimiento($ficha, $deportista);
+        }
+        
+        $this->vista("registrarSeguimiento", [
+            'deportista' => $deportista,
+            'modelo' => $seguimiento,
+            'ficha' => $ficha,
+            'positivos' => $ficha->seguimientosPositivos,
+            'negativos' => $ficha->seguimientosNegativos,
+        ]);
+    }
+    
+    /**
+     * 
+     * @param FichaTecnica $ficha
+     * @param Deportista $deportista
+     */
+    private function guardarSeguimiento($ficha, $deportista){
+        $seguimiento = new Seguimiento();
+        if($ficha->id_ficha_tecnica == null){
+            $ficha->guardar();
+        }
+        $seguimiento->ficha_tecnica_id = $ficha->id_ficha_tecnica;
+        $seguimiento->evaluacion = $this->_p['evaluacion'];
+        $seguimiento->descripcion = $this->_p['descripcion'];
+        $seguimiento->tipo_seguimiento = $this->_p['tipo'];
+        
+        $this->json([
+            'error' => !$seguimiento->guardar(),            
+            'ficha' => $ficha->id_ficha_tecnica,
+            'fecha' => $seguimiento->fecha,
+        ]);
+        Sis::fin();
+    }
 
     public function accionVerListaEspera() {
         $this->vista('verListaEspera');
