@@ -93,6 +93,7 @@ abstract class CBaseGrid extends CComplemento{
         $this->crearCuerpo();
         $this->crearPie();
         $this->html = $this->ensamblar();
+        $this->scriptConfirmar();
     }
     
     protected function validarPaginas(){
@@ -151,8 +152,7 @@ abstract class CBaseGrid extends CComplemento{
                 ['i' => 'eye', 'title' => 'Ver', 'url' => $controlador . '/ver&{id:pk}'],
                 ['i' => 'pencil', 'title' => 'Editar', 'url' => $controlador . '/editar&{id:pk}'],
                 ['i' => 'trash', 'title' => 'Eliminar', 'url' => $controlador . '/eliminar&{id:pk}', 'opciones' => ['class' => 'op-eliminar']],
-            ];
-            $this->scriptConfirmar();
+            ];            
         }
         
         if($this->_opciones === null){  return false; }                
@@ -171,7 +171,7 @@ abstract class CBaseGrid extends CComplemento{
                 $opciones[] = CHtml::link('', $this->evaluarExpresion($v['url'], $modelo), $opsHtml);
             }
         }
-        $columnas[] = CHtml::e("td", implode(' ', $opciones), ['class' => 'text-center table-options']);
+        $columnas[] = CHtml::e("td", implode(' ', $opciones), ['class' => 'text-center table-options']);        
     }
     
     private function evaluarExpVisible($exp, &$m){

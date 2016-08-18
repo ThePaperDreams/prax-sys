@@ -92,18 +92,19 @@ class CtrlCategoria extends CControlador{
     }
     
     public function accionCambiarEstado($pk){
+        # instanciamos el modelo
         $modelo = $this->cargarModelo($pk);
+        # validamos si el modelo ya está inactivo
+        if($modelo->estado == 0){
+            Sis::Sesion()->flash("alerta", [ 'msg' => 'La categoría ya está inactiva', 'tipo' => 'warning']);
+            $this->redireccionar('inicio');
+        }
+                
         $modelo->estado = $modelo->estado == 1? 0 : 1;
         if($modelo->guardar()){
-            Sis::Sesion()->flash("alerta", [
-                'msg' => 'Se cambió exitosametne el estado',
-                'tipo' => 'success',
-            ]);
+            Sis::Sesion()->flash("alerta", [ 'msg' => 'Se cambió exitosametne el estado', 'tipo' => 'success']);
         } else {
-            Sis::Sesion()->flash("alerta", [
-                'msg' => 'Ocurrió un error al cambiar el estado',
-                'tipo' => 'Error',
-            ]);
+            Sis::Sesion()->flash("alerta", [ 'msg' => 'Ocurrió un error al cambiar el estado', 'tipo' => 'Error']);
         }
         $this->redireccionar('inicio');
     }
@@ -114,20 +115,18 @@ class CtrlCategoria extends CControlador{
      */
     public function accionEliminar($pk){
         $modelo = $this->cargarModelo($pk);
+        if($modelo->enUso === true){
+            Sis::Sesion()->flash("alerta", ['msg' => 'La categoría se encuentra en uso', 'tipo' => 'warning']);
+            $this->redireccionar('inicio');
+        }
         try{
-            if($modelo->eliminar()){
-                Sis::Sesion()->flash("alerta", [
-                    'msg' => 'Se eliminó correctamente',
-                    'tipo' => 'success',
-                ]);
-            } else {
-                # lógica para error al borrar
-            }            
-        } catch (Exception $ex) {
+            $modelo->eliminar();
             Sis::Sesion()->flash("alerta", [
-                'msg' => 'Ocurrió un error al eliminar la categoría Error #00001',
-                'tipo' => 'error',
+                'msg' => 'Se eliminó correctamente',
+                'tipo' => 'success',
             ]);
+        } catch (Exception $ex) {
+            Sis::Sesion()->flash("alerta", [ 'msg' => 'Ocurrió un error al eliminar la categoría','tipo' => 'error' ]);
         }
         $this->redireccionar('inicio');
     }
