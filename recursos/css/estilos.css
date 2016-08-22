@@ -261,3 +261,14 @@ hr{
 }
 body{
 }
+
+.borde-fondo:last-child{
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+
+.lbl-documento{
+    width: 100%;
+    display: block;
+    padding: 11px 0px;
+    font-size: 12px;
+}

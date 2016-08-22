@@ -38,7 +38,7 @@ $formulario->abrir();
                 },
                 success: function (respuesta) {
                     if (respuesta.error === true) {
-                        mostrarAlert("error", "Ya existe ese Nombre");
+                        mostrarAlert("error", "Ya existe un Rol con ese Nombre");
                     } else {
                         document.getElementById("form-roles").submit();
                     }

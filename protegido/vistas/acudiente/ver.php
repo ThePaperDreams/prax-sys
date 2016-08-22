@@ -82,7 +82,7 @@ $this->opciones = [
 </div>
 </div>
 </div>
-
+<?php if(count($modelo->Detalles)): ?>
 <div class="row">
 <div class="col-sm-12">
     <div class="panel panel-default">
@@ -97,12 +97,13 @@ $this->opciones = [
                         <th>Eliminar</th>
                     </tr>
                 </thead>
-                <tbody id="tabla-documentos">
-                    <?php foreach ($modelo->Detalles AS $dc): ?>
+                <tbody>
+                    <?php foreach ($modelo->Detalles AS $d): ?>
                         <tr>
-                            <td><?php echo $dc->Documento->getDocumento($modelo->id_acudiente, $dc->Documento->url, get_class($modelo)); ?></td>
-                            <!--<td><?php #echo $dc->Documento->getDocumento($dc->Documento->url, $dc->Documento->titulo); ?></td>-->
-                            <td class="col-sm-1 text-center text-danger-icon"><a class="eliminar" data-idacu="<?= $modelo->id_acudiente ?>" data-nomtipo="<?= $dc->Documento->url ?>" data-iddoc="<?= $dc->documento_id ?>" data-idacudoc="<?= $dc->id ?>" href="#"><i class="fa fa-ban"></i></a></td>
+                            <td><?php echo $d->Documento->getDocumento($d->Documento->url); ?>
+                            <td class="col-sm-1 text-center text-danger-icon">
+                                <a href="#" class="eliminar" data-idacudoc="<?php echo $d->id; ?>"><i class="fa fa-ban"></i></a>
+                            </td>
                         </tr>
                     <?php endforeach ?>
                 </tbody>
@@ -113,27 +114,23 @@ $this->opciones = [
 </div>
 <script>
     $(function () {
-        $(".eliminar").click(function () {
-            if (confirm('¿Está seguro de eliminar este documento?')) {
-                var a = $(this);
-                var idacudoc = a.attr("data-idacudoc");
-                var iddoc = a.attr("data-iddoc");
-                var idacu = a.attr("data-idacu");
-                var nomtipo = a.attr("data-nomtipo");
+        $("a.eliminar").click(function(){
+            if (confirm('¿Está seguro de eliminar este Documento?')) {
+                var that_a = $(this);
+                var idacudoc = that_a.attr("data-idacudoc");
                 $.ajax({
-                    type: 'post',
-                    url: "<?php echo Sis::crearUrl(['Acudiente/EliminarAcudienteDocumento']) ?>",
-                    data: {
-                        idacudoc: idacudoc,
-                        iddoc: iddoc,
-                        idacu: idacu,
-                        nomtipo: nomtipo
+                    method: "POST",
+                    url: "<?php echo Sis::crearUrl(['Acudiente/EliminarAcudienteDocumento']); ?>",
+                    data: {idacudoc: idacudoc}
+                }).done(function(resp){
+                    if (resp["tipo"] === "success") {                        
+                        that_a.closest("tr").remove();
                     }
-                }).done(function () {
-                    $(a).closest("tr").remove();
-                }).fail(function () {});
+                    lobiAlert(resp.tipo, resp.msj);
+                });    
             }
             return false;
         });
     });
 </script>    
+<?php endif; ?>
