@@ -24,18 +24,24 @@ class CtrlEvento extends CControlador{
      * Esta función permite crear un nuevo registro
      */
     public function accionCrear(){
+        $this->validarNombre();
         $modelo = new Evento();
         if(isset($this->_p['Eventos'])){
             $modelo->atributos = $this->_p['Eventos'];
             if($modelo->guardar()){
                 # lógica para guardado exitoso
+                Sis::Sesion()->flash("alerta", [
+                    'msg' => 'Guardado exitoso',
+                    'tipo' => 'success',]);
                 $this->redireccionar('inicio');
             }
         }
-        $this->mostrarVista('crear', ['modelo' => $modelo,
+        $url = Sis::crearUrl(['Evento/crear']);
+        $this->mostrarVista('crear', ['modelo' => $modelo,'url' => $url,
             'TipoEvento' => CHtml::modelolista(TipoEvento::modelo()->listar(), "id_tipo", "nombre"),      
             'Autor' => CHtml::modelolista(Usuario::modelo()->listar(), "id_usuario", "nombre"),
             'Estado' => CHtml::modelolista(EstadoEvento::modelo()->listar(), "id_estado", "nombre"),
+            
             ]);
     }
     
@@ -44,6 +50,7 @@ class CtrlEvento extends CControlador{
      * @param int $pk
      */
     public function accionEditar($pk){
+        $this->validarNombre($pk);
         $modelo = $this->cargarModelo($pk);
         if(isset($this->_p['Eventos'])){
             $modelo->atributos = $this->_p['Eventos'];
@@ -52,13 +59,39 @@ class CtrlEvento extends CControlador{
                 $this->redireccionar('inicio');
             }
         }
-        $this->mostrarVista('editar', ['modelo' => $modelo,
+        $url = Sis::crearUrl(['Evento/editar', 'id' => $pk]);
+        $this->mostrarVista('editar', ['modelo' => $modelo,'url' => $url,
             'TipoEvento' => CHtml::modelolista(TipoEvento::modelo()->listar(), "id_tipo", "nombre"),      
             'Autor' => CHtml::modelolista(Usuario::modelo()->listar(), "id_usuario", "nombre"),
             'Estado' => CHtml::modelolista(EstadoEvento::modelo()->listar(), "id_estado", "nombre"),
             ]);
     }
     
+    
+    private function validarNombre($id = null){
+        if(isset($this->_p['validarNombre'])){
+            if($id === null){
+                $criterio = [
+                    'where' => "LOWER(titulo) = LOWER('" . $this->_p['titulo'] . "')"
+                ];
+            } else {
+                $criterio = [
+                    'where' => "id_evento <> $id AND LOWER(titulo) = LOWER('" . $this->_p['titulo'] . "')"
+                ];
+            }
+            $categoria = CategoriaImplemento::modelo()->primer($criterio);
+            
+            if($categoria != null){
+                $error = true;
+            } else {
+                $error = false;
+            }
+            $this->json([
+                'error' => $error,
+            ]);
+            Sis::fin();
+        }
+    }
     /**
      * Esta función permite ver detalladamente un registro existente
      * @param int $pk

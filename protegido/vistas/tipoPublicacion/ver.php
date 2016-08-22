@@ -20,19 +20,15 @@
         </div>
         <table class="table table-bordered">
             <tbody>
-                                <tr>
-                    <th><?php echo $modelo->obtenerEtiqueta('id_tipo_publicacion') ?></th>
-                    <td><?php echo $modelo->id_tipo_publicacion; ?></td>
-                </tr>
-                                <tr>
+                <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('nombre') ?></th>
                     <td><?php echo $modelo->nombre; ?></td>
                 </tr>
-                                <tr>
+                <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('descripcion') ?></th>
                     <td><?php echo $modelo->descripcion; ?></td>
                 </tr>
-                            </tbody>
+            </tbody>
         </table>
 
     </div>

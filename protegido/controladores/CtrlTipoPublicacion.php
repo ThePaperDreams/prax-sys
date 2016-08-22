@@ -54,6 +54,31 @@ class CtrlTipoPublicacion extends CControlador{
         $this->mostrarVista('editar', ['modelo' => $modelo]);
     }
     
+    private function validarNombre($id = null){
+        if(isset($this->_p['validarNombre'])){
+            if($id === null){
+                $criterio = [
+                    'where' => "LOWER(nombre) = LOWER('" . $this->_p['nombre'] . "')"
+                ];
+            } else {
+                $criterio = [
+                    'where' => "id_tipo_publicacion <> $id AND LOWER(nombre) = LOWER('" . $this->_p['nombre'] . "')"
+                ];
+            }
+            $categoria = CategoriaImplemento::modelo()->primer($criterio);
+            
+            if($categoria != null){
+                $error = true;
+            } else {
+                $error = false;
+            }
+            $this->json([
+                'error' => $error,
+            ]);
+            Sis::fin();
+        }
+    }
+    
     /**
      * Esta función permite ver detalladamente un registro existente
      * @param int $pk

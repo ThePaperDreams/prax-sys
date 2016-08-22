@@ -19,8 +19,8 @@ Sis::Recursos()->recursoJs([
 
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#listar" aria-controls="listar" role="tab" data-toggle="tab">Listar</a></li>
-    <li role="presentation"><a href="#cargar" aria-controls="cargar" role="tab" data-toggle="tab">Cargar</a></li>
+    <li role="presentation" class="active"><a href="#listar" aria-controls="listar" role="tab" data-toggle="tab">Cargar</a></li>
+    <li role="presentation"><a href="#cargar" aria-controls="cargar" role="tab" data-toggle="tab">Listar</a></li>
   </ul>
 
   <!-- Tab panes -->

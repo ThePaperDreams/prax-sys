@@ -35,26 +35,34 @@ $formulario->abrir();
                         <div class="input-group-addon"><i class="fa fa-list-ul"></i></div>
                     </div>
                 </div>
-
-                <div class="row">
-                    <div class="col-sm-offset-6 col-sm-3">
-                        <?php echo CHtml::link(CBoot::fa('undo').' Cancelar', ['evento/inicio'], ['class' => 'btn btn-primary btn-block']); ?>
-                    </div>
-                    <div class="col-sm-3">
-                        <?php echo CBoot::boton(CBoot::fa('save') .' '. ($modelo->nuevo? 'Guardar' : 'Actualizar'), 'success', ['class' => 'btn-block']); ?>
-                    </div>
-                </div>
             </div>
-        </div> 
+        </div>
+        <div class="row">
+            <div class="col-sm-offset-6 col-sm-3">
+                <?php echo CHtml::link(CBoot::fa('undo').' Cancelar', ['evento/inicio'], ['class' => 'btn btn-primary btn-block']); ?>
+            </div>
+            <div class="col-sm-3">
+                <?php echo CBoot::boton(CBoot::fa('save') .' '. ($modelo->nuevo? 'Guardar' : 'Actualizar'), 'success', ['class' => 'btn-block']); ?>
+            </div>
+        </div>
     </div>    
 </div>
+
+<?php $formulario->cerrar(); ?>
+
 <script>
 $(document).ready(function() {
     $('.summernote').summernote();
     $(".campo-fecha").change(function(){
             validarFecha($(this));
         });
-    });
+        
+    $("#form-eventos").submit(function(){
+        validarNombre();
+        return false;
+    });    
+});
+    
  
  function validarFecha(fecha) {
         var currDate = new Date();
@@ -65,7 +73,39 @@ $(document).ready(function() {
             alert("Por favor seleccione una fecha mayor a la de hoy");
             $('#btn-send').attr("disabled", "disabled");
         }
+    }  
+    
+    function validarNombre() {
+        var nombre = $("#Eventos_titulo").val();
+        if (nombre === "") {
+            return;
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: '<?= $url ?>',
+            data: {
+                validarNombre: true,
+                nombre: nombre,
+            },
+            success: function (respuesta) {
+                if (respuesta.error == true) {
+                    mostrarAlert("error", "Ya existe ese nombre");
+                } else {
+                    document.getElementById("form-eventos").submit();
+                }
+            }
+        });
+    }
+
+    function mostrarAlert(tipo, msg) {
+        Lobibox.notify(tipo, {
+            size: 'mini',
+            showClass: 'bounceInRight',
+            hideClass: 'bounceOutRight',
+            msg: msg,
+            delay: 8000,
+            soundPath: '<?= Sis::UrlRecursos() ?>librerias/lobibox/sounds/',
+        });
     }
 </script>
-
-<?php $formulario->cerrar(); ?>

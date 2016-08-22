@@ -61,10 +61,14 @@ class CtrlPublicacion extends CControlador{
      * Esta función permite crear un nuevo registro
      */
     public function accionCrear(){
+        $this->validarNombre();
         $modelo = new Publicacion();
         if(isset($this->_p['Publicaciones'])){
             $modelo->atributos = $this->_p['Publicaciones'];
             $modelo->usuario_id = Sis::apl()->usuario->ID;
+            if($modelo->tipo_id == 2){
+            $modelo->consecutivo = $modelo->getUltimo();
+            }
             if($modelo->guardar()){
                 Sis::Sesion()->flash("alerta", [
                     'msg' => 'Publicación registrada exitosamente!',
@@ -72,9 +76,10 @@ class CtrlPublicacion extends CControlador{
                 ]);
                 $this->redireccionar('inicio');
             }
-        }      
+        }
+        $url = Sis::crearUrl(['Publicacion/crear']);
         $this->mostrarVista('crear',
-            ['modelo' => $modelo,
+            ['modelo' => $modelo,'url' => $url,
             'public' => CHtml::modelolista(TipoPublicacion::modelo()->listar(), "id_tipo_publicacion", "nombre"),
             'estd' => CHtml::modelolista(EstadoPublicacion::modelo()->listar(), "id_estado", "nombre"),    
             ]);
@@ -87,6 +92,7 @@ class CtrlPublicacion extends CControlador{
      * @param int $pk
      */
     public function accionEditar($pk){
+        $this->validarNombre($pk);
         $modelo = $this->cargarModelo($pk);
         if(isset($this->_p['Publicaciones'])){
             $modelo->atributos = $this->_p['Publicaciones'];
@@ -100,14 +106,41 @@ class CtrlPublicacion extends CControlador{
                 $this->redireccionar('inicio');
             }
         }
+        $url = Sis::crearUrl(['Publicacion/editar', 'id' => $pk]);
         $this->mostrarVista('editar',
-            ['modelo' => $modelo,
+            ['modelo' => $modelo,'url' => $url,
             'public' => CHtml::modelolista(TipoPublicacion::modelo()->listar(), "id_tipo_publicacion", "nombre"),
             'estd' => CHtml::modelolista(EstadoPublicacion::modelo()->listar(), "id_estado", "nombre"),    
             ]);
         
         
     }
+    
+     private function validarNombre($id = null){
+        if(isset($this->_p['validarNombre'])){
+            if($id === null){
+                $criterio = [
+                    'where' => "LOWER(titulo) = LOWER('" . $this->_p['titulo'] . "')"
+                ];
+            } else {
+                $criterio = [
+                    'where' => "id_publicacion <> $id AND LOWER(titulo) = LOWER('" . $this->_p['titulo'] . "')"
+                ];
+            }
+            $categoria = CategoriaImplemento::modelo()->primer($criterio);
+            
+            if($categoria != null){
+                $error = true;
+            } else {
+                $error = false;
+            }
+            $this->json([
+                'error' => $error,
+            ]);
+            Sis::fin();
+        }
+    }
+    
     
     /**
      * Esta función permite ver detalladamente un registro existente

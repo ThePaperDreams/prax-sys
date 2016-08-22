@@ -60,6 +60,7 @@
             'seguros' => '*',
         ];
     }
+    
     /**
      * Esta función permite listar todos los registros
      * @param array $criterio

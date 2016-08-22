@@ -25,10 +25,6 @@ $this->opciones = [
                     <td><?php echo $modelo->titulo; ?></td>
                 </tr>
                 <tr>
-                    <th><?php echo $modelo->obtenerEtiqueta('contenido') ?></th>
-                    <td><?php echo $modelo->contenido; ?></td>
-                </tr>
-                <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('fecha_publicacion') ?></th>
                     <td><?php echo $modelo->fecha_publicacion; ?></td>
                 </tr>

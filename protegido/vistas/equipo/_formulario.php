@@ -45,17 +45,17 @@ $formulario->abrir();
                                 <?php endif ?>
                             </tbody>
                         </table>
-                    <div id="deportistas-eliminados"></div>
-
-                    <div class="row">
-                        <div class="col-sm-offset-6 col-sm-3">
-                            <?php echo CHtml::link(CBoot::fa('undo').' Cancelar', ['equipo/inicio'], ['class' => 'btn btn-primary btn-block']); ?>
-                        </div>
-                        <div class="col-sm-3">
-                            <?php echo CBoot::boton(CBoot::fa('save') .' '. ($modelo->nuevo? 'Guardar' : 'Actualizar'), 'success', ['class' => 'btn-block']); ?>
-                        </div>
-                    </div>
+                <div id="deportistas-eliminados">                
                 </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-offset-6 col-sm-3">
+                <?php echo CHtml::link(CBoot::fa('undo').' Cancelar', ['equipo/inicio'], ['class' => 'btn btn-primary btn-block']); ?>
+            </div>
+            <div class="col-sm-3">
+                <?php echo CBoot::boton(CBoot::fa('save') .' '. ($modelo->nuevo? 'Guardar' : 'Actualizar'), 'success', ['class' => 'btn-block']); ?>
+            </div>
         </div>
     </div>
 </div>      
@@ -65,7 +65,8 @@ $formulario->abrir();
 <script>
     $(function(){
         $("#form-equipos").submit(function(){
-//            return false;
+            validarNombre();
+            return false;
         });
         $("#btn-agregar").click(function(){
             if($("#lista-deportistas").val() !== ""){
@@ -104,5 +105,40 @@ $formulario->abrir();
             fila.remove();
         });       
     }
+    
+    function validarNombre() {
+            var nombre = $("#Equipos_nombre").val();
+            if (nombre === "") {
+                return;
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: '<?= $url ?>',
+                data: {
+                    validarNombre: true,
+                    nombre: nombre,
+                },
+                success: function (respuesta) {
+                    if (respuesta.error == true) {
+                        mostrarAlert("error", "Ya existe ese nombre");
+                    } else {
+                        document.getElementById("form-equipos").submit();
+                    }
+                }
+            });
+        }
+
+        function mostrarAlert(tipo, msg) {
+            Lobibox.notify(tipo, {
+                size: 'mini',
+                showClass: 'bounceInRight',
+                hideClass: 'bounceOutRight',
+                msg: msg,
+                delay: 8000,
+                soundPath: '<?= Sis::UrlRecursos() ?>librerias/lobibox/sounds/',
+            });
+        }
+
     
 </script>

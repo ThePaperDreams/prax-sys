@@ -93,6 +93,12 @@ class Publicacion extends CModelo {
         }
     }
    
+    public function getUltimo(){
+        $sql = "SELECT MAX(consecutivo)ultimo FROM tbl_publicaciones ";
+        $resultados = Sis::apl()->bd->ejecutarComando($sql);
+        $max = $resultados[0]['ultimo'];
+        return (int) $max+1;
+    }
     
     public function filtros() {
         return [

@@ -14,7 +14,11 @@
 <?= $this->complemento('!siscoms.bootstrap3.CBGrid', [
     'modelo' => 'TipoPublicacion',
     # id_tipo_publicacion, nombre, descripcion
-    'columnas' => 'id_tipo_publicacion, nombre, descripcion',
-    'opciones' => true,
+    'columnas' => ['nombre', 'descripcion'],
+    'opciones' => [
+        ['i' => 'eye', 'title' => 'Ver','url' => 'TipoPublicacion/ver&{id:pk}'],
+        ['i' => 'pencil', 'title' => 'Editar', 'url' => 'TipoPublicacion/editar&{id:pk}',],
+        ['i' => 'refresh', 'title' => 'Cambiar estado','url' => 'TipoPublicacion/eliminar&{id:pk}'],
+    ],
     'paginacion' => 10,
 ]) ?>
