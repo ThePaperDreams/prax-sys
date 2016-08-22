@@ -103,7 +103,14 @@ abstract class CModelo extends CBaseModelo{
         $criterio['where'] = "$this->pk='$pk'";
         $resultados = $this->_encontrarTodos($criterio);
         return count($resultados) > 0? $resultados[0] : null;
-    }    
+    }
+    
+    /**
+     * @return CCriterio
+     */
+    public function filtrosAjx(){
+        return null;
+    }
     
     public function antesDeGuardar(){}
     
