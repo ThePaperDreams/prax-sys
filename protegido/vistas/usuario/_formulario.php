@@ -106,7 +106,7 @@ $formulario->abrir();
             data: {
                 validarUsuarioEmail: true,
                 usuario: $.trim(usuario),
-                email: $.trim(email),
+                email: $.trim(email)
             },
             success: function (respuesta) {
                 if (respuesta.error === true) {

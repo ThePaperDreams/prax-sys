@@ -26,30 +26,11 @@ class CtrlDeportista extends CControlador {
         $modelo2 = new Acudiente();
         $modelo3 = new TipoDocumento();
         if (isset($this->_p['Deportistas'])) {
-            /* echo "<pre>";
-              var_dump($_FILES['Deportistas']);
-              if (!empty($_FILES['Deportistas'])) {
-              echo "Hola Mundo!";
-              }
-              exit(); *//*
-              foreach ($_FILES['Deportistas'] as $k => $v){
-              var_dump($k);
-              var_dump($v);
-              }
-              echo "<br>";
-              var_dump(CArchivoCargado::instanciarModelo('Deportistas', 'foto'));
-              exit(); */
             $modelo->atributos = $this->_p['Deportistas'];
+            $modelo->identificacion = trim($this->_p['Deportistas']['identificacion']);
             $modelo->foto = $this->asociarFoto($modelo->identificacion);
             if ($modelo->guardar()) {
                 $dep = $modelo->id_deportista;
-                /*echo "<pre>";
-                var_dump($this->_p['Acudient']);
-                foreach ($this->_p['Acudient'] as $k => $v) {
-                    echo "Hola " . $v;                    
-            }
-                exit();
-*/
                 $this->asociarAcudientes($dep);
                 $this->asociarDocumentos($dep);
                 $this->alertar('success', 'Registro Exitoso');
@@ -80,14 +61,17 @@ class CtrlDeportista extends CControlador {
     }
 
     public function asociarDocumentos($dep) {
-        if (isset($_FILES['Documentos']) && isset($this->_p['TiposDocumentos'])) {
-            /*foreach ($_FILES['Documentos']['name'] as $k => $v) {
-                if (empty($v)) {
-                    foreach ($_FILES['Documentos'] as $y => $x) {
-                        unset($_FILES['Documentos'][$y][$k]);
-                    }
-                }
-            }*/
+        if (isset($_FILES['Documentos']) && isset($this->_p['TiposDocumentos']) && isset($this->_p['NombresDocumentos'])) {
+            foreach ($this->_p['TiposDocumentos'] as $k => $v) {
+                $nomtipo = $this->_p['NombresDocumentos'][$k];
+                $files = CArchivoCargado::instanciarTodasPorNombre('Documentos');
+                $rutaDestino = Sis::resolverRuta(Sis::crearCarpeta("!publico.deportistas.$dep"));
+                $files[$k]->guardar($rutaDestino, $nomtipo);
+                $doc = $this->asociarDocumento($nomtipo, $k, $v, $files, $dep);
+                $this->asociarDeportistaDocumento($dep, $doc);
+            }
+        }
+       /* if (isset($_FILES['Documentos']) && isset($this->_p['TiposDocumentos'])) {
             foreach ($this->_p['TiposDocumentos'] as $k => $v) {
                 $tipodoc = new TipoDocumento();
                 $nomtipo = $tipodoc->primer(["where" => "id_tipo=" . $v])->nombre;
@@ -99,16 +83,23 @@ class CtrlDeportista extends CControlador {
                     $this->asociarDeportistaDocumento($dep, $doc);
                 //}
             }
-        }
+        }*/
     }
 
-    public function asociarDocumento($nomtipo, $k, $v, $files) {
+    public function asociarDocumento($nomtipo, $k, $v, $files, $dep) {
         $doc = new Documento();
+        $doc->titulo = $nomtipo;
+        // Usar DS en vez de / (?)
+        $doc->url = "deportistas/$dep/$nomtipo." . $files[$k]->getExtension();
+        $doc->tipo_id = $v;
+        $doc->guardar();                
+        return $doc;
+/*        $doc = new Documento();
         $doc->titulo = $nomtipo;
         $doc->url = $nomtipo . "." . $files[$k]->getExtension();
         $doc->tipo_id = $v;
         $doc->guardar();
-        return $doc;
+        return $doc;*/
     }
 
     public function asociarDeportistaDocumento($dep, $doc) {
@@ -116,6 +107,10 @@ class CtrlDeportista extends CControlador {
         $acudoc->deportista_id = $dep;
         $acudoc->documento_id = $doc->id_documento;
         $acudoc->guardar();
+        /*$acudoc = new DeportistaDocumento();
+        $acudoc->deportista_id = $dep;
+        $acudoc->documento_id = $doc->id_documento;
+        $acudoc->guardar();*/
     }
 
     /**
@@ -129,6 +124,7 @@ class CtrlDeportista extends CControlador {
         $modelo3 = new TipoDocumento();
         if (isset($this->_p['Deportistas'])) {
             $modelo->atributos = $this->_p['Deportistas'];
+            $modelo->identificacion = trim($this->_p['Deportistas']['identificacion']);
             $modelo->foto = $this->asociarFoto($modelo->identificacion);
             $modelo->id_deportista = $pk;
             if ($modelo->guardar()) {
@@ -161,7 +157,32 @@ class CtrlDeportista extends CControlador {
     }
 
     public function accionEliminarDeportistaDocumento() {
-        $ad = new DeportistaDocumento();
+        if (isset($this->_p['iddepdoc'])) {
+            $idDepDoc = $this->_p['iddepdoc'];            
+            $depDoc = DeportistaDocumento::modelo()->porPk($idDepDoc);
+            $idDoc = $depDoc->documento_id;
+            $doc = Documento::modelo()->porPk($idDoc);
+            $rutaDoc = Sis::resolverRuta("!publico") . "\\" . str_replace("/", "\\", $doc->url);
+            /*echo "<pre>";
+            var_dump($rutaDoc);
+            exit();*/
+            $bandera = 0;
+            $bandera += unlink($rutaDoc) ? 1: 0; // eliminar documento del host
+            $bandera += $depDoc->eliminar() ? 1: 0; // eliminar documento de la tbl_acudientes_documentos
+            if ($bandera == 2) {
+                $doc->eliminar(); // eliminar documento de la tbl_documentos                
+                $tipo = "success";
+                $msj = "Se eliminó el Documento";
+            }else{
+                $tipo = "error";
+                $msj = "No se pudo eliminar el Documento";
+            }
+            $this->json([
+                "tipo" => $tipo,
+                "msj" => $msj
+            ]);
+        }
+        /*$ad = new DeportistaDocumento();
         $d = new Documento();
         $a = new Deportista();
         if (isset($this->_p['iddepdoc']) && isset($this->_p['iddoc']) && isset($this->_p['nomtipo']) && isset($this->_p['iddep'])) {
@@ -174,7 +195,7 @@ class CtrlDeportista extends CControlador {
             } else {
                 
             }
-        }
+        }*/
     }
 
     public function accionEliminarDocumento($d, $a) {
@@ -204,11 +225,13 @@ class CtrlDeportista extends CControlador {
 
     public function accionCambiarEstado($pk) {
         $modelo = $this->cargarModelo($pk);
+        if ($modelo->estado_id == 2) {
+            $this->alertar('warning', 'El Deportista ya se encuentra Inactivo');
+            $this->redireccionar('inicio');
+        }        
         $modelo->estado_id = ($modelo->estado_id != 2) ? 2 : 1;
         if ($modelo->guardar()) {
-            $this->alertar('success', 'Cambio exitoso');
-        } else {
-            # lógica para error al borrar
+            $this->alertar('success', 'Cambio de estado exitoso');
         }
         $this->redireccionar('inicio');
     }

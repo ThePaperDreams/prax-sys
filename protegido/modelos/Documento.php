@@ -110,11 +110,10 @@ class Documento extends CModelo {
     }
     
     // Usado en Acudientes y Deportistas
-    public function getDocumento($id, $ruta, $clase) {        
+    public function getDocumento($ruta) {        
         $icono = CBoot::fa("cloud-download");
-        $url = Sis::UrlBase() . 'publico/' . strtolower($clase)  . 's/'.$id.'/'.$ruta;
-        //$url = Sis::UrlBase() . $ruta;
-        return CHtml::link($icono . ' ' . $this->titulo, $url, ['target' => '_blank', 'download' => $ruta]);
+        $url = Sis::UrlBase() . "publico/" . $ruta;
+        return CHtml::link($icono . ' ' . $this->titulo, $url, ['target' => '_blank', 'download' => $this->titulo]);
     }
     
     // Usado en Documentos

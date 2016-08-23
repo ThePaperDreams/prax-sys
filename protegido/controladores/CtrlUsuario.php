@@ -27,6 +27,8 @@ class CtrlUsuario extends CControlador {
         exit();*/
         if (isset($this->_p['Usuarios'])) {
             $modelo->atributos = $this->_p['Usuarios'];
+            $modelo->nombre_usuario = trim($this->_p['Usuarios']['nombre_usuario']);
+            $modelo->email = trim($this->_p['Usuarios']['email']);
             $modelo->foto = $this->guardarFoto($modelo->nombre_usuario);
             $modelo->clave = sha1($this->_p['Usuarios']['uclave']);
             if ($modelo->guardar()) {
@@ -94,6 +96,8 @@ class CtrlUsuario extends CControlador {
         $modelo = $this->cargarModelo($pk);
         if (isset($this->_p['Usuarios'])) {
             $modelo->atributos = $this->_p['Usuarios'];
+            $modelo->nombre_usuario = trim($this->_p['Usuarios']['nombre_usuario']);
+            $modelo->email = trim($this->_p['Usuarios']['email']);
             $modelo->foto = $this->guardarFoto($modelo->nombre_usuario);
             if ($this->_p['cambio-clave'] === "1") {
                 $modelo->clave = sha1($this->_p['Usuarios']['uclave']);                
@@ -123,11 +127,13 @@ class CtrlUsuario extends CControlador {
 
     public function accionCambiarEstado($pk) {
         $modelo = $this->cargarModelo($pk);
+        if ($modelo->estado == 0) {
+            $this->alertar('warning', 'El Usuario ya se encuentra inactivo');
+            $this->redireccionar('inicio');
+        }
         $modelo->estado = !$modelo->estado;
         if ($modelo->guardar()) {
             $this->alertar('success','Cambio de estado exitoso');
-        } else {
-            # lógica para error al borrar
         }
         $this->redireccionar('inicio');
     }    
@@ -143,7 +149,7 @@ class CtrlUsuario extends CControlador {
      * Esta función permite eliminar un registro existente
      * @param int $pk
      */
-    public function accionEliminar($pk) {
+    /*public function accionEliminar($pk) {
         $modelo = $this->cargarModelo($pk);
         if ($modelo->eliminar()) {
             # lógica para borrado exitoso
@@ -151,7 +157,7 @@ class CtrlUsuario extends CControlador {
             # lógica para error al borrar
         }
         $this->redireccionar('inicio');
-    }
+    }*/
 
     /**
      * Esta función permite cargar un modelo usando su primary key
