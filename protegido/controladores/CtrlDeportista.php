@@ -225,7 +225,7 @@ class CtrlDeportista extends CControlador {
 
     public function accionCambiarEstado($pk) {
         $modelo = $this->cargarModelo($pk);
-        if ($modelo->estado == 2) {
+        if ($modelo->estado_id == 2) {
             $this->alertar('warning', 'El Deportista ya se encuentra Inactivo');
             $this->redireccionar('inicio');
         }        

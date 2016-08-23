@@ -65,12 +65,48 @@ $formulario->abrir();
     
     <div role="tabpanel" class="tab-pane" id="acus">
         <div class="row">
-            <div class="col-sm-4">
+            <div class="col-sm-6">
                 <?php echo $formulario->lista($modelo2, 'id_acudiente', $acudientes, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un Acudiente']) ?>
             </div>
             <div class="col-sm-2">
                 <?php echo CBoot::boton(CBoot::fa('plus') . ' Agregar', 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'id' => 'btn-addAcu']) ?>
             </div>
+            <?php if(count($modelo->Acudiente)): ?>                   
+            <div class="col-sm-4">
+                <?php echo CBoot::boton(CBoot::fa('file-text-o') . ' Ver acudientes asociados', 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'data-toggle' => 'modal', 'data-target' => '#myModal1']) ?>
+            </div>
+            <div class="modal fade cortina" id="myModal1" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Acudientes asociados actualmente</h4>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table table-bordered table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>Acudiente</th>
+                                        <th>Eliminar</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabla-acudientes">
+                                    <?php foreach ($modelo->Acudiente AS $dc): ?>
+                                        <tr>
+                                            <td titulo="<?= $dc->Acudiente->datos ?>"><?= $dc->Acudiente->datos ?></td>            
+                                            <td class="col-sm-1 text-center text-danger-icon"><a class="delete" data-iddepacu="<?= $dc->id ?>" href="#"><i class="fa fa-ban"></i></a></td>
+                                        </tr>
+                                    <?php endforeach ?>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php endif; ?>
         </div>
         <?php if ($modelo->nuevo): ?>
             <div class="row">
@@ -88,7 +124,7 @@ $formulario->abrir();
             <div class="col-sm-6">
                 <div class="panel panel-default">
                     <div class="panel-heading text-center">Acudientes asociados actualmente</div>            
-                        <table class="table table-bordered table-condensed">
+                    <table class="table table-bordered table-condensed">
                         <thead>
                             <tr>
                                 <th>Acudiente</th>
@@ -96,14 +132,14 @@ $formulario->abrir();
                             </tr>
                         </thead>
                         <tbody id="tabla-acudientes">
-                        <?php foreach ($modelo->Acudiente AS $dc): ?>
-                            <tr>
-                                <td titulo="<?= $dc->Acudiente->datos ?>"><?= $dc->Acudiente->datos ?></td>            
-                                <td class="col-sm-1 text-center text-danger-icon"><a class="delete" data-iddepacu="<?= $dc->id ?>" href="#"><i class="fa fa-ban"></i></a></td>
-                            </tr>
-                        <?php endforeach ?>
-                    </tbody>
-                </table>
+                            <?php foreach ($modelo->Acudiente AS $dc): ?>
+                                <tr>
+                                    <td titulo="<?= $dc->Acudiente->datos ?>"><?= $dc->Acudiente->datos ?></td>            
+                                    <td class="col-sm-1 text-center text-danger-icon"><a class="delete" data-iddepacu="<?= $dc->id ?>" href="#"><i class="fa fa-ban"></i></a></td>
+                                </tr>
+                            <?php endforeach ?>
+                        </tbody>
+                    </table>
             </div>      
         </div>    
         <?php endif; ?>
