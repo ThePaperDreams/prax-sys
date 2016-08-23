@@ -14,12 +14,13 @@
  * @property int $edad_maxima
  * @property tinyint $estado
  * @property int $entrenador_id
+ * @property boolean $enUso
  * 
  * Relaciones del modelo
  * @property Usuario $usuario
  */
 class Categoria extends CModelo {
-
+    private $enUso = null;
     /**
      * Esta función retorna el nombre de la tabla representada por el modelo
      * @return string
@@ -91,6 +92,16 @@ class Categoria extends CModelo {
         ];
     }
     
+    public function getEnUso(){
+        if($this->enUso == null){
+            $condicion = (['where' => "categoria_id = $this->id_categoria"]);
+            $matriculas = Matricula::modelo()->contar($condicion);
+            $planes = PlanTrabajo::modelo()->contar($condicion);
+            $this->enUso = $planes > 0 || $matriculas > 0;
+        }
+        return $this->enUso;        
+    }
+    
     public function getTarifaF(){
         return "$ " . number_format($this->tarifa);
     }
@@ -107,7 +118,7 @@ class Categoria extends CModelo {
         if($this->estado == 0){
             return CHtml::e('span', 'Inactivo', ['class' => 'label label-default']); 
         } else if($this->estado == 1){
-            return CHtml::e('span', 'Inactivo', ['class' => 'label label-success']); 
+            return CHtml::e('span', 'Activo', ['class' => 'label label-success']); 
         }
     }
     

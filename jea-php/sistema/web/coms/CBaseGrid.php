@@ -12,7 +12,12 @@
  * @author JAKO
  */
 abstract class CBaseGrid extends CComplemento{
+    protected $_id = "cb-grid";
     protected $_filtros = null;
+    protected $_filtrosAjax = null;
+    protected $filtradoAjax = false;
+    protected $_ajax = false;
+    protected $_orden = false;
     /**
      * @var CModelo
      */
@@ -21,6 +26,10 @@ abstract class CBaseGrid extends CComplemento{
     protected $_columnas;    
     protected $_opciones = null;
     protected $_crud = false;
+    /**
+     *
+     * @var CCriterio 
+     */
     protected $_criterios = [];
     
     protected $modelos = null;
@@ -29,6 +38,10 @@ abstract class CBaseGrid extends CComplemento{
      * @var CModelo 
      */
     protected $tColumnas = [];
+    /**
+     * Instancia temporal del modelo
+     * @var CModelo 
+     */
     protected $cModelo = null;
     protected $mEtiquetas = [];
     protected $cabecera = null;
@@ -44,18 +57,23 @@ abstract class CBaseGrid extends CComplemento{
     
     protected $tokkens = [
         'pk' => 1,
-    ];
+    ];   
     
     protected function crearModelo(){
         if(is_string($this->_modelo)){
-            $this->filtrar();
-            $this->_criterios['offset'] = $this->pagina * $this->_paginacion;
-            $this->_criterios['limit'] = $this->_paginacion;
-            $this->modelos = call_user_func([$this->_modelo, 'modelo'])->listar($this->_criterios);                        
-            unset($this->_criterios['offset'], $this->_criterios['limit']);
+            $this->filtrar();            
+            if(is_array($this->_criterios)){
+                $this->_criterios['offset'] = $this->pagina * $this->_paginacion;
+                $this->_criterios['limit'] = $this->_paginacion;
+                $this->modelos = call_user_func([$this->_modelo, 'modelo'])->listar($this->_criterios);
+                unset($this->_criterios['offset'], $this->_criterios['limit']);
+            } else {
+                $this->_criterios->limitar($this->_paginacion, $this->pagina * $this->_paginacion);                
+                $this->modelos = call_user_func([$this->_modelo, 'modelo'])->listar($this->_criterios);
+                $this->_criterios->limpiar("limite", "apartirDe");
+            }
             $this->total = call_user_func([$this->_modelo, 'modelo'])->contar($this->_criterios);
             $this->totalPaginas = ceil(intval($this->total) / intval($this->_paginacion));
-            $this->cModelo = new $this->_modelo();
             $this->mEtiquetas = $this->cModelo->etiquetasAtributos();
         } else if(is_array($this->_modelo) && count($this->_modelo) > 0){
             $clase = get_class($this->_modelo[0]);
@@ -67,6 +85,54 @@ abstract class CBaseGrid extends CComplemento{
         }
     }
     
+    protected function instanciarModelo(){
+        $this->cModelo = new $this->_modelo();
+    }
+    
+    protected function filtrosAjax(){
+        # construimos los filtros via ajax
+        $p = filter_input_array(INPUT_POST);
+        if(!isset($p['filtro-tabla-ajx'])){ return false; }        
+        unset($p['filtro-tabla-ajx']);
+        foreach($p AS $k=>$v){ if($v === ''){ unset($p[$k]); } }
+        $this->filtradoAjax = true;
+        $this->instanciarModelo();
+        $this->cModelo->atributos = $p;
+        $criterio = $this->cModelo->filtrosAjx();
+        
+        if($criterio === null){
+            $campos = [];
+            foreach($this->_filtrosAjax AS $k=>$v){
+                if($p[$v] == ''){ continue; }
+                $campos[] = "`$v` LIKE '%" . $p[$v] . "%'";
+            }
+            if(count($campos) > 0){
+                $this->_criterios['where'] = implode(' AND ', $campos);      
+            }            
+        } else {
+            $this->_criterios = $criterio;
+        }
+        
+        if(isset($p['orden']) && $p['orden'] != 'false'){
+            $orden = $p['orden'] == 'ASC';
+            $this->_criterios->orden("t." . $p['campoOrden'], $orden);
+        }
+        
+        $this->crearModelo();   
+        $this->validarPaginas();
+        $this->construirColumnas();
+        $this->crearCuerpoAjx();
+        $this->crearPie();
+        $body = $this->cuerpo;
+        $pie = $this->pie;
+        header("Content-Type: Application/json");
+        echo json_encode([
+            'body' => $body,
+            'pie' => $pie,
+        ]);
+        Sis::fin();
+    }
+    
     protected function filtrar(){
         $p = filter_input_array(INPUT_POST);
         if(!isset($p['filtro-tabla'])){ return false; }
@@ -76,23 +142,31 @@ abstract class CBaseGrid extends CComplemento{
                 continue;
             }
             $campos[] = "`$k` LIKE '%$v%'";
-        }
-        
-        if(count($campos) == 0){ return false; }
-        
+        }        
+        if(count($campos) == 0){ return false; }        
         $this->filtrosPost = $p['filtro-tabla'];
         $this->_criterios['where'] = implode(' AND ', $campos);
     }
     
     public function inicializar() {
         $this->validarPaginas();
+        $this->filtrosAjax();
+        $this->instanciarModelo();
         $this->crearModelo();
         $this->construirColumnas();
         $this->construirFiltros();
         $this->crearCabecera();
-        $this->crearCuerpo();
-        $this->crearPie();
-        $this->html = $this->ensamblar();
+        if($this->_ajax === true){
+            $this->crearCuerpoAjx();
+            $this->crearPie($this->_ajax);
+            $this->html = $this->ensamblar();
+            $this->scriptsAjax();
+        } else {
+            $this->crearCuerpo();
+            $this->crearPie();
+            $this->html = $this->ensamblar();
+            $this->scriptConfirmar();            
+        }
     }
     
     protected function validarPaginas(){
@@ -151,8 +225,7 @@ abstract class CBaseGrid extends CComplemento{
                 ['i' => 'eye', 'title' => 'Ver', 'url' => $controlador . '/ver&{id:pk}'],
                 ['i' => 'pencil', 'title' => 'Editar', 'url' => $controlador . '/editar&{id:pk}'],
                 ['i' => 'trash', 'title' => 'Eliminar', 'url' => $controlador . '/eliminar&{id:pk}', 'opciones' => ['class' => 'op-eliminar']],
-            ];
-            $this->scriptConfirmar();
+            ];            
         }
         
         if($this->_opciones === null){  return false; }                
@@ -171,7 +244,7 @@ abstract class CBaseGrid extends CComplemento{
                 $opciones[] = CHtml::link('', $this->evaluarExpresion($v['url'], $modelo), $opsHtml);
             }
         }
-        $columnas[] = CHtml::e("td", implode(' ', $opciones), ['class' => 'text-center table-options']);
+        $columnas[] = CHtml::e("td", implode(' ', $opciones), ['class' => 'text-center table-options']);        
     }
     
     private function evaluarExpVisible($exp, &$m){
@@ -183,6 +256,74 @@ abstract class CBaseGrid extends CComplemento{
                 . 'return confirm("¿Seguro que desea realizar esta acción?");'
                 . '});';
         Sis::Recursos()->Script($script, CMRecursos::POS_READY);
+    }
+    
+    private function scriptsAjax(){
+        $campos = $this->camposScript();
+        $script = 'var p = undefined;' .
+                  '$(function(){' .  
+                    '$(".j-grid-filtro").keyup(function(e){' .  
+                        'if(e.which === 13){' .  
+                            'ejefiltroTabla();' .  
+                        '}' .  
+                    '});' .
+                
+                    '$(".btn-orden").click(function(){' . 
+                        '$(".btn-orden").attr("data-active", "false");' . 
+                        'if($(this).hasClass("fa-caret-down")){' . 
+                            '$(this).removeClass("fa-caret-down")' . 
+                                    '.addClass("fa-caret-up")' . 
+                                    '.attr("data-active", "true")' . 
+                                    '.attr("data-type", "DESC");' . 
+                        '} else {' . 
+                            '$(this).removeClass("fa-caret-up")' . 
+                                    '.addClass("fa-caret-down")' . 
+                                    '.attr("data-active", "true")' . 
+                                    '.attr("data-type", "ASC");' . 
+                        '}' . 
+                        'ejefiltroTabla(p);' . 
+                    '});' . 
+                
+                    'setLinkEvents();' .  
+                '});';
+        $script .= 'function setLinkEvents(){' . 
+                        '$(".j-grid-link-pag").click(function(){ ' . 
+                            'p = $(this).attr("data-p");' .
+                            'ejefiltroTabla($(this).attr("data-p"));' . 
+                            'return false;' . 
+                        '});' . 
+                        '$(".op-eliminar").click(function(){' . 
+                            'return confirm("¿Seguro que desea realizar esta acción?");' . 
+                        '});' . 
+                    '}';
+        $script .= 'function ejefiltroTabla(p){' . 
+                        'var orden = $(".btn-orden[data-active=\'true\']").attr("data-type");' . 
+                        'var nombre = $(".btn-orden[data-active=\'true\']").attr("data-name");' .
+                        'var url = "' . Sis::apl()->urlActual() . '" + (p !== undefined? "?p=" + p : "");' . 
+                        '$.ajax({' . 
+                            '"type": "POST",' . 
+                            '"url" : url,' . 
+                            '"data" : {' . 
+                                '"filtro-tabla-ajx" : true,' . 
+                                'orden: orden !== undefined? orden : false,' . 
+                                'campoOrden: nombre,' .
+                                $campos . 
+                            '},' . 
+                            'success: function(obj){' . 
+                                '$("#' . $this->_id . ' tbody").html(obj.body);' . 
+                                '$("#' . $this->_id . '-pagination").html(obj.pie);' . 
+                                'setLinkEvents();' . 
+                            '}' . 
+                        '});' . 
+                    '}';
+        Sis::Recursos()->Script($script, CMRecursos::POS_BODY);
+    }
+    
+    private function camposScript(){
+        $campos = implode(', ', array_map(function($k){
+            return "$k : $(\"#filtro-tabla-$k\").val()";
+        }, $this->_filtrosAjax));
+        return $campos;
     }
     
     protected function evaluarExpresion($exp, $modelo){
@@ -244,5 +385,9 @@ abstract class CBaseGrid extends CComplemento{
     abstract function crearPie();
     
     abstract function construirFiltros();
+    
+    abstract function crearCuerpoAjx();
+    
+    abstract function crearPieAjx();
     
 }

@@ -48,6 +48,14 @@ final class CHtml {
         return "<input type=\"$tipo\" value=\"$valor\" $opcionesHtml/>";
     }
     
+    public static function campoOculto($valor = '', $nombre = null, $opciones = []){
+        $opcionesHtml = $opciones;
+        if($nombre !== null){
+            $opcionesHtml['name'] = $nombre;
+        }
+        return self::input('hidden', $valor, $opcionesHtml);
+    }
+    
     /**
      * Esta función permite crear un campo de texto html
      * @param string $valor
@@ -179,6 +187,6 @@ final class CHtml {
     public static function img($src, $opciones = []){
         $opciones['src'] = $src;
         return self::e('img', '', $opciones, false);
-    }
+    }  
     
 }
