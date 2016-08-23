@@ -63,6 +63,10 @@ $this->tituloPagina="Pagos pendientes";
             'success': function(respuesta){
                 if(respuesta.error === false){
                     $("#pagos-pendientes").html(respuesta.html);
+                    var elemento = $("#pagos-pendientes tr").length;
+                    if(elemento===0){
+                    lobiAlert ("success","No tiene pagos pendientes");
+        }
                 } else {
                     console.log("error al consultar pagos pendientes");
                 }

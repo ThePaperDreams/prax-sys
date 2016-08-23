@@ -25,9 +25,9 @@ class CtrlEntrada extends CControlador {
             $modelo->atributos = $this->_p['Entradas'];
             $modelo->fecha_realizacion = date("Y-m-d H:i:s");
             if ($modelo->guardar()) {
-                foreach ($_POST[$this->_p['Entradas']] as $key => $artc) {
+                foreach ($this->_p['Entradas'] as $key => $artc) {
                     $mdEI = new EntradaImplemento();
-                    $mdEI->cantidad = $_POST[$this->_p['Entradas']][$key];
+                    $mdEI->cantidad = $this->_p['Entradas'][$key];
                     $mdEI->implemento_id = $artc;
                     $mdEI->entrada_id = $modelo->id_entrada;
                     $mdEI->guardar();
