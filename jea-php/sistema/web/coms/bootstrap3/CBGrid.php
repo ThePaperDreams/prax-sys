@@ -35,8 +35,10 @@ class CBGrid extends CBaseGrid{
             } else {                
                 $nombreColumna = $c;
             }
+            $orden = "";
+            if($this->_orden === true){ $this->construirOrden($orden, $nombreColumna);}
             if(key_exists($nombreColumna, $this->mEtiquetas)){
-                $ths[] = CHtml::e('th', $this->mEtiquetas[$nombreColumna], ['class' => 'text-center']);
+                $ths[] = CHtml::e('th',  $orden . " " . $this->mEtiquetas[$nombreColumna], ['class' => 'text-center']);
             }
         }
         
@@ -45,6 +47,10 @@ class CBGrid extends CBaseGrid{
         }
         
         return $ths;
+    }
+    
+    private function construirOrden(&$orden, $nombreColumna){
+        $orden = CBoot::fa('caret-down', ['class' => 'btn-orden', 'style' => 'cursor:pointer;', 'data-type' => 'ASC', 'data-active' => 'false', 'data-name' => $nombreColumna]);
     }
 
     public function crearCuerpo() {

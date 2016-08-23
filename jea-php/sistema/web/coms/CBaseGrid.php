@@ -17,7 +17,7 @@ abstract class CBaseGrid extends CComplemento{
     protected $_filtrosAjax = null;
     protected $filtradoAjax = false;
     protected $_ajax = false;
-    
+    protected $_orden = false;
     /**
      * @var CModelo
      */
@@ -111,6 +111,11 @@ abstract class CBaseGrid extends CComplemento{
             }            
         } else {
             $this->_criterios = $criterio;
+        }
+        
+        if(isset($p['orden']) && $p['orden'] != 'false'){
+            $orden = $p['orden'] == 'ASC';
+            $this->_criterios->orden("t." . $p['campoOrden'], $orden);
         }
         
         $this->crearModelo();   
@@ -255,16 +260,35 @@ abstract class CBaseGrid extends CComplemento{
     
     private function scriptsAjax(){
         $campos = $this->camposScript();
-        $script = '$(function(){' .  
+        $script = 'var p = undefined;' .
+                  '$(function(){' .  
                     '$(".j-grid-filtro").keyup(function(e){' .  
                         'if(e.which === 13){' .  
                             'ejefiltroTabla();' .  
                         '}' .  
-                    '});' .  
+                    '});' .
+                
+                    '$(".btn-orden").click(function(){' . 
+                        '$(".btn-orden").attr("data-active", "false");' . 
+                        'if($(this).hasClass("fa-caret-down")){' . 
+                            '$(this).removeClass("fa-caret-down")' . 
+                                    '.addClass("fa-caret-up")' . 
+                                    '.attr("data-active", "true")' . 
+                                    '.attr("data-type", "DESC");' . 
+                        '} else {' . 
+                            '$(this).removeClass("fa-caret-up")' . 
+                                    '.addClass("fa-caret-down")' . 
+                                    '.attr("data-active", "true")' . 
+                                    '.attr("data-type", "ASC");' . 
+                        '}' . 
+                        'ejefiltroTabla(p);' . 
+                    '});' . 
+                
                     'setLinkEvents();' .  
                 '});';
         $script .= 'function setLinkEvents(){' . 
                         '$(".j-grid-link-pag").click(function(){ ' . 
+                            'p = $(this).attr("data-p");' .
                             'ejefiltroTabla($(this).attr("data-p"));' . 
                             'return false;' . 
                         '});' . 
@@ -273,12 +297,16 @@ abstract class CBaseGrid extends CComplemento{
                         '});' . 
                     '}';
         $script .= 'function ejefiltroTabla(p){' . 
+                        'var orden = $(".btn-orden[data-active=\'true\']").attr("data-type");' . 
+                        'var nombre = $(".btn-orden[data-active=\'true\']").attr("data-name");' .
                         'var url = "' . Sis::apl()->urlActual() . '" + (p !== undefined? "?p=" + p : "");' . 
                         '$.ajax({' . 
                             '"type": "POST",' . 
                             '"url" : url,' . 
                             '"data" : {' . 
                                 '"filtro-tabla-ajx" : true,' . 
+                                'orden: orden !== undefined? orden : false,' . 
+                                'campoOrden: nombre,' .
                                 $campos . 
                             '},' . 
                             'success: function(obj){' . 
