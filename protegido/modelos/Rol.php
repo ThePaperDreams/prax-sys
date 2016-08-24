@@ -34,6 +34,10 @@ class Rol extends CModelo {
             'estado' => ['def' => '1'],
         ];
     }
+    
+    public function filtrosAjx() {
+            return null;
+    }
 
     public function filtros() {
         return ['requeridos' => 'nombre,desarrollador', 'seguros' => '*'];

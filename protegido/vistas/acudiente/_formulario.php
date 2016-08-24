@@ -61,7 +61,7 @@ $formulario->abrir();
                 <?php echo $formulario->lista($modelo2, 'id_tipo', $tiposDocumentos, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un Tipo de documento']) ?>
             </div>
             <div class="col-sm-2">
-                <?php echo CBoot::boton(CBoot::fa('plus-circle') . ' Agregar', 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'id' => 'btn-addDoc']) ?>
+                <?php echo CBoot::boton(CBoot::fa('plus') . ' Agregar', 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'id' => 'btn-addDoc']) ?>
             </div>
             <?php if(count($modelo->Detalles)): ?>                   
             <div class="col-sm-4">
@@ -69,13 +69,13 @@ $formulario->abrir();
             </div>
             <div class="modal fade cortina" id="myModal" tabindex="-1" role="dialog">
                 <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
+                    <div class="p-modal-content">
+                        <div class="p-modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title">Documentos asociados actualmente</h4>
+                            <h4 class="modal-title">Documentos </h4>
                         </div>
-                        <div class="modal-body">
-                            <table class="table table-bordered table-condensed">
+                        <div class="p-modal-body">
+                            <table class="table">
                                 <thead>
                                     <tr>
                                         <th>Documento</th>
@@ -94,7 +94,7 @@ $formulario->abrir();
                                 </tbody>
                             </table>
                         </div>
-                        <div class="modal-footer">
+                        <div class="p-modal-footer">
                             <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
                         </div>
                     </div>

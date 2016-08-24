@@ -71,19 +71,19 @@ $formulario->abrir();
             <div class="col-sm-2">
                 <?php echo CBoot::boton(CBoot::fa('plus') . ' Agregar', 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'id' => 'btn-addAcu']) ?>
             </div>
-            <?php if(count($modelo->Acudiente)): ?>                   
+            <?php if(!$modelo->nuevo): ?>                   
             <div class="col-sm-4">
                 <?php echo CBoot::boton(CBoot::fa('file-text-o') . ' Ver acudientes asociados', 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'data-toggle' => 'modal', 'data-target' => '#myModal1']) ?>
             </div>
             <div class="modal fade cortina" id="myModal1" tabindex="-1" role="dialog">
                 <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
+                    <div class="p-modal-content">
+                        <div class="p-modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title">Acudientes asociados actualmente</h4>
+                            <h4 class="modal-title">Acudientes </h4>
                         </div>
-                        <div class="modal-body">
-                            <table class="table table-bordered table-condensed">
+                        <div class="p-modal-body">
+                            <table class="table">
                                 <thead>
                                     <tr>
                                         <th>Acudiente</th>
@@ -93,14 +93,14 @@ $formulario->abrir();
                                 <tbody id="tabla-acudientes">
                                     <?php foreach ($modelo->Acudiente AS $dc): ?>
                                         <tr>
-                                            <td titulo="<?= $dc->Acudiente->datos ?>"><?= $dc->Acudiente->datos ?></td>            
+                                            <td val="<?= $dc->Acudiente->id_acudiente ?>"><?= $dc->Acudiente->getAcudiente($dc->Acudiente->id_acudiente, $dc->Acudiente->datos); ?></td>            
                                             <td class="col-sm-1 text-center text-danger-icon"><a class="delete" data-iddepacu="<?= $dc->id ?>" href="#"><i class="fa fa-ban"></i></a></td>
                                         </tr>
                                     <?php endforeach ?>
                                 </tbody>
                             </table>
                         </div>
-                        <div class="modal-footer">
+                        <div class="p-modal-footer">
                             <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
                         </div>
                     </div>
@@ -108,43 +108,16 @@ $formulario->abrir();
             </div>
             <?php endif; ?>
         </div>
-        <?php if ($modelo->nuevo): ?>
-            <div class="row">
-                <div class="col-sm-12">
-        <?php else: ?>
-            <div class="row">
-                <div class="col-sm-6">
-        <?php endif; ?>
-            <div id="lst-acu" class="panel-default">
-                <div class="panel-heading">Acudientes</div>
-                <ul id="lis-acu" class="list-group"></ul>
+        
+        <div class="row">
+            <div class="col-sm-12">
+                <div id="lst-acu" class="panel-default">
+                    <div class="panel-heading">Acudientes</div>
+                        <ul id="lis-acu" class="list-group"></ul>
                 </div>
-            </div>
-        <?php if (!$modelo->nuevo): ?>
-            <div class="col-sm-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading text-center">Acudientes asociados actualmente</div>            
-                    <table class="table table-bordered table-condensed">
-                        <thead>
-                            <tr>
-                                <th>Acudiente</th>
-                                <th>Eliminar</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tabla-acudientes">
-                            <?php foreach ($modelo->Acudiente AS $dc): ?>
-                                <tr>
-                                    <td titulo="<?= $dc->Acudiente->datos ?>"><?= $dc->Acudiente->datos ?></td>            
-                                    <td class="col-sm-1 text-center text-danger-icon"><a class="delete" data-iddepacu="<?= $dc->id ?>" href="#"><i class="fa fa-ban"></i></a></td>
-                                </tr>
-                            <?php endforeach ?>
-                        </tbody>
-                    </table>
-            </div>      
-        </div>    
-        <?php endif; ?>
-            </div>
-                </div>
+            </div>        
+        </div>
+    </div>
         
     <div role="tabpanel" class="tab-pane" id="documentos">
         <div class="row">
@@ -152,7 +125,7 @@ $formulario->abrir();
                 <?php echo $formulario->lista($modelo3, 'id_tipo', $tiposDocumentos, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un Tipo de documento']) ?>
             </div>
             <div class="col-sm-2">
-                <?php echo CBoot::boton(CBoot::fa('plus-circle') . ' Agregar', 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'id' => 'btn-addDoc']) ?>
+                <?php echo CBoot::boton(CBoot::fa('plus') . ' Agregar', 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'id' => 'btn-addDoc']) ?>
             </div>
             <?php if(count($modelo->Documento)): ?>                   
             <div class="col-sm-4">
@@ -160,13 +133,13 @@ $formulario->abrir();
             </div>
             <div class="modal fade cortina" id="myModal" tabindex="-1" role="dialog">
                 <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
+                    <div class="p-modal-content">
+                        <div class="p-modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title">Documentos asociados actualmente</h4>
+                            <h4 class="modal-title">Documentos </h4>
                         </div>
-                        <div class="modal-body">
-                            <table class="table table-bordered table-condensed">
+                        <div class="p-modal-body">
+                            <table class="table">
                                 <thead>
                                     <tr>
                                         <th>Documento</th>
@@ -185,7 +158,7 @@ $formulario->abrir();
                                 </tbody>
                             </table>
                         </div>
-                        <div class="modal-footer">
+                        <div class="p-modal-footer">
                             <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
                         </div>
                     </div>
@@ -217,7 +190,7 @@ $formulario->abrir();
     $(function(){  
         var cd = 0; // Contador de documentos para los id de los input hidden
         bonitoInputFile(); // Para embellecer el file input de la foto
-        $("#btn-addDoc").click(function(){            
+        $("#btn-addDoc").click(function(){ // agregar documentos nuevos       
             var choice_tipo_doc = $("#TiposDocumento_id_tipo option:selected");
             if (choice_tipo_doc.val() !== "") {
                 cd++;
@@ -232,8 +205,36 @@ $formulario->abrir();
                 $("#form-deportistas").append(input_hidden);
                 bonitoInputFile();    
             }
-        });  
-        $("a.eliminar").click(function(){
+        }); 
+        $("#btn-addAcu").click(function () { // agregar acudientes nuevos
+            var e = $("#Acudientes_id_acudiente option:selected");
+            var acu_existe = encontrarAcu(e.val());
+            var acu_valido = e.val() !== "";
+            if (acu_valido && acu_existe) {
+                $("#lis-acu").append("<li class='list-group-item' data='" + e.val() + "'><button class='btn btn-block btn-primary' onclick='eliminar(this)' type='button'><i class='fa fa-trash'></i> " + e.html() + "</button></li>");
+                $("#form-deportistas").append("<input hidden='' name='Acudient[]' id='a" + e.val() + "' value='" + e.val() + "'>");
+            } else if (acu_valido) {
+                lobiAlert("error","El Deportista ya tiene asociado este Acudiente");
+            }            
+        });
+        $("a.delete").click(function () { // eliminar acudiente ya asociado al deportista
+            if (confirm('¿Está seguro de eliminar este Acudiente?')) {
+                var a = $(this);
+                var iddepacu = a.attr("data-iddepacu");
+                $.ajax({
+                    type: 'post',
+                    url: "<?php echo Sis::crearUrl(['Deportista/EliminarAcudiente']) ?>",
+                    data: {iddepacu: iddepacu}
+                }).done(function (resp) {
+                    if (resp["tipo"] === "success") {
+                        $(a).closest("tr").remove();    
+                    }
+                    lobiAlert(resp.tipo, resp.msj);
+                });
+            }
+            return false;
+        });
+        $("a.eliminar").click(function(){ // eliminar documento ya asociado al deportista
             if (confirm('¿Está seguro de eliminar este Documento?')) {
                 var that_a = $(this);
                 var iddepdoc = that_a.attr("data-iddepdoc");
@@ -251,14 +252,19 @@ $formulario->abrir();
             return false;
         });
         $("#form-deportistas").submit(function () {
-            if (validarDocumentos()) {
-                validarIdentificacion();
-            }            
+            if (validarAcudiente()) {
+                if (validarDocumentos()) {
+                    validarIdentificacion();                    
+                }
+            }
             return false;
+        });
+        $("#Deportistas_fecha_nacimiento").change(function(){
+            validarFecha($(this));
         });
     });
     
-    function validarIdentificacion() {
+    function validarIdentificacion() { // validar que la identificacion es unique
         var identificacion = $("#Deportistas_identificacion").val();
         if (identificacion === "") {
             return;
@@ -280,8 +286,8 @@ $formulario->abrir();
         });
     }
     
-    function validarDocumentos(){
-        var resp = true;
+    function validarDocumentos(){ // Validar que se ingrese el nombre y se suba algun archivo a los
+        var resp = true;            // file input documentos
         $("#lst-doc li input").each(function(){  
             if ($(this).val() === "") {
                 resp = false;
@@ -293,17 +299,63 @@ $formulario->abrir();
         return resp;
     }
     
-    function eliminarDocumentoLi(e){
+    function eliminarDocumentoLi(e){ // eliminar el documento (aun no asociado al deportista) de la lista
         $("#"+$(e).attr("numdoc")).remove(); // eliminar input hidden
         $(e).closest("li").remove(); // eliminar li       
     }
     
-    function bonitoInputFile(){
+    function bonitoInputFile(){ // embellecer el file input
         $("input[type=file]").fileinput({
             showPreview: false,
             showRemove: false,
             showUpload: false,
             browseLabel: "Seleccionar archivo"
         });    
+    }
+    
+    function encontrarAcu(val) { // ¿El Deportista ya esta asociado con el acudiente?
+        var current_val = "", existe = true;
+        $("#tabla-acudientes td[val]").each(function (v, e) {
+            current_val = e.getAttribute("val");
+            if (current_val === val) {
+                existe = false;
+            }
+        });
+        $("#lis-acu li[data]").each(function (v, e) {
+            current_val = e.getAttribute("data");
+            if (current_val === val) {
+                existe = false;
+            }
+        });
+        return existe;
+    }
+    
+    function eliminar(e) { // Eliminar acudiente (aun no asociado al deportista) de la lista
+        var id_input_hidden = $(e).closest('li').attr('data');
+        $(e).closest('li').remove();
+        $("#a" + id_input_hidden).remove();
+    }
+    
+    function validarFecha(fecha) { // Validar rango de edad del deportista
+        var anios = new Date(new Date - new Date(fecha.val())).getFullYear()-1970;       
+        //console.log(anios);
+        if (anios < 5 || anios > 17) {
+            lobiAlert('error', 'Seleccione una fecha valida');
+            $('#btn-send').attr("disabled", "disabled");
+        } else {
+            lobiAlert('success', 'Fecha valida');
+            $('#btn-send').removeAttr("disabled");
+        }
+    }
+    
+    function validarAcudiente(){ // Validar que este asociado como minimo un acudiente o
+        var resp = true;           // se vaya a asociar uno (lista de acudientes nuevos) 
+        var x = $('#lis-acu li').length;
+        var y = $('#tabla-acudientes tr').length;
+        if (x < 1 && y === 0) {
+            resp = false;
+            lobiAlert('error', 'El Deportista debe contar mínimo con un Acudiente');   
+        }
+        return resp;
     }
 </script>

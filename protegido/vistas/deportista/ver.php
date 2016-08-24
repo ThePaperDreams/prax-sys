@@ -93,7 +93,7 @@ $this->opciones = [
 </div>
 <?php if (!is_null($modelo->foto)): ?>
 <div id="photo" class="modal cortina">
-  <div class="p-modal">
+  <div class="p-modal"> <!-- p-modal-content el modal toma el tamaño de la foto -->
       <div class="p-modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Foto del Deportista</h4>
@@ -111,13 +111,14 @@ $this->opciones = [
 </div>
 <?php endif; ?>        
 <?php if(count($modelo->Documento)): ?>
-<div class="col-sm-6">
+<div class="row">
+<div class="col-sm-12">
     <div class="panel panel-default">
         <div class="panel-heading text-center">
-            <h4 class="panel-title"><a data-toggle="collapse" href="#collapse">Documentos asociados actualmente <i class="fa fa-chevron-down"></i></a></h4>
+            <h4 class="panel-title"><a data-toggle="collapse" href="#collapse">Documentos <i class="fa fa-chevron-down"></i></a></h4>
         </div>  
         <div id="collapse" class="panel-collapse collapse">
-            <table class="table table-bordered table-condensed">
+            <table class="table table-hover">
                 <thead>
                     <tr>
                         <th>Documento</th>
@@ -138,21 +139,23 @@ $this->opciones = [
         </div>
     </div>
 </div>
+</div>
 <?php endif; ?>
-<div class="col-sm-6">
+<div class="row">
+<div class="col-sm-12">
     <div class="panel panel-default">
         <div class="panel-heading text-center">
-            <h4 class="panel-title"><a data-toggle="collapse" href="#collapse1">Acudientes asociados actualmente <i class="fa fa-chevron-down"></i></a></h4>
+            <h4 class="panel-title"><a data-toggle="collapse" href="#collapse1">Acudientes <i class="fa fa-chevron-down"></i></a></h4>
         </div>  
         <div id="collapse1" class="panel-collapse collapse">
-            <table class="table table-bordered table-hover">
+            <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th>Ver detalles</th>
+                        <th>Acudiente</th>
                         <th>Eliminar</th>
                     </tr>
                 </thead>
-                <tbody id="tabla-documentos">
+                <tbody>
                     <?php foreach ($modelo->Acudiente AS $dc): ?>
                         <tr>                                    
                             <td><?= $dc->Acudiente->getAcudiente($dc->Acudiente->id_acudiente, $dc->Acudiente->datos); ?></td>            
@@ -161,9 +164,9 @@ $this->opciones = [
                     <?php endforeach ?>
                 </tbody>
             </table>                
-
         </div>
     </div>
+</div>
 </div>
 <script>
     $(function () {
@@ -185,7 +188,7 @@ $this->opciones = [
             return false;
         });
         $("a.delete").click(function () {
-            if (confirm('¿Está seguro de eliminar este acudiente?')) {
+            if (confirm('¿Está seguro de eliminar este Acudiente?')) {
                 var len = $("a.delete");
                 if (len.length > 1) {
                     var a = $(this);
@@ -196,17 +199,20 @@ $this->opciones = [
                         data: {
                             iddepacu: iddepacu
                         }
-                    }).done(function () {
-                        $(a).closest("tr").remove();
-                    }).fail(function () {});
+                    }).done(function (resp) {
+                        if (resp["tipo"] === "success") {
+                            $(a).closest("tr").remove();    
+                        }
+                        lobiAlert(resp.tipo, resp.msj);
+                    });
                 } else {
-                    alert('Mínimo un acudiente');
+                    lobiAlert('error','El Deportista debe contar mínimo con un Acudiente');
                 }
             }
             return false;
         });
         $("#btn-eliminar").click(function () {
-            if (confirm('¿Está seguro de eliminar la foto del deportista?')) {
+            if (confirm('¿Está seguro de eliminar la Foto del Deportista?')) {
                 var dep = "<?= $modelo->id_deportista; ?>";
                 var nom = "<?= $modelo->foto; ?>";
                 $.ajax({
@@ -216,9 +222,10 @@ $this->opciones = [
                         dep: dep,
                         nom: nom
                     }
-                }).done(function () {
+                }).done(function (resp) {
                     $("#cerrar-modal").click();
                     $("#pho").html("<span class='label label-default'>Ninguna</span>");
+                    lobiAlert(resp.tipo, resp.msj);
                 }).fail(function () {});
             }
         });

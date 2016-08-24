@@ -14,6 +14,8 @@
 ?>
 
 <?= $this->complemento('!siscoms.bootstrap3.CBGrid', [
+    'ajax' => true,
+    'filtrosAjax' => ['nombre', 'estado'],
     'modelo' => 'Rol',
     # id_rol, nombre, descripcion, desarrollador, estado
     'columnas' => ['nombre', 'estado' => 'etiquetaEstado'],
