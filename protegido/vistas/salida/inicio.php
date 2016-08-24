@@ -13,6 +13,13 @@ $this->tituloPagina="Salida de implementos";
 ?>
 
 <?= $this->complemento('!siscoms.bootstrap3.CBGrid', [
+    'ajax' => true,
+    'filtrosAjax' => [
+        'fecha_realizacion',
+        'fecha_entrega', 
+        'estado' => CBoot::select('', ['Inactivo', 'Activo', 'Devuelto'], ['defecto' => 'Estado', 'style' => 'min-width: 150px;', 'name' => 'estado']),
+        'responsable_id', 
+     ],
     'modelo' => 'Salida',
     'criterios' => [
         'order' => 'estado = 1 DESC'

@@ -60,6 +60,11 @@
             'seguros' => '*',
         ];
     }
+    public function filtrosAjx() {
+        $criterio = new CCriterio();
+        $criterio->condicion("nombre", $this->nombre, "=");
+       return $criterio;
+    }
     /**
      * Esta función permite listar todos los registros
      * @param array $criterio

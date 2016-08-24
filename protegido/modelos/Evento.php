@@ -78,6 +78,17 @@
         ];
     }
     
+    public function filtrosAjx() {
+        $criterio = new CCriterio();
+        $criterio->condicion("titulo", $this->titulo, "LIKE")
+           ->y("tipo_id", $this->tipo_id, "=")     
+           ->y("estado_id", $this->estado_id, "=")
+           ->y("fecha_publicacion", $this->fecha_publicacion, "=")
+           ->y("autor", $this->autor, "LIKE");
+        
+       return $criterio;
+    }
+    
     public function filtros() {
         return [
             'requeridos' => 'titulo,contenido,fecha_publicacion,fecha_disponibilidad,tipo_id,lugar,hora,estado,autor',

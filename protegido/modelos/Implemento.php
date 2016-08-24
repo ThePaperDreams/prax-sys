@@ -29,6 +29,19 @@
             'seguros'=>'*',
         ];
     }
+    public function filtrosAjx() {
+        $criterio = new CCriterio();
+        $criterio->condicion("t1.nombre", $this->categoria_id, "LIKE")
+           ->union("tbl_categorias_implementos", "t1")
+           ->donde("t1.id_categoria", "=", "t.categoria_id")
+           ->y("t.nombre", $this->nombre, "LIKE")     
+           ->y("t.estado_id", $this->estado_id, "=")
+           ->y("t.unidades", $this->unidades, "=")
+           ->y("t.minimo_unidades", $this->minimo_unidades, "=")      
+           ->y("t.maximo_unidades", $this->maximo_unidades, "=");
+        
+       return $criterio;
+    }
     /**
      * Esta función retorna los atributos de la tabla tbl_implementos
      * @return array
@@ -66,7 +79,7 @@
         return [
                 
 		'categoria_id' => 'Nombre categoría',
-                'estado' => 'Estado',
+                'estado_id' => 'Estado',
 		'nombre' => 'Nombre', 
 		'descripcion' => 'Descripcion', 
 		'unidades' => 'Unidades', 

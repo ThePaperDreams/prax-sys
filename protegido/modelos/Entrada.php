@@ -77,6 +77,16 @@ class Entrada extends CModelo {
         ];
     }
 
+    public function filtrosAjx() {
+        $criterio = new CCriterio();
+        $concat = "CONCAT_WS(' ', t.fecha_realizacion, t.estado, t1.nombres)";
+        $criterio->union("tbl_usuarios", "t1")
+           ->donde("t1.id_usuario", "=", "t.responsable_id")
+           ->condicion($concat, $this->responsable_id, "LIKE")
+            ->y("t.estado", $this->estado, "=")
+           ->y("t.fecha_realizacion", $this->fecha_realizacion, "=");
+       return $criterio;
+    }
     /**
      * Esta función permite listar todos los registros
      * @param array $criterio
