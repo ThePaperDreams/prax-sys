@@ -319,4 +319,12 @@ abstract class CBaseModelo {
             }
         }
     }            
+    /**
+     * Esta función sirve para limpiar los atributos de un modelo
+     */
+    public function limpiarAtributos(){
+        foreach($this->_atributos AS $k=>$v){
+            $this->_atributos[$k] = null;
+        }
+    }
 }

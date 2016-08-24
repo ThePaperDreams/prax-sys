@@ -177,7 +177,7 @@ abstract class CModelo extends CBaseModelo{
      */
     public function hayError(){
         return $this->_error;
-    }
+    }   
     
     /**
      * Esta función retorna una instancia del modelo
