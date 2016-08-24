@@ -119,7 +119,8 @@ class Documento extends CModelo {
     // Usado en Documentos
     public function getDocumentos(){
         $icono = CBoot::fa("cloud-download");
-        $url = Sis::UrlBase() . $this->url;
-        return CHtml::link($icono . " $this->titulo", $url, ['target' => '_blank', 'download' => $this->url]);
+        $url = Sis::UrlBase() . "publico/" . $this->url;
+        $titulo = $this->titulo;
+        return CHtml::link($icono . " " . $titulo, $url, ['target' => '_blank', 'download' => $titulo]);
     }
 }

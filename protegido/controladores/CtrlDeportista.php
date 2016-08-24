@@ -71,19 +71,6 @@ class CtrlDeportista extends CControlador {
                 $this->asociarDeportistaDocumento($dep, $doc);
             }
         }
-       /* if (isset($_FILES['Documentos']) && isset($this->_p['TiposDocumentos'])) {
-            foreach ($this->_p['TiposDocumentos'] as $k => $v) {
-                $tipodoc = new TipoDocumento();
-                $nomtipo = $tipodoc->primer(["where" => "id_tipo=" . $v])->nombre;
-                $files = CArchivoCargado::instanciarTodasPorNombre('Documentos');
-                $rutaDestino = Sis::resolverRuta(Sis::crearCarpeta("!publico.deportistas.$dep"));
-               // if (isset($files[$k])) {
-                    $files[$k]->guardar($rutaDestino, $nomtipo);
-                    $doc = $this->asociarDocumento($nomtipo, $k, $v, $files);
-                    $this->asociarDeportistaDocumento($dep, $doc);
-                //}
-            }
-        }*/
     }
 
     public function asociarDocumento($nomtipo, $k, $v, $files, $dep) {
@@ -94,12 +81,6 @@ class CtrlDeportista extends CControlador {
         $doc->tipo_id = $v;
         $doc->guardar();                
         return $doc;
-/*        $doc = new Documento();
-        $doc->titulo = $nomtipo;
-        $doc->url = $nomtipo . "." . $files[$k]->getExtension();
-        $doc->tipo_id = $v;
-        $doc->guardar();
-        return $doc;*/
     }
 
     public function asociarDeportistaDocumento($dep, $doc) {
@@ -182,20 +163,6 @@ class CtrlDeportista extends CControlador {
                 "msj" => $msj
             ]);
         }
-        /*$ad = new DeportistaDocumento();
-        $d = new Documento();
-        $a = new Deportista();
-        if (isset($this->_p['iddepdoc']) && isset($this->_p['iddoc']) && isset($this->_p['nomtipo']) && isset($this->_p['iddep'])) {
-            $ad->id = $this->_p['iddepdoc'];
-            $d->id_documento = $this->_p['iddoc'];
-            $d->url = $this->_p['nomtipo'];
-            $a->id_deportista = $this->_p['iddep'];
-            if ($ad->eliminar()) {
-                $this->accionEliminarDocumento($d, $a);
-            } else {
-                
-            }
-        }*/
     }
 
     public function accionEliminarDocumento($d, $a) {
@@ -210,9 +177,17 @@ class CtrlDeportista extends CControlador {
         $da = new DeportistaAcudiente();
         if (isset($this->_p['iddepacu'])) {
             $da->id = $this->_p['iddepacu'];
-            if ($da->eliminar()) {
-                
+            if ($da->eliminar()) {                
+                $tipo = "success";
+                $msj = "Se eliminó el Acudiente";
+            }else{
+                $tipo = "error";
+                $msj = "No se pudo eliminar el Acudiente";
             }
+            $this->json([
+                "tipo" => $tipo,
+                "msj" => $msj
+            ]);
         }
     }
 
@@ -259,7 +234,7 @@ class CtrlDeportista extends CControlador {
      * Esta función permite eliminar un registro existente
      * @param int $pk
      */
-    public function accionEliminar($pk) {
+    /*public function accionEliminar($pk) {
         $modelo = $this->cargarModelo($pk);
         if ($modelo->eliminar()) {
             
@@ -267,7 +242,7 @@ class CtrlDeportista extends CControlador {
             # lógica para error al borrar
         }
         $this->redireccionar('inicio');
-    }
+    }*/
 
     public function accionEliminarFoto() {
         $dep = $this->_p['dep'];
@@ -278,11 +253,14 @@ class CtrlDeportista extends CControlador {
             $ruta = Sis::resolverRuta("!publico.imagenes.deportistas.fotos");
             $ruta .= DS . $nom;
             unlink($ruta);
-            unlink($ruta);
             $path = Sis::resolverRuta("!publico.imagenes.deportistas.fotos.thumbs");
             $path .= DS . "tmb_" . $nom;
-            unlink($path);
+            unlink($path);            
         }
+        $this->json([
+            "tipo" => "success",
+            "msj" => "Foto eliminada"
+        ]);
     }
 
     private function validarIdentificacion($id = null) {

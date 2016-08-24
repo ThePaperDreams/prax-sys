@@ -87,10 +87,10 @@ $this->opciones = [
 <div class="col-sm-12">
     <div class="panel panel-default">
         <div class="panel-heading text-center">            
-            <a href="#docs" class="collapsed" role="button" data-toggle="collapse" aria-controls="docs">Documentos asociados actualmente <i class="fa fa-chevron-down"></i></a>            
+            <a href="#docs" class="collapsed" role="button" data-toggle="collapse" aria-controls="docs">Documentos <i class="fa fa-chevron-down"></i></a>            
         </div>          
         <div id="docs" class="panel-collapse collapse">
-            <table class="table table-bordered table-hover">
+            <table class="table table-hover">
                 <thead>
                     <tr>
                         <th>Descargar</th>

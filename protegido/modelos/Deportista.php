@@ -119,10 +119,10 @@ class Deportista extends CModelo{
     public function getImagenPerfil(){
         if($this->foto !== "" && $this->foto !== null){
             //$icono = CBoot::fa('cloud-download');
-            $icono = CBoot::fa('file-photo-o');
+            //$icono = CBoot::fa('file-photo-o');
             //$url = Sis::UrlBase() . 'publico/imagenes/deportistas/fotos/' . $this->foto;
             //return CHtml::link('Descargar ' . $icono, $url, ['class' => 'label label-primary', 'target' => '_blank', 'download' => $this->foto]);
-            return CHtml::link($icono . ' Ver Foto', '', ['class' => 'label label-primary', 'data-toggle' => 'modal', 'data-target' => '#photo', 'id' => 'a-modal']);            
+            return CHtml::link('Ver Foto', '', ['class' => 'label label-primary', 'data-toggle' => 'modal', 'data-target' => '#photo', 'id' => 'a-modal']);            
         } else {
             return CHtml::e("span", 'Ninguna', ['class' => 'label label-default']);
         }
