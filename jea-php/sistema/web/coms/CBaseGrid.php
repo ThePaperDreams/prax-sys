@@ -97,16 +97,17 @@ abstract class CBaseGrid extends CComplemento{
         foreach($p AS $k=>$v){ if($v === ''){ unset($p[$k]); } }
         $this->filtradoAjax = true;
         $this->instanciarModelo();
+        $this->cModelo->limpiarAtributos();
         $this->cModelo->atributos = $p;
+//        var_dump($this->cModelo);
         $criterio = $this->cModelo->filtrosAjx();
         
         if($criterio === null){
-            $campos = [];
             foreach($this->_filtrosAjax AS $k=>$v){
-                if($p[$v] == ''){ continue; }
+                if(!isset($p[$v]) || $p[$v] == ''){ continue; }
                 $campos[] = "`$v` LIKE '%" . $p[$v] . "%'";
             }
-            if(count($campos) > 0){
+            if(isset($campos) && count($campos) > 0){
                 $this->_criterios['where'] = implode(' AND ', $campos);      
             }            
         } else {
@@ -262,10 +263,13 @@ abstract class CBaseGrid extends CComplemento{
         $campos = $this->camposScript();
         $script = 'var p = undefined;' .
                   '$(function(){' .  
-                    '$(".j-grid-filtro").keyup(function(e){' .  
+                    '$("input.j-grid-filtro").keyup(function(e){' .  
                         'if(e.which === 13){' .  
                             'ejefiltroTabla();' .  
                         '}' .  
+                    '});' .
+                    '$("select.j-grid-filtro").change(function(){' . 
+                        'ejefiltroTabla();' . 
                     '});' .
                 
                     '$(".btn-orden").click(function(){' . 
@@ -320,9 +324,17 @@ abstract class CBaseGrid extends CComplemento{
     }
     
     private function camposScript(){
+        $filtros = [];
+        foreach($this->_filtrosAjax AS $k=>$v){
+            if(is_string($k)){
+                $filtros[] = $k;
+            } else {
+                $filtros[] = $v;
+            }
+        }
         $campos = implode(', ', array_map(function($k){
             return "$k : $(\"#filtro-tabla-$k\").val()";
-        }, $this->_filtrosAjax));
+        }, $filtros));
         return $campos;
     }
     

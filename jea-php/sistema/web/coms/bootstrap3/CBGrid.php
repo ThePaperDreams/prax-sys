@@ -144,9 +144,7 @@ class CBGrid extends CBaseGrid{
                 $ths[] = $this->construirCampoFiltro($filtros, $v);
             }
         }
-        
-        if($this->_opciones !== null){ $ths[] = CHtml::e('th', '&nbsp', []); }
-        
+        if($this->_opciones !== null){ $ths[] = CHtml::e('th', '&nbsp', []); }        
         $tr = CHtml::e('tr', implode('', $ths));
         $this->filtros = $tr;
     }
@@ -157,8 +155,40 @@ class CBGrid extends CBaseGrid{
             $campo = CBoot::text($val, ['name' => "filtro-tabla[$atributo]", 'id' => "filtro-tabla-$atributo", 'class' => 'j-grid-filtro']);
             $this->camposScript[] = $atributo;
             return CHtml::e('th', $campo, []);
-        } else {
+        } else if(key_exists($atributo, $filtros)){
+            $campo = $filtros[$atributo];
+            $this->setFiltroPersonalizado($campo);
+            return CHtml::e('th', $campo, []);
+        }else {
             return CHtml::e('th', '&nbsp', []);
+        }
+    }
+    
+    private function setFiltroPersonalizado(&$campo){
+        # extraemos el nombre del input si este existe
+        $salida = [];
+        preg_match('/name="(.*)" /', $campo, $salida);        
+        if(is_array($salida) && count($salida) >= 2){
+            $this->camposScript[] = $salida[1];
+        } else {
+            return false;
+        }
+        # validamos si el campo es select
+        if(strpos($campo, "<select") !== false){
+            $campo = str_replace('name="' . $salida[1] . '"', 'name="filtro-tabla[' . $salida[1] . ']"', $campo);
+        } else {
+            return false;
+        }
+        #agregamos la clase para el evento
+        if(strpos($campo, 'class="')){
+            $campo = str_replace('class="', 'class="j-grid-filtro ', $campo);
+        }
+        
+        #agregamos el id
+        if(strpos($campo, 'id="')){
+            preg_replace('/id="(.*)?"/', 'id="filtro-tabla-' . $salida[1] . '"', $campo);            
+        } else {
+            $campo = str_replace('name="', 'id="filtro-tabla-' . $salida[1] . '" name="' , $campo);
         }
     }
 

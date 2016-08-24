@@ -14,6 +14,13 @@
 ?>
 
 <?= $this->complemento('!siscoms.bootstrap3.CBGrid', [
+    'ajax' => true,
+    'filtrosAjax' => [
+        'deportista_id', 
+        'estado' => CBoot::select('', ['Anulado', 'Vigente'], ['defecto' => 'Estado', 'style' => 'min-width: 150px;', 'name' => 'estado']),
+        'anio', 
+        'categoria_id'
+    ],
     'modelo' => 'Matricula',
     'criterios' => [
         'order' => 'estado = 1 DESC, fecha_realizacion DESC',
@@ -21,8 +28,8 @@
     # id_matricula, fecha_pago, url_comprobante, estado, deportista_id, categoria_id
     'columnas' => [
         'deportista_id' => 'Deportista->NombreIdentificacion',
-        'estado' => 'EtiquetaEstado',
-        'url_comprobante' => 'Comprobante',
+        'estado' => ['valor' => 'EtiquetaEstado', 'opciones' => ['class' => 'text-center']],
+        'url_comprobante' => ['valor' => 'Comprobante', 'opciones' => ['class' => 'text-center']],
         'anio',
         'categoria_id' => 'Categoria->nombre',
     ],
