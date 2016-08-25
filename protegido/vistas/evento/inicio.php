@@ -15,7 +15,7 @@
     'ajax' => true,
     'filtrosAjax' => [
         'titulo',
-        'estado_id' => CBoot::select('', [1 => 'Disponible', 2 => 'No disponible', 3 => 'Borrador'], ['defecto' => 'Estado', 'style' => 'min-width: 150px;', 'name' => 'estado_id']),
+        'estado_id' => CBoot::select('', $Estado, ['defecto' => 'Estado', 'style' => 'min-width: 150px;', 'name' => 'estado_id']),
         'fecha_publicacion',
         'tipo_id' => CBoot::select('', $TipoEvento, ['defecto' => 'Tipo de Evento', 'style' => 'min-width: 150px;', 'name' => 'tipo_id']),
         'autor',

@@ -37,6 +37,7 @@
 		'estado' => ['def' => '1'] , 
 		'posicion', 
 		'entrenador_id', 
+                'torneo_id'
         ];
     }
     

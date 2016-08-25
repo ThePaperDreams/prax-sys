@@ -13,8 +13,8 @@
         ]
     ];
 ?>
-<div class="col-sm-8">
-    <div class="panel panel-primary">
+<div class="col-sm-12">
+    <div class="panel panel-default">
         <div class="panel-heading text-center">
             Ver detalles
         </div>
@@ -46,8 +46,9 @@
                 </tr>
                 <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('torneo_id') ?></th>
-                    <td><?php echo $modelo->mTorneo->nombre ?></td>
+                    <td><?php echo $modelo->mTorneo->nombre?></td>
                 </tr>
+
                                 
             </tbody>
         </table>

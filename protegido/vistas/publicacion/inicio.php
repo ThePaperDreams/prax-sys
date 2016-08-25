@@ -15,8 +15,8 @@
     'ajax' => true,
     'filtrosAjax' => [
         'titulo',
-        'estado_id' => CBoot::select('', [1 => 'Borrador', 2 => 'Disponible', 3 => 'No disponible'], ['defecto' => 'Estado', 'style' => 'min-width: 150px;', 'name' => 'estado_id']),
-        'tipo_id' => CBoot::select('', [1 => 'Noticia', 2 => 'Circular', 3 => 'Evento'], ['defecto' => 'Tipo de Publicación', 'style' => 'min-width: 150px;', 'name' => 'estado_id']),
+        'estado_id' => CBoot::select('', $estd, ['defecto' => 'Estado', 'style' => 'min-width: 150px;', 'name' => 'estado_id']),
+        'tipo_id' => CBoot::select('', $public, ['defecto' => 'Tipo de Publicación', 'style' => 'min-width: 150px;', 'name' => 'tipo_id']),
      ],
     
     'modelo' => 'Publicacion',

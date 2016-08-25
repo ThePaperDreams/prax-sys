@@ -100,7 +100,7 @@ class CtrlEquipo extends CControlador{
             'deportista' => CHtml::modelolista(Deportista::modelo()->listar(), "id_deportista", "nombre1"),
             'deportistas' => $modelo->getDeportistas(),
             'Entre' => CHtml::modelolista(Usuario::modelo()->listar(), "id_usuario", "nombre_usuario"),
-            'mTorneo' => CHtml::modelolista(Torneo::modelo()->listar(), "id_torneo", "nombre"),  
+            'Torneo' => CHtml::modelolista(Torneo::modelo()->listar(), "id_torneo", "nombre"),  
             ]);
     }
     
