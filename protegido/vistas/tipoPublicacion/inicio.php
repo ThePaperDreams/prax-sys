@@ -12,6 +12,10 @@
 ?>
 
 <?= $this->complemento('!siscoms.bootstrap3.CBGrid', [
+    'ajax' => true,
+    'filtrosAjax' => [
+        'nombre', 
+     ],
     'modelo' => 'TipoPublicacion',
     # id_tipo_publicacion, nombre, descripcion
     'columnas' => ['nombre', 'descripcion'],

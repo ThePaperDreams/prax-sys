@@ -28,6 +28,9 @@ class CtrlEvento extends CControlador{
         $modelo = new Evento();
         if(isset($this->_p['Eventos'])){
             $modelo->atributos = $this->_p['Eventos'];
+//            echo "<pre>";
+//            var_dump($modelo);
+//            exit();
             if($modelo->guardar()){
                 # lógica para guardado exitoso
                 Sis::Sesion()->flash("alerta", [
@@ -72,14 +75,14 @@ class CtrlEvento extends CControlador{
         if(isset($this->_p['validarNombre'])){
             if($id === null){
                 $criterio = [
-                    'where' => "LOWER(titulo) = LOWER('" . $this->_p['titulo'] . "')"
+                    'where' => "LOWER(titulo) = LOWER('" . $this->_p['nombre'] . "')"
                 ];
             } else {
                 $criterio = [
-                    'where' => "id_evento <> $id AND LOWER(titulo) = LOWER('" . $this->_p['titulo'] . "')"
+                    'where' => "id_evento <> $id AND LOWER(titulo) = LOWER('" . $this->_p['nombre'] . "')"
                 ];
             }
-            $categoria = CategoriaImplemento::modelo()->primer($criterio);
+            $categoria = Evento::modelo()->primer($criterio);
             
             if($categoria != null){
                 $error = true;

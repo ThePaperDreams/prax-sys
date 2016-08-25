@@ -90,6 +90,15 @@
         ];
     }
     
+    public function filtrosAjx() {
+        $criterio = new CCriterio();
+        $criterio->condicion("nombre", $this->nombre, "LIKE")
+           ->y("cupo_minimo", $this->cupo_minimo, "=")     
+           ->y("cupo_maximo", $this->cupo_maximo, "=")
+           ->y("posicion", $this->posicion, "=");        
+       return $criterio;
+    }
+    
     public function getEstadoEtiqueta(){
         if($this->estado == 0){
             return CHtml::e('span', 'Inactivo', ['class' => 'label label-danger']);

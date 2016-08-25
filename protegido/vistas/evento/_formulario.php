@@ -16,25 +16,51 @@ $formulario->abrir();
         </div>
         <div role="tabpanel" class="tab-pane" id="cargar">
             <div class="row" id="tab-imagenes">
-                <?php echo $formulario->campoTexto($modelo, 'fecha_publicacion', ['label' => true, 'group' => true, 'class' => 'campo-fecha']) ?>
-                <?php echo $formulario->campoTexto($modelo, 'fecha_disponibilidad', ['label' => true, 'group' => true, 'class' => 'campo-fecha']) ?>
-                <div class="form-group">
-                    <label>Tipos de Eventos</label>
-                    <div class="input-group">  
-                        <?php echo $formulario->lista($modelo, 'tipo_id', $TipoEvento, ['defecto' => 'Seleccione un tipo']) ?>
-                    <div class="input-group-addon"><i class="fa fa-qrcode"></i></div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <?php echo $formulario->campoTexto($modelo, 'fecha_publicacion', ['label' => true, 'group' => true, 'class' => 'campo-fecha']) ?>
+                    </div>
+                </div>   
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <?php echo $formulario->campoTexto($modelo, 'fecha_disponibilidad', ['label' => true, 'group' => true, 'class' => 'campo-fecha']) ?>
                     </div>
                 </div>
-                <?php echo $formulario->campoTexto($modelo, 'lugar', ['label' => true, 'group' => true]) ?>
-                <?php echo $formulario->campoTexto($modelo, 'hora', ['label' => true, 'group' => true]) ?>
-                 <div class="form-group">
-                    <label>Estado</label>
-                    <div class="input-group">
-
-                        <?php echo $formulario->lista($modelo, 'estado', $Estado, ['defecto' => 'Seleccione un estado para el evento']) ?>
-                        <div class="input-group-addon"><i class="fa fa-list-ul"></i></div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label>Tipos de Eventos</label>
+                        <div class="input-group">  
+                            <?php echo $formulario->lista($modelo, 'tipo_id', $TipoEvento, ['defecto' => 'Seleccione un tipo']) ?>
+                        <div class="input-group-addon"><i class="fa fa-qrcode"></i></div>
+                        </div>
                     </div>
                 </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label>Estado</label>
+                        <div class="input-group">
+                            <?php echo $formulario->lista($modelo, 'estado_id', $Estado, ['defecto' => 'Seleccione un estado para el evento']) ?>
+                            <div class="input-group-addon"><i class="fa fa-list-ul"></i></div>
+                        </div>
+                    </div>          
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">    
+                        <?php echo $formulario->campoTexto($modelo, 'lugar', ['label' => true,]) ?>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group"> 
+                        <p id="err-hora" class="text-danger form-requerido" style="display:none">El campo <b>Hora</b> no puede estar vacio</p>
+                        <label>Hora</label>
+                        <div class="input-icon datetime-pick time-only">
+                            <input data-format="hh:mm:ss" type="text" name="Eventos[hora]" class="form-control input-md" id="Eventos_hora" requerido="1"/>
+                            <span class="add-on">
+                                <i class="sa-side-ui"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>    
             </div>
         </div>
         <div class="row">
@@ -52,7 +78,9 @@ $formulario->abrir();
 
 <script>
 $(document).ready(function() {
-    $('.summernote').summernote();
+    $('.summernote').summernote({
+        height: 300,
+    });
     $(".campo-fecha").change(function(){
             validarFecha($(this));
         });
@@ -89,6 +117,7 @@ $(document).ready(function() {
                 nombre: nombre,
             },
             success: function (respuesta) {
+                console.log(respuesta);
                 if (respuesta.error == true) {
                     mostrarAlert("error", "Ya existe ese nombre");
                 } else {

@@ -26,6 +26,14 @@
 <?php $this->cerrarSeccion()?>
 
 <?= $this->complemento('!siscoms.bootstrap3.CBGrid', [
+    'ajax' => true,
+    'filtrosAjax' => [
+        'nombre',
+        'cupo_minimo',
+        'fecha_inicio',
+        'edad_maxima',
+     ],
+    
     'modelo' => 'Torneo',
     # id_torneo, cupo_maximo, cupo_minimo, edad_maxima, edad_minima, fecha_inicio, fecha_fin, nombre, observaciones, tabla_posiciones, equipo_id
     'columnas' => [

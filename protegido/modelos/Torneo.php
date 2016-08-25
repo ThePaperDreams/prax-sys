@@ -83,6 +83,15 @@
         ];
     }
     
+    public function filtrosAjx() {
+        $criterio = new CCriterio();
+        $criterio->condicion("nombre", $this->nombre, "LIKE")
+           ->y("cupo_minimo", $this->cupo_minimo, "=")     
+           ->y("edad_maxima", $this->edad_maxima, "=")
+           ->y("fecha_inicio", $this->fecha_inicio, "=");        
+       return $criterio;
+    }
+
     
     /**
      * Esta función permite listar todos los registros
