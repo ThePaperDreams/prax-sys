@@ -16,6 +16,12 @@ $this->opciones = [
 <?=
 
 $this->complemento('!siscoms.bootstrap3.CBGrid', [
+    'ajax' => true,
+    'filtrosAjax' => [
+        'nombre', 
+        'estado' => CBoot::select('', ['Inactivo','Activo'], ['defecto' => 'Estado', 'style' => 'min-width: 150px;', 'name' => 'estado']),
+
+     ],
     'modelo' => 'CategoriaImplemento',
     'criterios' => ['order' => "estado=1 desc"],
     # id_categoria, nombre, descripcion

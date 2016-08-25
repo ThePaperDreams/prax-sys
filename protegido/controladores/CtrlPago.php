@@ -126,6 +126,13 @@ class CtrlPago extends CControlador{
     
     public function accionAnular($id){
         $modelo = Pago::modelo()->porPk($id);
+        if ($modelo->estado==0) {
+             Sis::Sesion()->flash("alerta", [
+                    'msg' => 'Esta categoria ya se encuentra inactiva',
+                    'tipo' => 'error',
+                ]);
+             $this->redireccionar('inicio');
+        }
         $modelo->estado = $modelo->estado == 1? 0 : 1;
         $modelo->guardar();
         Sis::Sesion()->flash("alerta", [

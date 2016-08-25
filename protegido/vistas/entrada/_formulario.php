@@ -57,7 +57,8 @@ $formulario->abrir();
         $("#form-entradas").submit(function(){
             if($("[data-implemento]").length === 0){
                 lobiAlert("error", "Añada por lo menos un implemento");   
-            }else if(validarEnt()){   
+            }else{   
+                validarEnt();
                 } 
             return false;
         });
@@ -91,7 +92,7 @@ $formulario->abrir();
         fila.remove();
     }
     
-    function validarEnt(){
+  function validarEnt(){
         var cant = $("#cant").val();
         if(parseInt(cant)=== 0){
             mostrarAlert('error','Unidades maximas no pueden ser cero');

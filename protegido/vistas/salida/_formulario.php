@@ -57,9 +57,10 @@ $formulario->abrir();
         
         $("#form-salidas").submit(function(){
             if($("[data-implemento]").length === 0){
-                lobiAlert("error", "Añada por lo menos un implemento");
-                return false;
-            }
+                lobiAlert("error", "Añada por lo menos un implemento");   
+            }else if(validarSal()){   
+                } 
+            return false;
         });
         
         $("#Salidas_fecha_entrega").change(function(){
@@ -135,6 +136,15 @@ $formulario->abrir();
         } 
         if(date > currDate) {
             $('#btn-send').removeAttr("disabled");
+        }
+    }
+    function validarSal(){
+        var cant = $("#cant").val();
+        if(parseInt(cant)=== 0){
+            mostrarAlert('error','Unidades maximas no pueden ser cero');
+            return false;
+        }else{
+            return true;
         }
     }
 </script>

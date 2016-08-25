@@ -42,8 +42,9 @@
     ],
     'opciones' => [
         ['i' => 'eye', 'title' => 'Ver','url' => 'pago/ver&{id:pk}'],
-        ['i' => 'refresh', 'title' => 'Cambiar estado','url' => 'pago/anular&{id:pk}', 'visible' => '$m->estado == 1', 'opciones' => ['class' => 'op-eliminar']],
+        ['i' => 'refresh', 'title' => 'Cambiar estado','url' => 'pago/anular&{id:pk}', 'visible' => '$m->estado == 1', 'opciones' => ['class' => 'op-eliminar','id'=>'cambioE']],
     ],
     'paginacion' => 10,
 ]) ?>
 <?php 
+

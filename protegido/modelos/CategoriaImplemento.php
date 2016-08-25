@@ -50,7 +50,13 @@ class CategoriaImplemento extends CModelo {
             'seguros'=>'*',
         ];
     }
-    
+    public function filtrosAjx() {
+        $criterio = new CCriterio();
+        $criterio->condicion("nombre", $this->nombre, "LIKE")  
+          ->y("estado", $this->estado, "=");
+        
+       return $criterio;
+    }
     /**
      * Esta función retorna un alias dado a cada uno de los atributos del modelo
      * @return string
