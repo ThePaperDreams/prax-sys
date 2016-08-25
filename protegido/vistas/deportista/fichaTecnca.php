@@ -62,6 +62,14 @@ $this->migas = [
                 </tr>
             </table>
         </div>
+        <div class="col-sm-12 text-center">
+            <a class="btn btn-default" href="<?= Sis::apl()->crearUrl(['deportista/verSeguimientos', 'id' => $deportista->id_deportista]) ?>">
+                Ver seguimientos <i class="fa fa-eye"></i>
+            </a>
+            <a class="btn btn-primary" href="<?= Sis::apl()->crearUrl(['deportista/seguimiento', 'id' => $deportista->id_deportista]) ?>">
+                Añadir seguimiento <i class="fa fa-plus"></i>
+            </a>
+        </div>
     </div>
 </div>
 

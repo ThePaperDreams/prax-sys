@@ -25,59 +25,74 @@ $formulario->abrir();
     $(function(){
         $("#form-implementos").submit(function(){
             if(maxMin()){
-                validarNombre();
+                if(implementos()){
+                    validarNombre();
+                } 
             }
             return false;
-        });
-        
-        function validarNombre(){
-            var nombre = $("#Implementos_nombre").val();
-            if(nombre === ""){ return; }
-            
-            $.ajax({
-                type: 'POST',
-                url: '<?= $url ?>',
-                data: {
-                    validarNombre: true,
-                    nombre : nombre,
-                }, 
-                success: function(respuesta){
-                    if(respuesta.error == true){
-                        mostrarAlert("error", "Ya existe ese nombre");
-                    }else{
-                        document.getElementById("form-implementos").submit();
-                    }
+        });    
+    });
+    
+    function validarNombre(){
+        var nombre = $("#Implementos_nombre").val();
+        if(nombre === ""){ return; }
+
+        $.ajax({
+            type: 'POST',
+            url: '<?= $url ?>',
+            data: {
+                validarNombre: true,
+                nombre : nombre,
+            }, 
+            success: function(respuesta){
+                if(respuesta.error == true){
+                    mostrarAlert("error", "Ya existe ese nombre");
+                }else{
+                document.getElementById("form-implementos").submit();
+
                 }
-            });
-        }
-        
-        function mostrarAlert(tipo, msg){
-            Lobibox.notify(tipo, {
-                size: 'mini',
-                showClass: 'bounceInRight',
-                hideClass: 'bounceOutRight',
-                msg:msg,
-                delay: 5000,
-                soundPath: '<?= Sis::UrlRecursos() ?>librerias/lobibox/sounds/',
-            });
-        }
-        
-        function maxMin(){
+            }
+        });
+    }
+    
+    function mostrarAlert(tipo, msg){
+        Lobibox.notify(tipo, {
+            size: 'mini',
+            showClass: 'bounceInRight',
+            hideClass: 'bounceOutRight',
+            msg:msg,
+            delay: 5000,
+            soundPath: '<?= Sis::UrlRecursos() ?>librerias/lobibox/sounds/',
+        });
+    }
+    
+    function maxMin(){
         var maximo = $('#Implementos_maximo_unidades').val();
         var current = $('#Implementos_unidades').val();
         var minimo = $('#Implementos_minimo_unidades').val();
-        if(parseInt(maximo) >parseInt(current)){
-            mostrarAlert('error','Unidades no puede superar al maximo');
-            return false;
-        }
-        if(parseInt(maximo) < parseInt(minimo)){
+        if(parseInt(minimo) > parseInt(maximo)){
             mostrarAlert('error','Unidades minimas no pueden superar al maximo');
             return false;
         }else{
         return true;
         }
-        
+    }    
+    
+    function implementos(){
+        var maximo = $('#Implementos_maximo_unidades').val();
+        var current = $('#Implementos_unidades').val();
+        var minimo = $('#Implementos_minimo_unidades').val();
+        if (parseInt(current)===0){
+            mostrarAlert('error','Unidades  no pueden ser cero');
+            return false;
+        }else if(parseInt(minimo)===0){
+            mostrarAlert('error','Unidades minimas no pueden ser cero');
+            return false;
+        }else if(parseInt(maximo)===0){
+            mostrarAlert('error','Unidades maximas no pueden ser cero');
+            return false;
+        }else{
+            return true;
+        }
     }
-        
-    });
 </script>

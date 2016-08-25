@@ -24,6 +24,7 @@ class CtrlRol extends CControlador {
         $modelo = new Rol();
         if (isset($this->_p['Roles'])) {
             $modelo->atributos = $this->_p['Roles'];
+            $modelo->nombre = trim($this->_p['Roles']['nombre']);
             if ($modelo->guardar()) {
                 $this->alertar('success','Registro Exitoso');
                 $this->redireccionar('inicio');
@@ -58,6 +59,26 @@ class CtrlRol extends CControlador {
             Sis::fin();
         }
     }
+    
+    public function accionCambiarEstado($pk) {
+        $modelo = $this->cargarModelo($pk);
+        if ($modelo->estado == 0) {
+            $this->alertar('warning', 'El Rol ya se encuentra inactivo');
+            $this->redireccionar('inicio');
+        }
+        $usuario = Usuario::modelo()->listar([
+            'where' => "rol_id=$pk",
+        ]);
+        if (count($usuario) > 0) {
+            $this->alertar('error', 'No se puede Inactivar este Rol');
+        } else {
+            $modelo->estado = !$modelo->estado;
+            if ($modelo->guardar()) {
+                $this->alertar('success', 'Cambio de estado exitoso');
+            }            
+        }
+        $this->redireccionar('inicio');
+    }
 
     /**
      * Esta función permite editar un registro existente
@@ -68,6 +89,7 @@ class CtrlRol extends CControlador {
         $modelo = $this->cargarModelo($pk);
         if (isset($this->_p['Roles'])) {
             $modelo->atributos = $this->_p['Roles'];
+            $modelo->nombre = trim($this->_p['Roles']['nombre']);
             if ($modelo->guardar()) {
                 # lógica para guardado exitoso
                 $this->alertar('success','Actualización Exitosa');
@@ -93,7 +115,7 @@ class CtrlRol extends CControlador {
      * Esta función permite eliminar un registro existente
      * @param int $pk
      */
-    public function accionEliminar($pk) {
+    /*public function accionEliminar($pk) {
         $modelo = $this->cargarModelo($pk);
         $rxr = RutaRol::modelo()->listar([
             'where' => "rol_id=$pk",
@@ -104,7 +126,7 @@ class CtrlRol extends CControlador {
             $this->alertar('success','Eliminación Exitosa');
         }
         $this->redireccionar('inicio');
-    }    
+    }*/    
     
     private function alertar($tipo, $msj) {
         Sis::Sesion()->flash("alerta", [

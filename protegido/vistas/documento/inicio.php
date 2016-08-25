@@ -15,7 +15,7 @@
 <?= $this->complemento('!siscoms.bootstrap3.CBGrid', [
     'modelo' => 'Documento',
     # id_documento, url, titulo, tipo_id, papelera
-    'columnas' => ['titulo','tipo_id' => 'TipoDocumento->nombre', 'url'],
+    'columnas' => ['titulo' => 'Documentos','tipo_id' => 'TipoDocumento->nombre'],
     //'opciones' => true,
     'paginacion' => 10,
 ])

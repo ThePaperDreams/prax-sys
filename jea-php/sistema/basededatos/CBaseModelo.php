@@ -197,11 +197,15 @@ abstract class CBaseModelo {
     
     /**
      * Esta función permite contar los registros de una tabla
-     * @param array $criterio
+     * @param CCriterio $criterio
      * @return int
      */
     protected function _contar($criterio = []){
-        $criterio['select'] = 'COUNT(*) AS total';
+        if(is_array($criterio)){
+            $criterio['select'] = 'COUNT(*) AS total';
+        } else if($criterio instanceof CCriterio){
+            $criterio->columnas("COUNT(*) AS total");
+        }
         $this->setCriterios($criterio);
         $registros = $this->ejecutar();
         if(count($registros) > 0){
@@ -270,9 +274,14 @@ abstract class CBaseModelo {
      * Esta función permite setear los criterios para crear la consulta
      * @param array $criterios
      */
-    private function setCriterios($criterios = []){
+    private function setCriterios($criterios = []){        
+        if(is_array($criterios)){
+            $c = $criterios;
+        } else if($criterios instanceof CCriterio){            
+            $c = $criterios->getCriterios();
+        }
         Sis::apl()->bd->controlador->tabla = $this->tabla();
-        Sis::apl()->bd->controlador->setCriterios($criterios);
+        Sis::apl()->bd->controlador->setCriterios($c);
     }
     
     /**
@@ -310,4 +319,12 @@ abstract class CBaseModelo {
             }
         }
     }            
+    /**
+     * Esta función sirve para limpiar los atributos de un modelo
+     */
+    public function limpiarAtributos(){
+        foreach($this->_atributos AS $k=>$v){
+            $this->_atributos[$k] = null;
+        }
+    }
 }

@@ -21,8 +21,13 @@ class CtrlAcudiente extends CControlador {
         $this->validarIdentificacion();
         $modelo = new Acudiente();
         $modelo2 = new TipoDocumento();
+        /* Probancia 
+        echo "<pre>";
+        var_dump($this->_p['TipoDocumentos'], $this->_p['Documentos'],$this->_p['NombresDocumentos']);
+        exit(); */
         if (isset($this->_p['Acudientes'])) {            
             $modelo->atributos = $this->_p['Acudientes'];
+            $modelo->identificacion = trim($this->_p['Acudientes']['identificacion']);
             if ($modelo->guardar()) {
                 $this->asociarDocumentos($modelo->id_acudiente);
                 $this->alertar('success','Guardado exitoso');                
@@ -63,23 +68,23 @@ class CtrlAcudiente extends CControlador {
     }
     
     public function asociarDocumentos($acu) {
-        if (isset($_FILES['Documentos']) && isset($this->_p['TiposDocumentos'])) {
+        if (isset($_FILES['Documentos']) && isset($this->_p['TiposDocumentos']) && isset($this->_p['NombresDocumentos'])) {
             foreach ($this->_p['TiposDocumentos'] as $k => $v) {
-                $tipodoc = new TipoDocumento();
-                $nomtipo = $tipodoc->primer(["where" => "id_tipo=" . $v])->nombre;
+                $nomtipo = $this->_p['NombresDocumentos'][$k];
                 $files = CArchivoCargado::instanciarTodasPorNombre('Documentos');
                 $rutaDestino = Sis::resolverRuta(Sis::crearCarpeta("!publico.acudientes.$acu"));
                 $files[$k]->guardar($rutaDestino, $nomtipo);
-                $doc = $this->asociarDocumento($nomtipo, $k, $v, $files);
+                $doc = $this->asociarDocumento($nomtipo, $k, $v, $files, $acu);
                 $this->asociarAcudienteDocumento($acu, $doc);
             }
         }
     }
 
-    public function asociarDocumento($nomtipo, $k, $v, $files){
+    public function asociarDocumento($nomtipo, $k, $v, $files, $acu){
         $doc = new Documento();
         $doc->titulo = $nomtipo;
-        $doc->url = $nomtipo . "." . $files[$k]->getExtension();
+        // Usar DS en vez de / (?)
+        $doc->url = "acudientes/$acu/$nomtipo." . $files[$k]->getExtension();
         $doc->tipo_id = $v;
         $doc->guardar();                
         return $doc;
@@ -102,6 +107,7 @@ class CtrlAcudiente extends CControlador {
         $modelo2 = new TipoDocumento();
         if (isset($this->_p['Acudientes'])) {
             $modelo->atributos = $this->_p['Acudientes'];
+            $modelo->identificacion = trim($this->_p['Acudientes']['identificacion']);
             if ($modelo->guardar()) {
                 $this->asociarDocumentos($modelo->id_acudiente);
                 $this->alertar('success', 'Modificación exitosa');                
@@ -124,7 +130,6 @@ class CtrlAcudiente extends CControlador {
     public function accionVer($pk) {
         $modelo = $this->cargarModelo($pk);
         $this->mostrarVista('ver', ['modelo' => $modelo,
-            'tiposIdentificaciones' => CHtml::modelolista(TipoIdentificacion::modelo()->listar(), "id_tipo_documento", "nombre"),
         ]);
     }
 
@@ -142,34 +147,42 @@ class CtrlAcudiente extends CControlador {
         $this->redireccionar('inicio');
     }
     
-    public function accionEliminarAcudienteDocumento() {
-        $ad = new AcudienteDocumento();
-        $d = new Documento();
-        $a = new Acudiente();
-        if (isset($this->_p['idacudoc']) && isset($this->_p['iddoc']) && isset($this->_p['nomtipo']) && isset($this->_p['idacu'])) {
-            $ad->id = $this->_p['idacudoc'];
-            $d->id_documento = $this->_p['iddoc'];
-            $d->url = $this->_p['nomtipo'];
-            $a->id_acudiente = $this->_p['idacu'];
-            if ($ad->eliminar()) {
-                $this->accionEliminarDocumento($d, $a);
-            } else {            
+    public function accionEliminarAcudienteDocumento(){
+        if (isset($this->_p['idacudoc'])) {
+            $idAcuDoc = $this->_p['idacudoc'];            
+            $acuDoc = AcudienteDocumento::modelo()->porPk($idAcuDoc);
+            $idDoc = $acuDoc->documento_id;
+            $doc = Documento::modelo()->porPk($idDoc);
+            $rutaDoc = Sis::resolverRuta("!publico") . "\\" . str_replace("/", "\\", $doc->url);
+            /*echo "<pre>";
+            var_dump($rutaDoc);
+            exit();*/
+            $bandera = 0;
+            $bandera += unlink($rutaDoc) ? 1: 0; // eliminar documento del host
+            $bandera += $acuDoc->eliminar() ? 1: 0; // eliminar documento de la tbl_acudientes_documentos
+            if ($bandera == 2) {
+                $doc->eliminar(); // eliminar documento de la tbl_documentos                
+                $tipo = "success";
+                $msj = "Se eliminó el Documento";
+            }else{
+                $tipo = "error";
+                $msj = "No se pudo eliminar el Documento";
             }
-        }
-    } 
-    
-    public function accionEliminarDocumento($d, $a){
-        if ($d->eliminar()) {
-            $ruta = Sis::resolverRuta("!publico.acudientes.$a->id_acudiente" . "\\");
-            $ruta .= $d->url;
-            unlink($ruta);
+            $this->json([
+                "tipo" => $tipo,
+                "msj" => $msj
+            ]);
         }
     }
     
     public function accionCambiarEstado($pk) {
         $modelo = $this->cargarModelo($pk);
+        if ($modelo->estado == 0) {
+            $this->alertar('warning', 'El Acudiente ya se encuentra Inactivo');
+            $this->redireccionar('inicio');
+        }
         $da = DeportistaAcudiente::modelo()->listar([
-            'where' => "id_acudiente=$pk",
+            'where' => "acudiente_id=$pk",
         ]);
         if (count($da) > 0) {
             $this->alertar('error', 'No se puede Inactivar');

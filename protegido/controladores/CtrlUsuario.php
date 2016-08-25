@@ -27,11 +27,12 @@ class CtrlUsuario extends CControlador {
         exit();*/
         if (isset($this->_p['Usuarios'])) {
             $modelo->atributos = $this->_p['Usuarios'];
-            $modelo->foto = $modelo->nombre_usuario;
-            $modelo->clave = sha1($this->_p['Usuarios']['clave']);
+            $modelo->nombre_usuario = trim($this->_p['Usuarios']['nombre_usuario']);
+            $modelo->email = trim($this->_p['Usuarios']['email']);
+            $modelo->foto = $this->guardarFoto($modelo->nombre_usuario);
+            $modelo->clave = sha1($this->_p['Usuarios']['uclave']);
             if ($modelo->guardar()) {
-                # lógica para guardado exitoso
-                $this->guardarFoto($modelo->nombre_usuario);
+                # lógica para guardado exitoso                
                 $this->alertar('success','Registro Exitoso');
                 $this->redireccionar('inicio');
             }
@@ -43,12 +44,22 @@ class CtrlUsuario extends CControlador {
         ]);
     }
     
-    private function guardarFoto($usuario) {
+    public function guardarFoto($usuario) {
         if ($_FILES['Usuarios']['error'] !== UPLOAD_ERR_OK) {
-            $foto = CArchivoCargado::instanciarModelo('Usuarios','foto');
-            $ruta = Sis::resolverRuta(Sis::crearCarpeta("!publico.imagenes.usuarios"));
-            $nombre = $usuario . $foto->getExtension();
-            $foto->guardar($ruta, $nombre);
+            $files = CArchivoCargado::instanciarModelo('Usuarios', 'foto');
+            $rutaDestino = Sis::resolverRuta(Sis::crearCarpeta("!publico.imagenes.usuarios"));
+            $rutaThumbs = Sis::resolverRuta(Sis::crearCarpeta("!publico.imagenes.usuarios.thumbs"));
+            $nom = "Foto_$usuario";
+            if ($files->guardar($rutaDestino, $nom)) {
+                $files->thumbnail($rutaThumbs, [
+                    'tamanio' => '400',
+                    'tipo' => strtolower($files->getExtension()),
+                ]);
+            }
+            $nom .= "." . $files->getExtension();
+            return $nom;
+        } else {
+            return "";
         }
     }
 
@@ -60,7 +71,7 @@ class CtrlUsuario extends CControlador {
                 ];
             } else {
                 $criterio = [
-                    'where' => "id_usuario <> $id AND nombre_usuario = '" . $this->_p['usuario'] . "' OR email = '" . $this->_p['email'] . "'",
+                    'where' => "(id_usuario <> $id) AND (nombre_usuario = '" . $this->_p['usuario'] . "' OR email = '" . $this->_p['email'] . "')",
                 ];
             }
             $usuario = Usuario::modelo()->primer($criterio);
@@ -85,10 +96,14 @@ class CtrlUsuario extends CControlador {
         $modelo = $this->cargarModelo($pk);
         if (isset($this->_p['Usuarios'])) {
             $modelo->atributos = $this->_p['Usuarios'];
-            $modelo->clave = sha1($this->_p['Usuarios']['clave']);
+            $modelo->nombre_usuario = trim($this->_p['Usuarios']['nombre_usuario']);
+            $modelo->email = trim($this->_p['Usuarios']['email']);
+            $modelo->foto = $this->guardarFoto($modelo->nombre_usuario);
+            if ($this->_p['cambio-clave'] === "1") {
+                $modelo->clave = sha1($this->_p['Usuarios']['uclave']);                
+            }
             if ($modelo->guardar()) {
                 # lógica para guardado exitoso
-                $this->guardarFoto($modelo->nombre_usuario);
                 $this->alertar('success','Actualización Exitosa');
                 $this->redireccionar('inicio');
             }
@@ -112,11 +127,13 @@ class CtrlUsuario extends CControlador {
 
     public function accionCambiarEstado($pk) {
         $modelo = $this->cargarModelo($pk);
+        if ($modelo->estado == 0) {
+            $this->alertar('warning', 'El Usuario ya se encuentra inactivo');
+            $this->redireccionar('inicio');
+        }
         $modelo->estado = !$modelo->estado;
         if ($modelo->guardar()) {
             $this->alertar('success','Cambio de estado exitoso');
-        } else {
-            # lógica para error al borrar
         }
         $this->redireccionar('inicio');
     }    
@@ -132,7 +149,7 @@ class CtrlUsuario extends CControlador {
      * Esta función permite eliminar un registro existente
      * @param int $pk
      */
-    public function accionEliminar($pk) {
+    /*public function accionEliminar($pk) {
         $modelo = $this->cargarModelo($pk);
         if ($modelo->eliminar()) {
             # lógica para borrado exitoso
@@ -140,7 +157,7 @@ class CtrlUsuario extends CControlador {
             # lógica para error al borrar
         }
         $this->redireccionar('inicio');
-    }
+    }*/
 
     /**
      * Esta función permite cargar un modelo usando su primary key

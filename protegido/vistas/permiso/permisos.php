@@ -46,7 +46,8 @@
                 } else {
                     $("#cont-mod").slideUp();
                 }
-                
+                $("#combo-mod").val("");
+                $("#table-permisos tbody").html("");
             } else if($(this).attr("data-type") == "mod" && $(this).val() !== ""){
                 doAjax( $("#combo-rol").val(), $(this).val());
             }

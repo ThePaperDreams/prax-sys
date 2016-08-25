@@ -46,7 +46,7 @@ class CtrlPermiso extends CControlador{
                                 t.rol_id,
                                 t2.id_ruta,
                                 t3.nombre nombre_rol,
-                                t.estado, 
+                                (CASE WHEN t.rol_id = '" . $this->_p['id_rol'] . "' THEN t.estado ELSE 0 END) as estado, 
                                 t2.nombre nombre_ruta,
                                 t2.ruta,
                                 t2.modulo_id
@@ -54,10 +54,12 @@ class CtrlPermiso extends CControlador{
                                 tbl_rutas_x_rol t
                         RIGHT JOIN tbl_rutas t2 ON t2.id_ruta = t.ruta_id
                         LEFT JOIN tbl_roles t3 ON t3.id_rol = t.rol_id
-                        WHERE (t.rol_id IS NULL OR t.rol_id = '" . $this->_p['id_rol'] . "') AND 
+                        WHERE (t.rol_id IS NULL OR t.rol_id = '" . $this->_p['id_rol'] . "' OR t.rol_id <> '" . $this->_p['id_rol'] . "') AND 
                      t2.modulo_id = '" . $this->_p['id_mod'] . "'";
             # ejecutar comando recibe la consulta y luego un bool para devolver un 
             # array asociativo o un array de objetos
+//            echo $query;
+//            exit();
             $resultados = Sis::apl()->bd->ejecutarComando($query, true);
             $html = [];
             foreach($resultados AS $r){

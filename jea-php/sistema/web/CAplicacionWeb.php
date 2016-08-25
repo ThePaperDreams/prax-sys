@@ -492,6 +492,10 @@ final class CAplicacionWeb {
         return $this->urlBase;
     }
     
+    public function urlActual(){
+        return $this->crearUrl([$this->ruta]);
+    }
+    
     /**
      * Esta función retorna el id generado para la aplicación
      * @return string

@@ -19,10 +19,6 @@ $this->opciones = [
         <table class="table table-bordered ">
             <tbody>
                 <tr>
-                    <th><?php echo $modelo->obtenerEtiqueta('id_pago') ?></th>
-                    <td><?php echo $modelo->id_pago; ?></td>
-                </tr>
-                <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('fecha') ?></th>
                     <td><?php echo $modelo->fecha; ?></td>
                 </tr>

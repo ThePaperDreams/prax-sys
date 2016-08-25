@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Este modelo es la representación de la tabla tbl_roles
  *
@@ -10,8 +11,8 @@
  * 
  * Relaciones del modelo
  */
- class Rol extends CModelo{
- 
+class Rol extends CModelo {
+
     /**
      * Esta función retorna el nombre de la tabla representada por el modelo
      * @return string
@@ -26,41 +27,55 @@
      */
     public function atributos() {
         return [
-		'id_rol' => ['pk'] , 
-		'nombre', 
-		'descripcion', 
-		'desarrollador' => ['def' => '0'],
+            'id_rol' => ['pk'],
+            'nombre',
+            'descripcion',
+            'desarrollador' => ['def' => '0'],
+            'estado' => ['def' => '1'],
         ];
     }
     
-    public function filtros(){
-        return ['requeridos'=>'nombre,desarrollador',];
+    public function filtrosAjx() {
+            return null;
     }
-    
+
+    public function filtros() {
+        return ['requeridos' => 'nombre,desarrollador', 'seguros' => '*'];
+    }
+
     /**
      * Esta función retorna las relaciones con otros modelos
      * @return array
      */
-    protected function relaciones() {        
+    protected function relaciones() {
         return [
-            # el formato es simple: 
-            # tipo de relación | modelo con que se relaciona | campo clave foranea
-                    ];
+# el formato es simple: 
+# tipo de relación | modelo con que se relaciona | campo clave foranea
+        ];
     }
-    
+
+    public function getEtiquetaEstado() {
+        if ($this->estado == 1) {
+            return CHtml::e('span', 'Activo', ['class' => 'label label-success']);
+        } else {
+            return CHtml::e('span', 'Inactivo', ['class' => 'label label-danger']);
+        }
+    }
+
     /**
      * Esta función retorna un alias dado a cada uno de los atributos del modelo
      * @return string
      */
     public function etiquetasAtributos() {
         return [
-		'id_rol' => 'Rol', 
-		'nombre' => 'Nombre', 
-		'descripcion' => 'Descripción', 
-		'desarrollador' => 'Desarrollador', 
+            'id_rol' => 'Rol',
+            'nombre' => 'Nombre',
+            'descripcion' => 'Descripción',
+            'desarrollador' => 'Desarrollador',
+            'estado' => 'Estado',
         ];
     }
-    
+
     /**
      * Esta función permite listar todos los registros
      * @param array $criterio
@@ -69,7 +84,7 @@
     public function listar($criterio = array()) {
         return parent::listar($criterio);
     }
-    
+
     /**
      * Esta función permite obtener un registro por su primary key
      * @param int $pk
@@ -78,7 +93,7 @@
     public function porPk($pk) {
         return parent::porPk($pk);
     }
-    
+
     /**
      * Esta función permite obtener el primer registro
      * @param array $criterio
@@ -86,7 +101,7 @@
      */
     public function primer($criterio = array()) {
         return parent::primer($criterio);
-    } 
+    }
 
     /**
      * Esta función retorna una instancia del modelo tbl_roles
@@ -96,4 +111,5 @@
     public static function modelo($clase = __CLASS__) {
         return parent::modelo($clase);
     }
+
 }

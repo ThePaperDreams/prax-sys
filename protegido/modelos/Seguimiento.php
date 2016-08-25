@@ -1,45 +1,52 @@
 <?php
 
 /**
- * Este modelo es la representación de la tabla tbl_tipos_documento
+ * Este modelo es la representación de la tabla tbl_seguimientos
  *
  * Atributos del modelo
- * @property int $id_tipo
- * @property string $nombre
+ * @property int $id_seguimiento
+ * @property int $tipo_seguimiento
+ * @property int $estado
+ * @property int $evaluacion
+ * @property string $fecha
  * @property string $descripcion
- * @property int $padre_id
- *
+ * @property int $ficha_tecnica_id
+ * 
  * Relaciones del modelo
- * @property TDocumento $TDocumento
+ * @property FkTblSeguimientosTblFichasTecnicas1 $fkTblSeguimientosTblFichasTecnicas1
  */
-class TipoDocumento extends CModelo {
+class Seguimiento extends CModelo {
 
     /**
      * Esta función retorna el nombre de la tabla representada por el modelo
      * @return string
      */
     public function tabla() {
-        return "tipos_documento";
+        return "seguimientos";
     }
 
     /**
-     * Esta función retorna los atributos de la tabla tbl_tipos_documento
+     * Esta función retorna los atributos de la tabla tbl_seguimientos
      * @return array
      */
     public function atributos() {
         return [
-            'id_tipo' => ['pk'],
-            'nombre',
+            'id_seguimiento' => ['pk'],
+            'tipo_seguimiento',
+            'estado' => ['def' => '1'],
+            'evaluacion',
+            'fecha',
             'descripcion',
-            'padre_id',
+            'ficha_tecnica_id',
+            'realizado_por',
         ];
     }
-
-    public function filtros() {
-        return [
-            'requeridos' => 'nombre',
-            'seguros' => '*',
-        ];
+    
+    public function antesDeGuardar() {
+        if($this->nuevo){
+            $this->realizado_por = Sis::apl()->usuario->getID();
+            $this->fecha = date("Y-m-d");
+        }
     }
 
     /**
@@ -48,9 +55,9 @@ class TipoDocumento extends CModelo {
      */
     protected function relaciones() {
         return [
-            # el formato es simple:
+            # el formato es simple: 
             # tipo de relación | modelo con que se relaciona | campo clave foranea
-            'TDocumento' => [self::PERTENECE_A, 'TipoDocumento', 'padre_id'],
+            'fkTblSeguimientosTblFichasTecnicas1' => [self::PERTENECE_A, 'FkTblSeguimientosTblFichasTecnicas1', 'ficha_tecnica_id'],
         ];
     }
 
@@ -60,17 +67,20 @@ class TipoDocumento extends CModelo {
      */
     public function etiquetasAtributos() {
         return [
-            'id_tipo' => 'Tipo Documento',
-            'nombre' => 'Nombre',
+            'id_seguimiento' => 'ID',
+            'tipo_seguimiento' => 'Tipo de Seguimiento',
+            'estado' => 'Estado',
+            'evaluacion' => 'Calificación',
+            'fecha' => 'Fecha',
             'descripcion' => 'Descripción',
-            'padre_id' => 'Padre',
+            'ficha_tecnica_id' => 'Ficha Tecnica',
         ];
     }
 
     /**
      * Esta función permite listar todos los registros
      * @param array $criterio
-     * @return TipoDocumento
+     * @return Seguimiento
      */
     public function listar($criterio = array()) {
         return parent::listar($criterio);
@@ -79,33 +89,25 @@ class TipoDocumento extends CModelo {
     /**
      * Esta función permite obtener un registro por su primary key
      * @param int $pk
-     * @return TipoDocumento
+     * @return Seguimiento
      */
     public function porPk($pk) {
         return parent::porPk($pk);
     }
-    
-    public function getNombrePadre(){
-        if($this->TDocumento == null){
-            return null;
-        } else {            
-            return $this->TDocumento->nombre;
-        }
-    }
-    
+
     /**
      * Esta función permite obtener el primer registro
      * @param array $criterio
-     * @return TipoDocumento
+     * @return Seguimiento
      */
     public function primer($criterio = array()) {
         return parent::primer($criterio);
     }
 
     /**
-     * Esta función retorna una instancia del modelo tbl_tipos_documento
+     * Esta función retorna una instancia del modelo tbl_seguimientos
      * @param string $clase
-     * @return TipoDocumento
+     * @return Seguimiento
      */
     public static function modelo($clase = __CLASS__) {
         return parent::modelo($clase);

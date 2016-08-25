@@ -14,9 +14,15 @@
 ?>
 
 <?= $this->complemento('!siscoms.bootstrap3.CBGrid', [
+    'ajax' => true,
+    'filtrosAjax' => ['nombre', 'estado'],
     'modelo' => 'Rol',
-    # id_rol, nombre, descripcion, desarrollador
-    'columnas' => 'nombre, descripcion',
-    'opciones' => true,
+    # id_rol, nombre, descripcion, desarrollador, estado
+    'columnas' => ['nombre', 'estado' => 'etiquetaEstado'],
+    'opciones' => [
+        ['i' => 'eye', 'url' => 'Rol/ver&{id:pk}'],
+        ['i' => 'pencil', 'url' => 'Rol/editar&{id:pk}'],
+        ['i' => 'refresh', 'url' => 'Rol/cambiarEstado&{id:pk}'],
+    ],
     'paginacion' => 10,
 ]) ?>

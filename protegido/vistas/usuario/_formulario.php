@@ -34,20 +34,36 @@ $formulario->abrir();
         </div>
     </div>
 
+    <?php if (!$modelo->nuevo): ?>
+    <input hidden="" value="0" id="change-pass" name="cambio-clave">
     <div class="row">
         <div class="col-sm-6">
-            <?php echo $formulario->campoPassword($modelo, 'clave', ['label' => true, 'group' => true, 'value' => '']) ?>
+            <?php echo CBoot::botonP('Cambiar contraseña', ['type' => 'button', 'label' => true, 'group' => true, 'id' => 'btn-cambiar', 'onClick' => 'activarCambioPass()']) ?>
+        </div>
+    </div>    
+    <?php endif; ?>
+    <div class="row" <?php if (!$modelo->nuevo): ?>style="display:none" id="passwords"<?php endif; ?>>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label for="usuario-clave">Clave <span class="text-danger">*</span></label>
+                <p class="text-danger form-requerido" style="display:none" id="err-clave">El campo <b>Clave</b> no puede estar vacio</p>
+                <?= CBoot::passwordField('', ['requerido' => '1', 'class' => 'form-group', 'id' => 'usuario-clave', 'name' => 'Usuarios[uclave]']) ?>
+            </div>
         </div>
         <div class="col-sm-6">
             <div class="form-group">
                 <label for="confirmar-clave">Confirmar Clave <span class="text-danger">*</span></label>
                 <p class="text-danger form-requerido" style="display:none" id="err-clave">El campo <b>Confirmar Clave</b> no puede estar vacio</p>
-                <?= CBoot::passwordField('', ['requerido' => '1', 'class' => 'form-group', 'id' => 'confirmar-clave', 'value' => '']) ?>
+                <?= CBoot::passwordField('', ['requerido' => '1', 'class' => 'form-group', 'id' => 'confirmar-clave']) ?>
             </div>
         </div>
     </div>
-
-    <?php echo $formulario->campoArchivo($modelo, 'foto', ['label' => true, 'group' => true]) ?>
+    
+    <div class="row">
+        <div class="col-sm-12">
+            <?php echo $formulario->campoArchivo($modelo, 'foto', ['label' => true, 'group' => true]) ?>
+        </div>
+    </div>
 
     <div class="row">
         <div class="col-sm-offset-6 col-sm-3">
@@ -58,9 +74,7 @@ $formulario->abrir();
         </div>
     </div>
 </div>
-
 <?php $formulario->cerrar(); ?>
-
 <script>
     $(function () {
         $("#Usuarios_foto").fileinput({
@@ -70,7 +84,12 @@ $formulario->abrir();
             browseLabel: "Seleccionar archivo",
         });
         $("#form-usuarios").submit(function () {
-            if (validarClave()) {
+            var camcla = $("#change-pass").val();
+            if (camcla === "1" || camcla === undefined) {
+                if (validarClave()) {
+                    validarUsuarioEmail();
+                }
+            }else{
                 validarUsuarioEmail();
             }
             return false;
@@ -87,7 +106,7 @@ $formulario->abrir();
             data: {
                 validarUsuarioEmail: true,
                 usuario: $.trim(usuario),
-                email: $.trim(email),
+                email: $.trim(email)
             },
             success: function (respuesta) {
                 if (respuesta.error === true) {
@@ -99,12 +118,10 @@ $formulario->abrir();
             }
         });
     }
-        $("#Usuarios_clave").val('');
-        $("#confirmar-clave").val('');
     });
 
     function validarClave() {
-        var clave = $("#Usuarios_clave").val();
+        var clave = $("#usuario-clave").val();
         var clave2 = $("#confirmar-clave").val();        
         if (clave === clave2 && clave !== "" && clave2 !== "") {
             return true;
@@ -113,6 +130,21 @@ $formulario->abrir();
             return false;
         }
     }   
+    
+    function cambiarInformacion(display, html, val){
+        $("#passwords").attr("style", "display:" + display);
+        $("#btn-cambiar").html(html);
+        $("#change-pass").val(val);
+    }
+    
+    function activarCambioPass(){
+        var chapas = $("#change-pass");
+        if (chapas.val() === "0") {
+            cambiarInformacion("true", "Cancelar", "1");
+        }else{
+            cambiarInformacion("none", "Cambiar contraseña", "0");
+        }                
+    }    
 
     function mostrarAlert(tipo, msg) {
         Lobibox.notify(tipo, {

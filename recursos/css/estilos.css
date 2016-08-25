@@ -156,6 +156,11 @@
     box-shadow: 0px 0px 5px rgba(29, 78, 121, 0.7);
     border: 1px solid rgb(22, 66, 105) !important;
 }
+.btn-default:hover{
+    background-color: rgba(0, 0, 0, 0.60) !important;
+    box-shadow: 0px 0px 5px rgba(255, 255, 255, 0.7);
+    border: 1px solid rgb(255, 2556, 255) !important;
+}
 
 .btn-info{
     
@@ -260,4 +265,15 @@ hr{
     padding-bottom: 8px;
 }
 body{
+}
+
+.borde-fondo:last-child{
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+
+.lbl-documento{
+    width: 100%;
+    display: block;
+    padding: 11px 0px;
+    font-size: 12px;
 }

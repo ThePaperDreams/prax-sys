@@ -16,11 +16,11 @@ $this->opciones = [
 ];
 ?>
 <div class="col-sm-12">
-    <div class="panel panel-primary">
+    <div class="panel panel-default">
         <div class="panel-heading text-center">
             Ver detalles
         </div>
-        <table class="table table-bordered table-striped table-hover">
+        <table class="table table-bordered table-hover">
             <tbody>
                 <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('nombre') ?></th>

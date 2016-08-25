@@ -60,6 +60,7 @@ class Deportista extends CModelo{
     public function filtros() {
         return [
             'requeridos' => 'identificacion,nombre1,apellido1,telefono1,fecha_nacimiento,tipo_documento_id',
+            'seguros' => '*'
         ];
     }
     
@@ -113,6 +114,34 @@ class Deportista extends CModelo{
         $fechaNacimiento = new DateTime($this->fecha_nacimiento);
         $diferencia = $fechaNacimiento->diff($fechaActual);
         return $diferencia->y;
+    }
+    
+    public function getImagenPerfil(){
+        if($this->foto !== "" && $this->foto !== null){
+            //$icono = CBoot::fa('cloud-download');
+            //$icono = CBoot::fa('file-photo-o');
+            //$url = Sis::UrlBase() . 'publico/imagenes/deportistas/fotos/' . $this->foto;
+            //return CHtml::link('Descargar ' . $icono, $url, ['class' => 'label label-primary', 'target' => '_blank', 'download' => $this->foto]);
+            return CHtml::link('Ver Foto', '', ['class' => 'label label-primary', 'data-toggle' => 'modal', 'data-target' => '#photo', 'id' => 'a-modal']);            
+        } else {
+            return CHtml::e("span", 'Ninguna', ['class' => 'label label-default']);
+        }
+    }
+    
+    /**
+     * 
+     * @return FichaTecnica
+     */
+    public function getFicha(){
+        $ficha = FichaTecnica::modelo()->primer([
+            'where' => 'deportista_id',
+        ]);
+        if($ficha == null){ 
+            $ficha = new FichaTecnica();
+            $ficha->deportista_id = $this->id_deportista;
+        }
+        
+        return $ficha;
     }
     
     /**

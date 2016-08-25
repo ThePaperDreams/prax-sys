@@ -20,9 +20,12 @@
  * 
  * Relaciones del modelo
  * @property FkTblFichasTecnicasTblPersonas1 $fkTblFichasTecnicasTblPersonas1
+ * @property Seguimiento[] $seguimientosPositivos
+ * @property Seguimiento[] $seguimientosNegativos
  */
 class FichaTecnica extends CModelo {
-
+    private $seguimientosPositivos = null;
+    private $seguimientosNegativos = null;
     /**
      * Esta función retorna el nombre de la tabla representada por el modelo
      * @return string
@@ -87,6 +90,26 @@ class FichaTecnica extends CModelo {
         ];
     }
     
+    
+    public function getSeguimientosPositivos(){
+        if($this->seguimientosPositivos === null){
+            $this->seguimientosPositivos = Seguimiento::modelo()->listar([
+                'where' => "tipo_seguimiento=0 AND ficha_tecnica_id = $this->id_ficha_tecnica",
+                'order' => "fecha  DESC, id_seguimiento DESC",
+            ]);
+        }
+        return $this->seguimientosPositivos;
+    }
+    
+    public function getSeguimientosNegativos(){
+        if($this->seguimientosNegativos === null){
+            $this->seguimientosNegativos = Seguimiento::modelo()->listar([
+                    'where' => "tipo_seguimiento=1 AND ficha_tecnica_id = $this->id_ficha_tecnica",
+                    'order' => "fecha  DESC, id_seguimiento DESC",
+                ]);
+        }
+        return $this->seguimientosNegativos;
+    }
     
     public function getPiernaStr(){
         if($this->pierna_habil == 0){

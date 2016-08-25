@@ -19,7 +19,7 @@
         <div class="panel-heading text-center">
             Ver detalles
         </div>
-        <table class="table table-bordered table-striped table-hover">
+        <table class="table table-bordered table-hover">
             <tbody>
                 <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('nombre') ?></th>
@@ -31,7 +31,7 @@
                 </tr>
                 <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('padre_id') ?></th>
-                    <td><?php echo $modelo->TDocumento->nombre; ?></td>
+                    <td><?php echo $modelo->NombrePadre; ?></td>
                 </tr>
             </tbody>
         </table>
