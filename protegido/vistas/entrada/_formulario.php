@@ -47,6 +47,7 @@ $formulario->abrir();
         <?php echo CBoot::boton(CBoot::fa('save') . ' ' . ($modelo->nuevo ? 'Guardar' : 'Actualizar'), 'success', ['class' => 'btn-block']); ?>
     </div>
 </div>
+<?php $formulario->cerrar(); ?>
 <script>
     $(document).ready(function () {
         $("#btnAgregar").click(function () {
@@ -57,10 +58,10 @@ $formulario->abrir();
         $("#form-entradas").submit(function(){
             if($("[data-implemento]").length === 0){
                 lobiAlert("error", "Añada por lo menos un implemento");   
-            }else{   
-                validarEnt();
-                } 
-            return false;
+            }else{
+                return true;
+            }
+                return false;
         });
     });
 
@@ -71,7 +72,7 @@ $formulario->abrir();
         var cantidad = $("#cant").val();
         
 
-        if (valor === "") {
+        if (valor === "" || cantidad <= 0) {
             return;
         }
         
@@ -91,16 +92,5 @@ $formulario->abrir();
         var fila = $("#remover-" +idFila);
         fila.remove();
     }
-    
-  function validarEnt(){
-        var cant = $("#cant").val();
-        if(parseInt(cant)=== 0){
-            mostrarAlert('error','Unidades maximas no pueden ser cero');
-            return false;
-        }else{
-            return true;
-        }
-    }
 </script>
-<?php $formulario->cerrar(); ?>
 </div>

@@ -24,11 +24,16 @@ class CtrlEntrada extends CControlador {
         if (isset($this->_p['Entradas'])) {
             $modelo->atributos = $this->_p['Entradas'];
             $modelo->fecha_realizacion = date("Y-m-d H:i:s");
+            /*echo "<pre>";
+            foreach ($this->_p['Entradas'] as $key => $artc) {
+                var_dump($this->_p['Entradas'],$key, $artc, $this->_p['cantity']);
+            }
+            exit();*/
             if ($modelo->guardar()) {
-                foreach ($this->_p['Entradas'] as $key => $artc) {
+                foreach ($this->_p['articulo'] as $key => $artc) {
                     $mdEI = new EntradaImplemento();
-                    $mdEI->cantidad = $this->_p['Entradas'][$key];
-                    $mdEI->implemento_id = $artc;
+                    $mdEI->cantidad = $this->_p['cantity'][$key];
+                    $mdEI->implemento_id = $this->_p['articulo'][$key];
                     $mdEI->entrada_id = $modelo->id_entrada;
                     $mdEI->guardar();
                     $mdEI->Implemento->unidades = $mdEI->Implemento->unidades + $mdEI->cantidad;
