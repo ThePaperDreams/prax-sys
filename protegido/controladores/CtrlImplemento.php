@@ -66,7 +66,7 @@ class CtrlImplemento extends CControlador{
     
      public function accionAnular($pk) {
         $modelo = $this->cargarModelo($pk);
-        $modelo->estado_id = !$modelo->estado_id;
+        $modelo->estado_id = $modelo->estado_id == 1? 2 : 1;
         if ($modelo->guardar()) {
             Sis::Sesion()->flash("alerta", [
                 'msg' => 'Cambio exitoso',

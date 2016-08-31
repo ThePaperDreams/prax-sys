@@ -87,15 +87,21 @@
 		'maximo_unidades' => 'Maximo Unidades', 
         ];
     }
-    public function getEtiquetaEstado(){
-        if($this->getEnPrestamo()){
-            return CHtml::e('span', 'En préstamo', ['class' => 'label label-info']);
-        } else if($this->estado_id == 1){
+    public function getEtiquetaEstado(){ 
+        if($this->estado_id == 1){
             return CHtml::e('span', 'Activo', ['class' => 'label label-success']);
-        } else if($this->estado_id == 0){
+        } else if($this->estado_id == 2){
             return CHtml::e('span', 'Inactivo', ['class' => 'label label-danger']);
-        } else {
+        } else if($this->estado_id == 3){
             return CHtml::e('span', 'Agotado', ['class' => 'label label-default']);
+        }
+    }
+    
+    public function getNombreEstado(){
+        if($this->getEnPrestamo()){
+            return  CHtml::e('span', 'En préstamo', ['class' => 'label label-info label-prestamo']) . " " . $this->nombre;
+        } else {
+            return $this->nombre;
         }
     }
     

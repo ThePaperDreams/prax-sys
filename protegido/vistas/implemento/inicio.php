@@ -17,7 +17,7 @@ $this->tituloPagina="Implementos";
     'filtrosAjax' => [
         'categoria_id',
         'nombre', 
-        'estado_id' => CBoot::select('', [1 => 'Activo', 2 => 'Inactivo', 3 => 'En préstamo'], ['defecto' => 'Estado', 'style' => 'min-width: 150px;', 'name' => 'estado_id']),
+        'estado_id' => CBoot::select('', [1 => 'Activo', 2 => 'Inactivo', 3=>'Agotado'], ['defecto' => 'Estado', 'style' => 'min-width: 150px;', 'name' => 'estado_id']),
         'unidades',
         'minimo_unidades',
         'maximo_unidades', 
@@ -27,7 +27,7 @@ $this->tituloPagina="Implementos";
     # id_implemento, categoria_id, nombre, descripcion, unidades, minimo_unidades, maximo_unidades
     'columnas' => [  
         "categoria_id"=>"Categoria->nombre",
-        "nombre",
+        "nombre" => 'NombreEstado',
         'estado_id' => 'EtiquetaEstado',
         "unidades",
         "minimo_unidades",
