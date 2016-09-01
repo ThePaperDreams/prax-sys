@@ -18,36 +18,36 @@ $formulario->abrir();
                 <?php echo $formulario->lista($modelo, 'tipo_documento_id', $tiposIdentificaciones, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un Tipo de documento']) ?>
             </div>
             <div class="col-sm-6">
-                <?php echo $formulario->campoNumber($modelo, 'identificacion', ['label' => true, 'group' => true, 'autofocus' => true, 'min' => '0']) ?>
+                <?php echo $formulario->campoNumber($modelo, 'identificacion', ['label' => true, 'group' => true, 'autofocus' => true, 'min' => '0', 'maxlength' => '45']) ?>
             </div>    
         </div>
         <div class="row">
             <div class="col-sm-6">
-                <?php echo $formulario->campoTexto($modelo, 'nombre1', ['label' => true, 'group' => true]) ?>
+                <?php echo $formulario->campoTexto($modelo, 'nombre1', ['label' => true, 'group' => true, 'maxlength' => '15']) ?>
             </div>
             <div class="col-sm-6">
-                <?php echo $formulario->campoTexto($modelo, 'nombre2', ['label' => true, 'group' => true]) ?>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6">
-                <?php echo $formulario->campoTexto($modelo, 'apellido1', ['label' => true, 'group' => true]) ?>
-            </div>
-            <div class="col-sm-6">
-                <?php echo $formulario->campoTexto($modelo, 'apellido2', ['label' => true, 'group' => true]) ?>
+                <?php echo $formulario->campoTexto($modelo, 'nombre2', ['label' => true, 'group' => true, 'maxlength' => '15']) ?>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-6">
-                <?php echo $formulario->campoNumber($modelo, 'telefono1', ['label' => true, 'group' => true, 'min' => '0']) ?>
+                <?php echo $formulario->campoTexto($modelo, 'apellido1', ['label' => true, 'group' => true, 'maxlength' => '20']) ?>
             </div>
             <div class="col-sm-6">
-                <?php echo $formulario->campoNumber($modelo, 'telefono2', ['label' => true, 'group' => true, 'min' => '0']) ?>
+                <?php echo $formulario->campoTexto($modelo, 'apellido2', ['label' => true, 'group' => true, 'maxlength' => '20']) ?>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-6">
-                <?php echo $formulario->campoTexto($modelo, 'direccion', ['label' => true, 'group' => true]) ?>
+                <?php echo $formulario->campoNumber($modelo, 'telefono1', ['label' => true, 'group' => true, 'min' => '0', 'maxlength' => '10']) ?>
+            </div>
+            <div class="col-sm-6">
+                <?php echo $formulario->campoNumber($modelo, 'telefono2', ['label' => true, 'group' => true, 'min' => '0', 'maxlength' => '10']) ?>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <?php echo $formulario->campoTexto($modelo, 'direccion', ['label' => true, 'group' => true, 'maxlength' => '80']) ?>
             </div>
             <div class="col-sm-6">
                 <?php echo $formulario->campoTexto($modelo, 'fecha_nacimiento', ['label' => true, 'group' => true, 'class' => 'campo-fecha']) ?>
@@ -111,12 +111,28 @@ $formulario->abrir();
         
         <div class="row">
             <div class="col-sm-12">
-                <div id="lst-acu" class="panel-default">
+                <div class="panel-default">                    
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Acudiente</th>
+                                <th>Eliminar</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tab-acus">                            
+                        </tbody>
+                    </table>                                            
+                </div>
+            </div>
+        </div>
+        <!--<div class="row">
+            <div class="col-sm-12">
+                <div class="panel-default">
                     <div class="panel-heading">Acudientes</div>
                         <ul id="lis-acu" class="list-group"></ul>
                 </div>
             </div>        
-        </div>
+        </div>-->
     </div>
         
     <div role="tabpanel" class="tab-pane" id="documentos">
@@ -189,7 +205,15 @@ $formulario->abrir();
 <script>
     $(function(){  
         var cd = 0; // Contador de documentos para los id de los input hidden
-        bonitoInputFile(); // Para embellecer el file input de la foto
+        //bonitoInputFile(); 
+        $("input[type=file]").fileinput({ // Para embellecer el file input de la foto
+            showPreview: false,
+            showRemove: false,
+            showUpload: false,
+            browseLabel: "Seleccionar archivo",
+            maxFileSize: 5000,
+            allowedFileExtensions: ['jpg', 'gif', 'png', 'jpeg']
+        });    
         $("#btn-addDoc").click(function(){ // agregar documentos nuevos       
             var choice_tipo_doc = $("#TiposDocumento_id_tipo option:selected");
             if (choice_tipo_doc.val() !== "") {
@@ -203,19 +227,25 @@ $formulario->abrir();
                         "<div class='col-xs-12 col-sm-9 col-lg-9'>"+input_file+ "</div><div class='col-xs-12 col-sm-3 col-lg-3'>"+button_delete+"</div></div></li>";
                 $("#list-docs").after(union_elementos);
                 $("#form-deportistas").append(input_hidden);
-                bonitoInputFile();    
+                bonitoInputFile();    // embellecer el file input documentos
             }
         }); 
         $("#btn-addAcu").click(function () { // agregar acudientes nuevos
             var e = $("#Acudientes_id_acudiente option:selected");
             var acu_existe = encontrarAcu(e.val());
             var acu_valido = e.val() !== "";
-            if (acu_valido && acu_existe) {
-                $("#lis-acu").append("<li class='list-group-item' data='" + e.val() + "'><button class='btn btn-block btn-primary' onclick='eliminar(this)' type='button'><i class='fa fa-trash'></i> " + e.html() + "</button></li>");
+            //console.log(acu_existe);
+            if (acu_valido && acu_existe === 1) {                   
+                var td_info_acu = "<td><a target='_blank' href='<?php echo Sis::UrlBase() ?>"+e.val()+"/Acudiente/Ver'><i class='fa fa-eye'></i> "+e.html()+"</a></td>";
+                var td_eliminar = "<td data='"+e.val()+"' class='x col-sm-1 text-center text-danger-icon'><a href='#' onClick='eliminar(this); return false;' href='#'><i class='fa fa-ban'></i></a></td>";
+                $("#tab-acus").append("<tr>"+td_info_acu + td_eliminar+"</tr>");
+                //$("#lis-acu").append("<li class='list-group-item' data='" + e.val() + "'><button class='btn btn-block btn-primary' onclick='eliminar(this)' type='button'><i class='fa fa-trash'></i> " + e.html() + "</button></li>");
                 $("#form-deportistas").append("<input hidden='' name='Acudient[]' id='a" + e.val() + "' value='" + e.val() + "'>");
-            } else if (acu_valido) {
+            } else if (acu_existe === 2) {
                 lobiAlert("error","El Deportista ya tiene asociado este Acudiente");
-            }            
+            } else if (acu_existe === 3){
+                lobiAlert("error","Ya se incluyo el Acudiente");
+            }
         });
         $("a.delete").click(function () { // eliminar acudiente ya asociado al deportista
             if (confirm('¿Está seguro de eliminar este Acudiente?')) {
@@ -304,35 +334,47 @@ $formulario->abrir();
         $(e).closest("li").remove(); // eliminar li       
     }
     
-    function bonitoInputFile(){ // embellecer el file input
+    function bonitoInputFile(){ // embellecer el file input documentos
         $("input[type=file]").fileinput({
             showPreview: false,
             showRemove: false,
             showUpload: false,
-            browseLabel: "Seleccionar archivo"
+            browseLabel: "Seleccionar archivo",
+            maxFileSize: 5000            
         });    
     }
     
     function encontrarAcu(val) { // ¿El Deportista ya esta asociado con el acudiente?
-        var current_val = "", existe = true;
+        var current_val = "", resp = 1;//existe = true;
         $("#tabla-acudientes td[val]").each(function (v, e) {
             current_val = e.getAttribute("val");
             if (current_val === val) {
-                existe = false;
+                //existe = false;
+                resp = 2;
             }
         });
-        $("#lis-acu li[data]").each(function (v, e) {
+        /* $("#lis-acu li[data]").each(function (v, e) {
             current_val = e.getAttribute("data");
             if (current_val === val) {
                 existe = false;
             }
+        }); */
+        $("#tab-acus tr td.x[data]").each(function (v, e) {
+            current_val = e.getAttribute("data");
+            if (current_val === val) {
+                //existe = false;
+                resp = 3;
+            }
         });
-        return existe;
+        //return existe;
+        return resp;
     }
     
     function eliminar(e) { // Eliminar acudiente (aun no asociado al deportista) de la lista
-        var id_input_hidden = $(e).closest('li').attr('data');
-        $(e).closest('li').remove();
+        //var id_input_hidden = $(e).closest('li').attr('data');
+        var id_input_hidden = $(e).closest('td').attr('data');
+        $(e).closest('tr').remove();
+        //$(e).closest('li').remove();
         $("#a" + id_input_hidden).remove();
     }
     
@@ -350,8 +392,10 @@ $formulario->abrir();
     
     function validarAcudiente(){ // Validar que este asociado como minimo un acudiente o
         var resp = true;           // se vaya a asociar uno (lista de acudientes nuevos) 
-        var x = $('#lis-acu li').length;
+        //var x = $('#lis-acu li').length;
+        var x = $('#tab-acus tr').length;
         var y = $('#tabla-acudientes tr').length;
+        console.log(x,y);
         if (x < 1 && y === 0) {
             resp = false;
             lobiAlert('error', 'El Deportista debe contar mínimo con un Acudiente');   

@@ -29,7 +29,9 @@ class CtrlUsuario extends CControlador {
             $modelo->atributos = $this->_p['Usuarios'];
             $modelo->nombre_usuario = trim($this->_p['Usuarios']['nombre_usuario']);
             $modelo->email = trim($this->_p['Usuarios']['email']);
-            $modelo->foto = $this->guardarFoto($modelo->nombre_usuario);
+            if ($this->_p['cambio-foto'] === "1") {
+                $modelo->foto = $this->guardarFoto($modelo->nombre_usuario);                
+            }
             $modelo->clave = sha1($this->_p['Usuarios']['uclave']);
             if ($modelo->guardar()) {
                 # lógica para guardado exitoso                
@@ -98,7 +100,9 @@ class CtrlUsuario extends CControlador {
             $modelo->atributos = $this->_p['Usuarios'];
             $modelo->nombre_usuario = trim($this->_p['Usuarios']['nombre_usuario']);
             $modelo->email = trim($this->_p['Usuarios']['email']);
-            $modelo->foto = $this->guardarFoto($modelo->nombre_usuario);
+            if ($this->_p['cambio-foto'] === "1") {
+                $modelo->foto = $this->guardarFoto($modelo->nombre_usuario);
+            }            
             if ($this->_p['cambio-clave'] === "1") {
                 $modelo->clave = sha1($this->_p['Usuarios']['uclave']);                
             }
@@ -127,14 +131,21 @@ class CtrlUsuario extends CControlador {
 
     public function accionCambiarEstado($pk) {
         $modelo = $this->cargarModelo($pk);
-        if ($modelo->estado == 0) {
+        /*if ($modelo->estado == 0) {
             $this->alertar('warning', 'El Usuario ya se encuentra inactivo');
             $this->redireccionar('inicio');
-        }
-        $modelo->estado = !$modelo->estado;
-        if ($modelo->guardar()) {
-            $this->alertar('success','Cambio de estado exitoso');
-        }
+        }*/
+        $salidas = Salida::modelo()->listar([
+            'where' => "estado=1 AND responsable_id=$pk",
+        ]);
+        if (count($salidas) > 0) {
+            $this->alertar('error', 'No se puede Inactivar este Usuario, no ha entregado todos los Implementos');
+        } else {
+            $modelo->estado = ($modelo->estado==1) ? 0: 1;
+            if ($modelo->guardar()) {
+                $this->alertar('success', 'Cambio de estado exitoso');
+            }            
+        }        
         $this->redireccionar('inicio');
     }    
     

@@ -87,7 +87,16 @@ class Usuario extends CModelo {
             'foto' => 'Foto',
         ];
     }
-
+    
+    public function filtrosAjx() {
+        $criterio = new CCriterio();
+        $criterio->condicion("t.nombres", $this->nombres, "LIKE")
+                ->y("t.apellidos", $this->apellidos, "LIKE")                
+                ->y("t.email", $this->email, "LIKE")                
+                ->y("t.estado", $this->estado, "=");
+        return $criterio;
+    }
+    
     public function getNombreMasUsuario(){
         return $this->nombres . ' ' . $this->apellidos . " ($this->nombre_usuario)";
     }

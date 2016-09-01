@@ -12,36 +12,42 @@ $formulario->abrir();
             <?php echo $formulario->lista($modelo, 'rol_id', $roles, ['label' => true, 'group' => true, 'autofocus' => true, 'defecto' => 'Seleccione un Rol']) ?>
         </div>
         <div class="col-sm-6">
-            <?php echo $formulario->campoTexto($modelo, 'nombres', ['label' => true, 'group' => true]) ?>        
+            <?php echo $formulario->campoTexto($modelo, 'nombres', ['label' => true, 'group' => true, 'maxlength' => '40']) ?>        
         </div>
     </div>
 
     <div class="row">
         <div class="col-sm-6">
-            <?php echo $formulario->campoTexto($modelo, 'apellidos', ['label' => true, 'group' => true]) ?>
+            <?php echo $formulario->campoTexto($modelo, 'apellidos', ['label' => true, 'group' => true, 'maxlength' => '40']) ?>
         </div>
         <div class="col-sm-6">
-            <?php echo $formulario->campoNumber($modelo, 'telefono', ['label' => true, 'group' => true, 'min' => '0']) ?>
+            <?php echo $formulario->campoNumber($modelo, 'telefono', ['label' => true, 'group' => true, 'min' => '0', 'maxlength' => '30']) ?>
         </div>
     </div>
 
     <div class="row">
         <div class="col-sm-6">
-            <?php echo $formulario->campoTexto($modelo, 'nombre_usuario', ['label' => true, 'group' => true]) ?>
+            <?php echo $formulario->campoTexto($modelo, 'nombre_usuario', ['label' => true, 'group' => true, 'maxlength' => '30']) ?>
         </div>
         <div class="col-sm-6">
-            <?php echo $formulario->campoTexto($modelo, 'email', ['label' => true, 'group' => true]) ?>
+            <?php echo $formulario->campoTexto($modelo, 'email', ['label' => true, 'group' => true, 'maxlength' => '80']) ?>
         </div>
     </div>
 
-    <?php if (!$modelo->nuevo): ?>
+    <div class="row">
+    <?php if (!$modelo->nuevo): ?> <!-- Actualizacion -->
     <input hidden="" value="0" id="change-pass" name="cambio-clave">
-    <div class="row">
         <div class="col-sm-6">
-            <?php echo CBoot::botonP('Cambiar contraseña', ['type' => 'button', 'label' => true, 'group' => true, 'id' => 'btn-cambiar', 'onClick' => 'activarCambioPass()']) ?>
-        </div>
+            <?php echo CBoot::botonP('Cambiar contraseña', ['type' => 'button', 'label' => true, 'group' => true, 'id' => 'btn-cambiar', 'onClick' => 'activarCambioPass()', 'class' => 'btn-block']) ?>
+        </div>        
+    <?php endif; ?>
+    <input hidden="" value="0" id="change-foto" name="cambio-foto">
+    <?php if (!is_null($modelo->foto)): ?>
+    <div class="col-sm-6">
+        <?php echo CBoot::botonP('Cambiar foto', ['type' => 'button', 'label' => true, 'group' => true, 'id' => 'btn-cambiarFoto', 'onClick' => 'activarCambioFoto()', 'class' => 'btn-block', 'data' => '0']) ?>
     </div>    
     <?php endif; ?>
+    </div>
     <div class="row" <?php if (!$modelo->nuevo): ?>style="display:none" id="passwords"<?php endif; ?>>
         <div class="col-sm-6">
             <div class="form-group">
@@ -58,8 +64,8 @@ $formulario->abrir();
             </div>
         </div>
     </div>
-    
-    <div class="row">
+        
+    <div class="row" <?php if (!is_null($modelo->foto)): ?>style="display:none" id="fotos"<?php endif; ?>>
         <div class="col-sm-12">
             <?php echo $formulario->campoArchivo($modelo, 'foto', ['label' => true, 'group' => true]) ?>
         </div>
@@ -73,8 +79,8 @@ $formulario->abrir();
             <?php echo CBoot::boton(CBoot::fa('save') . ' ' . ($modelo->nuevo ? 'Guardar' : 'Actualizar'), 'success', ['class' => 'btn-block']); ?>
         </div>
     </div>
-</div>
 <?php $formulario->cerrar(); ?>
+</div>
 <script>
     $(function () {
         $("#Usuarios_foto").fileinput({
@@ -82,9 +88,13 @@ $formulario->abrir();
             showRemove: false,
             showUpload: false,
             browseLabel: "Seleccionar archivo",
+            maxFileSize: 5000,
+            allowedFileExtensions: ['jpg', 'gif', 'png', 'jpeg']         
         });
-        $("#form-usuarios").submit(function () {
-            var camcla = $("#change-pass").val();
+        $("#form-usuarios").submit(function(){
+            var camcla = $("#change-pass").val();            
+            validarSubidaFoto();
+            // === undefined por si es un registro y no una actualizacion
             if (camcla === "1" || camcla === undefined) {
                 if (validarClave()) {
                     validarUsuarioEmail();
@@ -111,7 +121,6 @@ $formulario->abrir();
             success: function (respuesta) {
                 if (respuesta.error === true) {
                     mostrarAlert("error", "Ya existe ese Usuario o Email");
-                    $("#Usuarios_nombre_usuario").focus().select();
                 } else {                    
                     document.getElementById("form-usuarios").submit();
                 }
@@ -135,7 +144,8 @@ $formulario->abrir();
         $("#passwords").attr("style", "display:" + display);
         $("#btn-cambiar").html(html);
         $("#change-pass").val(val);
-    }
+        
+    }    
     
     function activarCambioPass(){
         var chapas = $("#change-pass");
@@ -144,6 +154,30 @@ $formulario->abrir();
         }else{
             cambiarInformacion("none", "Cambiar contraseña", "0");
         }                
+    }
+    
+    function validarSubidaFoto(){
+        if ($("#Usuarios_foto").val() !== "") {
+            $("#change-foto").val("1");
+          //  alert('d');
+        }
+        //console.log($("#Usuarios_foto").val());
+    }
+    
+    function activarCambioFoto(){
+        var invisible = $("#btn-cambiarFoto").attr("data");
+        if (invisible === "0") {
+            $("#fotos").attr("style", "display:true");
+            $("#btn-cambiarFoto").html("Cancelar");
+            $("#btn-cambiarFoto").attr("data", "1");
+        }else{
+            $("#fotos").attr("style", "display:none");
+            $("#btn-cambiarFoto").html("Cambiar foto");
+            $("#btn-cambiarFoto").attr("data", "0");
+            $("#Usuarios_foto").val("");            
+            $(".file-caption-name").html("");            
+            //console.log($("#Usuarios_foto").val());
+        }
     }    
 
     function mostrarAlert(tipo, msg) {
@@ -153,7 +187,7 @@ $formulario->abrir();
             hideClass: 'bounceOutRight',
             msg: msg,
             delay: 8000,
-            soundPath: '<?= Sis::UrlRecursos() ?>librerias/lobibox/sounds/',
+            soundPath: '<?= Sis::UrlRecursos() ?>librerias/lobibox/sounds/'
         });
     }
 </script>

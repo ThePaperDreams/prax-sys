@@ -103,9 +103,9 @@ $this->opciones = [
         <img src="<?= Sis::UrlBase() ?>publico/imagenes/deportistas/fotos/<?= $modelo->foto . '?t=' . time(); ?>" alt="">                
       </div>
       <div class="p-modal-footer">
-        <a class="btn btn-primary" target="_blank" href="<?php echo Sis::UrlBase() ?>publico/imagenes/deportistas/fotos/<?= $modelo->foto; ?>" download="<?php echo $modelo->foto; ?>"><i class="fa fa-file-photo-o"></i> Descargar</a>
+        <a class="btn btn-primary" target="_blank" href="<?php echo Sis::UrlBase() ?>publico/imagenes/deportistas/fotos/<?= $modelo->foto; ?>" download="<?php echo $modelo->foto; ?>"><i class="fa fa-cloud-download"></i> Descargar</a>
         <button id="cerrar-modal" type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
-        <button id="btn-eliminar" class="btn btn-primary" type="button"><i class="fa fa-trash"></i> Eliminar la foto</button>
+        <button id="btn-eliminar" class="btn btn-primary" type="button"><i class="fa fa-trash"></i> Eliminar</button>
       </div>
     </div>
 </div>

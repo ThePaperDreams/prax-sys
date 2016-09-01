@@ -128,6 +128,16 @@ class Deportista extends CModelo{
         }
     }
     
+    public function filtrosAjx() {
+        $criterio = new CCriterio();
+        $concat = "CONCAT_WS(' ', t.nombre1,t.nombre2,t.apellido1,t.apellido2)";
+           $criterio->condicion($concat, $this->nombre1, "LIKE")
+                ->y("t.estado_id", $this->estado_id, "=")
+                ->y("t.telefono1", $this->telefono1, "LIKE")
+                ->y("t.identificacion", $this->identificacion, "LIKE");
+        return $criterio;
+    }
+    
     /**
      * 
      * @return FichaTecnica
@@ -167,7 +177,7 @@ class Deportista extends CModelo{
         return [
             'id_deportista' => 'Deportista',
             'identificacion' => 'Identificación',
-            'nombre1' => 'Nombre 1',
+            'nombre1' => 'Nombre',
             'nombre2' => 'Nombre 2',
             'apellido1' => 'Apellido 1',
             'apellido2' => 'Apellido 2',

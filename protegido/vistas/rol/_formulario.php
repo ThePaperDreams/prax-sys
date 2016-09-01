@@ -4,8 +4,8 @@ $formulario->abrir();
 ?>
 <div class="tile p-15">
 <p>Los campos con <span class="text-danger">*</span>  son requeridos</p>
-<?php echo $formulario->campoTexto($modelo, 'nombre', ['label' => true, 'group' => true, 'autofocus' => true]) ?>
-<?php echo $formulario->areaTexto($modelo, 'descripcion', ['label' => true, 'group' => true]) ?>
+<?php echo $formulario->campoTexto($modelo, 'nombre', ['label' => true, 'group' => true, 'autofocus' => true, 'maxlength' => '45']) ?>
+<?php echo $formulario->areaTexto($modelo, 'descripcion', ['label' => true, 'group' => true, 'maxlength' => '300']) ?>
 
 <div class="row">
     <div class="col-sm-offset-6 col-sm-3">

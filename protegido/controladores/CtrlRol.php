@@ -62,17 +62,17 @@ class CtrlRol extends CControlador {
     
     public function accionCambiarEstado($pk) {
         $modelo = $this->cargarModelo($pk);
-        if ($modelo->estado == 0) {
+        /*if ($modelo->estado == 0) {
             $this->alertar('warning', 'El Rol ya se encuentra inactivo');
             $this->redireccionar('inicio');
-        }
+        }*/
         $usuario = Usuario::modelo()->listar([
             'where' => "rol_id=$pk",
         ]);
         if (count($usuario) > 0) {
             $this->alertar('error', 'No se puede Inactivar este Rol');
         } else {
-            $modelo->estado = !$modelo->estado;
+            $modelo->estado = ($modelo->estado==1) ? 0: 1;
             if ($modelo->guardar()) {
                 $this->alertar('success', 'Cambio de estado exitoso');
             }            

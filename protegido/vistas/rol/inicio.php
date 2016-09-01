@@ -15,7 +15,11 @@
 
 <?= $this->complemento('!siscoms.bootstrap3.CBGrid', [
     'ajax' => true,
-    'filtrosAjax' => ['nombre', 'estado'],
+    'filtrosAjax' => [
+        'nombre', 
+        'estado' => CBoot::select("", [1 => 'Activo', 0 => 'Inactivo'], ['defecto' => 'Estado', 'style' => 'min-width: 150px;', 'name' => 'estado']),
+        ],
+    'criterios' => ['order'=>'estado=1 desc'],
     'modelo' => 'Rol',
     # id_rol, nombre, descripcion, desarrollador, estado
     'columnas' => ['nombre', 'estado' => 'etiquetaEstado'],

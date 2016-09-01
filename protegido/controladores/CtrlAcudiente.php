@@ -177,17 +177,17 @@ class CtrlAcudiente extends CControlador {
     
     public function accionCambiarEstado($pk) {
         $modelo = $this->cargarModelo($pk);
-        if ($modelo->estado == 0) {
+        /*if ($modelo->estado == 0) {
             $this->alertar('warning', 'El Acudiente ya se encuentra Inactivo');
             $this->redireccionar('inicio');
-        }
+        }*/
         $da = DeportistaAcudiente::modelo()->listar([
             'where' => "acudiente_id=$pk",
         ]);
         if (count($da) > 0) {
-            $this->alertar('error', 'No se puede Inactivar');
+            $this->alertar('error', 'No se puede Inactivar. Este Acudiente esta asociado a un Deportista');
         } else {
-            $modelo->estado = !$modelo->estado;
+            $modelo->estado = ($modelo->estado==1) ? 0: 1;
             if ($modelo->guardar()) {
                 $this->alertar('success', 'Cambio de estado exitoso');
             }            

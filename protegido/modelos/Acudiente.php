@@ -96,7 +96,7 @@ class Acudiente extends CModelo{
         return [
             'id_acudiente' => 'Acudiente',
             'identificacion' => 'Identificación',
-            'nombre1' => 'Nombre 1',
+            'nombre1' => 'Nombre',
             'nombre2' => 'Nombre 2',
             'apellido1' => 'Apellido 1',
             'apellido2' => 'Apellido 2',
@@ -147,6 +147,20 @@ class Acudiente extends CModelo{
 
     public function getDatos() {
         return $this->identificacion . " (" . $this->nombre1 . " " . $this->apellido1 . ")";
+    }
+    
+    public function getNombreCompleto(){
+        return "$this->nombre1 $this->nombre2 $this->apellido1 $this->apellido2";
+    }
+    
+    public function filtrosAjx() {
+        $criterio = new CCriterio();
+        $concat = "CONCAT_WS(' ', t.nombre1,t.nombre2,t.apellido1,t.apellido2)";
+           $criterio->condicion($concat, $this->nombre1, "LIKE")
+                ->y("t.estado", $this->estado, "=")
+                ->y("t.telefono1", $this->telefono1, "LIKE")
+                ->y("t.identificacion", $this->identificacion, "LIKE");
+        return $criterio;
     }
     
     public function getAcudiente($id, $nombre) {        

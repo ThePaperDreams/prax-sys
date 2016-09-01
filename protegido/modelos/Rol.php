@@ -36,7 +36,9 @@ class Rol extends CModelo {
     }
     
     public function filtrosAjx() {
-            return null;
+        $criterio = new CCriterio();
+        $criterio->condicion("nombre", $this->nombre, "LIKE")->y("estado", $this->estado, "=");
+        return $criterio;                
     }
 
     public function filtros() {

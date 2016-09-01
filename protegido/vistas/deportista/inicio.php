@@ -15,12 +15,19 @@ $this->opciones = [
 <?=
 
 $this->complemento('!siscoms.bootstrap3.CBGrid', [
+    'ajax' => true,
+    'filtrosAjax' => [
+        'identificacion',
+        'nombre1',
+        'telefono1', 
+        'estado_id' => CBoot::select('', [1 => 'Activo', 2 => 'Inactivo'], ['defecto' => 'Estado', 'style' => 'min-width: 150px;', 'name' => 'estado_id'])        
+     ],
+    'criterios' => ['order' => 'estado_id=1 DESC'],
     'modelo' => 'Deportista',
 # id_deportista, identificacion, nombre1, nombre2, apellido1, apellido2, direccion, foto, telefono1, telefono2, fecha_nacimiento, estado_id, tipo_documento_id
      'columnas' => [
         'identificacion',
-        'nombre1',
-        'apellido1',
+        'nombre1' => 'nombreCompleto',
         'telefono1',
         'estado_id' => ['valor' => 'EtiquetaEstado', 'opciones' => ['class' => 'text-center']] 
     ],

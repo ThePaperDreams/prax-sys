@@ -15,12 +15,19 @@ $this->opciones = [
 <?=
 
 $this->complemento('!siscoms.bootstrap3.CBGrid', [
+    'ajax' => true,
+    'filtrosAjax' => [
+        'identificacion',
+        'nombre1', 
+        'telefono1', 
+        'estado' => CBoot::select('', [1 => 'Activo', 0 => 'Inactivo'], ['defecto' => 'Estado', 'style' => 'min-width: 150px;', 'name' => 'estado'])        
+     ],
+    'criterios' => ['order' => 'estado=1 DESC'],
     'modelo' => 'Acudiente',
     # id_acudiente, identificacion, nombre1, nombre2, apellido1, apellido2, direccion, email, telefono1, telefono2, estado, tipo_doc_id
     'columnas' => [
         'identificacion',
-        'nombre1',
-        'apellido1',
+        'nombre1' => 'nombreCompleto',
         'telefono1',
         'estado' => 'EtiquetaEstado',
     ],
