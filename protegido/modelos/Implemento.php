@@ -112,7 +112,7 @@
                     FROM
                             tbl_salidas_implementos t
                             JOIN tbl_salidas t2 ON t2.id_salida = t.salida_id
-                    WHERE t.implemento_id = $this->id_implemento AND t2.estado = 1;";
+                    WHERE t.implemento_id = $this->id_implemento AND t2.estado = 1";
             $resultados = Sis::apl()->bd->ejecutarComando($sql);
             $this->_enPrestamo = count($resultados) > 0;
         } 

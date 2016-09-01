@@ -66,18 +66,41 @@ class CtrlSalida extends CControlador{
     
      public function accionAnular($pk) {
         $modelo = $this->cargarModelo($pk);
-        $modelo->estado = $modelo->estado ==1 ? 0:1;
-        
-        if ($modelo->guardar()) {
-                Sis::Sesion()->flash("alerta", [
-                    'msg' => 'Cambio exitoso',
-                    'tipo' => 'success',
-                ]);
+        $modelo->estado = $modelo->estado ==1 ? 0 : 1;
+        # empezamos la transacción
+        Sis::apl()->bd->begin();
+        if ($modelo->guardar() && $this->devolverImplementos($modelo)) {            
+            Sis::apl()->bd->commit();
+            Sis::Sesion()->flash("alerta", [
+                'msg' => 'Cambio exitoso',
+                'tipo' => 'success',
+            ]);
         } else {
-            
+            Sis::apl()->bd->rollback();
+            Sis::Sesion()->flash("alerta", [
+                'msg' => 'Ocurrió un error al cambiar el estado',
+                'tipo' => 'error',
+            ]);
         }
         
         $this->redireccionar('inicio');
+    }
+    
+    /**
+     * @param Salida $modelo
+     */
+    private function devolverImplementos($modelo){
+        $detalles = $modelo->Detalles;
+        foreach($detalles AS $d){
+            $cantPres = intval($d->cantidad);
+            $cantAct = intval($d->Implemento->unidades);
+            $nueva = $cantAct + $cantPres;
+            $d->Implemento->unidades = $nueva;            
+            if($d->Implemento->guardar() === false){
+                return false;
+            }
+        }
+        return true;
     }
 
     public function accionEntregar($pk){        
@@ -97,6 +120,7 @@ class CtrlSalida extends CControlador{
     private function guardarEntrega($id){
         $devoluciones = $this->_p['implementos']; # recibimos las devoluciones que envian en el formulario
         $error = false;        # variable para controlar errores
+        
 //        Sis::apl()->bd->begin(); # inicia la transacción
         # recorremos las devoluciones
         foreach($devoluciones['id'] AS $k=>$d){
