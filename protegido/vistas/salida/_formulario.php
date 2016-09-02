@@ -57,10 +57,10 @@ $formulario->abrir();
         
         $("#form-salidas").submit(function(){
             if($("[data-implemento]").length === 0){
-                lobiAlert("error", "Añada por lo menos un implemento");   
-            }else if(validarSal()){ 
+                lobiAlert("error", "Añada por lo menos un implemento");                 
+            }else{
                 return true;
-                } 
+            }
             return false;
         });
         
@@ -108,7 +108,7 @@ $formulario->abrir();
         var cantidad = $("#cant").val();
 
 
-        if (valor === "") {
+        if (valor === ""|| cantidad <= 0) {
             return;
         }
 

@@ -12,6 +12,6 @@ $this->tituloPagina="Entrada de implementos";
         ]
     ];    
 ?>
-<div class="col-sm-8">    
+<div class="col-sm-12">    
     <?php echo $this->mostrarVistaP('_formulario', ['modelo' => $modelo,'usuarios' => $usuarios]); ?>
 </div>

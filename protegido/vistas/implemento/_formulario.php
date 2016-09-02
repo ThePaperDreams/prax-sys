@@ -25,9 +25,9 @@ $formulario->abrir();
     $(function(){
         $("#form-implementos").submit(function(){
             if(maxMin()){
-                if(implementos()){
-                    validarNombre();
-                } 
+              if(implementos()){
+                    validarNombre();                   
+                }
             }
             return false;
         });    
@@ -73,8 +73,11 @@ $formulario->abrir();
         if(parseInt(minimo) > parseInt(maximo)){
             mostrarAlert('error','Unidades minimas no pueden superar al maximo');
             return false;
+        }if(parseInt(minimo) > parseInt(current)){
+            mostrarAlert('error','Unidades minimas no pueden superar a las unidades actuales');
+            return false;
         }else{
-        return true;
+            return true;
         }
     }    
     
@@ -82,15 +85,21 @@ $formulario->abrir();
         var maximo = $('#Implementos_maximo_unidades').val();
         var current = $('#Implementos_unidades').val();
         var minimo = $('#Implementos_minimo_unidades').val();
+        var errores = 0;
         if (parseInt(current)===0){
             mostrarAlert('error','Unidades  no pueden ser cero');
-            return false;
-        }else if(parseInt(minimo)===0){
+            errores++;
+        }
+        if(parseInt(minimo)===0){
             mostrarAlert('error','Unidades minimas no pueden ser cero');
-            return false;
-        }else if(parseInt(maximo)===0){
+            errores++;
+        }
+        if(parseInt(maximo)===0){
             mostrarAlert('error','Unidades maximas no pueden ser cero');
-            return false;
+            errores++;
+        }
+        if(errores > 0){ 
+            return false; 
         }else{
             return true;
         }
