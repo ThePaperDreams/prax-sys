@@ -115,6 +115,27 @@ class CtrlUsuario extends CControlador {
         ]);
     }
 
+    public function accionEditarPerfil() {
+        $modelo = $this->cargarModelo(Sis::apl()->usuario->getID());
+        
+        if(isset($this->_p['ajx'])){
+            $modelo->atributos = $this->_p['ficha'];
+            $this->json([
+                'error' => !$modelo->guardar(),
+            ]);
+            Sis::fin();
+        } 
+        
+        $modelo->nombres = trim($this->_p['ficha']['nombres']);
+        $modelo->apellidos = trim($this->_p['ficha']['apellidos']);
+        $modelo->telefono = trim($this->_p['ficha']['telefono']);
+        $modelo->guardar();
+        $url = Sis::crearUrl(['Usuario/editarPerfil', Sis::apl()->usuario->getID]);
+        $this->mostrarVista('perfil', ['modelo' => $modelo,
+            'url' => $url,
+            'roles' => CHtml::modeloLista(Rol::modelo()->listar(), 'id_rol', 'nombre'),
+        ]);
+    }
     /**
      * Esta función permite ver detalladamente un registro existente
      * @param int $pk
@@ -122,6 +143,12 @@ class CtrlUsuario extends CControlador {
     public function accionVer($pk) {
         $modelo = $this->cargarModelo($pk);
         $this->mostrarVista('ver', ['modelo' => $modelo,
+        ]);
+    }
+    
+    public function accionVerPerfil($pk) {
+        $modelo = $this->cargarModelo(Sis::apl()->usuario->getID());
+        $this->mostrarVista('perfil', ['modelo' => $modelo,
         ]);
     }
 

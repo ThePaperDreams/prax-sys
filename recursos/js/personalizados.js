@@ -18,7 +18,7 @@
        var footer = jQuery("<div/>", {class: 'panel-footer text-center'});
        var textArea = jQuery("<textarea/>", {class: 'form-control', id: 'txt-justificar'});
        var btnGuardar = jQuery("<button/>", {class: 'btn btn-primary'}).text("Guardar");
-       var btnCancelar = jQuery("<button/>", {class: 'btn btn-default'}).text("Cancelar");            
+       var btnCancelar = jQuery("<button/>", {class: 'btn btn-default'}).text("Cancelar");
        
        var cerrar = function(){
            panel.slideUp(function(){
