@@ -136,6 +136,34 @@ class CtrlUsuario extends CControlador {
             'roles' => CHtml::modeloLista(Rol::modelo()->listar(), 'id_rol', 'nombre'),
         ]);
     }
+    
+    public function accionCambiarFoto(){
+        $imagen = CArchivoCargado::instanciarPorNombre('imagenes');
+        $rutaDes = Sis::resolverRuta(Sis::crearCarpeta("!publico.imagenes.usuarios"));
+        $rutaThumbs = Sis::resolverRuta(Sis::crearCarpeta("!publico.imagenes.usuarios.thumbs"));
+        $guardado = $imagen->guardar($rutaDes);
+        $error = true;
+        if($guardado){
+            $imagen->thumbnail($rutaThumbs, [
+                'tamanio' => 200,
+                'autocentrar' => true,
+                'tipo' => strtolower($imagen->getExtension()),
+            ]);
+            $mImagen = $this->cargarModelo(Sis::apl()->usuario->getID());
+            $mImagen->foto = $imagen->getNombreOriginal();
+            $mImagen->guardar();            
+            $error = false;
+        }
+        
+        header("Content-type: Application/json");
+        
+        echo json_encode([
+            'uploadErr' => $error,
+            'url' => Sis::UrlBase() . "/publico/imagenes/usuarios/$mImagen->foto",
+        ]);
+        Sis::fin();
+        
+    }
     /**
      * Esta función permite ver detalladamente un registro existente
      * @param int $pk

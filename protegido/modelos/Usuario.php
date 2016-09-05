@@ -112,9 +112,9 @@ class Usuario extends CModelo {
     public function getFotoAsignada() {
         $url = Sis::UrlBase() . 'publico/imagenes/usuarios/';
         if($this->foto !== "" && $this->foto !== null){
-            return CHtml::img($url . $this->foto.'?t='.  time(),[ 'class'=>'thumbnail']);           
+            return CHtml::img($url . $this->foto.'?t='.  time(),[ 'class'=>'img-rounded', 'id' => 'actualfoto']);           
         } else {
-           return CHtml::img($url . 'developer.png',['class'=>'thumbnail']);
+           return CHtml::img($url . 'developer.png',['class'=>'img-rounded']);
         }
     }
     /**

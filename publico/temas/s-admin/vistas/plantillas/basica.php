@@ -100,7 +100,7 @@ Sis::Recursos()->Js('comunes');
                     <!-- Profile Menu -->
                     <div class="text-center s-widget m-b-25 dropdown" id="profile-menu">
                         <a href="#" data-toggle="dropdown">
-                            <img class="profile-pic animated" src="<?= Sis::apl()->usuario->getFoto(true) ?>" alt="">
+                            <img class="profile-pic animated" id="foto-perfil" src="<?= Sis::apl()->usuario->getFoto(true) ?>" alt="">
                         </a>
                         <ul class="dropdown-menu profile-menu">
                             <li><a href="<?= Sis::UrlBase() . Sis::apl()->usuario->getID()?>/Usuario/verPerfil">Mi perfíl</a> <i class="icon left">&#61903;</i><i class="icon right">&#61815;</i></li>
