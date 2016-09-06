@@ -54,8 +54,8 @@ class Salida extends CModelo {
            ->donde("t1.id_usuario", "=", "t.responsable_id")
            ->condicion($concat, $this->responsable_id, "LIKE")
            ->y("t.estado", $this->estado, "=")
-           ->y("t.fecha_realizacion", $this->fecha_realizacion, "=")
-           ->y("t.fecha_entrega", $this->fecha_entrega, "=");
+           ->y("t.fecha_realizacion", $this->fecha_realizacion, "LIKE")
+           ->y("t.fecha_entrega", $this->fecha_entrega, "LIKE");
        return $criterio;
     }
     /**

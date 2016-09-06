@@ -88,9 +88,9 @@ class Pago extends CModelo {
                 ->donde("d.id_deportista", "=", "m.deportista_id")
                 ->condicion($concat, $this->matricula_id, "LIKE")
                 ->y("t.estado", $this->estado, "=")
-                ->y("t.descuento", $this->descuento, "=")
+                ->y("t.descuento", $this->descuento, "LIKE")
                 ->y("t.fecha", $this->fecha, "LIKE")
-                ->y("t.valor_cancelado", $this->valor_cancelado, "=");
+                ->y("t.valor_cancelado", $this->valor_cancelado, "LIKE");
         return $criterio;
     }
     

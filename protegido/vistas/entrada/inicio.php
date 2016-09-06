@@ -16,7 +16,7 @@ $this->tituloPagina="Entrada de implementos";
     'ajax' => true,
     'filtrosAjax' => [
         'fecha_realizacion', 
-        'estado' => CBoot::select('', ['Anulado', 'Vigente'], ['defecto' => 'Estado', 'style' => 'min-width: 150px;', 'name' => 'estado']),
+        'estado' => CBoot::select('', ['Anulado', 'Activo'], ['defecto' => 'Estado', 'style' => 'min-width: 150px;', 'name' => 'estado']),
         'responsable_id', 
      ],
     'modelo' => 'Entrada',
