@@ -8,6 +8,7 @@
  */
 class CtrlUsuario extends CControlador {
 
+    
     /**
      * Esta función muestra el inicio y una tabla para listar los datos
      */
