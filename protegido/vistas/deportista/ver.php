@@ -14,11 +14,16 @@ $this->opciones = [
     ]
 ];
 ?>
+<div class="tile p-15">
+<div class="row">
+    <div class="panel-heading">
+        <h4>Detalles del Deportista</h4>
+    </div>
 <div class="col-sm-6">
     <div class="panel panel-default">
-        <div class="panel-heading text-center">
+        <!--<div class="panel-heading text-center">
             Ver detalles
-        </div>
+        </div>-->
         <table class="table table-bordered table-hover">
             <tbody>
                 <tr>
@@ -26,52 +31,65 @@ $this->opciones = [
                     <td><?php echo $modelo->TipoIdentificacion->nombre; ?></td>
                 </tr>
                 <tr>
-                    <th><?php echo $modelo->obtenerEtiqueta('identificacion') ?></th>
-                    <td><?php echo $modelo->identificacion; ?></td>
-                </tr>
-                <tr>
-                    <th><?php echo $modelo->obtenerEtiqueta('fecha_nacimiento') ?></th>
-                    <td><?php echo $modelo->fecha_nacimiento; ?></td>
-                </tr>
-                <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('nombre1') ?></th>
                     <td><?php echo $modelo->nombre1; ?></td>
-                </tr>
-                <tr>
-                    <th><?php echo $modelo->obtenerEtiqueta('nombre2') ?></th>
-                    <td><?php echo $modelo->nombre2; ?></td>
                 </tr>
                 <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('apellido1') ?></th>
                     <td><?php echo $modelo->apellido1; ?></td>
                 </tr>
                 <tr>
+                    <th><?php echo $modelo->obtenerEtiqueta('telefono1') ?></th>
+                    <td><?php echo $modelo->telefono1; ?></td>
+                </tr>
+                <tr>                    
+                    <th><?php echo $modelo->obtenerEtiqueta('fecha_nacimiento') ?></th>
+                    <td><?php echo $modelo->fecha_nacimiento; ?></td>
+                </tr>                
+                <tr>                    
+                    <th><?php echo $modelo->obtenerEtiqueta('foto') ?></th>
+                    <td id="pho"><?php echo $modelo->ImagenPerfil; ?></td>
+                </tr>                
+            </tbody>
+        </table>
+    </div>
+</div>
+    <div class="col-sm-6">
+    <div class="panel panel-default">
+        <!--<div class="panel-heading text-center">
+            Ver detalles
+        </div>-->
+        <table class="table table-bordered table-hover">
+            <tbody>                
+                <tr>
+                    <th><?php echo $modelo->obtenerEtiqueta('identificacion') ?></th>
+                    <td><?php echo $modelo->identificacion; ?></td>
+                </tr>
+                <tr>
+                    <th><?php echo $modelo->obtenerEtiqueta('nombre2') ?></th>
+                    <td><?php echo $modelo->nombre2; ?></td>
+                </tr>
+                <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('apellido2') ?></th>
                     <td><?php echo $modelo->apellido2; ?></td>
+                </tr>
+                <tr>                    
+                    <th><?php echo $modelo->obtenerEtiqueta('telefono2') ?></th>
+                    <td><?php echo $modelo->telefono2; ?></td>
                 </tr>
                 <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('direccion') ?></th>
                     <td><?php echo $modelo->direccion; ?></td>
                 </tr>
                 <tr>
-                    <th><?php echo $modelo->obtenerEtiqueta('telefono1') ?></th>
-                    <td><?php echo $modelo->telefono1; ?></td>
-                </tr>
-                <tr>
-                    <th><?php echo $modelo->obtenerEtiqueta('telefono2') ?></th>
-                    <td><?php echo $modelo->telefono2; ?></td>
-                </tr>
-                <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('estado_id') ?></th>
                     <td><?php echo $modelo->EtiquetaEstado; ?></td>
                 </tr>
-                <tr>
-                    <th><?php echo $modelo->obtenerEtiqueta('foto') ?></th>
-                    <td id="pho"><?php echo $modelo->ImagenPerfil; ?></td>
-                </tr>
             </tbody>
         </table>
-    </div>    
+    </div>
+</div>
+</div>
 </div>
 <?php if (!is_null($modelo->foto)): ?>
 <div id="photo" class="modal cortina">
@@ -92,25 +110,27 @@ $this->opciones = [
     </div>
 </div>
 <?php endif; ?>        
-
+<?php if(count($modelo->Documento)): ?>
 <div class="col-sm-6">
     <div class="panel panel-default">
         <div class="panel-heading text-center">
             <h4 class="panel-title"><a data-toggle="collapse" href="#collapse">Documentos asociados actualmente <i class="fa fa-chevron-down"></i></a></h4>
         </div>  
         <div id="collapse" class="panel-collapse collapse">
-            <table class="table table-bordered table-hover">
+            <table class="table table-bordered table-condensed">
                 <thead>
                     <tr>
-                        <th>Descargar</th>
+                        <th>Documento</th>
                         <th>Eliminar</th>
                     </tr>
                 </thead>
-                <tbody id="tabla-documentos">
-                    <?php foreach ($modelo->Documento AS $dc): ?>
+                <tbody>
+                    <?php foreach ($modelo->Documento AS $d): ?>
                         <tr>
-                            <td><?= $dc->Documento->getDocumento($modelo->id_deportista, $dc->Documento->url, get_class($modelo)); ?></td>            
-                            <td class="col-sm-1 text-center text-danger-icon"><a class="eliminar" data-iddep="<?= $modelo->id_deportista ?>" data-nomtipo="<?= $dc->Documento->url ?>" data-iddoc="<?= $dc->documento_id ?>" data-iddepdoc="<?= $dc->id ?>" href="#"><i class="fa fa-ban"></i></a></td>
+                            <td><?php echo $d->Documento->getDocumento($d->Documento->url); ?>
+                            <td class="col-sm-1 text-center text-danger-icon">
+                                <a href="#" class="eliminar" data-iddepdoc="<?php echo $d->id; ?>"><i class="fa fa-ban"></i></a>
+                            </td>
                         </tr>
                     <?php endforeach ?>
                 </tbody>
@@ -118,6 +138,7 @@ $this->opciones = [
         </div>
     </div>
 </div>
+<?php endif; ?>
 <div class="col-sm-6">
     <div class="panel panel-default">
         <div class="panel-heading text-center">
@@ -146,25 +167,20 @@ $this->opciones = [
 </div>
 <script>
     $(function () {
-        $("a.eliminar").click(function () {
-            if (confirm('¿Está seguro de eliminar este documento?')) {
-                var a = $(this);
-                var iddepdoc = a.attr("data-iddepdoc");
-                var iddoc = a.attr("data-iddoc");
-                var iddep = a.attr("data-iddep");
-                var nomtipo = a.attr("data-nomtipo");
+        $("a.eliminar").click(function(){
+            if (confirm('¿Está seguro de eliminar este Documento?')) {
+                var that_a = $(this);
+                var iddepdoc = that_a.attr("data-iddepdoc");
                 $.ajax({
-                    type: 'post',
-                    url: "<?php echo Sis::crearUrl(['Deportista/EliminarDeportistaDocumento']) ?>",
-                    data: {
-                        iddepdoc: iddepdoc,
-                        iddoc: iddoc,
-                        iddep: iddep,
-                        nomtipo: nomtipo
+                    method: "POST",
+                    url: "<?php echo Sis::crearUrl(['Deportista/EliminarDeportistaDocumento']); ?>",
+                    data: {iddepdoc: iddepdoc}
+                }).done(function(resp){
+                    if (resp["tipo"] === "success") {                        
+                        that_a.closest("tr").remove();
                     }
-                }).done(function () {
-                    $(a).closest("tr").remove();
-                }).fail(function () {});
+                    lobiAlert(resp.tipo, resp.msj);
+                });    
             }
             return false;
         });

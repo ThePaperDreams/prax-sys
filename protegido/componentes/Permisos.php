@@ -3,7 +3,9 @@
 class Permisos extends CDisparador{
     public function ejecutar() {
         $ruta = $this->controlador->ID . '/' . $this->controlador->getAccion();
-        if(Sis::apl()->usuario->esVisitante && $ruta != 'principal/entrar') {
+        $rutasValidas = $ruta == 'principal/entrar' || $ruta == 'principal/recuperar' ||
+                $ruta == "principal/restablecer";
+        if(Sis::apl()->usuario->esVisitante && $rutasValidas === false) {
            $this->controlador->redireccionar('principal/entrar');
         }
     }

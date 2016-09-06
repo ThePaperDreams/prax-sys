@@ -13,7 +13,16 @@
 ?>
 
 <?= $this->complemento('!siscoms.bootstrap3.CBGrid', [
+    'ajax' => true,
+    'filtrosAjax' => [
+        'descripcion', 
+        'fecha_aplicacion' => CBoot::text('',['name' => 'fecha_aplicacion', 'class' => 'campo-fecha']),
+        'estado' => CBoot::select('', ['Eliminado', 'Activo'], ['defecto' => 'Estado', 'style' => 'min-width: 150px;', 'name' => 'estado']),
+    ],
     'modelo' => 'PlanTrabajo',
+    'criterios' => [
+        'order' => 't.estado = 1 desc, t.id_plan_trabajo DESC',
+    ],
     # id_plan_trabajo, descripcion, fecha_aplicacion, estado, categoria_id
     'columnas' => [
         'descripcion' => 'Resumen',

@@ -21,6 +21,7 @@
  */
 class Categoria extends CModelo {
     private $enUso = null;
+    public $cupos;
     /**
      * Esta función retorna el nombre de la tabla representada por el modelo
      * @return string
@@ -52,6 +53,14 @@ class Categoria extends CModelo {
         return [
             'requeridos' => 'nombre,cupo_minimo,cupo_maximo,edad_minima,edad_maxima',
         ];
+    }
+    
+    public function filtrosAjx() {
+        $criterio = new CCriterio();
+        $criterio->condicion("t.nombre", $this->nombre);
+        $criterio->condicion("t.tarifa", $this->tarifa);
+        $criterio->condicion("t.estado", $this->estado);
+        return $criterio;
     }
     
     public function antesDeGuardar() {

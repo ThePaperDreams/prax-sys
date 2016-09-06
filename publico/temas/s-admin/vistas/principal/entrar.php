@@ -17,7 +17,7 @@
         <?=  CBoot::boton('Iniciar sesión', 'success btn-block', ['class' => 'btn btn-sm m-r-5']); ?>
         <div class="p-5"></div>
         <p class="text-center">
-            <a href="#">¿Olvidó su contraseña?</a>
+            <a href="<?= Sis::CrearUrl(['principal/recuperar']) ?>">¿Olvidó su contraseña?</a>
         </p>
     </div>
     <?php $form->cerrar() ?>        

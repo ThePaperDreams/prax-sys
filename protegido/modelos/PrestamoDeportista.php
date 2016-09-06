@@ -5,8 +5,8 @@
  *
  * Atributos del modelo
  * @property int $id_prestamo
- * @property string $clubOrigen
- * @property string $clubDestino
+ * @property string $club_origen
+ * @property string $club_destino
  * @property string $fecha_inicio
  * @property string $fecha_fin
  * @property tinyint $estado
@@ -17,7 +17,8 @@
  * @property Deportista $Deportista
  */
 class PrestamoDeportista extends CModelo {
-
+    public $nombreDeportista;
+    
     /**
      * Esta función retorna el nombre de la tabla representada por el modelo
      * @return string
@@ -33,8 +34,8 @@ class PrestamoDeportista extends CModelo {
     public function atributos() {
         return [
             'id_prestamo' => ['pk'],
-            'clubOrigen',
-            'clubDestino',
+            'club_origen',
+            'club_destino',
             'fecha_inicio',
             'fecha_fin',
             'estado' => ['def' => '1'],
@@ -62,8 +63,8 @@ class PrestamoDeportista extends CModelo {
     public function etiquetasAtributos() {
         return [
             'id_prestamo' => 'Id Prestamo',
-            'clubOrigen' => 'Club de origen',
-            'clubDestino' => 'Club de destino',
+            'club_origen' => 'Club de origen',
+            'club_destino' => 'Club de destino',
             'fecha_inicio' => 'Fecha inicio',
             'fecha_fin' => 'Fecha fin',
             'estado' => 'Estado',
@@ -72,6 +73,20 @@ class PrestamoDeportista extends CModelo {
             'nombreDeportista' => 'Deportista',
             'etiquetaTipo' => 'Tipo',
         ];
+    }
+    
+    public function filtrosAjx() {
+        $criterio = new CCriterio();
+        $concat = "CONCAT_WS(' ', nombre1, nombre2, apellido1, apellido2,t2.apellido2)";        
+        $criterio->union("tbl_deportistas", "t2")
+                ->donde("t.deportista_id", '=', "t2.id_deportista")
+                ->condicion($concat, $this->deportista_id, 'LIKE')
+                ->y("t.club_origen", $this->club_origen, 'LIKE')
+                ->y("t.club_destino", $this->club_destino, 'LIKE')
+                ->y("t.tipo_prestamo", $this->tipo_prestamo)
+                ->y("t.fecha_inicio", $this->fecha_inicio)
+                ->y("t.fecha_fin", $this->fecha_fin);
+        return $criterio;
     }
     
     public function filtros() {
@@ -88,7 +103,7 @@ class PrestamoDeportista extends CModelo {
         }
     }
 
-    public function getNombreDeportista(){
+    public function getNombreDepCompleto(){
         return $this->Deportista->nombreCompleto;
     }
     

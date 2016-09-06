@@ -15,6 +15,8 @@
 ?>
 
 <?= $this->complemento('!siscoms.bootstrap3.CBGrid', [
+    'ajax' => true,
+    'filtrosAjax' => ['titulo'],
     'modelo' => 'Objetivo',
     'filtros' => 'titulo',
     # id_objetivo, titulo, descripcion, plan_trabajo_id

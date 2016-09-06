@@ -85,11 +85,15 @@ abstract class CModelo extends CBaseModelo{
     
     /**
      * Esta función retorna una instancia del modelo 
-     * @param array $criterio
+     * @param CCriterio $criterio
      * @return CModelo
      */
     public function primer($criterio = []){
-        $criterio['limit'] = 1;
+        if($criterio instanceof CCriterio){
+            $criterio->limitar(1);
+        } else if(is_array($criterio)){            
+            $criterio['limit'] = 1;
+        }
         $resultados = $this->_encontrarTodos($criterio);        
         return count($resultados) > 0? $resultados[0] : null;
     }

@@ -11,8 +11,12 @@ class CtrlAsistencia extends CControlador{
      * Esta función muestra el inicio y una tabla para listar los datos
      */
     public function accionInicio(){
-        $modelos = Asistencia::modelo()->listar();        
-        $this->mostrarVista('inicio', ['modelos' => $modelos]);
+        $categorias = Categoria::modelo()->listar();        
+        $usuarios = Usuario::modelo()->listar();
+        $this->mostrarVista('inicio', [
+            'categorias' => CHtml::modeloLista($categorias, 'id_categoria', "nombre"),
+            'usuarios' => CHtml::modeloLista($usuarios, "id_usuario", "nombreMasUsuario")
+        ]);
     }
     
     /**

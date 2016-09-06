@@ -57,6 +57,16 @@ class Asistencia extends CModelo {
         ];
     }
     
+    public function filtrosAjx() {
+        $criterio = new CCriterio();
+        $criterio->condicion("t.fecha", $this->fecha)
+            ->y("t.novedad", $this->novedad, 'LIKE')
+            ->y("t.categoria_id", $this->categoria_id)
+            ->y("t.realizada_por", $this->realizada_por)
+            ->orden("t.fecha", false);
+        return $criterio;
+    }
+    
     /**
      * Esta función retorna un alias dado a cada uno de los atributos del modelo
      * @return string

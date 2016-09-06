@@ -89,6 +89,12 @@ abstract class CBaseGrid extends CComplemento{
         $this->cModelo = new $this->_modelo();
     }
     
+    protected function setAtributosModelo(&$modelo, $atributos){
+        foreach($atributos AS $k=>$v){
+            $modelo->$k = $v;
+        }
+    }
+    
     protected function filtrosAjax(){
         # construimos los filtros via ajax
         $p = filter_input_array(INPUT_POST);
@@ -98,8 +104,7 @@ abstract class CBaseGrid extends CComplemento{
         $this->filtradoAjax = true;
         $this->instanciarModelo();
         $this->cModelo->limpiarAtributos();
-        $this->cModelo->atributos = $p;
-//        var_dump($this->cModelo);
+        $this->setAtributosModelo($this->cModelo, $p);
         $criterio = $this->cModelo->filtrosAjx();
         
         if($criterio === null){

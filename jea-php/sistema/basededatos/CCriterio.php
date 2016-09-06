@@ -53,7 +53,7 @@ class CCriterio {
      * @param string $campo2
      * @return CCriterio
      */
-    public function y($campo1, $campo2, $operador){
+    public function y($campo1, $campo2, $operador = '='){
         if($campo2 === null){ return $this; }
         if($this->condicion != "" && $this->condicion != null){ $this->condicion .= " AND "; }
         
@@ -78,6 +78,24 @@ class CCriterio {
         if($operador == 'LIKE'){ $campo2 = "'%$campo2%'"; }
         else if(is_string($campo2)){ $campo2 = "'$campo2'"; }
         $this->condicion .= "$campo1 $operador $campo2";
+        return $this;
+    }
+    
+    public function en($campo, $lista = [], $y = true){
+        if($this->condicion !== null && $this->condicion !== ""){
+            $this->condicion .= ($y? " AND" : " OR");
+        }
+        $valores = implode(', ', $lista);
+        $this->condicion .= " $campo IN(" . $valores . ")";
+        return $this;
+    }
+    
+    public function noEn($campo, $lista = [], $y = true){
+        if($this->condicion !== null && $this->condicion !== ""){
+            $this->condicion .= ($y? " AND" : " OR");
+        }
+        $valores = implode(', ', $lista);
+        $this->condicion .= " $campo NOT IN(" . $valores . ")";
         return $this;
     }
     

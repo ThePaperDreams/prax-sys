@@ -57,29 +57,24 @@ $formulario->abrir();
         
     <div role="tabpanel" class="tab-pane" id="documentos">
         <div class="row">
-            <div class="col-sm-4">
-                <?php echo $formulario->lista($modelo2, 'id_tipo', $tiposDocumentos, ['label' => true, 'group' => true, 'defecto' => 'Seleccione Tipo Documento']) ?>
+            <div class="col-sm-6">
+                <?php echo $formulario->lista($modelo2, 'id_tipo', $tiposDocumentos, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un Tipo de documento']) ?>
             </div>
             <div class="col-sm-2">
                 <?php echo CBoot::boton(CBoot::fa('plus-circle') . ' Agregar', 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'id' => 'btn-addDoc']) ?>
             </div>
-        </div>
-        <?php if ($modelo->nuevo): ?>
-            <div class="row">
-                <div class="col-sm-12">
-        <?php else: ?>
-            <div class="row">
-                <div class="col-sm-6">
-        <?php endif; ?>
-                    <div id="lst-doc" class="panel-default">
-                        <div class="panel-heading">Documentos</div>
-                            <ul id="lis-doc" class="list-group"></ul>
+            <?php if(count($modelo->Detalles)): ?>                   
+            <div class="col-sm-4">
+                <?php echo CBoot::boton(CBoot::fa('file-text-o') . ' Ver documentos asociados', 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'data-toggle' => 'modal', 'data-target' => '#myModal']) ?>
+            </div>
+            <div class="modal fade cortina" id="myModal" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Documentos asociados actualmente</h4>
                         </div>
-                    </div>
-        <?php if (!$modelo->nuevo): ?>
-                <div class="col-sm-6">
-                    <div class="panel panel-default">
-                        <div class="panel-heading text-center">Documentos asociados Actualmente</div>            
+                        <div class="modal-body">
                             <table class="table table-bordered table-condensed">
                                 <thead>
                                     <tr>
@@ -87,19 +82,34 @@ $formulario->abrir();
                                         <th>Eliminar</th>
                                     </tr>
                                 </thead>
-                                <tbody id="tabla-documentos">
-                                    <?php foreach ($modelo->Detalles AS $dc): ?>
+                                <tbody>
+                                    <?php foreach ($modelo->Detalles AS $d): ?>
                                         <tr>
-                                            <td titulo="<?= $dc->Documento->titulo ?>"><?= $dc->Documento->titulo ?></td>            
-                                            <td class="col-sm-1 text-center text-danger-icon"><a class="eliminar" data-idacu="<?= $modelo->id_acudiente ?>" data-nomtipo="<?= $dc->Documento->url ?>" data-iddoc="<?= $dc->documento_id ?>" data-idacudoc="<?= $dc->id ?>" href="#"><i class="fa fa-ban"></i></a></td>
+                                            <td><?php echo $d->Documento->getDocumento($d->Documento->url); ?>
+                                            <td class="col-sm-1 text-center text-danger-icon">
+                                                <a href="#" class="eliminar" data-idacudoc="<?php echo $d->id; ?>"><i class="fa fa-ban"></i></a>
+                                            </td>
                                         </tr>
                                     <?php endforeach ?>
                                 </tbody>
                             </table>
                         </div>
-                    </div>    
-        <?php endif ?>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
             </div>
+            <?php endif; ?>
+        </div>        
+        <div class="row">
+            <div class="col-sm-12">        
+                <div id="lst-doc" class="panel-default">
+                    <div class="panel-heading">Documentos</div>
+                    <ul id="list-docs" class="list-group"></ul>
+                </div>
+            </div>
+        </div>    
     </div>
 </div>
     <div class="row">
@@ -113,45 +123,38 @@ $formulario->abrir();
 </div>
 <?php $formulario->cerrar(); ?>
 <script>
-    $(function () {
-        $("#btn-addDoc").click(function () {
-            var m = $("#TiposDocumento_id_tipo option:selected");
-            var r = encontrar(m.html());
-            var i = m.html() !== "Seleccione Tipo Documento";
-            if (i && r) {
-                $("#lis-doc").append("<li class='list-group-item' d='" + m.val() + "'><button class='btn btn-primary' onclick='borrar(this)' type='button'><i class='fa fa-trash'> </i> " + m.html() + "</button><input type='file' name='Documentos[]'></li>");
-                $("input[type=file]").fileinput({
-                    showPreview: false,
-                    showRemove: false,
-                    showUpload: false,
-                    browseLabel: "Seleccionar archivo",
-                });
-                m.attr("disabled", "true");
-                $("#form-acudientes").append("<input hidden='' name='TiposDocumentos[]' id='td" + m.val() + "' value='" + m.val() + "'>");
-            } else if (i) {
-                alert("El acudiente actualmente tiene este documento");
+    $(function(){  
+        var cd = 0; // Contador de documentos para los id de los input hidden        
+        $("#btn-addDoc").click(function(){            
+            var choice_tipo_doc = $("#TiposDocumento_id_tipo option:selected");
+            if (choice_tipo_doc.val() !== "") {
+                cd++;
+                var input_text = "<input placeholder='Nombre del documento' class='form-control' type='text' name='NombresDocumentos[]'>";
+                var input_file = "<input type='file' name='Documentos[]'>";
+                var button_delete = "<button numdoc='"+cd+"' type='button' onclick='eliminarDocumentoLi(this)' class='btn btn-primary'><i class='fa fa-trash'></i></button>";
+                var input_hidden = "<input type='text' id='"+cd+"' hidden='' value='"+choice_tipo_doc.val()+"' name='TiposDocumentos[]'>";
+                var union_elementos = "<li class='list-group-item borde-fondo'><div class='row'><div class='col-xs-12 col-sm-9 col-lg-9'>"+input_text+"</div>"+
+                        "<div class='col-xs-12 col-sm-3 col-lg-3'>"+choice_tipo_doc.html()+"</div>" + 
+                        "<div class='col-xs-12 col-sm-9 col-lg-9'>"+input_file+ "</div><div class='col-xs-12 col-sm-3 col-lg-3'>"+button_delete+"</div></div></li>";
+                $("#list-docs").after(union_elementos);
+                $("#form-acudientes").append(input_hidden);
+                bonitoInputFile();    
             }
-            $("#TiposDocumento_id_tipo").val('').attr("selected", "selected");
-        });
-        $(".eliminar").click(function () {
-            if (confirm('¿Está seguro de eliminar este documento?')) {
-                var a = $(this);
-                var idacudoc = a.attr("data-idacudoc");
-                var iddoc = a.attr("data-iddoc");
-                var idacu = a.attr("data-idacu");
-                var nomtipo = a.attr("data-nomtipo");
+        });  
+        $("a.eliminar").click(function(){
+            if (confirm('¿Está seguro de eliminar este Documento?')) {
+                var that_a = $(this);
+                var idacudoc = that_a.attr("data-idacudoc");
                 $.ajax({
-                    type: 'post',
-                    url: "<?php echo Sis::crearUrl(['Acudiente/EliminarAcudienteDocumento']) ?>",
-                    data: {
-                        idacudoc: idacudoc,
-                        iddoc: iddoc,
-                        idacu: idacu,
-                        nomtipo: nomtipo
+                    method: "POST",
+                    url: "<?php echo Sis::crearUrl(['Acudiente/EliminarAcudienteDocumento']); ?>",
+                    data: {idacudoc: idacudoc}
+                }).done(function(resp){
+                    if (resp["tipo"] === "success") {                        
+                        that_a.closest("tr").remove();
                     }
-                }).done(function () {
-                    $(a).closest("tr").remove();
-                }).fail(function () {});
+                    lobiAlert(resp.tipo, resp.msj);
+                });    
             }
             return false;
         });
@@ -162,7 +165,7 @@ $formulario->abrir();
             return false;
         });
     });
-
+    
     function validarIdentificacion() {
         var identificacion = $("#Acudientes_identificacion").val();
         if (identificacion === "") {
@@ -177,7 +180,7 @@ $formulario->abrir();
             },
             success: function (respuesta) {
                 if (respuesta.error === true) {
-                    mostrarAlert("error", "Ya existe esa Identificación");
+                    lobiAlert("error", "Ya existe un Acudiente con esta Identificación");
                 } else {
                     document.getElementById("form-acudientes").submit();
                 }
@@ -187,46 +190,28 @@ $formulario->abrir();
     
     function validarDocumentos(){
         var resp = true;
-        $("#lis-doc li input").each(function(){  
+        $("#lst-doc li input").each(function(){  
             if ($(this).val() === "") {
                 resp = false;
             }
         });
         if (!resp) {
-            lobiAlert('error', 'Debes subir los documentos');
+            lobiAlert('error', 'Te falta subir un documento o incluir su nombre');
         }
         return resp;
     }
-
-    function mostrarAlert(tipo, msg) {
-        Lobibox.notify(tipo, {
-            size: 'mini',
-            showClass: 'bounceInRight',
-            hideClass: 'bounceOutRight',
-            msg: msg,
-            delay: 8000,
-            soundPath: '<?= Sis::UrlRecursos() ?>librerias/lobibox/sounds/',
-        });
+    
+    function eliminarDocumentoLi(e){
+        $("#"+$(e).attr("numdoc")).remove(); // eliminar input hidden
+        $(e).closest("li").remove(); // eliminar li       
     }
-
-    function borrar(e) {
-        var d = $(e).closest('li').attr('d');
-        $("#TiposDocumento_id_tipo option:disabled").each(function (index) {
-            if ($(this).val() === d) {
-                $(this).removeAttr("disabled");
-            }
-        });
-        $(e).closest('li').remove();
-        $("#td" + d).remove();
-    }
-    function encontrar(tit) {
-        var h = "", r = true;
-        $("#tabla-documentos td[titulo]").each(function (v, e) {
-            h = e.getAttribute("titulo");
-            if (h === tit) {
-                r = false;
-            }
-        });
-        return r;
+    
+    function bonitoInputFile(){
+        $("input[type=file]").fileinput({
+            showPreview: false,
+            showRemove: false,
+            showUpload: false,
+            browseLabel: "Seleccionar archivo"
+        });    
     }
 </script>
