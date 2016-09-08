@@ -11,13 +11,28 @@ $this->tituloPagina="Implementos";
         ]
     ];
 ?>
+<?php $this->abrirSeccion("antes-de-opciones") ?>
+
+<div class="row">
+    <div class="col-lg-6">
+        <a href="<?= Sis::crearUrl(['implemento/generarReporte']) ?>" target="_blank">
+            <?php
+            $icon = CBoot::fa('file-pdf-o');
+            echo CBoot::boton('Generar pdf ' . $icon, 'primary', ['id' => 'generar_pdf']);
+            ?>
+        </a>
+    </div>
+</div>
+<div class="p-5"></div>
+
+<?php $this->cerrarSeccion() ?>
 
 <?= $this->complemento('!siscoms.bootstrap3.CBGrid', [
     'ajax' => true,
     'filtrosAjax' => [
         'categoria_id',
         'nombre', 
-        'estado_id' => CBoot::select('', [1 => 'Activo', 2 => 'Inactivo', 3=>'Agotado'], ['defecto' => 'Estado', 'style' => 'min-width: 150px;', 'name' => 'estado_id']),
+        'estado_id' => CBoot::select('', [1 => 'Activo', 2 => 'Inactivo'], ['defecto' => 'Estado', 'style' => 'min-width: 150px;', 'name' => 'estado_id']),
         'unidades',
         'minimo_unidades',
         'maximo_unidades', 
