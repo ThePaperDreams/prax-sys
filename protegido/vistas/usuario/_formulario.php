@@ -27,7 +27,7 @@ $formulario->abrir();
 
     <div class="row">
         <div class="col-sm-6">
-            <?php echo $formulario->campoTexto($modelo, 'nombre_usuario', ['label' => true, 'group' => true, 'maxlength' => '30']) ?>
+            <?php echo $formulario->campoTexto($modelo, 'nombre_usuario', ['label' => true, 'group' => true, 'maxlength' => '30', 'data-toggle'=>'tooltip']) ?>
         </div>
         <div class="col-sm-6">
             <?php echo $formulario->campoTexto($modelo, 'email', ['label' => true, 'group' => true, 'maxlength' => '80']) ?>
@@ -42,7 +42,7 @@ $formulario->abrir();
         </div>        
     <?php endif; ?>
     <input hidden="" value="0" id="change-foto" name="cambio-foto">
-    <?php if (!is_null($modelo->foto)): ?>
+    <?php if (is_null($modelo->foto) !== true): ?>
     <div class="col-sm-6">
         <?php echo CBoot::botonP('Cambiar foto', ['type' => 'button', 'label' => true, 'group' => true, 'id' => 'btn-cambiarFoto', 'onClick' => 'activarCambioFoto()', 'class' => 'btn-block', 'data' => '0']) ?>
     </div>    
@@ -53,7 +53,7 @@ $formulario->abrir();
             <div class="form-group">
                 <label for="usuario-clave">Clave <span class="text-danger">*</span></label>
                 <p class="text-danger form-requerido" style="display:none" id="err-clave">El campo <b>Clave</b> no puede estar vacio</p>
-                <?= CBoot::passwordField('', ['requerido' => '1', 'class' => 'form-group', 'id' => 'usuario-clave', 'name' => 'Usuarios[uclave]']) ?>
+                <?= CBoot::passwordField('', ['requerido' => '1', 'class' => 'form-group', 'id' => 'usuario-clave', 'name' => 'Usuarios[uclave]', 'data-toggle'=>'tooltip']) ?>
             </div>
         </div>
         <div class="col-sm-6">
@@ -65,7 +65,7 @@ $formulario->abrir();
         </div>
     </div>
         
-    <div class="row" <?php if (!is_null($modelo->foto)): ?>style="display:none" id="fotos"<?php endif; ?>>
+    <div class="row" <?php if (is_null($modelo->foto) !== true): ?>style="display:none" id="fotos"<?php endif; ?>>
         <div class="col-sm-12">
             <?php echo $formulario->campoArchivo($modelo, 'foto', ['label' => true, 'group' => true]) ?>
         </div>
@@ -83,6 +83,9 @@ $formulario->abrir();
 </div>
 <script>
     $(function () {
+        $("#usuario-clave").attr("title", "La Clave debe contener: 6 o más caracteres, mínimo un número, una letra minúscula y una letra mayúscula.");
+        $("#Usuarios_nombre_usuario").attr("title", "El Nombre de Usuario debe contener: 6 o más caracteres.");
+        $('[data-toggle="tooltip"]').tooltip();         
         $("#Usuarios_foto").fileinput({
             showPreview: false,
             showRemove: false,
@@ -91,23 +94,25 @@ $formulario->abrir();
             maxFileSize: 5000,
             allowedFileExtensions: ['jpg', 'gif', 'png', 'jpeg']         
         });
-        $("#form-usuarios").submit(function(){
-            var camcla = $("#change-pass").val();            
-            validarSubidaFoto();
-            // === undefined por si es un registro y no una actualizacion
-            if (camcla === "1" || camcla === undefined) {
-                if (validarClave()) {
+        $("#form-usuarios").submit(function(){            
+            var cambioclave = $("#change-pass").val();
+            validarSubidaFoto();            
+            if (cambioclave === "1" || cambioclave === undefined) { // registro o actualizacion con cambio clave
+                if (validarClave() && validarEmail()) { // === undefined por si es un registro
                     validarUsuarioEmail();
                 }
-            }else{
+            }else if(validarEmail()){ // actualizacion sin pedir cambio clave
                 validarUsuarioEmail();
             }
             return false;
         });
+    });
+    
         function validarUsuarioEmail() {
         var email = $("#Usuarios_email").val();
         var usuario = $("#Usuarios_nombre_usuario").val();
-        if (email === "" || usuario === "") {
+        if (email === "" || usuario === "" || usuario.length < 6) {
+            mostrarAlert("error", "El Nombre de Usuario debe contener: 6 o más caracteres.");
             return false;
         }
         $.ajax({
@@ -120,63 +125,81 @@ $formulario->abrir();
             },
             success: function (respuesta) {
                 if (respuesta.error === true) {
-                    mostrarAlert("error", "Ya existe ese Usuario o Email");
+                    mostrarAlert("error", "El Nombre de Usuario o el Email no esta disponible");
                 } else {                    
                     document.getElementById("form-usuarios").submit();
                 }
             }
         });
     }
-    });
 
-    function validarClave() {
-        var clave = $("#usuario-clave").val();
-        var clave2 = $("#confirmar-clave").val();        
-        if (clave === clave2 && clave !== "" && clave2 !== "") {
+    function validarEmail(){
+        var emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+        var email = $("#Usuarios_email");
+        //console.log(email, emailRegex);
+        if (emailRegex.test(email.val())) {
             return true;
         } else {
-            mostrarAlert("error", "Las Constraseñas no son iguales");
+            lobiAlert('error','Ingresa un email valido');
+            email.focus();
             return false;
         }
+    }
+    
+    function validarClave() {
+        var claveRegex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
+        var clave = $("#usuario-clave");
+        var clave2 = $("#confirmar-clave").val(); 
+        if (clave.val() !== "" && clave.val() === clave2) {
+            if(claveRegex.test(clave.val())){
+                return true;
+            }else{
+                mostrarAlert("error", "La Clave debe contener: 6 o más caracteres, mínimo un número, una letra minúscula y una letra mayúscula.");
+                clave.focus();
+                return false;
+            }
+        }else{
+            mostrarAlert("error", "Las Constraseñas no son iguales");
+            clave.focus();
+            return false;
+        }        
     }   
     
-    function cambiarInformacion(display, html, val){
+    function cambiarInformacionPass(display, html, val){
         $("#passwords").attr("style", "display:" + display);
         $("#btn-cambiar").html(html);
-        $("#change-pass").val(val);
-        
+        $("#change-pass").val(val);        
     }    
     
     function activarCambioPass(){
         var chapas = $("#change-pass");
         if (chapas.val() === "0") {
-            cambiarInformacion("true", "Cancelar", "1");
+            cambiarInformacionPass("true", "Cancelar", "1");
         }else{
-            cambiarInformacion("none", "Cambiar contraseña", "0");
+            cambiarInformacionPass("none", "Cambiar contraseña", "0");
         }                
+    }
+    
+    function cambiarInformacionFoto(display, html, data){
+        $("#fotos").attr("style", "display:" + display);
+        $("#btn-cambiarFoto").html(html);
+        $("#btn-cambiarFoto").attr("data", data);
     }
     
     function validarSubidaFoto(){
         if ($("#Usuarios_foto").val() !== "") {
             $("#change-foto").val("1");
-          //  alert('d');
         }
-        //console.log($("#Usuarios_foto").val());
     }
     
     function activarCambioFoto(){
         var invisible = $("#btn-cambiarFoto").attr("data");
-        if (invisible === "0") {
-            $("#fotos").attr("style", "display:true");
-            $("#btn-cambiarFoto").html("Cancelar");
-            $("#btn-cambiarFoto").attr("data", "1");
-        }else{
-            $("#fotos").attr("style", "display:none");
-            $("#btn-cambiarFoto").html("Cambiar foto");
-            $("#btn-cambiarFoto").attr("data", "0");
+        if (invisible === "0") { // mostrar
+            cambiarInformacionFoto("true", "Cancelar", "1");            
+        }else{ // ocultar
+            cambiarInformacionFoto("none", "Cambiar foto", "0");                        
             $("#Usuarios_foto").val("");            
-            $(".file-caption-name").html("");            
-            //console.log($("#Usuarios_foto").val());
+            $(".file-caption-name").html("");                        
         }
     }    
 

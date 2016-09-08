@@ -65,7 +65,7 @@ $formulario->abrir();
             </div>
             <?php if(count($modelo->Detalles)): ?>                   
             <div class="col-sm-4">
-                <?php echo CBoot::boton(CBoot::fa('file-text-o') . ' Ver documentos asociados', 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'data-toggle' => 'modal', 'data-target' => '#myModal']) ?>
+                <?php echo CBoot::boton(CBoot::fa('file-text-o') . ' Ver documentos asociados', 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'data-toggle' => 'modal', 'data-target' => '#myModal', 'id' => 'btn-acudocs']) ?>
             </div>
             <div class="modal fade cortina" id="myModal" tabindex="-1" role="dialog">
                 <div class="modal-dialog" role="document">
@@ -129,7 +129,9 @@ $formulario->abrir();
             var choice_tipo_doc = $("#TiposDocumento_id_tipo option:selected");
             if (choice_tipo_doc.val() !== "") {
                 cd++;
-                var input_text = "<input placeholder='Nombre del documento' class='form-control' type='text' name='NombresDocumentos[]'>";
+                var nuevo = "<?php echo ($modelo->nuevo) ? 'valnombredoc': 'vnombredoc'; ?>";
+                //console.log(nuevo);
+                var input_text = "<input placeholder='Nombre del documento' onchange='"+nuevo+"(this)' class='form-control nomdoc' type='text' name='NombresDocumentos[]'>";
                 var input_file = "<input type='file' name='Documentos[]'>";
                 var button_delete = "<button numdoc='"+cd+"' type='button' onclick='eliminarDocumentoLi(this)' class='btn btn-primary'><i class='fa fa-trash'></i></button>";
                 var input_hidden = "<input type='text' id='"+cd+"' hidden='' value='"+choice_tipo_doc.val()+"' name='TiposDocumentos[]'>";
@@ -159,7 +161,7 @@ $formulario->abrir();
             return false;
         });
         $("#form-acudientes").submit(function () {
-            if (validarDocumentos()) {
+            if (validarDocumentos() && validarEmail()) {
                 validarIdentificacion();
             }            
             return false;
@@ -187,6 +189,84 @@ $formulario->abrir();
             }
         });
     }
+    
+    function validarEmail(){
+        var emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+        var email = $("#Acudientes_email").val();
+        //console.log(email, emailRegex);
+        if (emailRegex.test(email) || email === "") {
+            return true;
+        } else {
+            lobiAlert('error','Ingresa un email valido');
+            return false;
+        }
+    }
+    
+    function vnombredoc(e){ // Validar nombre del documento en actualizar
+        if($(e).val() !== ""){
+            var resp = validarNombreDocumento($.trim($(e).val().toLowerCase()));   
+            //console.log(resp);
+            if (resp > 1) {
+                lobiAlert('error', 'Ya tienes un documento con ese nombre');
+                $('#save-btn').attr("disabled", "disabled");                    
+                $(e).focus();
+            //} else if (resp === 0){
+            } else {
+                validarNombreDoc($(e).val(), e);                
+            } /*else {
+                //lobiAlert('success', 'Nombre valido');
+                $('#save-btn').removeAttr("disabled");
+            }   */          
+        }
+    }
+    
+    function validarNombreDoc(nombre, e) { // validar que el nombre del documento es unique
+        $.ajax({
+            type: 'POST',
+            url: '<?php echo $url2 ?>',
+            data: {
+                validarNombreDoc: true,
+                nombre: $.trim(nombre)
+            },
+            success: function (respuesta) {
+                if (respuesta.error === true) {
+                    lobiAlert('error', 'El Acudiente ya tiene un documento con ese nombre');
+                    $('#save-btn').attr("disabled", "disabled");                    
+                    $(e).focus();
+                } else {
+                    //lobiAlert('success', 'Nombre valido');
+                    $('#save-btn').removeAttr("disabled");
+                }
+            }
+        });
+    }
+    
+    function valnombredoc(e){
+        //console.log($(".form-control.nomdoc").length);
+        if($(e).val() !== ""){
+            //console.log($.trim($(e).val().toLowerCase()));
+            var resp = validarNombreDocumento($.trim($(e).val().toLowerCase()));                
+            if (resp > 1) {
+                lobiAlert('error', 'Ya tienes un documento con ese nombre');
+                $('#save-btn').attr("disabled", "disabled");                    
+                $(e).focus();
+            } else {
+                //lobiAlert('success', 'Nombre valido');
+                $('#save-btn').removeAttr("disabled");
+            }            
+        }
+    }
+    
+    function validarNombreDocumento(nombre){ // validar nombre documento en registro
+        var resp = 0; // debe coincidir al menos una vez (input que desencadena todo)
+        $(".form-control.nomdoc").each(function(){
+            if ($.trim($(this).val().toLowerCase()) === nombre) {
+                //console.log($(this).val());
+                resp++;
+            } 
+        });
+        return resp;
+    }    
     
     function validarDocumentos(){
         var resp = true;

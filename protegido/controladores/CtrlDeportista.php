@@ -13,7 +13,9 @@ class CtrlDeportista extends CControlador {
      */
     public function accionInicio() {
         $modelos = Deportista::modelo()->listar();
-        $this->mostrarVista('inicio', ['modelos' => $modelos,
+        $this->mostrarVista('inicio', [
+            'modelos' => $modelos,
+            'estados' => CHtml::modelolista(EstadoDeportista::modelo()->listar(), "id_estado", "nombre"),
         ]);
     }
 
@@ -28,7 +30,9 @@ class CtrlDeportista extends CControlador {
         if (isset($this->_p['Deportistas'])) {
             $modelo->atributos = $this->_p['Deportistas'];
             $modelo->identificacion = trim($this->_p['Deportistas']['identificacion']);
-            $modelo->foto = $this->asociarFoto($modelo->identificacion);
+            if ($this->_p['cambio-foto'] === "1") {
+                $modelo->foto = $this->asociarFoto($modelo->identificacion);                                
+            }            
             if ($modelo->guardar()) {
                 $dep = $modelo->id_deportista;
                 $this->asociarAcudientes($dep);
@@ -42,6 +46,7 @@ class CtrlDeportista extends CControlador {
             'modelo2' => $modelo2,
             'modelo3' => $modelo3,
             'url' => $url,
+            'url2' => 'vacio',
             'tiposIdentificaciones' => CHtml::modelolista(TipoIdentificacion::modelo()->listar(), "id_tipo_documento", "nombre"),
             'acudientes' => CHtml::modelolista(Acudiente::modelo()->listar(), "id_acudiente", "Datos"),
             'tiposDocumentos' => CHtml::modelolista(TipoDocumento::modelo()->listar(), "id_tipo", "nombre"),
@@ -63,10 +68,10 @@ class CtrlDeportista extends CControlador {
     public function asociarDocumentos($dep) {
         if (isset($_FILES['Documentos']) && isset($this->_p['TiposDocumentos']) && isset($this->_p['NombresDocumentos'])) {
             foreach ($this->_p['TiposDocumentos'] as $k => $v) {
-                $nomtipo = $this->_p['NombresDocumentos'][$k];
+                $nomtipo = trim($this->_p['NombresDocumentos'][$k]);
                 $files = CArchivoCargado::instanciarTodasPorNombre('Documentos');
                 $rutaDestino = Sis::resolverRuta(Sis::crearCarpeta("!publico.deportistas.$dep"));
-                $files[$k]->guardar($rutaDestino, $nomtipo);
+                if(!$files[$k]->guardar($rutaDestino, $nomtipo)){continue;}
                 $doc = $this->asociarDocumento($nomtipo, $k, $v, $files, $dep);
                 $this->asociarDeportistaDocumento($dep, $doc);
             }
@@ -106,8 +111,11 @@ class CtrlDeportista extends CControlador {
         if (isset($this->_p['Deportistas'])) {
             $modelo->atributos = $this->_p['Deportistas'];
             $modelo->identificacion = trim($this->_p['Deportistas']['identificacion']);
-            $modelo->foto = $this->asociarFoto($modelo->identificacion);
             $modelo->id_deportista = $pk;
+            if ($this->_p['cambio-foto'] === "1") {
+                $this->eliminarFoto($modelo->foto);
+                $modelo->foto = $this->asociarFoto($modelo->identificacion);                                
+            }
             if ($modelo->guardar()) {
                 $this->asociarAcudientes($pk);
                 $this->asociarDocumentos($pk);
@@ -116,15 +124,39 @@ class CtrlDeportista extends CControlador {
             }
         }
         $url = Sis::crearUrl(['Deportista/editar', 'id' => $pk]);
+        $url2 = Sis::crearUrl(['Deportista/validarNombreDoc', 'id' => $pk]);
         $this->mostrarVista('editar', ['modelo' => $modelo,
             'modelo2' => $modelo2,
             'modelo3' => $modelo3,
             'url' => $url,
+            'url2' => $url2,
             'tiposIdentificaciones' => CHtml::modelolista(TipoIdentificacion::modelo()->listar(), "id_tipo_documento", "nombre"),
             'acudientes' => CHtml::modelolista(Acudiente::modelo()->listar(), "id_acudiente", "Datos"),
             'tiposDocumentos' => CHtml::modelolista(TipoDocumento::modelo()->listar(), "id_tipo", "nombre"),
             'estados' => CHtml::modelolista(EstadoDeportista::modelo()->listar(), "id_estado", "nombre"),
         ]);
+    }
+    
+    public function accionValidarNombreDoc() { // solo se comprueba en actualizar
+        if (isset($this->_p['validarNombreDoc'])) {
+            $nomdoc = $this->_p['nombre'];
+            $criterio = new CCriterio();        
+            // t seria la tabla deportista_documentos y listar
+            $criterio->union("tbl_documentos", "d")
+                ->donde("t.documento_id", "=", "d.id_documento")                  
+                ->condicion("t.deportista_id", $this->id_deportista, "=")                   
+                ->y("d.titulo", $nomdoc, "=");
+            $modelo = DeportistaDocumento::modelo()->listar($criterio);           
+            if (count($modelo) > 0) {
+                $error = true;
+            } else {
+                $error = false;
+            }
+            $this->json([
+                'error' => $error,
+            ]);
+            Sis::fin();
+        }
     }
 
     /**
@@ -158,11 +190,48 @@ class CtrlDeportista extends CControlador {
                 $tipo = "error";
                 $msj = "No se pudo eliminar el Documento";
             }
-            $this->json([
-                "tipo" => $tipo,
-                "msj" => $msj
-            ]);
+            $this->json(["tipo" => $tipo,"msj" => $msj]);
         }
+    }
+    
+    public function accionReporteDeportista(){
+        $criterios = new CCriterio();
+        $concat = "CONCAT_WS(' ', t.nombre1,t.nombre2,t.apellido1,t.apellido2)";
+
+        if(isset($this->_p['btn-vista'])){
+            $this->limpiarPost($this->_p);
+            var_dump($this->p);exit();
+            $criterios->unionIzq("tbl_matriculas", "m")
+                ->donde("t.id_deportista", "=", "m.deportista_id")
+                ->condicion($concat, $this->_p['deportista'], 'LIKE')
+                ->y("m.categoria_id", $this->_p['categoria'], "=")
+                ->y("t.identificacion", $this->_p['identificacion'], 'LIKE')
+                ->y("t.estado_id", $this->_p['estado'], '=')
+                ->orden("t.estado_id", "asc");
+        }
+        $this->vista('reporteDeportista', [
+            'criterios' => $criterios,
+            'categorias' => CHtml::modelolista(Categoria::modelo()->listar(), "id_categoria", "nombre"),
+            'estados' => CHtml::modelolista(EstadoDeportista::modelo()->listar(), "id_estado", "nombre"),
+            'identificacion' => isset($this->_p['identificacion'])? $this->_p['identificacion'] : null,
+            'nombre' => isset($this->_p['nombre'])? $this->_p['nombre'] : null,
+            'categoria' => isset($this->_p['categoria'])? $this->_p['categoria'] : null,
+            'estado' => isset($this->_p['estado'])? $this->_p['estado'] : null,
+        ]);
+    }
+    
+    private function limpiarPost(&$post){
+        foreach($post AS $k=>$v){ if($v == ''){ $post[$k] = null; } }
+    }
+    
+    public function accionGenerarReporte() {
+        $deportistas = Deportista::modelo()->listar([
+            'where' => 'estado_id=1',
+        ]);        
+        $pdf = Sis::apl()->mpdf->crear();
+        $texto = $this->vistaP('generarReporte', ['deportistas' => $deportistas]);
+        $pdf->writeHtml($texto);
+        $pdf->Output("deportistas.pdf", 'I');
     }
 
     public function accionEliminarDocumento($d, $a) {
@@ -200,10 +269,22 @@ class CtrlDeportista extends CControlador {
 
     public function accionCambiarEstado($pk) {
         $modelo = $this->cargarModelo($pk);
-        if ($modelo->estado_id == 2) {
+        /*if ($modelo->estado_id == 2) {
             $this->alertar('warning', 'El Deportista ya se encuentra Inactivo');
             $this->redireccionar('inicio');
-        }        
+        }*/
+        $cr = new CCriterio();
+        $cr->condicion("t.deportista_id", $pk, "=")
+           ->y("t.estado", 1, "=");
+        $prestamo = PrestamoDeportista::modelo()->listar($cr);
+        //$estado = if($prestamo->)
+        /*echo "<pre>";
+        var_dump($prestamo);        
+        exit();*/
+        if(count($prestamo) > 0){
+            $this->alertar('error', 'No se puede Inactivar. El Deportista se encuentra en Préstamo');
+            $this->redireccionar('inicio');
+        }
         $modelo->estado_id = ($modelo->estado_id != 2) ? 2 : 1;
         if ($modelo->guardar()) {
             $this->alertar('success', 'Cambio de estado exitoso');
@@ -211,6 +292,19 @@ class CtrlDeportista extends CControlador {
         $this->redireccionar('inicio');
     }
 
+    private function eliminarFoto($foto){
+        $bandera = 0;
+        if(is_null($foto) !== true && $foto !== ""){ // contiene foto
+            $ruta = Sis::resolverRuta("!publico.imagenes.deportistas.fotos");
+            $ruta .= DS . $foto;
+            $bandera += unlink($ruta) ? 1 : 0;
+            $path = Sis::resolverRuta("!publico.imagenes.deportistas.fotos.thumbs");
+            $path .= DS . "tmb_" . $foto;
+            $bandera += unlink($path) ? 1 : 0;            
+        }
+        return $bandera;
+    }
+    
     public function asociarFoto($dep) {
         if ($_FILES['Deportistas']['error'] !== UPLOAD_ERR_OK) {
             $files = CArchivoCargado::instanciarModelo('Deportistas', 'foto');
@@ -222,6 +316,8 @@ class CtrlDeportista extends CControlador {
                     'tamanio' => '400',
                     'tipo' => strtolower($files->getExtension()),
                 ]);
+            }else{
+                return "";                
             }
             $nom .= "." . $files->getExtension();
             return $nom;
@@ -246,20 +342,22 @@ class CtrlDeportista extends CControlador {
 
     public function accionEliminarFoto() {
         $dep = $this->_p['dep'];
-        $nom = $this->_p['nom'];
+        //$nom = $this->_p['nom'];
         $modelo = $this->cargarModelo($dep);
-        $modelo->foto = "";
-        if ($modelo->guardar()) {
-            $ruta = Sis::resolverRuta("!publico.imagenes.deportistas.fotos");
-            $ruta .= DS . $nom;
-            unlink($ruta);
-            $path = Sis::resolverRuta("!publico.imagenes.deportistas.fotos.thumbs");
-            $path .= DS . "tmb_" . $nom;
-            unlink($path);            
+        $resp = $this->eliminarFoto($modelo->foto);
+        if ($resp === 2) {
+            $modelo->foto = "";
+            if($modelo->guardar()){
+                $tipo = "success";
+                $msj = "La Foto ha sido eliminada";
+            }
+        }else{
+            $tipo = "error";
+            $msj = "La Foto no se pudo eliminar";
         }
         $this->json([
-            "tipo" => "success",
-            "msj" => "Foto eliminada"
+            "tipo" => $tipo,
+            "msj" => $msj
         ]);
     }
 

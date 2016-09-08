@@ -38,7 +38,7 @@ class CCriterio {
      * @return CCriterio
      */
     public function condicion($campo1, $campo2, $operador = '='){
-        if($campo2 === null){ return $this; }
+        if($campo2 === null ){ return $this; }
         if($operador == 'LIKE'){ $campo2 = "'%$campo2%'"; }
         else if(is_string($campo2)){ $campo2 = "'$campo2'"; }
         $this->condicion = "$campo1 $operador $campo2";

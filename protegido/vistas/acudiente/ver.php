@@ -45,6 +45,10 @@ $this->opciones = [
                     <th><?php echo $modelo->obtenerEtiqueta('direccion') ?></th>
                     <td><?php echo $modelo->direccion; ?></td>
                 </tr>                
+                <tr>                    
+                    <th><?php echo $modelo->obtenerEtiqueta('email') ?></th>
+                    <td><?php echo $modelo->email; ?></td>
+                </tr>                
             </tbody>
         </table>
     </div>

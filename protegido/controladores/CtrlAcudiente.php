@@ -37,7 +37,8 @@ class CtrlAcudiente extends CControlador {
         $url = Sis::crearUrl(['Acudiente/crear']);
         $this->mostrarVista('crear', ['modelo' => $modelo,
             'modelo2' => $modelo2,
-            'url'=>$url,
+            'url' => $url,
+            'url2' => 'vacio',
             'tiposIdentificaciones' => CHtml::modelolista(TipoIdentificacion::modelo()->listar(), "id_tipo_documento", "nombre"),
             'tiposDocumentos' => CHtml::modelolista(TipoDocumento::modelo()->listar(), "id_tipo", "nombre"),
         ]);
@@ -70,10 +71,11 @@ class CtrlAcudiente extends CControlador {
     public function asociarDocumentos($acu) {
         if (isset($_FILES['Documentos']) && isset($this->_p['TiposDocumentos']) && isset($this->_p['NombresDocumentos'])) {
             foreach ($this->_p['TiposDocumentos'] as $k => $v) {
-                $nomtipo = $this->_p['NombresDocumentos'][$k];
+                $nomtipo = trim($this->_p['NombresDocumentos'][$k]);
                 $files = CArchivoCargado::instanciarTodasPorNombre('Documentos');
                 $rutaDestino = Sis::resolverRuta(Sis::crearCarpeta("!publico.acudientes.$acu"));
-                $files[$k]->guardar($rutaDestino, $nomtipo);
+                if(!$files[$k]->guardar($rutaDestino, $nomtipo)){continue;} // La idea es que si no se guardo en el host
+                // el documento no se generen registros en la bd
                 $doc = $this->asociarDocumento($nomtipo, $k, $v, $files, $acu);
                 $this->asociarAcudienteDocumento($acu, $doc);
             }
@@ -115,14 +117,16 @@ class CtrlAcudiente extends CControlador {
             }
         }
         $url = Sis::crearUrl(['Acudiente/editar', 'id' => $pk]);
+        $url2 = Sis::crearUrl(['Acudiente/validarNombreDoc', 'id' => $pk]);
         $this->mostrarVista('editar', ['modelo' => $modelo,
             'modelo2' => $modelo2,
             'url'=>$url,
+            'url2'=>$url2,
             'tiposIdentificaciones' => CHtml::modelolista(TipoIdentificacion::modelo()->listar(), "id_tipo_documento", "nombre"),
             'tiposDocumentos' => CHtml::modelolista(TipoDocumento::modelo()->listar(), "id_tipo", "nombre"),
         ]);
     }
-
+    
     /**
      * Esta función permite ver detalladamente un registro existente
      * @param int $pk
@@ -132,12 +136,34 @@ class CtrlAcudiente extends CControlador {
         $this->mostrarVista('ver', ['modelo' => $modelo,
         ]);
     }
+    
+    public function accionValidarNombreDoc() { // solo se comprueba en actualizar
+        if (isset($this->_p['validarNombreDoc'])) {
+            $nomdoc = $this->_p['nombre'];
+            $criterio = new CCriterio();        
+            // t seria la tabla deportista_documentos y listar
+            $criterio->union("tbl_documentos", "d")
+                ->donde("t.documento_id", "=", "d.id_documento")                  
+                ->condicion("t.acudiente_id", $this->id_acudiente, "=")                   
+                ->y("d.titulo", $nomdoc, "=");
+            $modelo = AcudienteDocumento::modelo()->listar($criterio);           
+            if (count($modelo) > 0) {
+                $error = true;
+            } else {
+                $error = false;
+            }
+            $this->json([
+                'error' => $error,
+            ]);
+            Sis::fin();
+        }
+    }
 
     /**
      * Esta función permite eliminar un registro existente
      * @param int $pk
      */
-    public function accionEliminar($pk) {
+    /*public function accionEliminar($pk) {
         $modelo = $this->cargarModelo($pk);
         if ($modelo->eliminar()) {
             # lógica para borrado exitoso
@@ -145,7 +171,7 @@ class CtrlAcudiente extends CControlador {
             # lógica para error al borrar
         }
         $this->redireccionar('inicio');
-    }
+    }*/
     
     public function accionEliminarAcudienteDocumento(){
         if (isset($this->_p['idacudoc'])) {
@@ -185,7 +211,7 @@ class CtrlAcudiente extends CControlador {
             'where' => "acudiente_id=$pk",
         ]);
         if (count($da) > 0) {
-            $this->alertar('error', 'No se puede Inactivar. Este Acudiente esta asociado a un Deportista');
+            $this->alertar('error', 'No se puede Inactivar. Esta Persona es acudiente de un Deportista');
         } else {
             $modelo->estado = ($modelo->estado==1) ? 0: 1;
             if ($modelo->guardar()) {

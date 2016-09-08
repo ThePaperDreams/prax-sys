@@ -213,18 +213,20 @@ $this->opciones = [
         });
         $("#btn-eliminar").click(function () {
             if (confirm('¿Está seguro de eliminar la Foto del Deportista?')) {
-                var dep = "<?= $modelo->id_deportista; ?>";
-                var nom = "<?= $modelo->foto; ?>";
+                var dep = "<?php echo $modelo->id_deportista; ?>";
+                //var nom = "<?php #echo $modelo->foto; ?>";
                 $.ajax({
                     type: 'post',
                     url: "<?php echo Sis::crearUrl(['Deportista/EliminarFoto']) ?>",
                     data: {
                         dep: dep,
-                        nom: nom
+                        //nom: nom
                     }
                 }).done(function (resp) {
-                    $("#cerrar-modal").click();
-                    $("#pho").html("<span class='label label-default'>Ninguna</span>");
+                    if (resp.tipo === "success") {                    
+                        $("#cerrar-modal").click();
+                        $("#pho").html("<span class='label label-info'>Ninguna</span>");                        
+                    }
                     lobiAlert(resp.tipo, resp.msj);
                 }).fail(function () {});
             }

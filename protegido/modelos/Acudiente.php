@@ -96,10 +96,10 @@ class Acudiente extends CModelo{
         return [
             'id_acudiente' => 'Acudiente',
             'identificacion' => 'Identificación',
-            'nombre1' => 'Nombre',
-            'nombre2' => 'Nombre 2',
-            'apellido1' => 'Apellido 1',
-            'apellido2' => 'Apellido 2',
+            'nombre1' => 'Primer Nombre',
+            'nombre2' => 'Segundo Nombre',
+            'apellido1' => 'Primer Apellido',
+            'apellido2' => 'Segundo Apellido',
             'direccion' => 'Dirección',
             'email' => 'Email',
             'telefono1' => 'Teléfono 1',
@@ -159,7 +159,8 @@ class Acudiente extends CModelo{
            $criterio->condicion($concat, $this->nombre1, "LIKE")
                 ->y("t.estado", $this->estado, "=")
                 ->y("t.telefono1", $this->telefono1, "LIKE")
-                ->y("t.identificacion", $this->identificacion, "LIKE");
+                ->y("t.identificacion", $this->identificacion, "LIKE")
+                ->orden("t.estado", "desc");
         return $criterio;
     }
     

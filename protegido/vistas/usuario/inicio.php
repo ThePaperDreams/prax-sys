@@ -20,7 +20,7 @@
         'email', 
         'estado' => CBoot::select('', [1 => 'Activo', 0 => 'Inactivo'], ['defecto' => 'Estado', 'style' => 'min-width: 150px;', 'name' => 'estado'])        
      ],
-    'criterios' => ['order' => 'estado=1 DESC'],
+    'criterios' => ['order' => 'estado DESC'],
     'modelo' => 'Usuario',
     # id_usuario, rol_id, email, nombre_usuario, nombres, apellidos, telefono, clave, recuperacion, estado
     'columnas' => [

@@ -46,6 +46,17 @@ class CtrlUsuario extends CControlador {
         ]);
     }
     
+    private function eliminarFoto($foto){
+        if(is_null($foto) !== true && $foto !== ""){ // contiene foto
+            $ruta = Sis::resolverRuta("!publico.imagenes.usuarios");
+            $ruta .= DS . $foto;
+            unlink($ruta);
+            $path = Sis::resolverRuta("!publico.imagenes.usuarios.thumbs");
+            $path .= DS . "tmb_" . $foto;
+            unlink($path);            
+        }
+    }
+    
     public function guardarFoto($usuario) {
         if ($_FILES['Usuarios']['error'] !== UPLOAD_ERR_OK) {
             $files = CArchivoCargado::instanciarModelo('Usuarios', 'foto');
@@ -57,6 +68,8 @@ class CtrlUsuario extends CControlador {
                     'tamanio' => '400',
                     'tipo' => strtolower($files->getExtension()),
                 ]);
+            }else{
+                return "";                
             }
             $nom .= "." . $files->getExtension();
             return $nom;
@@ -82,9 +95,7 @@ class CtrlUsuario extends CControlador {
             } else {
                 $error = false;
             }
-            $this->json([
-                'error' => $error,
-            ]);
+            $this->json(['error' => $error]);
             Sis::fin();
         }
     }
@@ -101,6 +112,7 @@ class CtrlUsuario extends CControlador {
             $modelo->nombre_usuario = trim($this->_p['Usuarios']['nombre_usuario']);
             $modelo->email = trim($this->_p['Usuarios']['email']);
             if ($this->_p['cambio-foto'] === "1") {
+                $this->eliminarFoto($modelo->foto);
                 $modelo->foto = $this->guardarFoto($modelo->nombre_usuario);
             }            
             if ($this->_p['cambio-clave'] === "1") {

@@ -26,7 +26,8 @@
  * @property Acudiente[] $Acudiente
  */
 class Deportista extends CModelo{
- 
+    public $categoria_id;
+    
     /**
      * Esta función retorna el nombre de la tabla representada por el modelo
      * @return string
@@ -70,7 +71,7 @@ class Deportista extends CModelo{
         } else if($this->estado_id == 2){
             return CHtml::e('span', 'Inactivo', ['class' => 'label label-danger']);
         } else {
-            return CHtml::e('span', $this->EstadoDeportista->nombre, ['class' => 'label label-default']);
+            return CHtml::e('span', $this->EstadoDeportista->nombre, ['class' => 'label label-warning']);
         }
     }
     public function getNombreCompleto(){
@@ -124,18 +125,32 @@ class Deportista extends CModelo{
             //return CHtml::link('Descargar ' . $icono, $url, ['class' => 'label label-primary', 'target' => '_blank', 'download' => $this->foto]);
             return CHtml::link('Ver Foto', '', ['class' => 'label label-primary', 'data-toggle' => 'modal', 'data-target' => '#photo', 'id' => 'a-modal']);            
         } else {
-            return CHtml::e("span", 'Ninguna', ['class' => 'label label-default']);
+            return CHtml::e("span", 'Ninguna', ['class' => 'label label-info']);
         }
     }
     
-    public function filtrosAjx() {
+    public function filtrosAjx() {       
+//        var_dump($this);
         $criterio = new CCriterio();
         $concat = "CONCAT_WS(' ', t.nombre1,t.nombre2,t.apellido1,t.apellido2)";
-           $criterio->condicion($concat, $this->nombre1, "LIKE")
+        $criterio->unionIzq("tbl_matriculas", "m")
+                ->donde("t.id_deportista", "=", "m.deportista_id")                
+                ->condicion($concat, $this->nombre1, "LIKE")
+                ->y("m.categoria_id", $this->categoria_id, "=")
                 ->y("t.estado_id", $this->estado_id, "=")
-                ->y("t.telefono1", $this->telefono1, "LIKE")
-                ->y("t.identificacion", $this->identificacion, "LIKE");
+                ->y("t.identificacion", $this->identificacion, "LIKE")
+                ->orden("t.estado_id", "asc");
         return $criterio;
+    }
+    
+    public function getNombreCategoria(){         
+        $criterios = ["where" => "deportista_id = " . $this->id_deportista];            
+        $matricula = Matricula::modelo()->primer($criterios);
+        if (count($matricula) > 0) {
+            return $matricula->Categoria->nombre;          
+        }else{
+            return "Sin categoría";
+        }
     }
     
     /**
@@ -165,7 +180,7 @@ class Deportista extends CModelo{
             'EstadoDeportista' => [self::PERTENECE_A, 'EstadoDeportista', 'estado_id'],
             'TipoIdentificacion' => [self::PERTENECE_A, 'TipoIdentificacion', 'tipo_documento_id'],
             'Documento' => [self::CONTENGAN_A, 'DeportistaDocumento', 'deportista_id'],
-            'Acudiente' => [self::CONTENGAN_A, 'DeportistaAcudiente', 'deportista_id'],
+            'Acudiente' => [self::CONTENGAN_A, 'DeportistaAcudiente', 'deportista_id']            
         ];
     }
     
@@ -178,9 +193,9 @@ class Deportista extends CModelo{
             'id_deportista' => 'Deportista',
             'identificacion' => 'Identificación',
             'nombre1' => 'Nombre',
-            'nombre2' => 'Nombre 2',
-            'apellido1' => 'Apellido 1',
-            'apellido2' => 'Apellido 2',
+            'nombre2' => 'Segundo Nombre',
+            'apellido1' => 'Primer Apellido',
+            'apellido2' => 'Segundo Apellido',
             'direccion' => 'Dirección',
             'foto' => 'Foto',
             'telefono1' => 'Teléfono 1',
@@ -188,6 +203,8 @@ class Deportista extends CModelo{
             'fecha_nacimiento' => 'Fecha Nacimiento',
             'estado_id' => 'Estado',
             'tipo_documento_id' => 'Tipo Documento',
+            'categoria_id' => 'Categoría',
+            'edad' => 'Edad',
         ];
     }
     

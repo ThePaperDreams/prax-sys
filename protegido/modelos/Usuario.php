@@ -93,7 +93,8 @@ class Usuario extends CModelo {
         $criterio->condicion("t.nombres", $this->nombres, "LIKE")
                 ->y("t.apellidos", $this->apellidos, "LIKE")                
                 ->y("t.email", $this->email, "LIKE")                
-                ->y("t.estado", $this->estado, "=");
+                ->y("t.estado", $this->estado, "=")
+                ->orden("t.estado", "DESC");
         return $criterio;
     }
     

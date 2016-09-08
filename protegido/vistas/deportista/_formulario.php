@@ -53,8 +53,14 @@ $formulario->abrir();
                 <?php echo $formulario->campoTexto($modelo, 'fecha_nacimiento', ['label' => true, 'group' => true, 'class' => 'campo-fecha']) ?>
             </div>
         </div>
-        <div class="row">            
-            <div class="col-sm-6">
+        <div class="row">  
+            <input hidden="" value="0" id="change-foto" name="cambio-foto">
+            <?php if (is_null($modelo->foto) !== true): ?>
+                <div class="col-sm-6">
+                    <?php echo CBoot::botonP('Cambiar foto', ['type' => 'button', 'label' => true, 'group' => true, 'id' => 'btn-cambiarFoto', 'onClick' => 'activarCambioFoto()', 'class' => 'btn-block abajo', 'data' => '0']) ?>
+                </div>    
+            <?php endif; ?>
+            <div class="col-sm-6" <?php if (is_null($modelo->foto) !== true): ?>style="display:none" id="fotos"<?php endif; ?>>
                 <?php echo $formulario->campoArchivo($modelo, 'foto', ['label' => true, 'group' => true]) ?>
             </div>
             <div class="col-sm-6">
@@ -73,7 +79,7 @@ $formulario->abrir();
             </div>
             <?php if(!$modelo->nuevo): ?>                   
             <div class="col-sm-4">
-                <?php echo CBoot::boton(CBoot::fa('file-text-o') . ' Ver acudientes asociados', 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'data-toggle' => 'modal', 'data-target' => '#myModal1']) ?>
+                <?php echo CBoot::boton(CBoot::fa('file-text-o') . ' Ver acudientes asociados', 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'data-toggle' => 'modal', 'data-target' => '#myModal1', 'id' => 'btn-veracus']) ?>
             </div>
             <div class="modal fade cortina" id="myModal1" tabindex="-1" role="dialog">
                 <div class="modal-dialog" role="document">
@@ -145,7 +151,7 @@ $formulario->abrir();
             </div>
             <?php if(count($modelo->Documento)): ?>                   
             <div class="col-sm-4">
-                <?php echo CBoot::boton(CBoot::fa('file-text-o') . ' Ver documentos asociados', 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'data-toggle' => 'modal', 'data-target' => '#myModal']) ?>
+                <?php echo CBoot::boton(CBoot::fa('file-text-o') . ' Ver documentos asociados', 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'data-toggle' => 'modal', 'data-target' => '#myModal', 'id' => 'btn-verdocs']) ?>
             </div>
             <div class="modal fade cortina" id="myModal" tabindex="-1" role="dialog">
                 <div class="modal-dialog" role="document">
@@ -218,7 +224,8 @@ $formulario->abrir();
             var choice_tipo_doc = $("#TiposDocumento_id_tipo option:selected");
             if (choice_tipo_doc.val() !== "") {
                 cd++;
-                var input_text = "<input placeholder='Nombre del documento' class='form-control' type='text' name='NombresDocumentos[]'>";
+                var nuevo = "<?php echo ($modelo->nuevo) ? 'valnombredoc': 'vnombredoc'; ?>";
+                var input_text = "<input placeholder='Nombre del documento' class='form-control nomdoc' onchange='"+nuevo+"(this)' type='text' name='NombresDocumentos[]'>";
                 var input_file = "<input type='file' name='Documentos[]'>";
                 var button_delete = "<button numdoc='"+cd+"' type='button' onclick='eliminarDocumentoLi(this)' class='btn btn-primary'><i class='fa fa-trash'></i></button>";
                 var input_hidden = "<input type='text' id='"+cd+"' hidden='' value='"+choice_tipo_doc.val()+"' name='TiposDocumentos[]'>";
@@ -229,7 +236,7 @@ $formulario->abrir();
                 $("#form-deportistas").append(input_hidden);
                 bonitoInputFile();    // embellecer el file input documentos
             }
-        }); 
+        });
         $("#btn-addAcu").click(function () { // agregar acudientes nuevos
             var e = $("#Acudientes_id_acudiente option:selected");
             var acu_existe = encontrarAcu(e.val());
@@ -282,6 +289,7 @@ $formulario->abrir();
             return false;
         });
         $("#form-deportistas").submit(function () {
+            validarSubidaFoto();     
             if (validarAcudiente()) {
                 if (validarDocumentos()) {
                     validarIdentificacion();                    
@@ -293,6 +301,65 @@ $formulario->abrir();
             validarFecha($(this));
         });
     });
+    
+    function vnombredoc(e){ // Validar nombre del documento en actualizar
+        if($(e).val() !== ""){
+            var resp = validarNombreDocumento($.trim($(e).val().toLowerCase()));   
+            if (resp > 1) {
+                lobiAlert('error', 'Ya tienes un documento con ese nombre');
+                $('#btn-send').attr("disabled", "disabled");                    
+                $(e).focus();
+            } else {
+                validarNombreDoc($(e).val(), e);                
+            }          
+        }
+    }
+    
+    function validarNombreDoc(nombre, e) { // validar que el nombre del documento es unique
+        $.ajax({
+            type: 'POST',
+            url: '<?php echo $url2 ?>',
+            data: {
+                validarNombreDoc: true,
+                nombre: $.trim(nombre)
+            },
+            success: function (respuesta) {
+                if (respuesta.error === true) {
+                    lobiAlert('error', 'El Deportista ya tiene un documento con ese nombre');
+                    $('#btn-send').attr("disabled", "disabled");                    
+                    $(e).focus();
+                } else {
+                    //lobiAlert('success', 'Nombre valido');
+                    $('#btn-send').removeAttr("disabled");
+                }
+            }
+        });
+    }
+    
+    function valnombredoc(e){
+        if($(e).val() !== ""){
+            var resp = validarNombreDocumento($.trim($(e).val().toLowerCase()));                
+            if (resp > 1) {
+                lobiAlert('error', 'Ya tienes un documento con ese nombre');
+                $('#btn-send').attr("disabled", "disabled");                    
+                $(e).focus();
+            } else {
+                //lobiAlert('success', 'Nombre valido');
+                $('#btn-send').removeAttr("disabled");
+            }            
+        }
+    }
+    
+    function validarNombreDocumento(nombre){ // validar nombre documento en registro
+        var resp = 0; // debe coincidir al menos una vez (input que desencadena todo)
+        $(".form-control.nomdoc").each(function(){
+            if ($.trim($(this).val().toLowerCase()) === nombre) {
+                //console.log($(this).val());
+                resp++;
+            } 
+        });
+        return resp;
+    }    
     
     function validarIdentificacion() { // validar que la identificacion es unique
         var identificacion = $("#Deportistas_identificacion").val();
@@ -381,12 +448,35 @@ $formulario->abrir();
     function validarFecha(fecha) { // Validar rango de edad del deportista
         var anios = new Date(new Date - new Date(fecha.val())).getFullYear()-1970;       
         //console.log(anios);
-        if (anios < 5 || anios > 17) {
+        if (anios < 5 || anios > 17) { // edad valida: 6 a 16 años
             lobiAlert('error', 'Seleccione una fecha valida');
             $('#btn-send').attr("disabled", "disabled");
         } else {
-            lobiAlert('success', 'Fecha valida');
+            //lobiAlert('success', 'Fecha valida');
             $('#btn-send').removeAttr("disabled");
+        }
+    }
+    
+    function cambiarInformacionFoto(display, html, data){
+        $("#fotos").attr("style", "display:" + display);
+        $("#btn-cambiarFoto").html(html);
+        $("#btn-cambiarFoto").attr("data", data);
+    }
+    
+    function validarSubidaFoto(){
+        if ($("#Deportistas_foto").val() !== "") {
+            $("#change-foto").val("1");
+        }
+    }
+    
+    function activarCambioFoto(){
+        var invisible = $("#btn-cambiarFoto").attr("data");
+        if (invisible === "0") { // mostrar
+            cambiarInformacionFoto("true", "Cancelar", "1");            
+        }else{ // ocultar
+            cambiarInformacionFoto("none", "Cambiar foto", "0");                        
+            $("#Usuarios_foto").val("");            
+            $(".file-caption-name").html("");                        
         }
     }
     
@@ -395,7 +485,7 @@ $formulario->abrir();
         //var x = $('#lis-acu li').length;
         var x = $('#tab-acus tr').length;
         var y = $('#tabla-acudientes tr').length;
-        console.log(x,y);
+        //console.log(x,y);
         if (x < 1 && y === 0) {
             resp = false;
             lobiAlert('error', 'El Deportista debe contar mínimo con un Acudiente');   
