@@ -7,7 +7,7 @@ $this->tituloPagina="Salida de implementos";
     
     $this->opciones = [
         'elementos' => [
-            'Crear' => ['Salida/crear'],
+            'Registrar' => ['Salida/crear'],
         ]
     ];
 ?>

@@ -80,11 +80,11 @@
                 
 		'categoria_id' => 'Nombre categoría',
                 'estado_id' => 'Estado',
-		'nombre' => 'Nombre', 
+		'nombre' => 'Nombre Implemento', 
 		'descripcion' => 'Descripcion', 
-		'unidades' => 'Unidades', 
-		'minimo_unidades' => 'Minimo Unidades', 
-		'maximo_unidades' => 'Maximo Unidades', 
+		'unidades' => 'Unidades Disponibles', 
+		'minimo_unidades' => 'Mínimo Unidades', 
+		'maximo_unidades' => 'Máximo Unidades', 
         ];
     }
     public function getEtiquetaEstado(){ 

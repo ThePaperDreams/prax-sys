@@ -9,8 +9,8 @@ $this->migas = [
 $this->opciones = [
     'elementos' => [
         'Listar' => ['CategoriaImplemento/inicio'],
-        'Crear' => ['CategoriaImplemento/crear'],
-        'Modificar' => ['CategoriaImplemento/editar', 'id' => $modelo->id_categoria],
+        'Registrar' => ['CategoriaImplemento/crear'],
+        'Actualizar' => ['CategoriaImplemento/editar', 'id' => $modelo->id_categoria],
     ]
 ];
 ?>

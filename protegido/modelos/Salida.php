@@ -82,7 +82,7 @@ class Salida extends CModelo {
             'id_salida' => 'Id Salida',
             'fecha_realizacion' => 'Fecha Realizacion',
             'fecha_entrega' => 'Fecha Entrega',
-            'descripcion' => 'Descripcion',
+            'descripcion' => 'Descripción',
             'responsable_id' => 'Responsable',
             'estado' => 'Estado',
         ];

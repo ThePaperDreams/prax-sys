@@ -65,7 +65,7 @@ class CategoriaImplemento extends CModelo {
         return [
             'id_categoria' => 'Id Categoria',
             'nombre' => 'Nombre',
-            'descripcion' => 'Descripcion',
+            'descripcion' => 'Descripción',
             'estado' => 'Estado',
         ];
     }
@@ -74,7 +74,7 @@ class CategoriaImplemento extends CModelo {
         if($this->estado == 1){
             return CHtml::e('span', 'Activo', ['class' => 'label label-success']);
         }else {
-            return CHtml::e('span', 'Inactivo', ['class' => 'label label-default']);
+            return CHtml::e('span', 'Inactivo', ['class' => 'label label-danger']);
         }
     }
     /**

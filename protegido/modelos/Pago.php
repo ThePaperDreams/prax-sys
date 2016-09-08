@@ -67,7 +67,7 @@ class Pago extends CModelo {
             'url_comprobante' => 'Comprobante',
             'estado' => 'Estado',
             'descuento' => 'Descuento',
-            'razon_descuento' => 'Razon Descuento',
+            'razon_descuento' => 'Razón Descuento',
             'matricula_id' => 'Deportista',
             'valorFormateado' => 'Valor Cancelado',
         ];

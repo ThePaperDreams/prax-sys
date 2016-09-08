@@ -7,7 +7,7 @@ $this->tituloPagina="Implementos";
     
     $this->opciones = [
         'elementos' => [
-            'Crear' => ['Implemento/crear'],
+            'Registrar' => ['Implemento/crear'],
         ]
     ];
 ?>
@@ -44,13 +44,13 @@ $this->tituloPagina="Implementos";
         "categoria_id"=>"Categoria->nombre",
         "nombre" => 'NombreEstado',
         'estado_id' => 'EtiquetaEstado',
+        "maximo_unidades",
         "unidades",
         "minimo_unidades",
-        "maximo_unidades"
     ],
     'opciones' => [
         ['i' => 'eye', 'title' => 'Ver','url' => 'Implemento/ver&{id:pk}'],
-        ['i' => 'pencil', 'title' => 'Editar', 'url' => 'Implemento/editar&{id:pk}', 'visible' => '$m->getEnPrestamo() == false'],
+        ['i' => 'pencil', 'title' => 'Actualizar', 'url' => 'Implemento/editar&{id:pk}', 'visible' => '$m->getEnPrestamo() == false'],
         ['i' => 'refresh', 'title' => 'Cambiar estado','url' => 'Implemento/anular&{id:pk}', 'visible' => '$m->getEnPrestamo() == false'],
     ],
     'paginacion' => 10,
