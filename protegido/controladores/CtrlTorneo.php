@@ -17,6 +17,31 @@ class CtrlTorneo extends CControlador{
             ]);
     }
     
+    public function accionGestionarEquipos(){
+        $categorias = Categoria::modelo()->listar([
+            'where' => 'estado = 1'
+        ]);
+        $usuarios = Usuario::modelo()->listar();
+        $this->vista('gestionarEquipos', [
+            'categorias' => CHtml::modeloLista($categorias, "id_categoria", "nombre"),
+            'usuarios' => CHtml::modeloLista($usuarios, "id_usuario", "nombres"),            
+        ]);
+    }
+    
+    public function accionAjx(){
+        if(!isset($this->_p['ajx'])){ Sis::fin(); }
+        $id = $this->_p['id'];
+        $categoria = Categoria::modelo()->porPk($id);
+        $deportistas =  $categoria->getDeportistasMatriculados();
+        $html = '';
+        foreach($deportistas AS $deportista){
+            $html .= $this->vistaP('_itemDeportista', ['deportista' => $deportista]);
+        }
+        $this->json([
+            'html' => $html,
+        ]);
+    }
+    
     /**
      * Esta función permite crear un nuevo registro
      */

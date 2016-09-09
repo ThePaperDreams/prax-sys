@@ -55,7 +55,7 @@
             # el formato es simple: 
             # tipo de relación | modelo con que se relaciona | campo clave foranea
             	'Categoria' => [self::PERTENECE_A, 'CategoriaImplemento', 'categoria_id'],
-        ];
+        ];        
     }
     
     /**

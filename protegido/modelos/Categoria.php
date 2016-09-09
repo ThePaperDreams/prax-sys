@@ -131,11 +131,26 @@ class Categoria extends CModelo {
         }
     }
     
+    /**
+     * 
+     * @return Matricula
+     */
     public function getMatriculados(){
         $matriculas = Matricula::modelo()->contar([
             'where' => "categoria_id=$this->id_categoria AND estado = 1",
-        ]);        
+        ]);
         return $matriculas;
+    }
+    /**
+     * 
+     */
+    public function getDeportistasMatriculados(){
+        $matriculas = Matricula::modelo()->listar([
+            'where' => "categoria_id=$this->id_categoria",
+        ]);
+        $deportistas = [];
+        foreach($matriculas AS $mat){ $deportistas[] = $mat->Deportista; }
+        return $deportistas;
     }
 
     /**

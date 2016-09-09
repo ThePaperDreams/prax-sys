@@ -310,3 +310,61 @@ body{
 .panel{
     border: 1px;
 }
+.contenedor-jugadores{
+    max-height: 600px;
+    width: 100%;
+    overflow: auto;
+}
+
+.listado-deportistas, .receptor-jugadores{
+    padding: 0px;
+    margin: 0px;
+    min-height: 150px;
+    width: 100%;
+}
+li.rep-jugador, 
+li.rep-jugador{
+    list-style: none;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 20px;
+    margin: 20px 0px;
+    cursor: pointer;
+    cursor: -webkit-grabbing;
+}
+
+
+.deportista-equipo{
+    
+}
+
+.rep-jugador .pic img{
+    max-height: 120px;
+    margin: auto;
+}
+.rep-jugador .info{
+    
+}
+
+.equipo{
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+li.rep-jugador{
+    padding-bottom: 10px;
+}
+
+.receptor-jugadores{
+    min-height: 150px;
+    max-height: 260px;
+    overflow: auto;
+}
+.receptor-jugadores .table-info{
+    display: none;
+}
+.receptor-jugadores .pic img, 
+.collapsed .pic img{
+    max-height: 40px;
+}
+.listado-deportistas .nombre{
+    display: none;
+}
