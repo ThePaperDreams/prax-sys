@@ -83,11 +83,13 @@ class Matricula extends CModelo {
     public function filtrosAjx() {
         $criterio = new CCriterio();
         $concat = "CONCAT_WS(' ', t2.identificacion, t2.nombre1, t2.nombre2, t2.apellido1, t2.apellido2)";
-        $criterio->union("tbl_deportistas", "t2")
+        $criterio
+            ->union("tbl_deportistas", "t2")
             ->donde("t2.id_deportista", "=", "t.deportista_id")
             ->condicion($concat, $this->deportista_id, "LIKE")
             ->y("t.estado", $this->estado, "=")
-            ->y("t.fecha_pago", $this->fecha_pago, "=");
+            ->y("t.fecha_pago", $this->anio, "LIKE")
+            ->y("t.categoria_id", $this->categoria_id);
         return $criterio;
     }
     

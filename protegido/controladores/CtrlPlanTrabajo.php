@@ -19,8 +19,10 @@ class CtrlPlanTrabajo extends CControlador{
      * Esta función permite crear un nuevo registro
      */
     public function accionCrear(){
-        $modelo = new PlanTrabajo();
-        
+        $modelo = new PlanTrabajo();        
+        if(isset($this->_p['ajxrqst'])){
+            $this->guardarObj();
+        }        
         if(isset($this->_p['PlanesTrabajo'])){
             $modelo->atributos = $this->_p['PlanesTrabajo'];
             if($modelo->guardar()){
@@ -33,9 +35,55 @@ class CtrlPlanTrabajo extends CControlador{
             }
         }
         
-        $this->mostrarVista('crear', [
-            'modelo' => $modelo,
+        $this->mostrarVista('crear', $this->getOpciones($modelo));
+    }
+    
+    private function guardarObj(){        
+        $error = false;
+        $msg = "";
+        $criterio = new CCriterio();
+        $criterio->condicion('t.titulo', $this->_p['titulo']);
+        $objExistente = Objetivo::modelo()->contar($criterio);
+        
+        $obj = new Objetivo;
+        
+        if($objExistente > 0){
+            $msg = "Ya hay un objetivo con ese título";
+            $error = true;
+        } else {
+            $obj->titulo = $this->_p['titulo'];
+            $obj->descripcion = $this->_p['descripcion'];
+            $error = !$obj->guardar();
+            $msg = $error? 'Ocurrió un error al guardar el objetivo' : 
+                'Se guardó correctamente el objetivo';
+        }
+        
+        
+        $this->json([
+            'error' => $error,
+            'msg' => $msg,
+            'tipo' => $error? 'error' : 'success',
+            'id' => $obj->id_objetivo,
+            'titulo' => $obj->titulo,
         ]);
+        Sis::fin();
+    }
+    
+    /**
+     * 
+     * @param PlanTrabajo $modelo
+     * @return []
+     */
+    private function getOpciones(&$modelo){
+        $criterio = new CCriterio();
+        if(!$modelo->nuevo){
+            $criterio->noEn("id_objetivo", $modelo->idsObjetivos());
+        }
+        $objetivos = Objetivo::modelo()->listar($criterio);
+        return [
+            'modelo' => $modelo,
+            'objetivos' => $objetivos,
+        ];
     }
     
     public function guardarObjetivos($id){
@@ -66,6 +114,9 @@ class CtrlPlanTrabajo extends CControlador{
      */
     public function accionEditar($pk){
         $modelo = $this->cargarModelo($pk);
+        if(isset($this->_p['ajxrqst'])){
+            $this->guardarObj();
+        }
         if(isset($this->_p['PlanesTrabajo'])){
             $modelo->atributos = $this->_p['PlanesTrabajo'];
             if($modelo->guardar()){
@@ -78,7 +129,7 @@ class CtrlPlanTrabajo extends CControlador{
                 $this->redireccionar('inicio');
             }
         }        
-        $this->mostrarVista('editar', ['modelo' => $modelo]);
+        $this->mostrarVista('editar', $this->getOpciones($modelo));
     }
     
     /**

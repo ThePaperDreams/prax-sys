@@ -51,6 +51,15 @@ class PlanTrabajo extends CModelo {
         ];
     }
 
+    public function filtrosAjx() {
+        $c = new CCriterio();
+        $c->condicion("t.fecha_aplicacion", $this->fecha_aplicacion)
+                ->y("t.estado", $this->estado)
+                ->y("t.descripcion", $this->descripcion, 'LIKE')
+                ->orden("t.estado = 1", false);
+        return $c;
+    }
+        
     /**
      * Esta función retorna un alias dado a cada uno de los atributos del modelo
      * @return string
@@ -100,6 +109,15 @@ class PlanTrabajo extends CModelo {
             $objetivos[] = $d->Objetivo;
         }
         return $objetivos;
+    }
+    
+    public function idsObjetivos(){
+        $detalles = $this->Detalles;
+        $ids = [];
+        foreach($detalles AS $d){
+            $ids[] = $d->objetivo_id;
+        }
+        return $ids;
     }
     
     /**

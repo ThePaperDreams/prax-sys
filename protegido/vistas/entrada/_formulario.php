@@ -92,5 +92,15 @@ $formulario->abrir();
         var fila = $("#remover-" +idFila);
         fila.remove();
     }
+    
+    function validarEnt(){
+        var cant = $("#cant").val();
+        if(parseInt(cant)=== 0){
+            mostrarAlert('error','Unidades maximas no pueden ser cero');
+            return false;
+        }else{
+            return true;
+        }
+    }
 </script>
 </div>

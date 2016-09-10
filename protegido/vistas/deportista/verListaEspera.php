@@ -16,6 +16,8 @@ $this->opciones = [
 <?=
 
 $this->complemento('!siscoms.bootstrap3.CBGrid', [
+    'ajax' => true,
+    'filtrosAjax' => ['identificacion', 'nombre1', 'apellido1'],
     'modelo' => 'Deportista',
     'criterios' => [
         'where' => 'estado_id = 4',

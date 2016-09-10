@@ -147,7 +147,7 @@ $formulario->abrir();
                 <?php echo $formulario->lista($modelo3, 'id_tipo', $tiposDocumentos, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un Tipo de documento']) ?>
             </div>
             <div class="col-sm-2">
-                <?php echo CBoot::boton(CBoot::fa('plus') . ' Agregar', 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'id' => 'btn-addDoc']) ?>
+                <?php echo CBoot::boton(CBoot::fa('plus-circle') . ' Agregar', 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'id' => 'btn-addDoc']) ?>
             </div>
             <?php if(count($modelo->Documento)): ?>                   
             <div class="col-sm-4">
@@ -296,9 +296,6 @@ $formulario->abrir();
                 }
             }
             return false;
-        });
-        $("#Deportistas_fecha_nacimiento").change(function(){
-            validarFecha($(this));
         });
     });
     

@@ -7,7 +7,6 @@
  * @property int $id_objetivo
  * @property string $titulo
  * @property string $descripcion
- * @property int $plan_trabajo_id
  * 
  * Relaciones del modelo
  */

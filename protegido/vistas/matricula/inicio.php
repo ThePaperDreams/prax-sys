@@ -19,7 +19,7 @@
         'deportista_id', 
         'estado' => CBoot::select('', ['Anulado', 'Vigente'], ['defecto' => 'Estado', 'style' => 'min-width: 150px;', 'name' => 'estado']),
         'anio', 
-        'categoria_id'
+        'categoria_id' => CBoot::select('', $categorias, ['defecto' => 'Categoría', 'style' => 'min-width: 150px;', 'name' => 'categoria_id', 'data-s2' => true]),
     ],
     'modelo' => 'Matricula',
     'criterios' => [

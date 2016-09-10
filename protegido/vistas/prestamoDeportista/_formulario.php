@@ -24,8 +24,8 @@ $formulario->abrir();
     </div>
 </div>
 <?php echo $formulario->lista($modelo, 'deportista_id', $deportistas, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un deportista', 'data-s2' => true]) ?>
-<?php echo $formulario->campoTexto($modelo, 'clubOrigen', ['label' => true, 'group' => true]) ?>
-<?php echo $formulario->campoTexto($modelo, 'clubDestino', ['label' => true, 'group' => true]) ?>
+<?php echo $formulario->campoTexto($modelo, 'club_origen', ['label' => true, 'group' => true]) ?>
+<?php echo $formulario->campoTexto($modelo, 'club_destino', ['label' => true, 'group' => true]) ?>
 <?php echo $formulario->campoTexto($modelo, 'fecha_inicio', ['label' => true, 'group' => true, 'data-date' => true]) ?>
 <?php echo $formulario->campoTexto($modelo, 'fecha_fin', ['label' => true, 'group' => true, 'data-date' => true]) ?>
 

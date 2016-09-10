@@ -21,6 +21,7 @@
  */
 class Categoria extends CModelo {
     private $enUso = null;
+    public $cupos;
     /**
      * Esta función retorna el nombre de la tabla representada por el modelo
      * @return string
@@ -52,6 +53,14 @@ class Categoria extends CModelo {
         return [
             'requeridos' => 'nombre,cupo_minimo,cupo_maximo,edad_minima,edad_maxima',
         ];
+    }
+    
+    public function filtrosAjx() {
+        $criterio = new CCriterio();
+        $criterio->condicion("t.nombre", $this->nombre);
+        $criterio->condicion("t.tarifa", $this->tarifa);
+        $criterio->condicion("t.estado", $this->estado);
+        return $criterio;
     }
     
     public function antesDeGuardar() {
@@ -122,11 +131,26 @@ class Categoria extends CModelo {
         }
     }
     
+    /**
+     * 
+     * @return Matricula
+     */
     public function getMatriculados(){
         $matriculas = Matricula::modelo()->contar([
             'where' => "categoria_id=$this->id_categoria AND estado = 1",
-        ]);        
+        ]);
         return $matriculas;
+    }
+    /**
+     * 
+     */
+    public function getDeportistasMatriculados(){
+        $matriculas = Matricula::modelo()->listar([
+            'where' => "categoria_id=$this->id_categoria AND estado = 1",
+        ]);
+        $deportistas = [];
+        foreach($matriculas AS $mat){ $deportistas[] = $mat->Deportista; }
+        return $deportistas;
     }
 
     /**

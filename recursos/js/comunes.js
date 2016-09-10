@@ -43,3 +43,12 @@ function aSelect2(elementos, data){
     }
     elementos.select2(data);
 }
+
+
+$(function () {
+  $('[data-toggle="popover"]').popover({
+      placement: 'top',
+      trigger: 'focus',
+      html: true,
+  });
+})

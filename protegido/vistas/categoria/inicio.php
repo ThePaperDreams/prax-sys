@@ -17,12 +17,17 @@
 
 <?= $this->complemento('!siscoms.bootstrap3.CBGrid', [
     'modelo' => 'Categoria',
+    'ajax' => true,
+    'filtrosAjax' => [
+        'nombre',
+        'tarifa',
+        'estado' => CBoot::select('', ['Inactivo', 'Activo'], ['defecto' => 'Estado', 'style' => 'min-width: 150px;', 'name' => 'estado']),
+    ],
     # id_categoria, nombre, descripcion, cupo_maximo, cupo_minimo, tarifa, edad_minima, edad_maxima, estado, entrenador_id
-//    'columnas' => 'nombre, cupos, tarifaf, edad',
     'columnas' => [
         'nombre',
         'cupos' => ['valor' => 'cupos', 'opciones' => ['class' => 'text-center']],
-        'tarifaf' => ['valor' => 'tarifaf', 'opciones' => ['class' => 'text-center']],
+        'tarifa' => ['valor' => 'tarifaf', 'opciones' => ['class' => 'text-center']],
         'edad' => ['valor' => 'edad', 'opciones' => ['class' => 'text-center']],
         'estado' => ['valor' => 'EtiquetaEstado', 'opciones' => ['class' => 'text-center']],
     ],

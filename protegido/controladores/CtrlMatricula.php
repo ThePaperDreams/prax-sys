@@ -13,7 +13,11 @@ class CtrlMatricula extends CControlador {
      */
     public function accionInicio() {
         $modelos = Matricula::modelo()->listar();
-        $this->mostrarVista('inicio', ['modelos' => $modelos]);
+        $categorias = Categoria::modelo()->listar();
+        $this->mostrarVista('inicio', [
+            'modelos' => $modelos,
+            'categorias' => CHtml::modeloLista($categorias, "id_categoria", "nombre"),
+        ]);
     }
 
     /**

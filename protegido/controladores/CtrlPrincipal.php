@@ -11,24 +11,59 @@ class CtrlPrincipal extends CControlador{
     
     public function inicializar() {
         parent::inicializar();
-    }
+        $this->plantilla = 'login';
+    }   
     
-    public function accionEjemplo(){
-        $this->plantilla = "basica";
-        $this->vista('ejemploFormularios');
-    }
-    
-    public function accionInicio(){        
-        # instanciamos el pdf
-//        $pdf = Sis::apl()->mpdf->crear();
-        # obtenemos el html generado por una vista y lo guardamos en un string
-//        $texto = $this->vistaP('prueba');
-        # Imprimimos el html
-//        $pdf->writeHtml($texto);
-        # Enviar el archivo pdf
-//        $pdf->Output();
-//        Sis::fin();
+    public function accionRestablecer(){
         
+    }
+    
+    public function accionRecuperar(){
+        $email = "";
+        # si se envia el correo
+        if(isset($this->_p['email']) && $this->_p['email'] != ""){
+            $email = $this->_p['email'];
+            $criterio = new CCriterio();
+            $criterio->condicion("email", $this->_p['email']);
+            $usuario = Usuario::modelo()->primer($criterio); 
+            if($usuario == null){
+                $tipo = 'error';
+                $msg = 'No se encuentra un usuario registrado con ese email';
+            } else {
+                $mensaje = $this->vistaP("_emailRecuperar");
+                $this->enviarEmail($email, $mensaje);
+                $tipo = 'success';
+                $msg = 'Se ha enviado un email a su cuenta de correo';
+            }
+            Sis::Sesion()->flash("alerta", [
+                'tipo' => $tipo,
+                'msg' => $msg,
+            ]);
+            $this->redireccionar("recuperar");
+        } else if(isset($this->_p['email']) && $this->_p['email'] == ''){
+            Sis::Sesion()->flash("alerta", [
+                'tipo' => 'error',
+                'msg' => 'Por favor ingrese un el email con el cual se registró',
+            ]);
+        }
+        
+        $this->vista("recuperar", [
+            'email' => $email,
+        ]);
+    }
+    
+    private function enviarEmail($email, $mensaje){
+        $cabeceras = [
+            "From:info@praxsis.com",
+            "Content-type:text/html; charset=UTF-8",
+            "Reply-To:info@praxsis.com",
+            "MIME-Version: 1.0",
+        ];
+        mail($email, "Recuperación de contraseña", $mensaje, implode("\r\n", $cabeceras));
+    }
+    
+    public function accionInicio(){    
+        $this->plantilla = 'basica';        
         $this->mostrarVista('inicio');
     }
 
@@ -41,7 +76,6 @@ class CtrlPrincipal extends CControlador{
     }
 
     public function accionEntrar(){
-        $this->plantilla = "login";
         if(!Sis::apl()->usuario->esVisitante){
             $this->redireccionar('inicio');
         }
