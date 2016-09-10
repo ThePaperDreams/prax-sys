@@ -100,14 +100,10 @@ Sis::Recursos()->Js('comunes');
                     <!-- Profile Menu -->
                     <div class="text-center s-widget m-b-25 dropdown" id="profile-menu">
                         <a href="#" data-toggle="dropdown">
-                            <?php if(Sis::apl()->usuario->getFoto() == ""):  ?>
-                            <img class="profile-pic animated" src="<?= Sis::UrlBase() ?>publico/imagenes/usuarios/sin-foto.jpg" alt="">
-                            <?php else: ?>
-                            <img class="profile-pic animated" src="<?= Sis::UrlBase() ?>publico/imagenes/usuarios/<?= Sis::apl()->usuario->getFoto() ?>" alt="">
-                            <?php endif ?>
+                            <img class="profile-pic animated" id="foto-perfil" src="<?= Sis::apl()->usuario->getFoto(true) ?>" alt="">
                         </a>
                         <ul class="dropdown-menu profile-menu">
-                            <li><a href="#">Mi perfíl</a> <i class="icon left">&#61903;</i><i class="icon right">&#61815;</i></li>
+                            <li><a href="<?= Sis::UrlBase() . Sis::apl()->usuario->getID()?>/Usuario/verPerfil">Mi perfíl</a> <i class="icon left">&#61903;</i><i class="icon right">&#61815;</i></li>
                             <li><a href="<?= Sis::crearUrl(['principal/salir']) ?>">Salir</a> <i class="icon left">&#61903;</i><i class="icon right">&#61815;</i></li>
                         </ul>
                         <h4 class="m-0"><?= Sis::apl()->usuario->usuario ?></h4>

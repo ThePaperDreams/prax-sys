@@ -13,12 +13,12 @@ $this->opciones = [
     ]
 ];
 ?>
-<div class="col-sm-8">
-    <div class="panel panel-primary">
+<div class="col-sm-12">
+    <div class="panel panel-default">
         <div class="panel-heading text-center">
             Ver detalles
         </div>
-        <table class="table table-bordered table-striped table-hover">
+        <table class="table table-bordered table-hover">
             <tbody>
                 <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('titulo') ?></th>
@@ -50,7 +50,7 @@ $this->opciones = [
                 </tr>
                 <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('autor') ?></th>
-                    <td><?php echo $modelo->Autor->nombre; ?></td>
+                    <td><?php echo $modelo->Autor->nombres ?></td>
                 </tr>
             </tbody>
         </table>

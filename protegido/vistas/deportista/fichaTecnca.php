@@ -261,6 +261,7 @@ $this->migas = [
 <script>
     $(function(){
         $("#btn-editar").click(function(){
+            alert("")
             $("#f-t-info").slideUp(function(){
                 $("#f-t-form").slideDown();
             });        

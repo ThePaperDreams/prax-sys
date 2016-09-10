@@ -37,6 +37,7 @@
 		'estado' => ['def' => '1'] , 
 		'posicion', 
 		'entrenador_id', 
+                'torneo_id'
         ];
     }
     
@@ -88,6 +89,15 @@
             'requeridos' => 'nombre,cupo_maximo, cupo_minimo, entrenador_id',
             'seguros' => '*',
         ];
+    }
+    
+    public function filtrosAjx() {
+        $criterio = new CCriterio();
+        $criterio->condicion("nombre", $this->nombre, "LIKE")
+           ->y("cupo_minimo", $this->cupo_minimo, "=")     
+           ->y("cupo_maximo", $this->cupo_maximo, "=")
+           ->y("posicion", $this->posicion, "=");        
+       return $criterio;
     }
     
     public function getEstadoEtiqueta(){

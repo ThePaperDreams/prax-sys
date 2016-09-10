@@ -19,8 +19,12 @@ class ComUsuario extends CComponenteUsuario{
         return !$this->error;
     }
     
-    public function getFoto(){
+    public function getFoto($url = false){
         $usuario = Usuario::modelo()->porPk(Sis::apl()->usuario->ID);
-        return $usuario->foto;
+        if($url){
+            return $usuario->fotoUrl;
+        } else{            
+            return $usuario->fotoAsignada;
+        }
     }
 }

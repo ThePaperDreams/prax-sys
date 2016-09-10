@@ -126,7 +126,7 @@ final class CAplicacionWeb {
         Sis::importar('!sistema.utilidades.Autocarga');
         $this->iniciarManejadoresDeError();
         $this->ID = hash('md5', $this->nombre);
-        $this->checkSec();
+        # $this->checkSec();
         $this->mSesion = new CMSesion();
     }
 

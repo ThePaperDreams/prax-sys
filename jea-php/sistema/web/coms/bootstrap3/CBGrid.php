@@ -173,8 +173,9 @@ class CBGrid extends CBaseGrid{
         } else {
             return false;
         }
-        # validamos si el campo es select
-        if(strpos($campo, "<select") !== false){
+        # validamos si el campo es valido
+        $campoValido = strpos($campo, "<select") !== false || strpos($campo, "<input") !== false;
+        if($campoValido){
             $campo = str_replace('name="' . $salida[1] . '"', 'name="filtro-tabla[' . $salida[1] . ']"', $campo);
         } else {
             return false;

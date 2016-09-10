@@ -110,6 +110,23 @@ class Usuario extends CModelo {
         }
     }
     
+    public function getFotoUrl(){
+        $url = Sis::UrlBase() . 'publico/imagenes/usuarios/';
+        if($this->foto !== "" && $this->foto !== null){
+            return $url . $this->foto;
+        } else {
+           return $url . 'developer.png';
+        }
+    }
+    
+    public function getFotoAsignada() {
+        $url = Sis::UrlBase() . 'publico/imagenes/usuarios/';
+        if($this->foto !== "" && $this->foto !== null){
+            return CHtml::img($url . $this->foto.'?t='.  time(),[ 'class'=>'img-rounded', 'id' => 'actualfoto']);           
+        } else {
+           return CHtml::img($url . 'developer.png',['class'=>'img-rounded']);
+        }
+    }
     /**
      * Esta función permite listar todos los registros
      * @param array $criterio

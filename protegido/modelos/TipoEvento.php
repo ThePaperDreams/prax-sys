@@ -61,6 +61,12 @@
         ];
     }
     
+    public function filtrosAjx() {
+        $criterio = new CCriterio();
+        $criterio->condicion("nombre", $this->nombre, "LIKE");
+       return $criterio;
+    }
+    
     public function getEnPrestamo(){
         if($this->_enPrestamo === null){            
             $sql = "SELECT

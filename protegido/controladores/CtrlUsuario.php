@@ -8,6 +8,7 @@
  */
 class CtrlUsuario extends CControlador {
 
+    
     /**
      * Esta función muestra el inicio y una tabla para listar los datos
      */
@@ -131,6 +132,55 @@ class CtrlUsuario extends CControlador {
         ]);
     }
 
+    public function accionEditarPerfil() {
+        $modelo = $this->cargarModelo(Sis::apl()->usuario->getID());
+        
+        if(isset($this->_p['ajx'])){
+            $modelo->atributos = $this->_p['ficha'];
+            $this->json([
+                'error' => !$modelo->guardar(),
+            ]);
+            Sis::fin();
+        } 
+        
+        $modelo->nombres = trim($this->_p['ficha']['nombres']);
+        $modelo->apellidos = trim($this->_p['ficha']['apellidos']);
+        $modelo->telefono = trim($this->_p['ficha']['telefono']);
+        $modelo->guardar();
+        $url = Sis::crearUrl(['Usuario/editarPerfil', Sis::apl()->usuario->getID]);
+        $this->mostrarVista('perfil', ['modelo' => $modelo,
+            'url' => $url,
+            'roles' => CHtml::modeloLista(Rol::modelo()->listar(), 'id_rol', 'nombre'),
+        ]);
+    }
+    
+    public function accionCambiarFoto(){
+        $imagen = CArchivoCargado::instanciarPorNombre('imagenes');
+        $rutaDes = Sis::resolverRuta(Sis::crearCarpeta("!publico.imagenes.usuarios"));
+        $rutaThumbs = Sis::resolverRuta(Sis::crearCarpeta("!publico.imagenes.usuarios.thumbs"));
+        $guardado = $imagen->guardar($rutaDes);
+        $error = true;
+        if($guardado){
+            $imagen->thumbnail($rutaThumbs, [
+                'tamanio' => 200,
+                'autocentrar' => true,
+                'tipo' => strtolower($imagen->getExtension()),
+            ]);
+            $mImagen = $this->cargarModelo(Sis::apl()->usuario->getID());
+            $mImagen->foto = $imagen->getNombreOriginal();
+            $mImagen->guardar();            
+            $error = false;
+        }
+        
+        header("Content-type: Application/json");
+        
+        echo json_encode([
+            'uploadErr' => $error,
+            'url' => Sis::UrlBase() . "/publico/imagenes/usuarios/$mImagen->foto",
+        ]);
+        Sis::fin();
+        
+    }
     /**
      * Esta función permite ver detalladamente un registro existente
      * @param int $pk
@@ -138,6 +188,12 @@ class CtrlUsuario extends CControlador {
     public function accionVer($pk) {
         $modelo = $this->cargarModelo($pk);
         $this->mostrarVista('ver', ['modelo' => $modelo,
+        ]);
+    }
+    
+    public function accionVerPerfil($pk) {
+        $modelo = $this->cargarModelo(Sis::apl()->usuario->getID());
+        $this->mostrarVista('perfil', ['modelo' => $modelo,
         ]);
     }
 

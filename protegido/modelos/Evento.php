@@ -11,7 +11,8 @@
  * @property int $tipo_id
  * @property string $lugar
  * @property time $hora
- * @property int $estado
+ * @property int $estado_id
+ * @property int $autor
  * 
  * Relaciones del modelo
  */
@@ -39,7 +40,7 @@
 		'tipo_id', 
 		'lugar', 
 		'hora', 
-		'estado', 
+		'estado_id', 
                 'autor',
         ];
     }
@@ -52,9 +53,9 @@
         return [
             # el formato es simple: 
             # tipo de relación | modelo con que se relaciona | campo clave foranea
-            'Autor' => [self::PERTENECE_A, 'Usuario', 'usuario_id'],
+            'Autor' => [self::PERTENECE_A, 'Usuario', 'autor'],
             'TipoEvento' => [self::PERTENECE_A, 'TipoEvento', 'tipo_id'],
-            'Estado' => [self::PERTENECE_A, 'EstadoEvento', 'estado'],
+            'Estado' => [self::PERTENECE_A, 'EstadoEvento', 'estado_id'],
             
         ];
     }
@@ -73,7 +74,7 @@
 		'tipo_id' => 'Tipo de Evento', 
 		'lugar' => 'Lugar', 
 		'hora' => 'Hora', 
-		'estado' => 'Estado', 
+		'estado_id' => 'Estado', 
                 'autor' => 'Autor', 
         ];
     }
@@ -91,9 +92,26 @@
     
     public function filtros() {
         return [
-            'requeridos' => 'titulo,contenido,fecha_publicacion,fecha_disponibilidad,tipo_id,lugar,hora,estado,autor',
+            'requeridos' => 'titulo,contenido,fecha_publicacion,fecha_disponibilidad,tipo_id,lugar,hora,estado_id',
             'seguros' => 'titulo,fecha_publicacion,fecha_disponibilidad','lugar','hora','autor',
         ];
+    }
+    
+    public function filtrosAjx() {
+        $criterio = new CCriterio();
+        $criterio->condicion("titulo", $this->titulo, "LIKE")
+           ->y("tipo_id", $this->tipo_id, "=")     
+           ->y("estado_id", $this->estado_id, "=")
+           ->y("fecha_publicacion", $this->fecha_publicacion, "=")
+           ->y("autor", $this->autor, "LIKE");
+        
+       return $criterio;
+    }
+    
+    public function antesDeGuardar() {
+        if($this->nuevo){
+            $this->autor = Sis::apl()->usuario->getID();
+        }
     }
     
     /**
