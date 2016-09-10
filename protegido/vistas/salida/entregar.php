@@ -1,4 +1,5 @@
 <?php
+$this->tituloPagina="Devolver Implementos";
 $this->migas = [
     'Home' => ['principal/inicio'],
     'Listar Salidas' => ['Salida/inicio'],
@@ -8,7 +9,7 @@ $this->migas = [
 $this->opciones = [
     'elementos' => [
         'Listar' => ['Salida/inicio'],
-        'Crear' => ['Salida/crear'],
+        'Registrar' => ['Salida/crear'],
     ]
 ];
 $formulario = new CBForm(['id' => 'form-entregas']);
@@ -71,8 +72,11 @@ $formulario->abrir();
         </div>
     </div>
     <div class="row">        
-        <div class="col-sm-4 col-sm-offset-4">
-            <?= CBoot::boton('Entregar', 'success btn-block') ?>
+        <div class="col-sm-offset-6 col-sm-3">
+            <?php echo CHtml::link(CBoot::fa('undo') . ' Cancelar', ['salida/inicio'], ['class' => 'btn btn-primary btn-block', 'id' => 'btn-send']); ?>
+        </div>
+        <div class="col-sm-3">
+            <?= CBoot::boton(CBoot::fa('truck').' Entregar', 'success btn-block') ?>
         </div>
     </div>
 </div>

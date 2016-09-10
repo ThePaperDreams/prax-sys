@@ -29,6 +29,19 @@
             'seguros'=>'*',
         ];
     }
+    public function filtrosAjx() {
+        $criterio = new CCriterio();
+        $criterio->condicion("t1.nombre", $this->categoria_id, "LIKE")
+           ->union("tbl_categorias_implementos", "t1")
+           ->donde("t1.id_categoria", "=", "t.categoria_id")
+           ->y("t.nombre", $this->nombre, "LIKE")     
+           ->y("t.estado_id", $this->estado_id, "=")
+           ->y("t.unidades", $this->unidades, "=")
+           ->y("t.minimo_unidades", $this->minimo_unidades, "=")      
+           ->y("t.maximo_unidades", $this->maximo_unidades, "=");
+        
+       return $criterio;
+    }
     /**
      * Esta función retorna los atributos de la tabla tbl_implementos
      * @return array
@@ -66,23 +79,29 @@
         return [
                 
 		'categoria_id' => 'Nombre categoría',
-                'estado' => 'Estado',
-		'nombre' => 'Nombre', 
+                'estado_id' => 'Estado',
+		'nombre' => 'Nombre Implemento', 
 		'descripcion' => 'Descripcion', 
-		'unidades' => 'Unidades', 
-		'minimo_unidades' => 'Minimo Unidades', 
-		'maximo_unidades' => 'Maximo Unidades', 
+		'unidades' => 'Unidades Disponibles', 
+		'minimo_unidades' => 'Mínimo Unidades', 
+		'maximo_unidades' => 'Máximo Unidades', 
         ];
     }
-    public function getEtiquetaEstado(){
-        if($this->getEnPrestamo()){
-            return CHtml::e('span', 'En préstamo', ['class' => 'label label-info']);
-        } else if($this->estado_id == 1){
+    public function getEtiquetaEstado(){ 
+        if($this->estado_id == 1){
             return CHtml::e('span', 'Activo', ['class' => 'label label-success']);
-        } else if($this->estado_id == 0){
+        } else if($this->estado_id == 2){
             return CHtml::e('span', 'Inactivo', ['class' => 'label label-danger']);
-        } else {
+        } else if($this->estado_id == 3){
             return CHtml::e('span', 'Agotado', ['class' => 'label label-default']);
+        }
+    }
+    
+    public function getNombreEstado(){
+        if($this->getEnPrestamo()){
+            return  CHtml::e('span', 'En préstamo', ['class' => 'label label-info label-prestamo']) . " " . $this->nombre;
+        } else {
+            return $this->nombre;
         }
     }
     
@@ -93,7 +112,7 @@
                     FROM
                             tbl_salidas_implementos t
                             JOIN tbl_salidas t2 ON t2.id_salida = t.salida_id
-                    WHERE t.implemento_id = $this->id_implemento AND t2.estado = 1;";
+                    WHERE t.implemento_id = $this->id_implemento AND t2.estado = 1";
             $resultados = Sis::apl()->bd->ejecutarComando($sql);
             $this->_enPrestamo = count($resultados) > 0;
         } 

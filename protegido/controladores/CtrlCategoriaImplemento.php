@@ -93,7 +93,9 @@ class CtrlCategoriaImplemento extends CControlador {
 
     public function accionAnular($pk) {
         $modelo = $this->cargarModelo($pk);
-        $modelo->estado = !$modelo->estado;
+        
+        //$modelo->estado = !$modelo->estado;
+        $modelo->estado = $modelo->estado ? 0 : 1;
         if ($modelo->guardar()) {
                 Sis::Sesion()->flash("alerta", [
                     'msg' => 'Cambio exitoso',

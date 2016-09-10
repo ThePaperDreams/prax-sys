@@ -9,12 +9,12 @@ $this->migas = [
 $this->opciones = [
     'elementos' => [
         'Listar' => ['Implemento/inicio'],
-        'Crear' => ['Implemento/crear'],
+        'Registrar' => ['Implemento/crear'],
         'Actualizar' => ['Implemento/editar', 'id' => $modelo->id_implemento],
     ]
 ];
 ?>
-<div class="col-sm-6">
+<div class="col-sm-12">
     <div class="panel panel-default">
         <div class="panel-heading text-center">
             Ver detalles

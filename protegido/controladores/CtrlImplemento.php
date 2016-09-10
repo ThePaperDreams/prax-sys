@@ -66,7 +66,7 @@ class CtrlImplemento extends CControlador{
     
      public function accionAnular($pk) {
         $modelo = $this->cargarModelo($pk);
-        $modelo->estado_id = !$modelo->estado_id;
+        $modelo->estado_id = $modelo->estado_id == 1? 2 : 1;
         if ($modelo->guardar()) {
             Sis::Sesion()->flash("alerta", [
                 'msg' => 'Cambio exitoso',
@@ -103,7 +103,16 @@ class CtrlImplemento extends CControlador{
         
         
     }
-    
+    public function accionGenerarReporte(){
+        $implementos =  Implemento::modelo()->listar([
+            'where'=>'estado_id=1',
+        ]);
+        $pdf = Sis::apl()->mpdf->crear();
+        $texto =  $this->vistaP('pdfImplemento',['implementos'=>$implementos]);
+        $pdf->writeHtml($texto);
+        $pdf->output("Implementos.pdf",'I');
+    }
+
     /**
      * Esta función permite ver detalladamente un registro existente
      * @param int $pk

@@ -9,10 +9,10 @@ $this->tituloPagina="Actualizar categoría implementos";
     $this->opciones = [
         'elementos' => [
             'Listar' => ['CategoriaImplemento/inicio'],
-            'Crear' => ['CategoriaImplemento/crear'],
+            'Registrar' => ['CategoriaImplemento/crear'],
         ]
     ];    
 ?>
-<div class="col-sm-8">    
+<div class="col-sm-12">    
     <?php echo $this->mostrarVistaP('_formulario', ['modelo' => $modelo, 'url' => $url]); ?>
 </div>

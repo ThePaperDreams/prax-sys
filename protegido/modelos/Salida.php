@@ -47,6 +47,17 @@ class Salida extends CModelo {
         ];
     }
 
+    public function filtrosAjx() {
+        $criterio = new CCriterio();
+        $concat = "CONCAT_WS(' ',t.fecha_entrega, t.fecha_realizacion, t.estado, t1.nombres)";
+        $criterio->union("tbl_usuarios", "t1")
+           ->donde("t1.id_usuario", "=", "t.responsable_id")
+           ->condicion($concat, $this->responsable_id, "LIKE")
+           ->y("t.estado", $this->estado, "=")
+           ->y("t.fecha_realizacion", $this->fecha_realizacion, "LIKE")
+           ->y("t.fecha_entrega", $this->fecha_entrega, "LIKE");
+       return $criterio;
+    }
     /**
      * Esta función retorna las relaciones con otros modelos
      * @return array
@@ -71,7 +82,7 @@ class Salida extends CModelo {
             'id_salida' => 'Id Salida',
             'fecha_realizacion' => 'Fecha Realizacion',
             'fecha_entrega' => 'Fecha Entrega',
-            'descripcion' => 'Descripcion',
+            'descripcion' => 'Descripción',
             'responsable_id' => 'Responsable',
             'estado' => 'Estado',
         ];

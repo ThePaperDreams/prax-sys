@@ -9,11 +9,11 @@ $this->migas = [
 $this->opciones = [
     'elementos' => [
         'Listar' => ['Entrada/inicio'],
-        'Crear' => ['Entrada/crear'],
+        'Registrar' => ['Entrada/crear'],
     ]
 ];
 ?>
-<div class="col-sm-6">
+<div class="col-sm-12">
     <div class="panel panel-default">
         <div class="panel-heading text-center">
             Ver detalles

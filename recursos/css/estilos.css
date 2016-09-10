@@ -277,3 +277,8 @@ body{
     padding: 11px 0px;
     font-size: 12px;
 }
+
+.label-prestamo{
+/*    transform: translate(0px, 0px) rotate(-10deg);
+    position: absolute;*/
+}

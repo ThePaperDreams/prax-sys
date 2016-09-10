@@ -8,7 +8,7 @@ $this->migas = [
 
 $this->opciones = [
     'elementos' => [
-        'Crear' => ['Categoriaimplemento/crear'],
+        'Registrar' => ['Categoriaimplemento/crear'],
     ]
 ];
 ?>
@@ -16,6 +16,12 @@ $this->opciones = [
 <?=
 
 $this->complemento('!siscoms.bootstrap3.CBGrid', [
+    'ajax' => true,
+    'filtrosAjax' => [
+        'nombre', 
+        'estado' => CBoot::select('', ['Inactivo','Activo'], ['defecto' => 'Estado', 'style' => 'min-width: 150px;', 'name' => 'estado']),
+
+     ],
     'modelo' => 'CategoriaImplemento',
     'criterios' => ['order' => "estado=1 desc"],
     # id_categoria, nombre, descripcion
@@ -27,7 +33,7 @@ $this->complemento('!siscoms.bootstrap3.CBGrid', [
     ],
     'opciones' => [
         ['i'=>'eye', 'title' => 'Ver','url'=>'Categoriaimplemento/ver&{id:pk}'],
-        ['i'=>'pencil','title' => 'Editar','url'=>'Categoriaimplemento/editar&{id:pk}'],
+        ['i'=>'pencil','title' => 'Actualizar','url'=>'Categoriaimplemento/editar&{id:pk}'],
         ['i'=>'refresh','title' => 'Cambiar estado','url'=>'Categoriaimplemento/anular&{id:pk}'],
     ],
     'paginacion' => 10,
