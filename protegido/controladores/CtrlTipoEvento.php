@@ -19,6 +19,7 @@ class CtrlTipoEvento extends CControlador{
      * Esta función permite crear un nuevo registro
      */
     public function accionCrear(){
+        $this->validarNombre();
         $modelo = new TipoEvento();
         if(isset($this->_p['TiposEvento'])){
             $modelo->atributos = $this->_p['TiposEvento'];
@@ -27,7 +28,8 @@ class CtrlTipoEvento extends CControlador{
                 $this->redireccionar('inicio');
             }
         }
-        $this->mostrarVista('crear', ['modelo' => $modelo]);
+        $url = Sis::crearUrl(['TipoEvento/crear']);
+        $this->mostrarVista('crear', ['modelo' => $modelo,'url' => $url]);
     }
     
     /**
@@ -35,6 +37,7 @@ class CtrlTipoEvento extends CControlador{
      * @param int $pk
      */
     public function accionEditar($pk){
+        $this->validarNombre($pk);
         $modelo = $this->cargarModelo($pk);
         if(isset($this->_p['TiposEvento'])){
             $modelo->atributos = $this->_p['TiposEvento'];
@@ -43,7 +46,33 @@ class CtrlTipoEvento extends CControlador{
                 $this->redireccionar('inicio');
             }
         }
-        $this->mostrarVista('editar', ['modelo' => $modelo]);
+        $url = Sis::crearUrl(['TipoEvento/editar', 'id' => $pk]);
+        $this->mostrarVista('editar', ['modelo' => $modelo, 'url' => $url]);
+    }
+    
+    private function validarNombre($id = null){
+        if(isset($this->_p['validarNombre'])){
+            if($id === null){
+                $criterio = [
+                    'where' => "LOWER(nombre) = LOWER('" . $this->_p['nombre'] . "')"
+                ];
+            } else {
+                $criterio = [
+                    'where' => "id_tipo <> $id AND LOWER(nombre) = LOWER('" . $this->_p['nombre'] . "')"
+                ];
+            }
+            $categoria = CategoriaImplemento::modelo()->primer($criterio);
+            
+            if($categoria != null){
+                $error = true;
+            } else {
+                $error = false;
+            }
+            $this->json([
+                'error' => $error,
+            ]);
+            Sis::fin();
+        }
     }
     
     /**

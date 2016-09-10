@@ -16,5 +16,6 @@
         'TipoEvento' => $TipoEvento,
         'Estado' => $Estado,
         'Autor' => $Autor,
+        'url' => $url,
         ]); ?>
 </div>

@@ -60,6 +60,21 @@
             'seguros' => '*',
         ];
     }
+    
+    public function getEnPrestamo(){
+        if($this->_enPrestamo === null){            
+            $sql = "SELECT
+                            t.id_tipo
+                    FROM
+                            tbl_tipos_evento t
+                            JOIN tbl_eventos t2 ON t.id_tipo = t2.tipo_id
+                    WHERE t.id_tipo = $this->id_tipo;";
+            $resultados = Sis::apl()->bd->ejecutarComando($sql);
+            $this->_enPrestamo = count($resultados) > 0;
+        } 
+        return $this->_enPrestamo;
+    }
+    
     public function filtrosAjx() {
         $criterio = new CCriterio();
         $criterio->condicion("nombre", $this->nombre, "LIKE");

@@ -27,6 +27,7 @@ class CtrlEquipo extends CControlador{
      * Esta función permite crear un nuevo registro
      */
     public function accionCrear(){
+        $this->validarNombre();
         $modelo = new Equipo();
         if(isset($this->_p['Equipos'])){
 //            echo "<pre>";
@@ -44,7 +45,8 @@ class CtrlEquipo extends CControlador{
                 $this->redireccionar('inicio');
             }
         }
-        $this->mostrarVista('crear', ['modelo' => $modelo,
+        $url = Sis::crearUrl(['Equipo/crear']);
+        $this->mostrarVista('crear', ['modelo' => $modelo,'url' => $url,
             'deportista' => CHtml::modelolista(Deportista::modelo()->listar(), "id_deportista", "nombre1"),
             'deportistas' => $modelo->getDeportistas(),
             'Entre' => CHtml::modelolista(Usuario::modelo()->listar(), "id_usuario", "nombre_usuario"),
@@ -81,6 +83,7 @@ class CtrlEquipo extends CControlador{
      * @param int $pk
      */
     public function accionEditar($pk){
+        $this->validarNombre($pk);
         $modelo = $this->cargarModelo($pk);
         if(isset($this->_p['Equipos'])){
             $modelo->atributos = $this->_p['Equipos'];
@@ -91,7 +94,9 @@ class CtrlEquipo extends CControlador{
                 $this->redireccionar('inicio');
             }
         }
-        $this->mostrarVista('editar', ['modelo' => $modelo,
+        $url = Sis::crearUrl(['Publicacion/editar', 'id' => $pk]);
+        
+        $this->mostrarVista('editar', ['modelo' => $modelo,'url'=>$url,
             'deportista' => CHtml::modelolista(Deportista::modelo()->listar(), "id_deportista", "nombre1"),
             'deportistas' => $modelo->getDeportistas(),
             'Entre' => CHtml::modelolista(Usuario::modelo()->listar(), "id_usuario", "nombre_usuario"),
@@ -99,6 +104,31 @@ class CtrlEquipo extends CControlador{
             ]);
     }
     
+    
+    private function validarNombre($id = null){
+        if(isset($this->_p['validarNombre'])){
+            if($id === null){
+                $criterio = [
+                    'where' => "LOWER(nombre) = LOWER('" . $this->_p['nombre'] . "')"
+                ];
+            } else {
+                $criterio = [
+                    'where' => "id_equipo <> $id AND LOWER(nombre) = LOWER('" . $this->_p['nombre'] . "')"
+                ];
+            }
+            $categoria = CategoriaImplemento::modelo()->primer($criterio);
+            
+            if($categoria != null){
+                $error = true;
+            } else {
+                $error = false;
+            }
+            $this->json([
+                'error' => $error,
+            ]);
+            Sis::fin();
+        }
+    }
     /**
      * Esta función permite ver detalladamente un registro existente
      * @param int $pk

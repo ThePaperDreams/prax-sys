@@ -18,7 +18,11 @@
      ],
     'modelo' => 'TipoEvento',
     # id_tipo, nombre, descripcion
-    'columnas' => 'id_tipo, nombre, descripcion',
-    'opciones' => true,
+    'columnas' => 'nombre, descripcion',
+    'opciones' => [
+        ['i' => 'eye', 'title' => 'Ver','url' => 'TipoEvento/ver&{id:pk}'],
+        ['i' => 'pencil', 'title' => 'Editar', 'url' => 'TipoEvento/editar&{id:pk}', 'visible' => '$m->getEnPrestamo() == false'],
+        ['i' => 'refresh', 'title' => 'Cambiar estado','url' => 'TipoEvento/eliminar&{id:pk}', 'visible' => '$m->getEnPrestamo() == false'],
+    ],
     'paginacion' => 10,
 ]) ?>

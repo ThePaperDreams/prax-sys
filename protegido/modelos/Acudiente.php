@@ -169,4 +169,8 @@ class Acudiente extends CModelo{
         $url = Sis::UrlBase() . $id . '/Acudiente/ver';
         return CHtml::link($icono . ' ' . $nombre , $url, ['target' => '_blank']);
     }
+    
+    public function antesDeGuardar() {
+        if($this->estado == null){ $this->estado = 0; }
+    }
 }

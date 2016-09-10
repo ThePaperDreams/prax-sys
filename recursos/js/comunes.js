@@ -27,15 +27,14 @@ function aDate(elementos, data){
     if(data === null || data === undefined){
         data = { dateFormat : 'yy-mm-dd' };
     }
+//    elementos.datepicker();
     $.each(elementos, function(k, v){
         $(v).datepicker({
             language: 'es',
             dateFormat: 'yyyy-mm-dd',
-            onSelect: function(fd, d, picker){
-                $(v).change();
-            }
         });
     });
+//    elementos.datepicker(data);
 }
 
 function aSelect2(elementos, data){
