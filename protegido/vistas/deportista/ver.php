@@ -130,7 +130,7 @@ $this->opciones = [
                         <tr>
                             <td><?php echo $d->Documento->getDocumento($d->Documento->url); ?>
                             <td class="col-sm-1 text-center text-danger-icon">
-                                <a href="#" class="eliminar" data-iddepdoc="<?php echo $d->id; ?>"><i class="fa fa-ban"></i></a>
+                                <a href="#" class="eliminar" data-iddepdoc="<?php echo $d->id; ?>"><i class="fa fa-trash"></i></a>
                             </td>
                         </tr>
                     <?php endforeach ?>
@@ -159,7 +159,7 @@ $this->opciones = [
                     <?php foreach ($modelo->Acudiente AS $dc): ?>
                         <tr>                                    
                             <td><?= $dc->Acudiente->getAcudiente($dc->Acudiente->id_acudiente, $dc->Acudiente->datos); ?></td>            
-                            <td class="col-sm-1 text-center text-danger-icon"><a class="delete" data-iddepacu="<?= $dc->id ?>" href="#"><i class="fa fa-ban"></i></a></td>
+                            <td class="col-sm-1 text-center text-danger-icon"><a class="delete" data-iddepacu="<?= $dc->id ?>" href="#"><i class="fa fa-trash"></i></a></td>
                         </tr>
                     <?php endforeach ?>
                 </tbody>

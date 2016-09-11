@@ -1,4 +1,7 @@
 <?php 
+    $this->ayuda = "acudientes/inicio";
+    $this->ayudaTitulo = "Acudientes";
+    
     $this->tituloPagina = "Listar Acudientes";
     $this->migas = [
         'Home' => ['principal/inicio'],
@@ -15,7 +18,7 @@ $this->opciones = [
 <?=
 
 $this->complemento('!siscoms.bootstrap3.CBGrid', [
-    'criterios' => ['order' => 'estado desc'],
+    'criterios' => ['order' => 'estado desc, id_acudiente DESC'],
     'ajax' => true,
     'filtrosAjax' => [
         'identificacion',

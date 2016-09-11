@@ -12,9 +12,7 @@ class CtrlDeportista extends CControlador {
      * Esta función muestra el inicio y una tabla para listar los datos
      */
     public function accionInicio() {
-        $modelos = Deportista::modelo()->listar();
         $this->mostrarVista('inicio', [
-            'modelos' => $modelos,
             'estados' => CHtml::modelolista(EstadoDeportista::modelo()->listar(), "id_estado", "nombre"),
         ]);
     }

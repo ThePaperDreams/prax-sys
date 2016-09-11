@@ -35,7 +35,7 @@ $formulario->abrir();
                         <?php echo $formulario->lista($modelo, 'deportista_id', $deportistas, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un deportista']) ?>
                     </div>
                     <div class="col-sm-6">
-                        <?php echo $formulario->inputAddon($modelo, 'fecha_pago', 'text', ['label' => true, 'group' => true], ['pos' => CBoot::fa('calendar')]) ?>
+                        <?php echo $formulario->inputAddon($modelo, 'fecha_pago', 'text', ['label' => true, 'group' => true, 'class' => 'campo-fecha'], ['pos' => CBoot::fa('calendar')]) ?>
                     </div>
                 </div>
                 <div class="row">
@@ -74,11 +74,7 @@ $formulario->abrir();
         
         setTimeout(function(){
             jQuery("#Matriculas_categoria_id").select2('open');
-        }, 100);
-        
-        jQuery("#Matriculas_fecha_pago").datepicker({
-            dateFormat: 'yy-mm-dd',
-        });
+        }, 100);        
         
         jQuery("#Matriculas_url_comprobante").fileinput({
             showPreview: false,

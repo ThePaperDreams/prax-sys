@@ -7,7 +7,8 @@
  * @version 1.0.0
  */
 class CtrlAcudiente extends CControlador {
-
+    public $ayuda;
+    public $ayudaTitulo;
     /**
      * Esta función muestra el inicio y una tabla para listar los datos
      */

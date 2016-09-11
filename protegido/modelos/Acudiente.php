@@ -160,7 +160,8 @@ class Acudiente extends CModelo{
                 ->y("t.estado", $this->estado, "=")
                 ->y("t.telefono1", $this->telefono1, "LIKE")
                 ->y("t.identificacion", $this->identificacion, "LIKE")
-                ->orden("t.estado", "desc");
+                ->orden("t.estado", false)
+                ->orden("t.id_acudiente", false);
         return $criterio;
     }
     

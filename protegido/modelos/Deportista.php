@@ -139,7 +139,9 @@ class Deportista extends CModelo{
                 ->y("m.categoria_id", $this->categoria_id, "=")
                 ->y("t.estado_id", $this->estado_id, "=")
                 ->y("t.identificacion", $this->identificacion, "LIKE")
-                ->orden("t.estado_id", "asc");
+                ->orden("t.estado_id = 1", false)
+                ->orden("t.id_deportista", false)
+                ->agrupar("t.id_deportista");
         return $criterio;
     }
     
@@ -151,6 +153,15 @@ class Deportista extends CModelo{
         }else{
             return "Sin categoría";
         }
+    }
+    
+    public function getNoMatriculados(){
+        $matriculas = Matricula::modelo()->listar(['group' => 'deportista_id', 'where' => 'estado = 1']);
+        $matriculados = CHtml::modeloLista($matriculas, "id_matricula", "deportista_id");
+        $criterio = new CCriterio();
+        $criterio->noEn("id_deportista", $matriculados);
+        $deportistas = Deportista::modelo()->listar($criterio);
+        return $deportistas;
     }
     
     /**
@@ -192,7 +203,7 @@ class Deportista extends CModelo{
         return [
             'id_deportista' => 'Deportista',
             'identificacion' => 'Identificación',
-            'nombre1' => 'Nombre',
+            'nombre1' => 'Primer Nombre',
             'nombre2' => 'Segundo Nombre',
             'apellido1' => 'Primer Apellido',
             'apellido2' => 'Segundo Apellido',

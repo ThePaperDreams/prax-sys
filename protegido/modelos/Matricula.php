@@ -89,7 +89,9 @@ class Matricula extends CModelo {
             ->condicion($concat, $this->deportista_id, "LIKE")
             ->y("t.estado", $this->estado, "=")
             ->y("t.fecha_pago", $this->anio, "LIKE")
-            ->y("t.categoria_id", $this->categoria_id);
+            ->y("t.categoria_id", $this->categoria_id)
+            ->orden("estado", false)
+            ->orden("fecha_realizacion", false);
         return $criterio;
     }
     

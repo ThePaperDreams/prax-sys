@@ -37,7 +37,7 @@ class CtrlMatricula extends CControlador {
             }
         }
         
-        $deportistas = Deportista::modelo()->listar();
+        $deportistas = Deportista::modelo()->getNoMatriculados();
         $categorias = Categoria::modelo()->listar();
         
         $this->mostrarVista('crear', [
@@ -45,34 +45,7 @@ class CtrlMatricula extends CControlador {
             'deportistas' => CHtml::modeloLista($deportistas, "id_deportista", "NombreIdentificacion"),
             'categorias' => CHtml::modeloLista($categorias, "id_categoria", "nombre"),
         ]);
-    }
-
-    /**
-     * Esta función permite editar un registro existente
-     * @param int $pk
-     */
-    public function accionEditar($pk) {
-        return false;
-        $modelo = $this->cargarModelo($pk);
-        if (isset($this->_p['Matriculas'])) {
-            $modelo->atributos = $this->_p['Matriculas'];
-            $modelo->url_comprobante = $this->cargarComprobante($modelo);
-            if ($modelo->guardar()) {
-                # lógica para guardado exitoso
-                $this->redireccionar('inicio');
-            }
-        }
-        $deportistas = Deportista::modelo()->listar([
-            'where' => "tipo_persona_id=2",
-        ]);
-        $categorias = Categoria::modelo()->listar();
-        
-        $this->mostrarVista('editar', [
-            'modelo' => $modelo,
-            'deportistas' => CHtml::modeloLista($deportistas, "id_persona", "NombreIdentificacion"),
-            'categorias' => CHtml::modeloLista($categorias, "id_categoria", "nombre"),
-        ]);
-    }
+    }    
     
     /**
      * 
