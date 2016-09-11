@@ -1,4 +1,5 @@
 <?php 
+    $this->tituloPagina = "Prestar deportista";
     $this->migas = [
         'Home' => ['principal/inicio'],
         'Listar PrestamosDeportista' => ['PrestamoDeportista/inicio'],        
@@ -11,6 +12,6 @@
         ]
     ];    
 ?>
-<div class="col-sm-8">    
-    <?php echo $this->mostrarVistaP('_formulario', ['modelo' => $modelo, 'deportistas' => $deportistas]); ?>
+<div class="col-sm-12">    
+    <?php echo $this->mostrarVistaP('_formulario', ['modelo' => $modelo, 'deportistas' => $deportistas, 'entrada' => $entrada]); ?>
 </div>

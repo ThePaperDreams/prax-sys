@@ -125,7 +125,7 @@ Sis::Recursos()->Js('comunes');
                         ['texto' => 'Matriculas', 'url' => ['Matricula/inicio']],
                         ['texto' => 'Lista de espera', 'url' => ['Deportista/verListaEspera']],
                         ['texto' => 'Documentos', 'url' => ['Documento/inicio']],
-                        ['texto' => 'Préstamo', 'url' => ['PrestamoDeportista/inicio']],
+                        ['texto' => 'Préstamo de deportistas', 'url' => ['PrestamoDeportista/inicio']],
                 ]],
                 ['texto' => 'Formación', 'fa' => 'soccer-ball-o', 'elementos' => [
                     ['texto' => 'Categorías de deportistas', 'url' => ['categoria/inicio']],

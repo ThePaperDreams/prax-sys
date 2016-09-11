@@ -41,19 +41,28 @@ class CtrlPrestamoDeportista extends CControlador{
      */
     private function actualizarDeportista(&$modelo){
         $deportista = $modelo->Deportista;
-        if($modelo->tipo_prestamo == 0){
+        if($modelo->tipo_prestamo == 'salida'){
             $deportista->estado_id = 7;
         } else {
             $deportista->estado_id = 8;
         }
         $deportista->guardar();
     }
-    
+    /**
+     * 
+     * @param PrestamoDeportista $modelo
+     * @return type
+     */
     private function opcionesForm(&$modelo){
         $dm = Matricula::getDeportistasMatriculados();
+        $c = new CCriterio();
+        $c->condicion("estado_id", "1");
+        $dm = Deportista::modelo()->listar($c);
+        $entrada = $modelo->tipo_prestamo == 'entrada';
         return [
             'deportistas' => CHtml::modeloLista($dm, "id_deportista", "nombreCompleto"),
             'modelo' => $modelo,
+            'entrada' => $entrada,
         ];
     }
     
@@ -100,6 +109,25 @@ class CtrlPrestamoDeportista extends CControlador{
             # lógica para borrado exitoso
         } else {
             # lógica para error al borrar
+        }
+        $this->redireccionar('inicio');
+    }
+    
+    public function accionFinalizar($pk){
+        $modelo = $this->cargarModelo($pk);
+        $deportista = $modelo->Deportista;
+        $modelo->estado = 0;
+        $deportista->estado_id = 1;
+        if($modelo->guardar() && $deportista->guardar()){
+            Sis::Sesion()->flash("alerta", [
+                'msg' => 'Se finalizó correctamente el préstamo',
+                'tipo' => 'success',
+            ]);            
+        } else {
+            Sis::Sesion()->flash("alerta", [
+                    'msg' => 'Ocurrió un error al finalizar el préstamo',
+                    'tipo' => 'error',
+                ]);
         }
         $this->redireccionar('inicio');
     }

@@ -85,21 +85,31 @@ class PrestamoDeportista extends CModelo {
                 ->y("t.club_destino", $this->club_destino, 'LIKE')
                 ->y("t.tipo_prestamo", $this->tipo_prestamo)
                 ->y("t.fecha_inicio", $this->fecha_inicio)
-                ->y("t.fecha_fin", $this->fecha_fin);
+                ->y("t.fecha_fin", $this->fecha_fin)
+                ->orden("estado = 1", false)
+                ->orden("id_prestamo", false);
         return $criterio;
     }
     
     public function filtros() {
         return [
-            'requeridos' => 'clubOrigen,clubDestino,fecha_inicio,fecha_fin,deportista_id,tipo_prestamo',
+            'requeridos' => 'club_origen,club_destino,fecha_inicio,fecha_fin,deportista_id,tipo_prestamo',
         ];
     }
     
     public function getEtiquetaTipo(){
-        if($this->tipo_prestamo == 0){
+        if($this->tipo_prestamo == 'salida'){
             return CHtml::e('span', 'Salida ' . CBoot::fa('arrow-circle-up'), ['class' => 'label label-danger']); 
         } else {
             return CHtml::e('span', 'Entrada ' . CBoot::fa('arrow-circle-down'), ['class' => 'label label-success']); 
+        }
+    }
+    
+    public function getEtiquetaEstado(){
+        if($this->estado == 1){
+            return CHtml::e('span', 'Activo', ['class' => 'label label-success']); 
+        } else {
+            return CHtml::e('span', 'Finalizado', ['class' => 'label label-default']); 
         }
     }
 
