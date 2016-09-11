@@ -11,8 +11,80 @@ class CtrlDocumento extends CControlador{
      * Esta función muestra el inicio y una tabla para listar los datos
      */
     public function accionInicio(){
-        $modelos = Documento::modelo()->listar();        
-        $this->mostrarVista('inicio', ['modelos' => $modelos]);
+        if(isset($this->_p['ajx'])){
+            $this->listarDirectorios();
+        }
+        
+        $categorias = TipoDocumento::modelo()->listar([
+            'where' => 'padre_id IS NULL',
+        ]);
+        
+        $this->mostrarVista('inicio', ['categorias' => $categorias]);
+    }
+    
+    private function listarDirectorios(){
+        $html = [];
+        $carpeta = null;
+        if(isset($this->_p['id']) && $this->_p['id'] !== ""){
+            $this->construirCarpeta($html, "..", '', true);
+            $carpeta = TipoDocumento::modelo()->porPk($this->_p['id']);
+            $carpetas = $carpeta->TDocumento;            
+        } else {
+            $carpetas = TipoDocumento::modelo()->listar([
+                'where' => 'padre_id IS NULL',
+            ]);
+        }
+        if($carpetas != null){
+            foreach($carpetas AS $k=>$v){
+                $this->construirCarpeta($html, $v->nombre, $v->id_tipo);
+            }            
+        }
+        if($carpeta !== null){ $this->cargarArchivos($carpeta, $html); }
+        $this->json([
+            'items' => implode('', $html),
+        ]);
+        Sis::fin();
+    }
+    
+    /**
+     * @param array $html
+     * @param TipoDocumento $categoria
+     */
+    private function cargarArchivos($categoria, &$html){
+        $documentos = $categoria->Documentos;
+        $urlBase = Sis::urlBase();
+        foreach($documentos AS $doc){
+            $nombre = str_replace('/', '', substr($doc->url, strrpos($doc->url, '/')));
+            $icono = $this->encontrarIcono($nombre);
+            $i = CBoot::fa($icono);
+            $a = CHtml::link($doc->titulo, $urlBase . 'publico/documentos/' . $doc->url, ['download' => $nombre]);
+            $li = CHtml::e('li', $i . $a, ['class' => 'carpeta archivo', 'data-nombre' => strtolower($nombre)]);
+            $html[] = $li;
+        }
+    }
+    
+    private function encontrarIcono($nombre){
+        $ext = strtolower(substr($nombre, strrpos($nombre, '.') + 1));
+        if($ext == 'pdf'){
+            return 'file-pdf-o';
+        } else if($ext == 'jpg' || $ext == 'png' || $ext == 'jpeg' || $ext == 'gif'){
+            return 'file-image-o';
+        } else {
+            return 'file-o';
+        }
+    }
+    
+    /**
+     * 
+     * @param array $html
+     * @param string $nombre
+     * @param string $tipo
+     */
+    private function construirCarpeta(&$html, $nombre, $tipo, $atras = false){
+        $i = CBoot::fa('folder');
+        $a = CHtml::link($nombre, '#');
+        $li = CHtml::e('li', $i . $a, ['class' => 'carpeta' .(!$atras? " carpeta-adentro" : ' carpeta-atras') , 'data-id' => $tipo]);
+        $html[] = $li;
     }
     
     /**

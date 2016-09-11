@@ -14,10 +14,6 @@ class CtrlPrincipal extends CControlador{
         $this->plantilla = 'login';
     }   
     
-    public function accionRestablecer(){
-        
-    }
-    
     public function accionRecuperar(){
         $email = "";
         # si se envia el correo
@@ -50,16 +46,6 @@ class CtrlPrincipal extends CControlador{
         $this->vista("recuperar", [
             'email' => $email,
         ]);
-    }
-    
-    private function enviarEmail($email, $mensaje){
-        $cabeceras = [
-            "From:info@praxsis.com",
-            "Content-type:text/html; charset=UTF-8",
-            "Reply-To:info@praxsis.com",
-            "MIME-Version: 1.0",
-        ];
-        mail($email, "Recuperación de contraseña", $mensaje, implode("\r\n", $cabeceras));
     }
     
     public function accionInicio(){    

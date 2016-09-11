@@ -390,3 +390,30 @@ li.rep-jugador{
     color: rgba(0, 0, 0, 0.53);
     text-shadow: none;
 }
+
+.carpetas{
+    
+}
+
+.carpetas li.carpeta{
+    list-style: none;
+    display: inline-table;
+    padding: 0px;
+    width: 120px;
+    height: 120px;
+    margin: 5px 5px;
+    text-align: center;
+}
+.carpetas li.carpeta a{
+    
+}
+.carpetas li.carpeta i{
+    display: block;
+    font-size: 70px;
+    cursor: pointer;
+    transition: content 0.6s;
+}
+
+.carpetas li.carpeta:hover i.fa-folder:before {
+    content: "\f07c";
+}
