@@ -23,6 +23,7 @@ class CtrlImplemento extends CControlador{
         $modelo = new Implemento();
         if(isset($this->_p['Implementos'])){
             $modelo->atributos = $this->_p['Implementos'];
+            $modelo->maximo_unidades = $modelo->unidades;
             if($modelo->guardar()){
                 Sis::Sesion()->flash("alerta", [
                     'msg' => 'Guardado exitoso',
@@ -86,6 +87,7 @@ class CtrlImplemento extends CControlador{
         $modelo = $this->cargarModelo($pk);
         if(isset($this->_p['Implementos'])){
             $modelo->atributos = $this->_p['Implementos'];
+            $modelo->maximo_unidades = $modelo->unidades;
             if($modelo->guardar()){
                 Sis::Sesion()->flash("alerta", [
                     'msg' => 'Modificación exitosa',

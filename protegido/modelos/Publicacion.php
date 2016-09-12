@@ -81,16 +81,6 @@ class Publicacion extends CModelo {
         ];
     }
     
-    public function filtrosAjx() {
-        $criterio = new CCriterio();
-        $criterio->condicion("titulo", $this->titulo, "LIKE")
-           ->y("tipo_id", $this->tipo_id, "=")     
-           ->y("estado_id", $this->estado_id, "=")
-           ->y("consecutivo", $this->consecutivo, "=");
-        
-       return $criterio;
-    }
-    
     public function getEtiquetaEstado(){
         if($this->estado == 1){
             return CHtml::e('span', 'Borrador', ['class' => 'label label-success']);

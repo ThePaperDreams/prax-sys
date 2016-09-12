@@ -25,7 +25,7 @@
 
     public function filtros() {
         return [
-            'requeridos' => 'categoria_id,nombre,unidades,minimo_unidades,maximo_unidades',
+            'requeridos' => 'categoria_id,nombre,unidades,minimo_unidades',
             'seguros'=>'*',
         ];
     }
@@ -87,6 +87,7 @@
 		'maximo_unidades' => 'Máximo Unidades', 
         ];
     }
+    
     public function getEtiquetaEstado(){ 
         if($this->estado_id == 1){
             return CHtml::e('span', 'Activo', ['class' => 'label label-success']);

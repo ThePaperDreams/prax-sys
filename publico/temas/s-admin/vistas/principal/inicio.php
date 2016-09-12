@@ -176,8 +176,9 @@
 <!-- Shortcuts -->
 <div class="block-area shortcut-area">
     <a class="shortcut tile" href="#">
-        <img src="<?= Sis::ap()->getTema()->getUrlBase() ?>/img/shortcuts/money.png" alt="">
-        <small class="t-overflow">Purchases</small>
+        <!--<img src="<?= Sis::ap()->getTema()->getUrlBase() ?>/img/shortcuts/money.png" alt="">-->
+        <i class="fa fa-male"></i>
+        <small class="t-overflow">Deportistas</small>
     </a>
     <a class="shortcut tile" href="#">
         <img src="<?= Sis::ap()->getTema()->getUrlBase() ?>/img/shortcuts/twitter.png" alt="">
@@ -197,7 +198,7 @@
     </a>
     <a class="shortcut tile" href="#">
         <img src="<?= Sis::ap()->getTema()->getUrlBase() ?>/img/shortcuts/reports.png" alt="">
-        <small class="t-overflow">Reports</small>
+        <small class="t-overflow">Reportes</small>
     </a>
 </div>
 
