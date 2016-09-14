@@ -178,23 +178,37 @@
     <a class="shortcut tile" href="#">
         <!--<img src="<?= Sis::ap()->getTema()->getUrlBase() ?>/img/shortcuts/money.png" alt="">-->
         <i class="fa fa-male"></i>
-        <small class="t-overflow">Deportistas</small>
+        <small class="t-overflow">Deportista</small>
     </a>
-    <a class="shortcut tile" href="#">
+<!--    <a class="shortcut tile" href="#">
         <img src="<?= Sis::ap()->getTema()->getUrlBase() ?>/img/shortcuts/twitter.png" alt="">
-        <small class="t-overflow">Tweets</small>
-    </a>
-    <a class="shortcut tile" href="#">
+        <i class="fa fa-soccer-ball-o"></i>
+        <small class="t-overflow">Formación</small>
+    </a>-->
+<!--    <a class="shortcut tile" href="#">
         <img src="<?= Sis::ap()->getTema()->getUrlBase() ?>/img/shortcuts/calendar.png" alt="">
-        <small class="t-overflow">Calendar</small>
+        <i class="fa fa-cubes"></i>
+        <small class="t-overflow">Implementos</small>
+    </a>-->
+    <a class="shortcut tile" href="#">
+        <!--<img src="<?= Sis::ap()->getTema()->getUrlBase() ?>/img/shortcuts/stats.png" alt="">-->
+        <i class="fa fa-money"></i>
+        <small class="t-overflow">Pagos</small>
     </a>
     <a class="shortcut tile" href="#">
-        <img src="<?= Sis::ap()->getTema()->getUrlBase() ?>/img/shortcuts/stats.png" alt="">
-        <small class="t-overflow">Statistics</small>
+        <!--<img src="<?= Sis::ap()->getTema()->getUrlBase() ?>/img/shortcuts/connections.png" alt="">-->
+        <i class="fa fa-newspaper-o"></i>
+        <small class="t-overflow">Noticias</small>
     </a>
     <a class="shortcut tile" href="#">
-        <img src="<?= Sis::ap()->getTema()->getUrlBase() ?>/img/shortcuts/connections.png" alt="">
-        <small class="t-overflow">Connection</small>
+        <!--<img src="<?= Sis::ap()->getTema()->getUrlBase() ?>/img/shortcuts/connections.png" alt="">-->
+        <i class="fa fa-calendar-check-o"></i>
+        <small class="t-overflow">Eventos</small>
+    </a>
+    <a class="shortcut tile" href="#">
+        <!--<img src="<?= Sis::ap()->getTema()->getUrlBase() ?>/img/shortcuts/connections.png" alt="">-->
+        <i class="fa fa-users"></i>
+        <small class="t-overflow">Suscritos</small>
     </a>
     <a class="shortcut tile" href="#">
         <img src="<?= Sis::ap()->getTema()->getUrlBase() ?>/img/shortcuts/reports.png" alt="">

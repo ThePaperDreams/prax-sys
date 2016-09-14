@@ -417,3 +417,13 @@ li.rep-jugador{
 .carpetas li.carpeta:hover i.fa-folder:before {
     content: "\f07c";
 }
+
+.container-jugadores{
+    
+}
+.container-jugadores li{
+    list-style: none;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: rgba(0, 0, 0, 0.54);
+}

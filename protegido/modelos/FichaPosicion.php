@@ -1,36 +1,36 @@
 <?php
 
 /**
- * Este modelo es la representación de la tabla tbl_tipos_publicacion
+ * Este modelo es la representación de la tabla tbl_fichas_posiciones
  *
  * Atributos del modelo
- * @property int $id_tipo_publicacion
- * @property string $nombre
- * @property string $descripcion
- * @property int $consecutivo
+ * @property int $id_fp
+ * @property int $ficha_id
+ * @property int $posicion_id
  * 
  * Relaciones del modelo
+ * @property FichaTecnica $Ficha
+ * @property Posicion $Posicion
  */
-class TipoPublicacion extends CModelo {
+class FichaPosicion extends CModelo {
 
     /**
      * Esta función retorna el nombre de la tabla representada por el modelo
      * @return string
      */
     public function tabla() {
-        return "tipos_publicacion";
+        return "fichas_posiciones";
     }
 
     /**
-     * Esta función retorna los atributos de la tabla tbl_tipos_publicacion
+     * Esta función retorna los atributos de la tabla tbl_fichas_posiciones
      * @return array
      */
     public function atributos() {
         return [
-            'id_tipo_publicacion' => ['pk'],
-            'nombre',
-            'descripcion',
-            'conecutivo',
+            'id_fp' => ['pk'],
+            'ficha_id',
+            'posicion_id',
         ];
     }
 
@@ -40,8 +40,10 @@ class TipoPublicacion extends CModelo {
      */
     protected function relaciones() {
         return [
-                # el formato es simple: 
-                # tipo de relación | modelo con que se relaciona | campo clave foranea
+            # el formato es simple: 
+            # tipo de relación | modelo con que se relaciona | campo clave foranea
+            'FichaTecnica' => [self::PERTENECE_A, 'FichaTecnica', 'ficha_id'],
+            'Posicion' => [self::PERTENECE_A, 'Posicion', 'posicion_id'],
         ];
     }
 
@@ -51,30 +53,16 @@ class TipoPublicacion extends CModelo {
      */
     public function etiquetasAtributos() {
         return [
-            'id_tipo_publicacion' => 'Id Tipo Publicacion',
-            'nombre' => 'Nombre',
-            'descripcion' => 'Descripción',
-            'consecutivo' => 'Consecutivo',
+            'id_fp' => 'Id Fp',
+            'ficha_id' => 'Ficha Id',
+            'posicion_id' => 'Posicion Id',
         ];
-    }
-
-    public function filtros() {
-        return [
-            'requeridos' => 'nombre',
-            'seguros' => '*',
-        ];
-    }
-
-    public function filtrosAjx() {
-        $criterio = new CCriterio();
-        $criterio->condicion("nombre", $this->nombre, "LIKE");
-        return $criterio;
     }
 
     /**
      * Esta función permite listar todos los registros
      * @param array $criterio
-     * @return TipoPublicacion
+     * @return FichaPosicion
      */
     public function listar($criterio = array()) {
         return parent::listar($criterio);
@@ -83,7 +71,7 @@ class TipoPublicacion extends CModelo {
     /**
      * Esta función permite obtener un registro por su primary key
      * @param int $pk
-     * @return TipoPublicacion
+     * @return FichaPosicion
      */
     public function porPk($pk) {
         return parent::porPk($pk);
@@ -92,16 +80,16 @@ class TipoPublicacion extends CModelo {
     /**
      * Esta función permite obtener el primer registro
      * @param array $criterio
-     * @return TipoPublicacion
+     * @return FichaPosicion
      */
     public function primer($criterio = array()) {
         return parent::primer($criterio);
     }
 
     /**
-     * Esta función retorna una instancia del modelo tbl_tipos_publicacion
+     * Esta función retorna una instancia del modelo tbl_fichas_posiciones
      * @param string $clase
-     * @return TipoPublicacion
+     * @return FichaPosicion
      */
     public static function modelo($clase = __CLASS__) {
         return parent::modelo($clase);

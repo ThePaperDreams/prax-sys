@@ -24,6 +24,7 @@
  * @property TipoIdentificacion $TipoIdentificacion
  * @property Documento[] $Documento
  * @property Acudiente[] $Acudiente
+ * @property FichaTecnica $Ficha
  */
 class Deportista extends CModelo{
     public $categoria_id;
@@ -146,8 +147,11 @@ class Deportista extends CModelo{
     }
     
     public function getNombreCategoria(){         
-        $criterios = ["where" => "deportista_id = " . $this->id_deportista];            
-        $matricula = Matricula::modelo()->primer($criterios);
+//        $criterios = ["where" => "deportista_id = " . $this->id_deportista];            
+        $c = new CCriterio();
+        $c->condicion("deportista_id", $this->id_deportista)
+            ->y("estado", "1");
+        $matricula = Matricula::modelo()->primer($c);
         if (count($matricula) > 0) {
             return $matricula->Categoria->nombre;          
         }else{
@@ -170,7 +174,7 @@ class Deportista extends CModelo{
      */
     public function getFicha(){
         $ficha = FichaTecnica::modelo()->primer([
-            'where' => 'deportista_id',
+            'where' => "deportista_id=$this->id_deportista",
         ]);
         if($ficha == null){ 
             $ficha = new FichaTecnica();

@@ -98,6 +98,10 @@ class Usuario extends CModelo {
         return $criterio;
     }
     
+    public function getNombreCompleto(){
+        return $this->nombres . " " . $this->apellidos;
+    }
+    
     public function getNombreMasUsuario(){
         return $this->nombres . ' ' . $this->apellidos . " ($this->nombre_usuario)";
     }

@@ -17,12 +17,72 @@ class CtrlTorneo extends CControlador{
             ]);
     }
     
-    public function accionGestionarEquipos(){
+    private function guardarEquipos($equipos, $torneo){
+        $error = false; 
+        foreach($equipos AS $equipo){
+            Sis::apl()->bd->begin();
+            $nuevoEquipo = new Equipo();
+            $nuevoEquipo->nombre = $equipo['nombre'];
+            $nuevoEquipo->cupo_maximo = $equipo['cupo-max'];
+            $nuevoEquipo->cupo_minimo = $equipo['cupo-min'];
+            $nuevoEquipo->entrenador_id = $equipo['entrenador'];
+            $nuevoEquipo->torneo_id = $torneo;
+            if($nuevoEquipo->guardar() && $this->guardarJugadores($equipo['deportistas'], $nuevoEquipo->id_equipo)){                
+                Sis::Sesion()->flash("alerta", [
+                    'tipo' => 'success',
+                    'msg' => 'Se guardó correctamente la información',
+                ]); 
+            } else {
+                $error = true;
+                Sis::Sesion()->flash("alerta", [
+                    'tipo' => 'error',
+                    'msg' => 'Ocurrió un error al guardar la información',
+                ]); 
+            }
+        }
+        if($error){
+            Sis::apl()->bd->rollback();
+        } else {
+            Sis::apl()->bd->commit();
+        }
+        $this->redireccionar('inicio');
+    }
+    
+    private function guardarJugadores($jugadores, $equipo_id){
+        $ok = true;
+        foreach($jugadores AS $k=>$v){
+            $de = new DeportistaEquipo();
+            $de->equipo_id = $equipo_id;
+            $de->deportista_id = $v;
+            $ok = $de->guardar();
+            if($ok === false){ break; }
+        }
+        return $ok;
+    }
+    
+    public function accionGestionarEquipos($id){
+//        $d = Deportista::modelo()->porPk(13);
+//        var_dump($d->Ficha->Pos);
+//        Sis::fin();
+        
         $categorias = Categoria::modelo()->listar([
             'where' => 'estado = 1'
         ]);
+        
+        if(isset($this->_p['equipos'])){
+            var_dump($this->_p);
+            $this->guardarEquipos($this->_p['equipos'], $id);
+            ini_set('xdebug.var_display_max_depth', 5);
+            ini_set('xdebug.var_display_max_children', 256);
+            ini_set('xdebug.var_display_max_data', 1024);
+            exit();
+        }
+        
         $usuarios = Usuario::modelo()->listar();
+        $torneo = $this->cargarModelo($id);
+        
         $this->vista('gestionarEquipos', [
+            'torneo' => $torneo,
             'categorias' => CHtml::modeloLista($categorias, "id_categoria", "nombre"),
             'usuarios' => CHtml::modeloLista($usuarios, "id_usuario", "nombres"),            
         ]);
@@ -32,7 +92,10 @@ class CtrlTorneo extends CControlador{
         if(!isset($this->_p['ajx'])){ Sis::fin(); }
         $id = $this->_p['id'];
         $categoria = Categoria::modelo()->porPk($id);
-        $deportistas =  $categoria->getDeportistasMatriculados();
+        $cond = '';
+        if(isset($this->_p['deportistas'])){ $cond = 'AND deportista_id NOT IN(' . implode(',', $this->_p['deportistas']) . ')'; }
+        $deportistas =  $categoria->getDeportistasMatriculados($cond);
+        
         $html = '';
         foreach($deportistas AS $deportista){
             $html .= $this->vistaP('_itemDeportista', ['deportista' => $deportista]);
@@ -95,7 +158,11 @@ class CtrlTorneo extends CControlador{
      */
     public function accionVer($pk){
         $modelo = $this->cargarModelo($pk);
-        $this->mostrarVista('ver', ['modelo' => $modelo,
+        $equipos = $modelo->Equipos;
+        rsort($equipos);
+        $this->mostrarVista('ver', [
+            'modelo' => $modelo,
+            'equipos' => $equipos,
         ]);
     }
     

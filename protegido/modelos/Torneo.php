@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Este modelo es la representación de la tabla tbl_torneos
  *
@@ -16,9 +17,10 @@
  * @property int $equipo_id
  * 
  * Relaciones del modelo
+ * @property Equipo[] $Equipos
  */
- class Torneo extends CModelo{
- 
+class Torneo extends CModelo {
+
     /**
      * Esta función retorna el nombre de la tabla representada por el modelo
      * @return string
@@ -33,66 +35,62 @@
      */
     public function atributos() {
         return [
-		'id_torneo' => ['pk'] , 
-		'cupo_maximo', 
-		'cupo_minimo', 
-		'edad_maxima', 
-		'fecha_inicio', 
-		'fecha_fin', 
-		'nombre', 
-		'observaciones', 
-		'tabla_posiciones', 
+            'id_torneo' => ['pk'],
+            'cupo_maximo',
+            'cupo_minimo',
+            'edad_maxima',
+            'fecha_inicio',
+            'fecha_fin',
+            'nombre',
+            'observaciones',
+            'tabla_posiciones',
         ];
     }
-    
-    
+
     /**
      * Esta función retorna las relaciones con otros modelos
      * @return array
      */
-    protected function relaciones() {        
+    protected function relaciones() {
         return [
-            # el formato es simple: 
-            # tipo de relación | modelo con que se relaciona | campo clave foranea
-            
-                    ];
+            'Equipos' => [self::CONTENGAN_A, 'Equipo', 'torneo_id'],
+        ];
     }
-    
+
     /**
      * Esta función retorna un alias dado a cada uno de los atributos del modelo
      * @return string
      */
     public function etiquetasAtributos() {
         return [
-		'id_torneo' => 'Id Torneo', 
-		'cupo_maximo' => 'Cupo Máximo', 
-		'cupo_minimo' => 'Cupo Mínimo', 
-		'edad_maxima' => 'Edad Máxima', 
-		'fecha_inicio' => 'Fecha de Inicio', 
-		'fecha_fin' => 'Fecha de Fin', 
-		'nombre' => 'Nombre', 
-		'observaciones' => 'Observaciones', 
-		'tabla_posiciones' => 'Tabla de Posiciones',  
+            'id_torneo' => 'Id Torneo',
+            'cupo_maximo' => 'Cupo Máximo',
+            'cupo_minimo' => 'Cupo Mínimo',
+            'edad_maxima' => 'Edad Máxima',
+            'fecha_inicio' => 'Fecha de Inicio',
+            'fecha_fin' => 'Fecha de Fin',
+            'nombre' => 'Nombre',
+            'observaciones' => 'Observaciones',
+            'tabla_posiciones' => 'Tabla de Posiciones',
         ];
     }
-    
+
     public function filtros() {
         return [
             'requeridos' => 'nombre,cupo_minimo,cupo_maximo,edad_maxima,fecha_inicio',
             'seguros' => '*',
         ];
     }
-    
+
     public function filtrosAjx() {
         $criterio = new CCriterio();
         $criterio->condicion("nombre", $this->nombre, "LIKE")
-           ->y("cupo_minimo", $this->cupo_minimo, "=")     
-           ->y("edad_maxima", $this->edad_maxima, "=")
-           ->y("fecha_inicio", $this->fecha_inicio, "=");        
-       return $criterio;
+                ->y("cupo_minimo", $this->cupo_minimo, "=")
+                ->y("edad_maxima", $this->edad_maxima, "=")
+                ->y("fecha_inicio", $this->fecha_inicio, "=");
+        return $criterio;
     }
 
-    
     /**
      * Esta función permite listar todos los registros
      * @param array $criterio
@@ -101,7 +99,7 @@
     public function listar($criterio = array()) {
         return parent::listar($criterio);
     }
-    
+
     /**
      * Esta función permite obtener un registro por su primary key
      * @param int $pk
@@ -110,7 +108,7 @@
     public function porPk($pk) {
         return parent::porPk($pk);
     }
-    
+
     /**
      * Esta función permite obtener el primer registro
      * @param array $criterio
@@ -118,12 +116,12 @@
      */
     public function primer($criterio = array()) {
         return parent::primer($criterio);
-    } 
-    
+    }
+
     public function getTabla() {
         $icono = CBoot::fa("download");
-        $url = Sis::UrlBase().'publico/imagenes/torneos/fotos/'.$this->tabla_posiciones;
-        return CHtml::link($icono.' '.$this->tabla_posiciones,$url,['download'=>$this->tabla_posiciones]);
+        $url = Sis::UrlBase() . 'publico/imagenes/torneos/fotos/' . $this->tabla_posiciones;
+        return CHtml::link($icono . ' Descargar tabla de posiciones', $url, ['download' => $this->tabla_posiciones]);
     }
 
     /**
@@ -134,4 +132,5 @@
     public static function modelo($clase = __CLASS__) {
         return parent::modelo($clase);
     }
+
 }

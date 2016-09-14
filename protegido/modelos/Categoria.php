@@ -144,9 +144,9 @@ class Categoria extends CModelo {
     /**
      * 
      */
-    public function getDeportistasMatriculados(){
+    public function getDeportistasMatriculados($cond = ''){
         $matriculas = Matricula::modelo()->listar([
-            'where' => "categoria_id=$this->id_categoria AND estado = 1",
+            'where' => "categoria_id=$this->id_categoria AND estado = 1 $cond",
         ]);
         $deportistas = [];
         foreach($matriculas AS $mat){ $deportistas[] = $mat->Deportista; }

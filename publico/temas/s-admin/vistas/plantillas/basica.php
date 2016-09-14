@@ -151,14 +151,6 @@ Sis::Recursos()->Js('comunes');
                         ['texto' => 'Roles', 'url' => ['Rol/inicio']],
                         ['texto' => 'Usuarios', 'url' => ['Usuario/inicio']]
                 ]],
-                ['texto' => 'Configuración', 'fa' => 'cogs', 'elementos' => [
-                        ['texto' => 'Rutas', 'url' => ['Ruta/inicio']],
-                        ['texto' => 'Opciones de Menú', 'url' => ['Opmenu/inicio']],
-                        ['texto' => 'Tipos de Documentos', 'url' => ['TipoDocumento/inicio']],
-                        ['texto' => 'Estados de Deportista', 'url' => ['EstadoDeportista/inicio']],
-                        ['texto' => 'Tipos de Identificación', 'url' => ['TipoIdentificacion/inicio']],
-                        ['texto' => 'Permisos', 'url' => ['Permiso/asignar']],
-                ]],
                 ['texto' => 'Publicaciones', 'fa' => 'newspaper-o', 'elementos' => [
                     ['texto' => 'Publicación', 'url' => ['publicacion/inicio']],
                     ['texto' => 'Tipos de publicación', 'url' => ['tipoPublicacion/inicio']],
@@ -166,6 +158,14 @@ Sis::Recursos()->Js('comunes');
                     ['texto' => 'Tipo de Eventos', 'url' => ['tipoEvento/inicio']],
                     ['texto' => 'Imágenes', 'url' => ['Publicacion/cargarImagenes']],
                     
+                ]],
+                ['texto' => 'Configuración', 'fa' => 'cogs', 'elementos' => [
+                        ['texto' => 'Rutas', 'url' => ['Ruta/inicio']],
+                        ['texto' => 'Opciones de Menú', 'url' => ['Opmenu/inicio']],
+                        ['texto' => 'Tipos de Documentos', 'url' => ['TipoDocumento/inicio']],
+                        ['texto' => 'Estados de Deportista', 'url' => ['EstadoDeportista/inicio']],
+                        ['texto' => 'Tipos de Identificación', 'url' => ['TipoIdentificacion/inicio']],
+                        ['texto' => 'Permisos', 'url' => ['Permiso/asignar']],
                 ]],
             ],
             'menuDerecha' => [

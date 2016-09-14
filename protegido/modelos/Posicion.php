@@ -1,34 +1,34 @@
 <?php
 /**
- * Este modelo es la representación de la tabla tbl_equipos_torneos
+ * Este modelo es la representación de la tabla tbl_posiciones
  *
  * Atributos del modelo
- * @property int $id_et
- * @property int $equipo_id
- * @property int $torneo_id
+ * @property int $id_posicion
+ * @property string $posicion
+ * @property string $abreviatura
  * 
  * Relaciones del modelo
  */
- class EquipoTorneo extends CModelo{
+ class Posicion extends CModelo{
  
     /**
      * Esta función retorna el nombre de la tabla representada por el modelo
      * @return string
      */
     public function tabla() {
-        return "equipos_torneos";
+        return "posiciones";
     }
 
     /**
-     * Esta función retorna los atributos de la tabla tbl_equipos_torneos
+     * Esta función retorna los atributos de la tabla tbl_posiciones
      * @return array
      */
     public function atributos() {
         return [
-		'id_et' => ['pk'] , 
-		'equipo_id', 
-		'torneo_id', 
-        ];
+            'id_posicion' => ['pk'] ,
+                'posicion',
+                'abreviatura',
+            ];
     }
     
     /**
@@ -39,9 +39,7 @@
         return [
             # el formato es simple: 
             # tipo de relación | modelo con que se relaciona | campo clave foranea
-            'Equipos' => [self::PERTENECE_A, 'Equipo', 'equipo_id'],
-            'Torneos' => [self::PERTENECE_A, 'Torneo', 'torneo_id'],
-        ];
+                    ];
     }
     
     /**
@@ -50,26 +48,25 @@
      */
     public function etiquetasAtributos() {
         return [
-		'id_et' => 'Id Et', 
-		'equipo_id' => 'Equipo ', 
-		'torneo_id' => 'Torneo', 
+		'id_posicion' => 'Id Posicion', 
+		'posicion' => 'Posicion', 
+		'abreviatura' => 'Abreviatura', 
         ];
     }
     
     /**
      * Esta función permite listar todos los registros
      * @param array $criterio
-     * @return EquipoTorneo
+     * @return Posicion
      */
     public function listar($criterio = array()) {
         return parent::listar($criterio);
     }
-   
-
-        /**
+    
+    /**
      * Esta función permite obtener un registro por su primary key
      * @param int $pk
-     * @return EquipoTorneo
+     * @return Posicion
      */
     public function porPk($pk) {
         return parent::porPk($pk);
@@ -78,16 +75,16 @@
     /**
      * Esta función permite obtener el primer registro
      * @param array $criterio
-     * @return EquipoTorneo
+     * @return Posicion
      */
     public function primer($criterio = array()) {
         return parent::primer($criterio);
     } 
 
     /**
-     * Esta función retorna una instancia del modelo tbl_equipos_torneos
+     * Esta función retorna una instancia del modelo tbl_posiciones
      * @param string $clase
-     * @return EquipoTorneo
+     * @return Posicion
      */
     public static function modelo($clase = __CLASS__) {
         return parent::modelo($clase);

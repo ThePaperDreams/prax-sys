@@ -22,6 +22,7 @@
  * @property FkTblFichasTecnicasTblPersonas1 $fkTblFichasTecnicasTblPersonas1
  * @property Seguimiento[] $seguimientosPositivos
  * @property Seguimiento[] $seguimientosNegativos
+ * @property FichaPosicion[] $Posiciones
  */
 class FichaTecnica extends CModelo {
     private $seguimientosPositivos = null;
@@ -64,8 +65,25 @@ class FichaTecnica extends CModelo {
         return [
             # el formato es simple: 
             # tipo de relación | modelo con que se relaciona | campo clave foranea
-            'fkTblFichasTecnicasTblPersonas1' => [self::PERTENECE_A, 'FkTblFichasTecnicasTblPersonas1', 'deportista_id'],
+            'Deportista' => [self::PERTENECE_A, 'Deportista', 'deportista_id'],
+            'Posiciones' => [self::CONTENGAN_A, 'FichaPosicion', 'ficha_id'],
         ];
+    }
+    
+    public function getPos(){
+        $posiciones = $this->Posiciones;
+        $pos = [];
+        foreach ($posiciones AS $p){
+            $pos[] = $this->getPosLabel($p->Posicion->posicion, $p->Posicion->abreviatura);
+        }
+        if(count($pos) === 0){
+            return CHtml::e('span', "Sin definir", ['class' => 'label label-default']);
+        }
+        return implode(', ', $pos);
+    }   
+    
+    private function getPosLabel($txt, $abr){
+        return CHtml::e('span', $txt, ['class' => 'label label-default']);
     }
 
     /**
