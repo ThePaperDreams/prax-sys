@@ -45,6 +45,64 @@ class CtrlPublicacion extends CControlador{
         Sis::fin();
     }
     
+    public function accionAjx(){
+        if(isset($this->_p['upload-imgs'])){
+            $this->cargarImagenesGaleria();
+        } else if(isset($this->_p['delete-img'])){
+            $this->borrarImagen();
+        }
+        Sis::fin();
+    }
+    
+    private function borrarImagen(){
+        $pk = $this->_p['id'];
+        $modelo = Imagen::modelo()->porPk($pk);
+        $rutaBase = Sis::resolverRuta('!publico.imagenes.galerias');
+        unlink($rutaBase . DS . $modelo->url);
+        unlink($rutaBase . DS . 'thumbs' . DS . "tmb_" . $modelo->url);
+        $this->json([
+            'error' => !$modelo->eliminar(),
+        ]);
+    }
+    
+    private function cargarImagenesGaleria(){
+        $rutaDestino = $rutaDestino = Sis::resolverRuta("!publico.imagenes.galerias");
+        $nombreImagen = $this->guardarLaImagen($rutaDestino);
+        $mImagen = new Imagen();
+        $mImagen->url = $nombreImagen;
+        Sis::apl()->bd->begin();
+        $error = false;
+        if($nombreImagen !== false && $mImagen->guardar()){
+            Sis::apl()->bd->commit();
+        } else if($nombreImagen === false){
+            Sis::apl()->bd->rollback();
+            $error = true;
+        } else {
+            unlink($rutaDestino . DS . $mImagen->url);
+            unlink($rutaDestino . DS . "thumbs" . DS . $mImagen->url);
+            $error = true;
+            Sis::apl()->bd->rollback();
+        }
+        $this->json([
+            'uploadErr' => $error,
+            'id' => $mImagen->id_imagen,
+            'url' => Sis::UrlBase() . 'publico/imagenes/galerias/thumbs/tmb_' . $nombreImagen,
+            'urlReal' => Sis::UrlBase() . 'publico/imagenes/galerias/' . $nombreImagen,
+        ]);
+    }
+    
+    private function guardarLaImagen($rutaDestino){
+        $imagen = CArchivoCargado::instanciarPorNombre('imagenes');
+        if($imagen == null || $imagen->getError() !== CArchivoCargado::NINGUNO){ return false; }
+        $guardada = $imagen->guardar($rutaDestino) && 
+        $imagen->thumbnail($rutaDestino . DS . 'thumbs',[
+            'autocentrar' => true,
+            'tamanio' => 300,
+            'tipo' => strtolower($imagen->getExtension())
+        ]);
+        return $guardada? $imagen->getNombre(true) : false;
+    }
+    
     /**
      * Esta función muestra el inicio y una tabla para listar los datos
      */
@@ -79,9 +137,11 @@ class CtrlPublicacion extends CControlador{
         }
         $url = Sis::crearUrl(['Publicacion/crear']);
         $this->mostrarVista('crear',
-            ['modelo' => $modelo,'url' => $url,
+            [
+            'modelo' => $modelo,'url' => $url,
             'public' => CHtml::modelolista(TipoPublicacion::modelo()->listar(), "id_tipo_publicacion", "nombre"),
             'estd' => CHtml::modelolista(EstadoPublicacion::modelo()->listar(), "id_estado", "nombre"),    
+                'imagenes' => Imagen::modelo()->listar(['order' => 'id_imagen DESC']),
             ]);
         
         
@@ -111,6 +171,7 @@ class CtrlPublicacion extends CControlador{
             ['modelo' => $modelo,'url' => $url,
             'public' => CHtml::modelolista(TipoPublicacion::modelo()->listar(), "id_tipo_publicacion", "nombre"),
             'estd' => CHtml::modelolista(EstadoPublicacion::modelo()->listar(), "id_estado", "nombre"),    
+                'imagenes' => Imagen::modelo()->listar(['order' => 'id_imagen DESC']),
             ]);
         
         

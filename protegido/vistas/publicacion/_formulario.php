@@ -1,49 +1,56 @@
 <?php
+Sis::Recursos()->RecursoJS(['url' => Sis::Recursos()->getUrlRecursos().'librerias/tinyMce/tinymce.js']);
+Sis::Recursos()->RecursoJS(['url' => Sis::apl()->tema->getUrlBase() . '/js/pirobox.min.js']);
+
+Sis::Recursos()->recursoCss(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/css/fileinput.min.css']);
+Sis::Recursos()->recursoJs(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/js/fileinput.min.js']);
 
 $formulario = new CBForm(['id' => 'form-publicaciones']);
 $formulario->abrir();
 ?>
 <div class="tile p-15">
     <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="active"><a href="#listar" aria-controls="listar" role="tab" data-toggle="tab">Contenido</a></li>
-        <li role="presentation"><a href="#cargar" aria-controls="cargar" role="tab" data-toggle="tab">Publicación</a></li>
+        <li role="presentation" class="active"><a href="#listar" aria-controls="listar" role="tab" data-toggle="tab">Publicación</a></li>
+        <li role="presentation"><a href="#cargar" aria-controls="cargar" role="tab" data-toggle="tab">Imagenes</a></li>
     </ul>
      <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="listar">
-            <div class="form-group">
+            <div class="col-sm-6">
+              <label>Tipos de Publicación</label>
+                <div class="input-group">  
+                    <?php echo $formulario->lista($modelo, 'tipo_id', $public, []) ?>
+                <div class="input-group-addon"><i class="fa fa-qrcode"></i></div>
+                </div>               
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label>Estado</label>
+                    <div class="input-group">
+
+                        <?php echo $formulario->lista($modelo, 'estado_id', $estd, []) ?>
+                        <div class="input-group-addon"><i class="fa fa-list-ul"></i></div>
+                    </div>
+                </div>    
+            </div>
+            <div class="col-sm-6">
+                    <div class="form-group">
+                        <?php echo $formulario->inputAddon($modelo, 'fecha_disponibilidad','texto', ['label' => true, 'group' => true, 'class' => 'campo-fecha', 'id'=>'calendar' ],['pos' => CBoot::fa('calendar-check-o')]) ?>   
+                    </div>    
+            </div>
+            <div class="col-sm-6">
+                <?php echo $formulario->areaTexto($modelo, 'resumen', ['label' => true, 'group' => true]) ?>
+            </div>
+            <div class="col-sm-12">
                 <?php echo $formulario->inputAddon($modelo, 'titulo', 'texto', ['label' => true, 'group' => true, 'autofocus' => true], 'font') ?>
-                <?php echo $formulario->areaTexto($modelo, 'contenido', ['label' => true, 'group' => true, 'class' => 'summernote']) ?>
+            </div>
+            <div class="col-sm-12">
+                <?php echo $formulario->areaTexto($modelo, 'contenido', ['label' => true, 'group' => true, 'class' => 'summernote', 'rows' => 15]) ?>
             </div>
         </div>    
         <div role="tabpanel" class="tab-pane" id="cargar">
             <div class="row" id="tab-imagenes">
-                <div class="col-sm-6">
-                  <label>Tipos de Publicación</label>
-                    <div class="input-group">  
-                        <?php echo $formulario->lista($modelo, 'tipo_id', $public, ['defecto' => 'Seleccione un tipo']) ?>
-                    <div class="input-group-addon"><i class="fa fa-qrcode"></i></div>
-                    </div>               
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label>Estado</label>
-                        <div class="input-group">
-
-                            <?php echo $formulario->lista($modelo, 'estado_id', $estd, ['defecto' => 'Seleccione un estado para la publicación']) ?>
-                            <div class="input-group-addon"><i class="fa fa-list-ul"></i></div>
-                        </div>
-                    </div>    
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <?php echo $formulario->inputAddon($modelo, 'fecha_publicacion', 'texto', ['label' => true, 'group' => true,  'class' => 'campo-fecha','id'=>'check'], 'calendar') ?>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <?php echo $formulario->inputAddon($modelo, 'fecha_disponibilidad','texto', ['label' => true, 'group' => true, 'class' => 'campo-fecha', 'id'=>'calendar' ],'calendar-check-o') ?>   
-                    </div>    
-                </div>
+                
+                <?= $this->vistaP('_imagenes', ['imagenes' => $imagenes]) ?>
                 
             </div>    
         </div>        
@@ -61,10 +68,23 @@ $formulario->abrir();
 <script>
     
     $(document).ready(function() {
-    $('.summernote').summernote({
-        height: 300,
-    });   
-    
+//    $('.summernote').summernote({
+//        height: 300,
+//    });   
+        tinymce.init({
+            selector: '#Publicaciones_contenido',
+            language : 'es',
+//              plugins: "code,image,pagebreak",
+            plugins: "code,image,pagebreak,advlist,fullscreen,imagetools,link,media,paste,textcolor,wordcount,example,",
+//            image_prepend_url: "/imagenes/articulos",
+            image_advtab: true,
+            link_assume_external_targets: true
+//                          image_list: [
+//                {title: 'Dog', value: 'mydog.jpg'},
+//                {title: 'Cat', value: 'mycat.gif'}
+//              ],
+        });
+        
     $("#check").change(function(){
             validarFecha($(this));
         });

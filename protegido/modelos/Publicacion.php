@@ -37,15 +37,15 @@ class Publicacion extends CModelo {
      */
     public function atributos() {
         return [
-		'id_publicacion' => ['pk'] , 
-		'titulo', 
-		'contenido', 
-		'consecutivo', 
-		'fecha_publicacion', 
-		'fecha_disponibilidad', 
-		'tipo_id', 
-		'estado_id', 
-		'usuario_id', 
+            'id_publicacion' => ['pk'],
+            'titulo',
+            'contenido',
+            'consecutivo',
+            'fecha_publicacion',
+            'fecha_disponibilidad',
+            'tipo_id',
+            'estado_id',
+            'usuario_id',
         ];
     }
 
@@ -69,54 +69,62 @@ class Publicacion extends CModelo {
      */
     public function etiquetasAtributos() {
         return [
-		'id_publicacion' => 'Id Publicación', 
-		'titulo' => 'Título', 
-		'contenido' => 'Contenido', 
-		'consecutivo' => 'Consecutivo', 
-		'fecha_publicacion' => 'Fecha de Publicación', 
-		'fecha_disponibilidad' => 'Fecha de Disponibilidad', 
-		'tipo_id' => 'Tipo de Publicación',  
-		'estado_id' => 'Estado', 
-		'usuario_id' => 'Usuario Id', 
+            'id_publicacion' => 'Id Publicación',
+            'titulo' => 'Título',
+            'contenido' => 'Contenido',
+            'consecutivo' => 'Consecutivo',
+            'fecha_publicacion' => 'Fecha de Publicación',
+            'fecha_disponibilidad' => 'Disponible hasta',
+            'tipo_id' => 'Tipo de Publicación',
+            'estado_id' => 'Estado',
+            'usuario_id' => 'Usuario Id',
         ];
     }
-    
-    public function getEtiquetaEstado(){
-        if($this->estado == 1){
+
+    public function getEtiquetaEstado() {
+        if ($this->estado == 1) {
             return CHtml::e('span', 'Borrador', ['class' => 'label label-success']);
-        } else if($this->estado == 2){
+        } else if ($this->estado == 2) {
             return CHtml::e('span', 'Disponible', ['class' => 'label label-danger']);
-        } else if($this->estado == 3){
+        } else if ($this->estado == 3) {
             return CHtml::e('span', 'No Disponible', ['class' => 'label label-danger']);
-        }else {
+        } else {
             return CHtml::e('span', 'Expirada', ['class' => 'label label-default']);
         }
     }
-   
-    public function getUltimo(){
+
+    public function getUltimo() {
         $sql = "SELECT MAX(consecutivo)ultimo FROM tbl_publicaciones ";
         $resultados = Sis::apl()->bd->ejecutarComando($sql);
         $max = $resultados[0]['ultimo'];
-        return (int) $max+1;
+        return (int) $max + 1;
     }
-    
+
     public function filtros() {
         return [
-            'requeridos' => 'titulo,contenido,fecha_publicacion,fecha_disponibilidad,tipo_id,estado_id',
+            'requeridos' => 'titulo,contenido,fecha_disponibilidad,tipo_id,estado_id',
             'seguros' => 'titulo,fecha_publicacion,fecha_disponibilidad',
         ];
     }
     
+    public function antesDeGuardar() {
+        if($this->nuevo){
+            $this->fecha_publicacion = date("Y-m-d H:i:s");
+        }
+        $this->contenido = str_replace('../', Sis::UrlBase(), $this->contenido);
+    }
+
     public function filtrosAjx() {
         $criterio = new CCriterio();
         $criterio->condicion("titulo", $this->titulo, "LIKE")
-           ->y("tipo_id", $this->tipo_id, "=")     
-           ->y("estado_id", $this->estado_id, "=")
-           ->y("consecutivo", $this->consecutivo, "=");
-        
-       return $criterio;
+                ->y("tipo_id", $this->tipo_id, "=")
+                ->y("estado_id", $this->estado_id, "=")
+                ->y("consecutivo", $this->consecutivo, "=");
+        $criterio->orden('id_publicacion', false);
+
+        return $criterio;
     }
-    
+
     /**
      * Esta función permite listar todos los registros
      * @param array $criterio

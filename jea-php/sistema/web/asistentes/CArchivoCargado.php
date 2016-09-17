@@ -265,9 +265,13 @@ class CArchivoCargado {
     
     /**
      * Esta función retorna el nombre del archivo cargado
+     * @param boolean $ext Si se retorna con extensión
      * @return string
      */
-    public function getNombre() {
+    public function getNombre($ext = false) {
+        if($ext){
+            return $this->nombre . "." . $this->getExtension();
+        } 
         return $this->nombre;
     }
     

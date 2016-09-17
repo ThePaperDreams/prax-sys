@@ -20,6 +20,9 @@
      ],
     
     'modelo' => 'Publicacion',
+    'criterios' => [
+        'order' => 'id_publicacion DESC'
+    ],
     # id_publicacion, titulo, contenido, consecutivo, fecha_publicacion, fecha_disponibilidad, tipo_id, lugar, hora, estado_id, usuario_id
     'columnas' => ['titulo', 
         'consecutivo',
