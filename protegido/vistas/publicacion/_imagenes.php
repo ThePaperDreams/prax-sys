@@ -63,6 +63,7 @@
         });
         $("#open-modal").click(function () {
             $("#modal-add-imgs").modal('show');
+            return false;
         });
         
         $(".btn-eliminar").click(function(){

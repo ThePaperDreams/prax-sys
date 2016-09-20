@@ -1,34 +1,35 @@
 <?php
 /**
- * Este modelo es la representación de la tabla tbl_tipos_evento
+ * Este modelo es la representación de la tabla tbl_galerias
  *
  * Atributos del modelo
- * @property int $id_tipo
- * @property string $nombre
- * @property string $descripcion
+ * @property int $id_galeria
+ * @property string $titulo
+ * @property int $evento_id
  * 
  * Relaciones del modelo
+ * @property FkTblGaleriasTblEventos1 $fkTblGaleriasTblEventos1
  */
- class TipoEvento extends CModelo{
+ class Galeria extends CModelo{
  
     /**
      * Esta función retorna el nombre de la tabla representada por el modelo
      * @return string
      */
     public function tabla() {
-        return "tipos_evento";
+        return "galerias";
     }
 
     /**
-     * Esta función retorna los atributos de la tabla tbl_tipos_evento
+     * Esta función retorna los atributos de la tabla tbl_galerias
      * @return array
      */
     public function atributos() {
         return [
-		'id_tipo' => ['pk'] , 
-		'nombre', 
-		'descripcion', 
-        ];
+            'id_galeria' => ['pk'] ,
+                'titulo',
+                'evento_id',
+            ];
     }
     
     /**
@@ -39,7 +40,8 @@
         return [
             # el formato es simple: 
             # tipo de relación | modelo con que se relaciona | campo clave foranea
-                    ];
+            	'fkTblGaleriasTblEventos1' => [self::PERTENECE_A, 'FkTblGaleriasTblEventos1', 'evento_id'],
+        ];
     }
     
     /**
@@ -48,43 +50,16 @@
      */
     public function etiquetasAtributos() {
         return [
-		'id_tipo' => 'Id Tipo', 
-		'nombre' => 'Nombre', 
-		'descripcion' => 'Descripcion', 
+		'id_galeria' => 'Id Galeria', 
+		'titulo' => 'Titulo', 
+		'evento_id' => 'Evento Id', 
         ];
-    }
-    
-    public function filtros() {
-        return [
-            'requeridos' => 'nombre',
-            'seguros' => '*',
-        ];
-    }
-    
-    public function filtrosAjx() {
-        $criterio = new CCriterio();
-        $criterio->condicion("nombre", $this->nombre, "LIKE");
-       return $criterio;
-    }
-    
-    public function getEnPrestamo(){
-        if($this->_enPrestamo === null){            
-            $sql = "SELECT
-                            t.id_tipo
-                    FROM
-                            tbl_tipos_evento t
-                            JOIN tbl_eventos t2 ON t.id_tipo = t2.tipo_id
-                    WHERE t.id_tipo = $this->id_tipo;";
-            $resultados = Sis::apl()->bd->ejecutarComando($sql);
-            $this->_enPrestamo = count($resultados) > 0;
-        } 
-        return $this->_enPrestamo;
     }
     
     /**
      * Esta función permite listar todos los registros
      * @param array $criterio
-     * @return TipoEvento
+     * @return Galeria
      */
     public function listar($criterio = array()) {
         return parent::listar($criterio);
@@ -93,7 +68,7 @@
     /**
      * Esta función permite obtener un registro por su primary key
      * @param int $pk
-     * @return TipoEvento
+     * @return Galeria
      */
     public function porPk($pk) {
         return parent::porPk($pk);
@@ -102,16 +77,16 @@
     /**
      * Esta función permite obtener el primer registro
      * @param array $criterio
-     * @return TipoEvento
+     * @return Galeria
      */
     public function primer($criterio = array()) {
         return parent::primer($criterio);
     } 
 
     /**
-     * Esta función retorna una instancia del modelo tbl_tipos_evento
+     * Esta función retorna una instancia del modelo tbl_galerias
      * @param string $clase
-     * @return TipoEvento
+     * @return Galeria
      */
     public static function modelo($clase = __CLASS__) {
         return parent::modelo($clase);

@@ -108,10 +108,21 @@ class Publicacion extends CModelo {
     }
     
     public function antesDeGuardar() {
+        if($this->tipo_id == 2){
+            $this->validarCircular();
+        }
         if($this->nuevo){
             $this->fecha_publicacion = date("Y-m-d H:i:s");
         }
         $this->contenido = str_replace('../', Sis::UrlBase(), $this->contenido);
+    }
+    
+    private function validarCircular(){
+        $c = new CCriterio();
+        $c->condicion("tipo_id", "2");
+        $c->orden("id_publicacion", false);
+        $ultima = Publicacion::modelo()->primer($c);
+        $this->consecutivo = intval($ultima->consecutivo) + 1;
     }
 
     public function filtrosAjx() {

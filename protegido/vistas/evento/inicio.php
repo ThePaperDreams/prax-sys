@@ -15,7 +15,7 @@
     'ajax' => true,
     'filtrosAjax' => [
         'titulo',
-        'estado_id' => CBoot::select('', $Estado, ['defecto' => 'Estado', 'style' => 'min-width: 150px;', 'name' => 'estado_id']),
+        'estado' => CBoot::select('', $Estado, ['defecto' => 'Estado', 'style' => 'min-width: 150px;', 'name' => 'estado']),
         'fecha_publicacion',
         'tipo_id' => CBoot::select('', $TipoEvento, ['defecto' => 'Tipo de Evento', 'style' => 'min-width: 150px;', 'name' => 'tipo_id']),
         'autor',
@@ -26,9 +26,10 @@
     'columnas' => [
         'titulo',
         'fecha_publicacion',
-        'autor'=>'Autor->nombres',
+//        'autor'=>'Autor->nombres',
         'tipo_id'=>'TipoEvento->nombre',
-        'estado_id'=>'Estado->nombre'],
+        'estado'=>'Estado->nombre'
+    ],
     'opciones' => [
         ['i' => 'eye', 'url' => 'Evento/ver&{id:pk}'],
         ['i' => 'pencil', 'url' => 'Evento/editar&{id:pk}'],

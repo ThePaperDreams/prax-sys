@@ -28,24 +28,62 @@ class CtrlEvento extends CControlador{
         $modelo = new Evento();
         if(isset($this->_p['Eventos'])){
             $modelo->atributos = $this->_p['Eventos'];
-//            echo "<pre>";
-//            var_dump($modelo);
-//            exit();
-            if($modelo->guardar()){
+            
+            Sis::apl()->bd->begin();
+            if($modelo->guardar() && $this->guardarGalerias($modelo)){
                 # lógica para guardado exitoso
                 Sis::Sesion()->flash("alerta", [
                     'msg' => 'Guardado exitoso',
                     'tipo' => 'success',]);
+                Sis::apl()->bd->commit();
+                
                 $this->redireccionar('inicio');
+            } else {
+                Sis::apl()->bd->rollback();
             }
         }
         $url = Sis::crearUrl(['Evento/crear']);
-        $this->mostrarVista('crear', ['modelo' => $modelo,'url' => $url,
-            'TipoEvento' => CHtml::modelolista(TipoEvento::modelo()->listar(), "id_tipo", "nombre"),      
-            'Autor' => CHtml::modelolista(Usuario::modelo()->listar(), "id_usuario", "nombre"),
-            'Estado' => CHtml::modelolista(EstadoEvento::modelo()->listar(), "id_estado", "nombre"),
-            
-            ]);
+        $this->mostrarVista('crear', $this->getOpciones($modelo, $url));
+    }
+    
+    /**
+     * 
+     * @param Evento $modelo
+     */
+    private function guardarGalerias(&$modelo){
+        if(!isset($this->_p['galerias'])){ return true; }
+        $galerias = $this->_p['galerias'];
+        $error = false;
+        foreach($galerias AS $g){
+            $galeria = new Galeria();
+            $galeria->evento_id = $modelo->id_evento;
+            $galeria->titulo = $g['nombre'];
+            $imagenes = isset($g['imagenes'])? $g['imagenes'] : [];
+            $error = !$galeria->guardar();
+            if($error){
+                break;
+            } else {
+                $this->guardarImagenesGaleria($galeria, $imagenes);
+            }
+        }
+        return !$error;
+    }
+    
+    /**
+     * 
+     * @param Galeria $galeria
+     * @param [] $imagenes
+     */
+    private function guardarImagenesGaleria(&$galeria, $imagenes){
+        $error = false;
+        foreach($imagenes AS $k => $img){
+            $imgGaleria = new ImagenGaleria();
+            $imgGaleria->galeria_id = $galeria->id_galeria;
+            $imgGaleria->imagen_id = $img;
+            $error = !$imgGaleria->guardar();
+            if($error){ break; }
+        }
+        return $error;
     }
     
     /**
@@ -62,14 +100,20 @@ class CtrlEvento extends CControlador{
                 $this->redireccionar('inicio');
             }
         }
+        
         $url = Sis::crearUrl(['Evento/editar', 'id' => $pk]);
-        $this->mostrarVista('editar', ['modelo' => $modelo,'url' => $url,
+        $this->mostrarVista('editar', $this->getOpciones($modelo, $url));
+    }
+    
+    
+    public function getOpciones(&$modelo, $url){
+        return ['modelo' => $modelo,'url' => $url,
             'TipoEvento' => CHtml::modelolista(TipoEvento::modelo()->listar(), "id_tipo", "nombre"),      
             'Autor' => CHtml::modelolista(Usuario::modelo()->listar(), "id_usuario", "nombre"),
             'Estado' => CHtml::modelolista(EstadoEvento::modelo()->listar(), "id_estado", "nombre"),
-            ]);
+            'imagenes' => Imagen::modelo()->listar(['order' => 'id_imagen DESC']),
+        ];
     }
-    
     
     private function validarNombre($id = null){
         if(isset($this->_p['validarNombre'])){

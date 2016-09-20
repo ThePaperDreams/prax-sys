@@ -12,11 +12,12 @@
         ]
     ];    
 ?>
-<div class="col-sm-8">    
+<div class="col-sm-12">    
     <?php echo $this->mostrarVistaP('_formulario', ['modelo' => $modelo,
         'TipoEvento' => $TipoEvento,
         'Estado' => $Estado,
         'Autor' => $Autor,
         'url' => $url,
+        'imagenes' => $imagenes
         ]); ?>
 </div>

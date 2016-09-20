@@ -35,7 +35,7 @@ Sis::Recursos()->recursoJs([
                <?php foreach($imagenes AS $imagen): ?> 
                 <div class="col-xs-2 col-md-2">
                     <a href="#" class="thumbnail">
-                        <img src="<?= Sis::UrlBase() . "/publico/imagenes/publicaciones/thumbs/tmb_$imagen->url" ?>">
+                        <img src="<?= Sis::UrlBase() . "/publico/imagenes/galerias/thumbs/tmb_$imagen->url" ?>">
                     </a>
                 </div>
                 <?php endforeach ?>

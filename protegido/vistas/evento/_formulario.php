@@ -1,67 +1,54 @@
 <?php 
+Sis::Recursos()->RecursoJS(['url' => Sis::Recursos()->getUrlRecursos().'librerias/tinyMce/tinymce.js']);
+Sis::Recursos()->RecursoJS(['url' => Sis::apl()->tema->getUrlBase() . '/js/pirobox.min.js']);
+
+Sis::Recursos()->recursoCss(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/css/fileinput.min.css']);
+Sis::Recursos()->recursoJs(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/js/fileinput.min.js']);
+
 $formulario = new CBForm(['id' => 'form-eventos']);
 $formulario->abrir();
 ?>
 <div class="tile p-15">
     <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active"><a href="#listar" aria-controls="listar" role="tab" data-toggle="tab">Contenido</a></li>
-        <li role="presentation"><a href="#cargar" aria-controls="cargar" role="tab" data-toggle="tab">Evento</a></li>
+        <li role="presentation"><a href="#cargar" aria-controls="cargar" role="tab" data-toggle="tab">Galerías</a></li>
     </ul>
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="listar">
-            <div class="form-group">
-                <?php echo $formulario->campoTexto($modelo, 'titulo', ['label' => true, 'group' => true, 'autofocus' => true]) ?>
-                <?php echo $formulario->areaTexto($modelo, 'contenido', ['label' => true, 'group' => true, 'class' => 'summernote']) ?>
+            <div class="col-sm-4">
+                <?php echo $formulario->lista($modelo, 'tipo_id', $TipoEvento, ['defecto' => 'Seleccione un tipo', 'label' => true]) ?>
+            </div>   
+            <div class="col-sm-4">
+                <?php echo $formulario->campoTexto($modelo, 'fecha_disponibilidad', ['label' => true, 'group' => true, 'class' => 'campo-fecha']) ?>
+            </div>  
+            <div class="col-sm-4">
+                <?php echo $formulario->lista($modelo, 'estado', $Estado, ['group' => true, 'label' => true]) ?>
+            </div>
+            <div class="col-sm-8">
+                <?php echo $formulario->campoTexto($modelo, 'lugar', ['label' => true, 'group' => true]) ?>
+            </div>
+            <div class="col-sm-4">
+                <p id="err-hora" class="text-danger form-requerido" style="display:none">El campo <b>Hora</b> no puede estar vacio</p>
+                <label>Hora</label>
+                <div class="input-icon datetime-pick time-only">
+                    <?php echo $formulario->campoTexto($modelo, 'hora', ['data-format' => 'hh:mm', 'class' => 'input-md']) ?>
+                    <span class="add-on">
+                        <i class="sa-side-ui"></i>
+                    </span>
+                </div>
+            </div>
+            
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <?php echo $formulario->campoTexto($modelo, 'titulo', ['label' => true, 'group' => true]) ?>
+                    <?php echo $formulario->areaTexto($modelo, 'contenido', ['label' => true, 'group' => true, 'class' => 'summernote', 'rows' => 12]) ?>
+                </div>                
             </div>
         </div>
         <div role="tabpanel" class="tab-pane" id="cargar">
-            <div class="row" id="tab-imagenes">
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <?php echo $formulario->campoTexto($modelo, 'fecha_publicacion', ['label' => true, 'group' => true, 'class' => 'campo-fecha']) ?>
-                    </div>
-                </div>   
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <?php echo $formulario->campoTexto($modelo, 'fecha_disponibilidad', ['label' => true, 'group' => true, 'class' => 'campo-fecha']) ?>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label>Tipos de Eventos</label>
-                        <div class="input-group">  
-                            <?php echo $formulario->lista($modelo, 'tipo_id', $TipoEvento, ['defecto' => 'Seleccione un tipo']) ?>
-                        <div class="input-group-addon"><i class="fa fa-qrcode"></i></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label>Estado</label>
-                        <div class="input-group">
-                            <?php echo $formulario->lista($modelo, 'estado_id', $Estado, ['defecto' => 'Seleccione un estado para el evento']) ?>
-                            <div class="input-group-addon"><i class="fa fa-list-ul"></i></div>
-                        </div>
-                    </div>          
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group">    
-                        <?php echo $formulario->campoTexto($modelo, 'lugar', ['label' => true,]) ?>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group"> 
-                        <p id="err-hora" class="text-danger form-requerido" style="display:none">El campo <b>Hora</b> no puede estar vacio</p>
-                        <label>Hora</label>
-                        <div class="input-icon datetime-pick time-only">
-                            <input data-format="hh:mm:ss" type="text" name="Eventos[hora]" class="form-control input-md" id="Eventos_hora" requerido="1"/>
-                            <span class="add-on">
-                                <i class="sa-side-ui"></i>
-                            </span>
-                        </div>
-                    </div>
-                </div>    
-            </div>
+            <!--<div class="row" id="tab-imagenes">-->
+                <?= $this->vistaP('_galerias', ['imagenes' => $imagenes]) ?>
+            <!--</div>-->
         </div>
         <div class="row">
             <div class="col-sm-offset-6 col-sm-3">
@@ -78,9 +65,17 @@ $formulario->abrir();
 
 <script>
 $(document).ready(function() {
-    $('.summernote').summernote({
-        height: 300,
+//    $('.summernote').summernote({
+//        height: 300,
+//    });
+    tinymce.init({
+        selector: '#Eventos_contenido',
+        language : 'es',
+        plugins: "code,image,pagebreak,advlist,fullscreen,imagetools,link,media,paste,textcolor,wordcount,example,",
+        image_advtab: true,
+        link_assume_external_targets: true
     });
+    
     $(".campo-fecha").change(function(){
             validarFecha($(this));
         });

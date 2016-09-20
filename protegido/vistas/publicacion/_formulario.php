@@ -74,15 +74,9 @@ $formulario->abrir();
         tinymce.init({
             selector: '#Publicaciones_contenido',
             language : 'es',
-//              plugins: "code,image,pagebreak",
             plugins: "code,image,pagebreak,advlist,fullscreen,imagetools,link,media,paste,textcolor,wordcount,example,",
-//            image_prepend_url: "/imagenes/articulos",
             image_advtab: true,
             link_assume_external_targets: true
-//                          image_list: [
-//                {title: 'Dog', value: 'mydog.jpg'},
-//                {title: 'Cat', value: 'mycat.gif'}
-//              ],
         });
         
     $("#check").change(function(){
