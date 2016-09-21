@@ -22,6 +22,9 @@
      ],
     
     'modelo' => 'Evento',
+    'criterios' => [
+        'order' => 'id_evento DESC',
+    ],
     # id_evento, titulo, contenido, fecha_publicacion, fecha_disponibilidad, tipo_id, lugar, hora, estado
     'columnas' => [
         'titulo',

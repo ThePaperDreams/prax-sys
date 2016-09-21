@@ -21,6 +21,7 @@
 class Equipo extends CModelo {
 
     private $_deportistas = null;
+    private $_totalJugadores = null;
 
     /**
      * Esta función retorna el nombre de la tabla representada por el modelo
@@ -121,7 +122,10 @@ class Equipo extends CModelo {
     }
 
     public function getTotalJugadores() {
-        return count($this->JugadoresE);
+        if($this->_totalJugadores === null){
+            $this->_totalJugadores = intval(count($this->JugadoresE));
+        }
+        return $this->_totalJugadores;
     }
 
     public function getTxtPos() {

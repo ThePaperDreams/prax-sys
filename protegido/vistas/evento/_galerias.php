@@ -1,6 +1,10 @@
 <?php 
+
 Sis::Recursos()->registrarRecursoJS(['url' => Sis::UrlRecursos() . 'librerias/thumbnailsScroller/jquery.mThumbnailScroller.js']);
 Sis::Recursos()->registrarRecursoCSS(['url' => Sis::UrlRecursos() . 'librerias/thumbnailsScroller/jquery.mThumbnailScroller.css']);
+Sis::Recursos()->recursoCss(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/css/fileinput.min.css']);
+Sis::Recursos()->recursoJs(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/js/fileinput.min.js']);
+
 ?>
 <div class="row">
     <div class="col-sm-6">
@@ -39,7 +43,9 @@ Sis::Recursos()->registrarRecursoCSS(['url' => Sis::UrlRecursos() . 'librerias/t
                         <?= $this->vistaP('_imagenes', ['imagenes' => $imagenes]) ?>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="cargar-imagenes">
-                        cargar
+                        <div class="form-group">
+                            <input type="file" name="imagenes" id="input-cargar-imagen" multiple="">
+                        </div> 
                     </div>
                 </div>
                     
@@ -66,13 +72,50 @@ Sis::Recursos()->registrarRecursoCSS(['url' => Sis::UrlRecursos() . 'librerias/t
     var galeriaActual = 0;
     
     $(function(){
+        
+        $("#input-cargar-imagen").fileinput({
+            uploadUrl: "<?= Sis::crearUrl(['publicacion/ajx']) ?>",
+            uploadAsync: true,
+            uploadExtraData: {
+                'upload-imgs': true,
+            }
+        }).on('fileuploaded', function(event, data, id, index){
+            console.log(data.response);
+            var respuesta = data.response;
+            if(respuesta.uploadErr === false){
+                console.log(respuesta.url);
+                addThumb(respuesta);
+            }                
+        });
+        
         $("#add-gallery").click(function(){
             addGallery();
+            return false;
         });
         $("#btn-set-imgs").click(function(){
             setImagesToGallery();
+            return false;
         });
     });
+    
+    function addThumb(obj){
+        var cont = $("#listar-imagenes");
+        var img = $("<img/>", { class:'pic-to-add', src: obj.url});
+        var div = $("<div/>", { class: 'thumb-pic-gallery', "data-id" : obj.id, 'data-real-url' : obj.urlReal, 'data-thumb-url' : obj.url});
+        div.append(img);
+        div.click(function(){
+            checkImg($(this));
+        });
+        cont.prepend(div);
+    }
+    
+    function checkImg(cont){
+        if(cont.hasClass("active")){
+            cont.removeClass("active");
+        } else {
+            cont.addClass("active");
+        }
+    }
     
     function setImagesToGallery(){
         var images = $(".thumb-pic-gallery.active");
@@ -88,6 +131,7 @@ Sis::Recursos()->registrarRecursoCSS(['url' => Sis::UrlRecursos() . 'librerias/t
             link.append(img);
             li.append(link, input);
             cont.append(li);
+            currImg.removeClass("active");
         });
         if(gallery.attr("data-is-gallery") === undefined){
             $("#thumb-list-" + galeriaActual).mThumbnailScroller({

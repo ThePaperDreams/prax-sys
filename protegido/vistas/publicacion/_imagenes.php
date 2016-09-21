@@ -82,8 +82,7 @@
             if(respuesta.uploadErr === false){
                 console.log(respuesta.url);
                 addThumb(respuesta);
-            }
-                
+            }                
         });
         
     });

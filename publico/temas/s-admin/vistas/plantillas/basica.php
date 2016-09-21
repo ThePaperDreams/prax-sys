@@ -145,7 +145,7 @@ Sis::Recursos()->Js('comunes');
                 ]],
                 ['texto' => 'Torneos', 'fa' => 'trophy', 'elementos' => [
                     ['texto' => 'Torneos', 'url' => ['torneo/inicio']],
-                    ['texto' => 'Equipos', 'url' => ['Equipo/inicio']],                    
+                    ['texto' => 'Registrar torneo', 'url' => ['torneo/crear']],
                 ]],
                 ['texto' => 'Usuarios', 'fa' => 'users', 'elementos' => [
                         ['texto' => 'Roles', 'url' => ['Rol/inicio']],

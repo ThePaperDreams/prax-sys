@@ -16,8 +16,7 @@ class CtrlEvento extends CControlador{
             'TipoEvento' => CHtml::modelolista(TipoEvento::modelo()->listar(), "id_tipo", "nombre"),      
             'Autor' => CHtml::modelolista(Usuario::modelo()->listar(), "id_usuario", "nombre"),
             'Estado' => CHtml::modelolista(EstadoEvento::modelo()->listar(), "id_estado", "nombre"),
-            ]);
-        
+            ]);        
     }
     
     /**

@@ -367,7 +367,7 @@ li.rep-jugador{
     max-height: 260px;
     overflow: auto;
 }
-.receptor-jugadores .table-info{
+/*.receptor-jugadores .table-info{
     display: none;
 }
 .receptor-jugadores .pic img, 
@@ -376,7 +376,7 @@ li.rep-jugador{
 }
 .listado-deportistas .nombre{
     display: none;
-}
+}*/
 
 /* custom scroll bar */
 .mCS-rounded.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar, .mCS-rounded-dark.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar, .mCS-rounded-dots.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar, .mCS-rounded-dots-dark.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {

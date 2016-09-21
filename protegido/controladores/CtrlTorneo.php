@@ -19,15 +19,20 @@ class CtrlTorneo extends CControlador{
     
     private function guardarEquipos($equipos, $torneo){
         $error = false; 
-        foreach($equipos AS $equipo){
-            Sis::apl()->bd->begin();
-            $nuevoEquipo = new Equipo();
+        Sis::apl()->bd->begin();
+        foreach($equipos AS $k=>$equipo){
+            if(isset($equipo['editar'])){
+                $nuevoEquipo = Equipo::modelo()->porPk($k);
+            } else {
+                $nuevoEquipo = new Equipo();
+            }
             $nuevoEquipo->nombre = $equipo['nombre'];
             $nuevoEquipo->cupo_maximo = $equipo['cupo-max'];
             $nuevoEquipo->cupo_minimo = $equipo['cupo-min'];
             $nuevoEquipo->entrenador_id = $equipo['entrenador'];
             $nuevoEquipo->torneo_id = $torneo;
-            if($nuevoEquipo->guardar() && $this->guardarJugadores($equipo['deportistas'], $nuevoEquipo->id_equipo)){                
+            $deportistas = isset($equipo['deportistas'])? $equipo['deportistas'] : [];
+            if($nuevoEquipo->guardar() && $this->guardarJugadores($deportistas, $nuevoEquipo->id_equipo)){
                 Sis::Sesion()->flash("alerta", [
                     'tipo' => 'success',
                     'msg' => 'Se guardó correctamente la información',
@@ -69,14 +74,24 @@ class CtrlTorneo extends CControlador{
             'where' => 'estado = 1'
         ]);
         
-        if(isset($this->_p['equipos'])){
-            var_dump($this->_p);
-            $this->guardarEquipos($this->_p['equipos'], $id);
-            ini_set('xdebug.var_display_max_depth', 5);
-            ini_set('xdebug.var_display_max_children', 256);
-            ini_set('xdebug.var_display_max_data', 1024);
-            exit();
+//        ini_set('xdebug.var_display_max_depth', 5);
+//        ini_set('xdebug.var_display_max_children', 256);
+//        ini_set('xdebug.var_display_max_data', 1024);
+//        var_dump($this->_p);
+//        exit();                
+        
+        if(isset($this->_p['deportista-remover'])){
+            $this->removerJugadores($this->_p['deportista-remover']);
         }
+        
+        if(isset($this->_p['equipos-remover'])){
+            $this->removerEquipos($this->_p['equipos-remover']);
+        }
+        
+        if(isset($this->_p['equipos'])){            
+            $this->guardarEquipos($this->_p['equipos'], $id);
+        }
+        
         
         $usuarios = Usuario::modelo()->listar();
         $torneo = $this->cargarModelo($id);
@@ -86,6 +101,27 @@ class CtrlTorneo extends CControlador{
             'categorias' => CHtml::modeloLista($categorias, "id_categoria", "nombre"),
             'usuarios' => CHtml::modeloLista($usuarios, "id_usuario", "nombres"),            
         ]);
+    }
+    
+    private function removerEquipos($equipos){
+        foreach($equipos AS $e){
+            $equipo = Equipo::modelo()->porPk($e);
+            $jugadores = $equipo->JugadoresE;
+            foreach($jugadores AS $j){ $j->eliminar(); }
+            $equipo->eliminar();
+        }
+    }
+    
+    private function removerJugadores($jugadores){
+        foreach($jugadores AS $aRemover){
+            $c = new CCriterio();
+            $c->condicion("deportista_id", $aRemover['deportista'])
+                ->y("equipo_id", $aRemover['equipo']);
+            $equipoJugador = DeportistaEquipo::modelo()->primer($c);
+            if($equipoJugador !== null && !$equipoJugador->eliminar()){
+                throw new CExAplicacion("Error al remover el deportista del equipo.");
+            }
+        }
     }
     
     public function accionAjx(){

@@ -5,13 +5,8 @@
 <?php endforeach; ?>
 <script>
     $(function(){
-        $(".thumb-pic-gallery").click(function(){
-            var cont = $(this);
-            if(cont.hasClass("active")){
-                cont.removeClass("active");
-            } else {
-                cont.addClass("active");
-            }
+        $(".thumb-pic-gallery").click(function(){            
+            checkImg($(this));
         });
     });
 </script>

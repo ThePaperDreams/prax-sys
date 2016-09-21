@@ -25,7 +25,7 @@ Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . 'librerias/customScro
                         </div>
                         <div class="row" id="buttons-options">
                             <div class="col-sm-4">
-                                <a href="#" class="btn btn-default btn-block">Cancelar </a>
+                                <a href="<?= Sis::apl()->crearUrl(['torneo/inicio']) ?>" class="btn btn-default btn-block">Cancelar </a>
                             </div>
                             <div class="col-sm-4">
                                 <a href="#" id="btn-show-form" class="btn btn-primary btn-block">Agregar equipo <i class="fa fa-plus"></i></a>
@@ -67,12 +67,42 @@ Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . 'librerias/customScro
                     <hr>
                     <div class="p-15"></div>
                     <div id="contenedor-equipos"  class="contenedor-equipos">
-
+                        <?php $deportistas = []; ?>
+                        <?php foreach($torneo->Equipos AS $equipo): ?>
+                        <div id="div-<?= $equipo->id_equipo ?>" data-id-equipo="<?= $equipo->id_equipo ?>" data-team-name="<?= $equipo->nombre ?>" class="equipo panel panel-primary" data-ant="true" data-min="0" data-max="<?= $equipo->cupo_maximo ?>" data-act="<?= $equipo->TotalJugadores ?>">
+                            <div class="panel-heading"><?= $equipo->nombre ?> 
+                                <span class="label-<?= $equipo->TotalJugadores < intval($equipo->cupo_maximo)? 'danger' : 'success' ?>"><i class=""><?= $equipo->TotalJugadores ?></i> - <?= $equipo->cupo_maximo ?></span> 
+                                <i class="fa fa-trash remove-equipo" onclick="removerEquipoAnt('<?= $equipo->id_equipo ?>')"></i>
+                            </div>
+                            <div id="equipo-<?= $equipo->id_equipo ?>" data-old="true" class="panel-body panel-receptor equipos-antiguos">
+                                <input type="hidden" class="input-team" name="equipos[<?= $equipo->id_equipo ?>][editar]" value="true" disabled="disabled">
+                                <input type="hidden" class="input-team" name="equipos[<?= $equipo->id_equipo ?>][nombre]" value="<?= $equipo->nombre ?>" disabled="disabled">
+                                <input type="hidden" class="input-team" name="equipos[<?= $equipo->id_equipo ?>][entrenador]" value="<?= $equipo->entrenador_id ?>" disabled="disabled">
+                                <input type="hidden" class="input-team" name="equipos[<?= $equipo->id_equipo ?>][cupo-max]" value="<?= $equipo->cupo_maximo ?>" disabled="disabled">
+                                <input type="hidden" class="input-team" name="equipos[<?= $equipo->id_equipo ?>][cupo-min]" value="<?= $equipo->cupo_minimo ?>" disabled="disabled">
+                                
+                                <ul class="receptor-jugadores sorteable" data-equipo="<?= $equipo->id_equipo ?>">
+                                    <?php foreach($equipo->JugadoresE AS $jugador): ?>
+                                    <?php $deportistas[] = $jugador->Deportista->id_deportista ?>
+                                    <?= $this->vistaP('_itemDeportista', ['deportista' => $jugador->Deportista]) ?>
+                                    <?php endforeach ?>
+                                </ul>
+                            </div>
+                        </div>
+                        <?php endforeach ?>
+                        <?php 
+//                        var_dump($deportistas); exit();
+                        ?>
                     </div>
                 </div>
             </div>
         </div> 
-        
+        <div id="equipos-remover">
+    
+        </div>
+        <div id="jugadores-remover">
+
+        </div>
     </form>    
 </div>       
 <div class="col-sm-6">
@@ -95,16 +125,39 @@ Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . 'librerias/customScro
             </div>
         </div>
     </div>    
-</div>
-     
-
+</div>     
 
 <script>
     var equipos = 0;
+    var jugadoresRemovidos = 0;
+    
     $(function(){
         $("#form-equipos").submit(function(){ return false; });
         $("#finish-editing").click(function(){
+            $(this).attr("disabled", "disabled");
             document.getElementById("form-equipos").submit();
+        });
+        
+        $(".equipos-antiguos").find("li").each(function(k, v){
+            var li = $(v);
+            var ul = li.closest("ul");
+            var id = ul.attr("data-equipo");
+            li.attr("data-contenedor", "div-" + id);
+        });
+        
+        $(".equipos-antiguos ul").sortable({
+            connectWith: '.listado-deportistas',
+            helper: 'clone',
+            appendTo: 'body',
+            zIndex: 10000,
+        }).disableSelection();
+        
+        $(".equipos-antiguos ul").on('sortreceive', function(e, i){
+            var equipo = $(this).attr("data-equipo");
+            if(addDeportista(e, i, equipo)){
+                lobiAlert("error", "No puede agregar más jugadores a este equipo");
+                i.sender.sortable('cancel');
+            }
         });
         
         $(".listado-deportistas").sortable({
@@ -124,7 +177,9 @@ Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . 'librerias/customScro
         $("#cmb-categoria").change(function(){
             consultarJugadores($(this).val());
         });
-        
+        $(".equipos-antiguos").mCustomScrollbar({
+           theme: "rounded-dots", 
+        });
         $(".contenedor-jugadores").mCustomScrollbar({
            theme: "rounded-dots", 
         });
@@ -144,7 +199,25 @@ Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . 'librerias/customScro
         });
     });
     
-    var deportistas = [];
+    var equiposRemovidos = 0;
+    
+    function removerEquipoAnt(id){
+        if(!confirm("¿Seguro que desea remover este equipo?")){
+            return;
+        }
+        
+        var div = $("#div-" + id);
+        
+        div.slideUp(function(){
+            var input = $("<input/>", { type: 'hidden', name : 'equipos-remover[]'});
+            input.val(id);
+            div.remove();
+            $("#equipos-remover").append(input);
+            equiposRemovidos ++;
+        });
+    }
+    
+    var deportistas = [<?= implode(',', array_map(function($v){ return "'$v'"; }, $deportistas)) ?>];
     
     function consultarJugadores(id){
         $.ajax({
@@ -209,12 +282,13 @@ Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . 'librerias/customScro
                     '</div>';
         
         $("#contenedor-equipos").prepend(html);
+        
         $("#equipo-" + equipos  + " ul").sortable({
             connectWith: '.listado-deportistas',
             helper: 'clone',
             appendTo: 'body',
             zIndex: 10000
-        }).disableSelection();
+        }).disableSelection();        
         
         $("#equipo-" + equipos + " ul").on('sortreceive', function(e, i){
             var equipo = $(this).attr("data-equipo");
@@ -243,7 +317,6 @@ Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . 'librerias/customScro
     }
     
     function removeFromArray(id){
-        console.log(deportistas);
         for(var i in deportistas){
             if(deportistas[i] === id){
                 deportistas.splice(i, 1);
@@ -256,12 +329,33 @@ Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . 'librerias/customScro
         var element = i.item;
         var idDeportista = element.attr("data-id");
         var contenedor = $("#" + element.attr("data-contenedor"));
-        var id = element.attr("data-id");        
+        var id = element.attr("data-id");
         removeFromArray(id);
+        
+        if(contenedor.attr("data-ant") !== undefined){
+            var tmpInput = $("#rm-jug-id-" + id);
+            
+            if(tmpInput.length){
+                actualizarTotalJugadores(contenedor);
+                return false;
+            }
+            contenedor.find("input.input-team").removeAttr("disabled");
+            /* Remover jugador */
+            var input1 = $("<input/>", { type:'hidden', id : 'rm-jug-id-' + id, name : 'deportista-remover[' + jugadoresRemovidos + '][deportista]'});
+            input1.val(id);
+            var input2 = $("<input/>", { type:'hidden', id : 'rm-jug-eq-' + id, name : 'deportista-remover[' + jugadoresRemovidos + '][equipo]'});
+            input2.val(contenedor.attr("data-id-equipo"));
+            input1.attr('data-remove-from', contenedor.attr("data-id-equipo"));
+            $("#jugadores-remover").append(input1, input2);
+            actualizarTotalJugadores(contenedor);
+            jugadoresRemovidos ++;
+            return false;
+        }
+        
         $("#depo-" + idDeportista).remove();
-        $("#table-collapsed-" + idDeportista).hide();
-        $("#table-expanded-" + idDeportista).show();
-        $("#deportista-" + idDeportista).removeClass("collapsed");
+//        $("#table-collapsed-" + idDeportista).hide();
+//        $("#table-expanded-" + idDeportista).show();
+//        $("#deportista-" + idDeportista).removeClass("collapsed");
         actualizarTotalJugadores(contenedor);
     }
     
@@ -273,14 +367,27 @@ Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . 'librerias/customScro
         /* Seteamos el id del contenedor */
         element.attr("data-contenedor", "div-" + id);
         
-        var devolver = actualizarTotalJugadores(contenedor);       
+        var devolver = actualizarTotalJugadores(contenedor);
         if(devolver === true){ return true; }
         
         var idDeportista = element.attr("data-id");
+        
+        // validamos si el equipo es uno ya almacenado en base de datos 
+        if(contenedor.attr("data-ant") !== undefined){
+            var input = $("#rm-jug-id-" + idDep);
+            var input2 = $("#rm-jug-eq-" + idDep);
+            if(input.length && contenedor.attr("data-id-equipo") === input.attr("data-remove-from")){
+                input.remove();
+                input2.remove();
+                return false;
+            }
+            contenedor.find("input.input-team").removeAttr("disabled");
+        }
+        
         var hidden = '<input id="depo-' + idDeportista + '" type="hidden" name="equipos[' + id + '][deportistas][]" value="' + idDeportista + '">';
-        $("#table-expanded-" + idDeportista).hide();
-        $("#table-collapsed-" + idDeportista).show();
-        $("#deportista-" + idDeportista).addClass("collapsed");
+//        $("#table-expanded-" + idDeportista).hide();
+//        $("#table-collapsed-" + idDeportista).show();
+//        $("#deportista-" + idDeportista).addClass("collapsed");
         contenedor.append(hidden);
         
         return false;

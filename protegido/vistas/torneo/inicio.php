@@ -45,7 +45,7 @@
     'opciones' => [
         ['i' => 'eye', 'url' => 'torneo/ver&{id:pk}', 'title' => 'Ver'],
         ['i' => 'pencil', 'url' => 'torneo/editar&{id:pk}', 'title' => 'Modificar'],
-        ['i' => 'trash', 'url' => 'torneo/eliminar&{id:pk}', 'title' => 'Eliminar', 'opciones' => ['class' => 'op-eliminar']],
+//        ['i' => 'trash', 'url' => 'torneo/eliminar&{id:pk}', 'title' => 'Eliminar', 'opciones' => ['class' => 'op-eliminar']],
         ['i' => 'plus', 'url' => 'torneo/gestionarEquipos&{id:pk}', 'title' => 'Gestionar equipos'],
     ],
     'paginacion' => 10,
