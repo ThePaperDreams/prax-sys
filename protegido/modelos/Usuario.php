@@ -15,6 +15,7 @@
  * @property tinyint $recuperacion
  * @property tinyint $estado
  * @property string $foto
+ * @property string $url_recuperacion
  * 
  * Relaciones del modelo
  * @property Rol $Rol
@@ -46,6 +47,7 @@ class Usuario extends CModelo {
             'recuperacion',
             'estado' => ['def' => '1'],
             'foto',
+            'url_recuperacion',
         ];
     }
     

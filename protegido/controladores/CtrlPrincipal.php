@@ -1,6 +1,7 @@
 <?php
 
 class CtrlPrincipal extends CControlador{
+    private $multiplo = 1212;
     
     private function alertar($tipo, $msj){
         Sis::Sesion()->flash("alerta", [
@@ -117,54 +118,97 @@ class CtrlPrincipal extends CControlador{
     }
 
     private function enviarEmail($email, $link) {
-        $mensaje = '<html>
-        <head>
-           <title>Restablece tu contraseña</title>
-        </head>
-        <body>
-          <p>Hemos recibido una petición para restablecer la contraseña de tu cuenta.</p>
-          <p>Si hiciste esta petición, haz clic en el siguiente enlace, si no hiciste esta petición puedes ignorar este correo.</p>
-          <p>
-            <strong>Enlace para restablecer tu contraseña</strong><br>
-            <a href="' . $link . '"> Restablecer contraseña </a>
-          </p>
-        </body>
-       </html>';
-
-        $cabeceras = 'MIME-Version: 1.0' . "\r\n";
-        $cabeceras .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-        $cabeceras .= 'From: Codedrinks <mimail@codedrinks.com>' . "\r\n";
-        // Se envia el correo al usuario
-        mail($email, "Recuperar contraseña", $mensaje, $cabeceras);
+        $asunto = "Recuperación de contraseña";
+        $mensaje = $this->vistaP('_emailRecuperar', ['url' => $link]);
+        return Sis::apl()->JMail->enviar($email, $asunto, $mensaje);     
+    }
+    
+    public function accionRestablecerClave(){
+        if(!isset($this->_g['t'])){ $this->redireccionar("entrar"); }
+        $id = $this->desencriptarIdUsuario($this->_g['t']);
+        $c = new CCriterio();
+        $c->condicion("id_usuario", $id)
+                ->y("url_recuperacion", $this->_g['t']);        
+        $usuario = Usuario::modelo()->primer($c);
+        if(isset($this->_p['recuperar-pwd'])){
+            $this->cambiarClave($usuario);
+        }
+        if($usuario !== null){
+            $this->plantilla = "login";
+            $this->mostrarVista('restablecer', ['token' => $this->_g['t'], 'idusuario' => $id]);
+        } else {
+            $this->redireccionar("entrar");
+        }        
+    }
+    
+    /**
+     * @param Usuario $usuario
+     */
+    private function cambiarClave(&$usuario){
+        $usuario->clave = sha1($this->_p['recuperar-pwd']);
+        $usuario->url_recuperacion = null;
+        $usuario->recuperacion = null;
+        if($usuario->guardar()){
+            Sis::Sesion()->flash("alerta", [
+                'tipo' => 'success',
+                'msg' => 'Se ha cambiado exitosamente la contraseña',
+            ]);
+        } else {
+            Sis::Sesion()->flash("alerta", [
+                'tipo' => 'error',
+                'msg' => 'Ocurrió un error al cambiar la contraseña',
+            ]);
+        }
+        $this->redireccionar('entrar');
     }
     
     public function accionRecuperarClave() {
-        if (isset($_POST['email'])) {
-            $email = $_POST['email'];
-            $respuesta = new stdClass();
-            //$conexion = new mysqli('localhost', 'root', '', 'prax');
-            //$sql = " SELECT * FROM users WHERE email = '$email' ";
-            //$resultado = $conexion->query($sql);
-            $cr = new CCriterio();
-            $cr->condicion("t.email", $email, "=");
-            $usuario = Usuario::modelo()->primer($cr);
-            if (count($usuario) > 0) {
-                //$usuario = $resultado->fetch_assoc();
-                $linkTemporal = $this->generarLinkTemporal($usuario->id_usuario, $usuario->nombre_usuario);
-                if ($linkTemporal) {
-                    $this->enviarEmail($email, $linkTemporal);
-                    $respuesta->mensaje = '<div class="alert alert-info"> Un correo ha sido enviado a su cuenta de email con las instrucciones para restablecer la contraseña </div>';
-                } else {
-                    $respuesta->mensaje = '<div class="alert alert-warning"> No existe una cuenta asociada a ese correo. </div>';
+        if (isset($this->_p['email'])) {
+            $c = new CCriterio();
+            $c->condicion('email', $this->_p['email']);
+            # listamos el usuario que tenga ese email
+            $usuario = Usuario::modelo()->primer($c);
+            if($usuario !== null && $usuario->recuperacion != '1'){
+                $url = $this->generarUrlRecuperacion($usuario);
+                $usuario->url_recuperacion = $url;
+                $usuario->recuperacion = 1;
+                $usuario->guardar();
+                if($this->enviarEmail($usuario->email, $url)){
+                    $this->alertar('success','Se ha enviado un email con instrucciones para modificar su contraseña.');
+                    $this->redireccionar("entrar");
                 }
-            } else {
-                $respuesta->mensaje = "Debes introducir el email de la cuenta";
-                echo json_encode($respuesta);
+            } else if($usuario->recuperacion == '1'){
+                $this->alertar("error", "Ya se ha enviado un email de recuperación a esta dirección de correo");
             }
         }
         $this->plantilla = "login";
         $this->mostrarVista("recuperarClave");
     }
+    
+    /**
+     * Esta función permite generar el link de recuperación de un usuario usando un hash
+     * @param Usuario $usuario
+     */
+    private function generarUrlRecuperacion(&$usuario){
+        $relleno = base64_encode(time());
+        $distraccion = rand(0, 100);
+        $tokken = $this->encriptarIdUsuario($usuario->id_usuario, $distraccion);
+        $url = "$relleno#$tokken#" . base64_encode($distraccion);
+        return $url;
+    }
+    
+    private function encriptarIdUsuario($id, $mascara){
+        return base64_encode((intval($id) * $this->multiplo) + $mascara) ;
+    }
+    
+    private function desencriptarIdUsuario($tokken){
+        $partes = explode("#", $tokken);
+        $tmpId = base64_decode($partes[1]);
+        $distraccion = base64_decode($partes[2]);
+        $id = (intval($tmpId) - intval($distraccion)) / $this->multiplo;
+        return $id;
+    }
+    
 
     public function accionRestablecer() {
         //$token = $_GET['token'];
@@ -189,11 +233,11 @@ class CtrlPrincipal extends CControlador{
                 ]);
             } else {
                 $this->alertar('error','Token Inválido');
-                $this->redireccionar('inicio');
+                $this->redireccionar('entrar');
             }
         } else {
            $this->alertar('error','Token Inválido');
-           $this->redireccionar('inicio');
+           $this->redireccionar('entrar');
         }  
     }
     

@@ -120,18 +120,18 @@ Sis::Recursos()->Js('comunes');
             'elementos' => [
                 ['texto' => '', 'url' => ['principal/inicio'], 'fa' => 'home'],
                 ['texto' => 'Deportistas', 'fa' => 'male', 'elementos' => [
-                        ['texto' => 'Acudientes', 'url' => ['Acudiente/inicio']],
-                        ['texto' => 'Deportistas', 'url' => ['Deportista/inicio']],
-                        ['texto' => 'Matriculas', 'url' => ['Matricula/inicio']],
-                        ['texto' => 'Lista de espera', 'url' => ['Deportista/verListaEspera']],
-                        ['texto' => 'Documentos', 'url' => ['Documento/inicio']],
-                        ['texto' => 'Préstamo de deportistas', 'url' => ['PrestamoDeportista/inicio']],
+                    ['texto' => 'Acudientes', 'url' => ['Acudiente/inicio']],
+                    ['texto' => 'Deportistas', 'url' => ['Deportista/inicio']],                        
+                    ['texto' => 'Documentos', 'url' => ['Documento/inicio']],
                 ]],
                 ['texto' => 'Formación', 'fa' => 'soccer-ball-o', 'elementos' => [
                     ['texto' => 'Categorías de deportistas', 'url' => ['categoria/inicio']],
-                    ['texto' => 'Objetivos', 'url' => ['objetivo/inicio']],
+                    ['texto' => 'Matriculas', 'url' => ['Matricula/inicio']],
+                    ['texto' => 'Lista de espera', 'url' => ['Deportista/verListaEspera']],
                     ['texto' => 'Planes de Trabajo', 'url' => ['PlanTrabajo/inicio']],
                     ['texto' => 'Asistencia', 'url' => ['asistencia/inicio']],
+                    ['texto' => 'Objetivos', 'url' => ['objetivo/inicio']],
+                    ['texto' => 'Préstamo de deportistas', 'url' => ['PrestamoDeportista/inicio']],
                 ]],
                 ['texto' => 'Control existencias', 'fa' => 'cubes', 'elementos' => [
                     ['texto' => 'Categoría implementos', 'url' => ['categoriaImplemento/inicio']],
@@ -146,11 +146,7 @@ Sis::Recursos()->Js('comunes');
                 ['texto' => 'Torneos', 'fa' => 'trophy', 'elementos' => [
                     ['texto' => 'Torneos', 'url' => ['torneo/inicio']],
                     ['texto' => 'Registrar torneo', 'url' => ['torneo/crear']],
-                ]],
-                ['texto' => 'Usuarios', 'fa' => 'users', 'elementos' => [
-                        ['texto' => 'Roles', 'url' => ['Rol/inicio']],
-                        ['texto' => 'Usuarios', 'url' => ['Usuario/inicio']]
-                ]],
+                ]],                
                 ['texto' => 'Publicaciones', 'fa' => 'newspaper-o', 'elementos' => [
                     ['texto' => 'Publicación', 'url' => ['publicacion/inicio']],
                     ['texto' => 'Tipos de publicación', 'url' => ['tipoPublicacion/inicio']],
@@ -158,6 +154,10 @@ Sis::Recursos()->Js('comunes');
                     ['texto' => 'Tipo de Eventos', 'url' => ['tipoEvento/inicio']],
                     ['texto' => 'Imágenes', 'url' => ['Publicacion/cargarImagenes']],
                     
+                ]],
+                ['texto' => 'Usuarios', 'fa' => 'users', 'elementos' => [
+                        ['texto' => 'Roles', 'url' => ['Rol/inicio']],
+                        ['texto' => 'Usuarios', 'url' => ['Usuario/inicio']]
                 ]],
                 ['texto' => 'Configuración', 'fa' => 'cogs', 'elementos' => [
                         ['texto' => 'Rutas', 'url' => ['Ruta/inicio']],

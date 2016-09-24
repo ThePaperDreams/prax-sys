@@ -37,6 +37,11 @@ return [
         'usuario' => [
             'ruta' => '!aplicacion.componentes',
             'clase' => 'ComUsuario',
+        ],
+        'JMail' => [
+            'ruta' => '!aplicacion.componentes',
+            'clase' => 'JMail',
+            'emailAdmin' => 'info@jakolab.com',
         ]
     ],
     

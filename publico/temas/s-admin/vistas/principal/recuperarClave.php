@@ -15,8 +15,10 @@ $form->abrir();
                     </div>
                     <div class="p-15"></div>
                     <div class="form-group">
-                        <label id="label" for="email"> Escribe el email asociado a tu cuenta para recuperar tu contraseña </label>
-                        <input type="email" id="email" class="form-control" name="email" required>
+                        <div class="alert alert-info">
+                            Escribe el email asociado a tu cuenta para recuperar tu contraseña
+                        </div>
+                        <input type="email" id="email" class="form-control" name="email" required autofocus="true">
                     </div>
                     <div class="p-5"></div>
                     <div class="form-group">
@@ -72,7 +74,7 @@ $form->abrir();
       });
       
 
-function validarClave() {
+    function validarClave() {
         var claveRegex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
         var clave = $("#usuario-clave");
         var clave2 = $("#confirmar-clave").val(); 
