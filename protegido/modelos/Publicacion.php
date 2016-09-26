@@ -15,6 +15,7 @@
  * @property time $hora
  * @property int $estado_id
  * @property int $usuario_id
+ * @property int $resumen
  * 
  * Relaciones del modelo
  * @property Usuario $Autor
@@ -46,6 +47,8 @@ class Publicacion extends CModelo {
             'tipo_id',
             'estado_id',
             'usuario_id',
+            'resumen',
+            'img_previsualizacion'
         ];
     }
 
@@ -78,6 +81,8 @@ class Publicacion extends CModelo {
             'tipo_id' => 'Tipo de Publicación',
             'estado_id' => 'Estado',
             'usuario_id' => 'Usuario Id',
+            'resumen' => 'Resumen',
+            'img_previsualizacion' => 'Imagen de previsualización'
         ];
     }
 

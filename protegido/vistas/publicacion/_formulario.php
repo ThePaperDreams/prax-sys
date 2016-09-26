@@ -40,8 +40,11 @@ $formulario->abrir();
             <div class="col-sm-6">
                 <?php echo $formulario->areaTexto($modelo, 'resumen', ['label' => true, 'group' => true]) ?>
             </div>
-            <div class="col-sm-12">
+            <div class="col-sm-6">
                 <?php echo $formulario->inputAddon($modelo, 'titulo', 'texto', ['label' => true, 'group' => true, 'autofocus' => true], 'font') ?>
+            </div>
+            <div class="col-sm-6">
+                <?php echo $formulario->inputAddon($modelo, 'img_previsualizacion', 'texto', ['label' => true, 'group' => true, 'autofocus' => true], ['pos' => CBoot::fa('picture-o')]) ?>
             </div>
             <div class="col-sm-12">
                 <?php echo $formulario->areaTexto($modelo, 'contenido', ['label' => true, 'group' => true, 'class' => 'summernote', 'rows' => 15]) ?>
@@ -68,14 +71,20 @@ $formulario->abrir();
 <script>
     
     $(document).ready(function() {
-//    $('.summernote').summernote({
-//        height: 300,
-//    });   
+        
+//        $("#Publicaciones_img_previsualizacion").fileinput({
+//            showPreview: false,
+//            showUpload: false,
+//            showRemove: false,
+//            browseLabel: "Buscar"
+//        });
+        
         tinymce.init({
             selector: '#Publicaciones_contenido',
             language : 'es',
             plugins: "code,image,pagebreak,advlist,fullscreen,imagetools,link,media,paste,textcolor,wordcount,example,",
             image_advtab: true,
+            image_prepend_url: "<?php echo Sis::UrlBase() ?>/imagenes/articulos",
             link_assume_external_targets: true
         });
         

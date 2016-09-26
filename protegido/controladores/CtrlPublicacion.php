@@ -118,11 +118,12 @@ class CtrlPublicacion extends CControlador{
     /**
      * Esta función permite crear un nuevo registro
      */
-    public function accionCrear(){
-        $this->validarNombre();
+    public function accionCrear(){ 
+       $this->validarNombre();
         $modelo = new Publicacion();
         if(isset($this->_p['Publicaciones'])){
             $modelo->atributos = $this->_p['Publicaciones'];
+            
             $modelo->usuario_id = Sis::apl()->usuario->ID;
             if($modelo->tipo_id == 2){
             $modelo->consecutivo = $modelo->getUltimo();
@@ -143,9 +144,8 @@ class CtrlPublicacion extends CControlador{
             'estd' => CHtml::modelolista(EstadoPublicacion::modelo()->listar(), "id_estado", "nombre"),    
                 'imagenes' => Imagen::modelo()->listar(['order' => 'id_imagen DESC']),
             ]);
-        
-        
-    }
+    }    
+    
     
     /**
      * Esta función permite editar un registro existente

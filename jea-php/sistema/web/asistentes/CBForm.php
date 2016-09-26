@@ -81,7 +81,7 @@ class CBForm extends CFormulario{
         $requeridos = $this->getRequeridos($modelo);
         $error = $this->obtenerError($requeridos, $atributo);
         $input = CBoot::passwordField($modelo->$atributo, $opHtml);
-        return CHtml::e('div', $label.$error.$input, ['class' => 'form-group']);
+        return CHtml::e('div', $label.$error.$input, ['class' => 'form-group']);       
     }
     
     /**

@@ -268,7 +268,7 @@ class CMRecursos {
         $html = str_replace('</body>', $body.$sbody.$sready.'</body>', 
                 str_replace('</head>', $head.$ehead.$shead.$metas.'</head>', $html)
             );
-        $this->sb($html);
+        #$this->sb($html);
     }
     /**
      * Esta función filtra el html

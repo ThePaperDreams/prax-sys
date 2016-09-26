@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2016-09-12 07:14:55
+Date: 2016-09-26 00:17:44
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -35,15 +35,14 @@ CREATE TABLE `tbl_acudientes` (
   PRIMARY KEY (`id_acudiente`),
   KEY `fk_tbl_acudientes_tbl_tipos_identificacion1_idx` (`tipo_doc_id`),
   CONSTRAINT `fk_tbl_acudientes_tbl_tipos_identificacion1` FOREIGN KEY (`tipo_doc_id`) REFERENCES `tbl_tipos_identificacion` (`id_tipo_documento`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tbl_acudientes
 -- ----------------------------
 INSERT INTO `tbl_acudientes` VALUES ('1', 'Rolando', null, 'Jimenez', null, '1', '65465465', '45464444', null, null, null, '1');
-INSERT INTO `tbl_acudientes` VALUES ('2', 'Alejandro', null, 'Quiroz', null, '1', '1152199397', '123123', null, 'alejo.jko@gmail.com', 'sur', '0');
-INSERT INTO `tbl_acudientes` VALUES ('3', 'Alvaro', null, 'Quiroz', null, '1', '12312313', '1231313', null, null, null, '0');
-INSERT INTO `tbl_acudientes` VALUES ('4', 'Jorge', 'Alejandro', 'Quiroz', 'Serna', '1', '334654567', '123456654', '231345246', 'alejo.jko@gmail.com', 'sur', '1');
+INSERT INTO `tbl_acudientes` VALUES ('2', 'Alejandro', null, 'Quiroz', null, '1', '1152199397', '123123', null, 'alejo.jko@gmail.com', 'sur', null);
+INSERT INTO `tbl_acudientes` VALUES ('3', 'Alvaro', null, 'Quiroz', null, '1', '12312313', '1231313', null, null, null, '1');
 
 -- ----------------------------
 -- Table structure for tbl_acudientes_documentos
@@ -132,8 +131,38 @@ CREATE TABLE `tbl_categorias_implementos` (
 -- ----------------------------
 -- Records of tbl_categorias_implementos
 -- ----------------------------
-INSERT INTO `tbl_categorias_implementos` VALUES ('1', 'Enseres', null, '0');
+INSERT INTO `tbl_categorias_implementos` VALUES ('1', 'Enseres', null, null);
 INSERT INTO `tbl_categorias_implementos` VALUES ('2', 'Deportivos', null, '1');
+
+-- ----------------------------
+-- Table structure for tbl_comentarios
+-- ----------------------------
+DROP TABLE IF EXISTS `tbl_comentarios`;
+CREATE TABLE `tbl_comentarios` (
+  `id_comentario` int(11) NOT NULL AUTO_INCREMENT,
+  `comentario` text NOT NULL,
+  `publicacion_id` int(11) NOT NULL,
+  `padre_id` int(11) DEFAULT NULL,
+  `usuario_id` int(11) DEFAULT NULL,
+  `estado` tinyint(1) NOT NULL DEFAULT '1',
+  `fecha` datetime DEFAULT NULL,
+  PRIMARY KEY (`id_comentario`),
+  KEY `fk_comentarios_usuarios` (`usuario_id`),
+  KEY `fk_comentarios_padres` (`padre_id`),
+  KEY `fk_comentarios_publicacion` (`publicacion_id`),
+  CONSTRAINT `fk_comentarios_padres` FOREIGN KEY (`padre_id`) REFERENCES `tbl_comentarios` (`id_comentario`),
+  CONSTRAINT `fk_comentarios_publicacion` FOREIGN KEY (`publicacion_id`) REFERENCES `tbl_publicaciones` (`id_publicacion`),
+  CONSTRAINT `fk_comentarios_usuarios` FOREIGN KEY (`usuario_id`) REFERENCES `tbl_usuarios` (`id_usuario`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of tbl_comentarios
+-- ----------------------------
+INSERT INTO `tbl_comentarios` VALUES ('1', 'Sexy comentario', '16', null, '13', '1', '2016-09-25 23:35:26');
+INSERT INTO `tbl_comentarios` VALUES ('2', 'Sexy respuesta', '16', '1', '1', '1', '2016-09-25 23:36:49');
+INSERT INTO `tbl_comentarios` VALUES ('3', 'Sexy comentario', '16', null, '13', '1', '2016-09-25 23:35:26');
+INSERT INTO `tbl_comentarios` VALUES ('4', 'Sexy respuesta', '16', '1', '1', '1', '2016-09-25 23:36:49');
+INSERT INTO `tbl_comentarios` VALUES ('7', 'Eva la reina!!!', '15', null, '13', '2', '2016-09-26 00:08:20');
 
 -- ----------------------------
 -- Table structure for tbl_comprobantes
@@ -177,15 +206,15 @@ CREATE TABLE `tbl_deportistas` (
   KEY `fk_tbl_personas_tbl_estado_deportistas1_idx` (`estado_id`),
   CONSTRAINT `fk_tbl_personas_tbl_estado_deportistas1` FOREIGN KEY (`estado_id`) REFERENCES `tbl_estado_deportistas` (`id_estado`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_tbl_personas_tbl_tipos_documento` FOREIGN KEY (`tipo_documento_id`) REFERENCES `tbl_tipos_identificacion` (`id_tipo_documento`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tbl_deportistas
 -- ----------------------------
 INSERT INTO `tbl_deportistas` VALUES ('1', '123456789', 'devi', 'lou', 'per', null, 'occidente', null, '123456', null, '1992-08-01', '1', '1');
-INSERT INTO `tbl_deportistas` VALUES ('2', '123742764', 'Bryan', null, 'Bedoya', null, 'Calle', null, '62374673', null, '1995-03-24', '7', '3');
+INSERT INTO `tbl_deportistas` VALUES ('2', '123742764', 'Bryan', null, 'Bedoya', null, 'Calle', 'Foto_1152199397.png', '62374673', null, '1995-03-24', '1', '3');
 INSERT INTO `tbl_deportistas` VALUES ('3', '987987897', 'Cristian', null, 'Martinez', null, 'Calle', null, '62374673', null, '1994-03-04', '1', '1');
-INSERT INTO `tbl_deportistas` VALUES ('4', '11111111', 'Musashi', null, 'Brave', null, 'Calle', null, '62374673', null, '1994-03-04', '1', '1');
+INSERT INTO `tbl_deportistas` VALUES ('4', '11111111', 'Musashi', null, 'Brave', null, 'Calle', null, '62374673', null, '1994-03-04', '8', '1');
 INSERT INTO `tbl_deportistas` VALUES ('5', '22222222', 'Noa', null, 'Kaiba', null, 'Calle', null, '62374673', null, '1994-03-04', '4', '1');
 INSERT INTO `tbl_deportistas` VALUES ('6', '33333333', 'Yugi', null, 'oh', null, 'Calle', null, '62374673', null, '1994-03-04', '4', '1');
 INSERT INTO `tbl_deportistas` VALUES ('7', '1152199397', 'Alejo', null, 'Quiroz', 'Serna', 'Sur', null, '123123', null, '1992-07-19', '1', '1');
@@ -195,10 +224,6 @@ INSERT INTO `tbl_deportistas` VALUES ('10', '1152199397', 'Alejo', null, 'Quiroz
 INSERT INTO `tbl_deportistas` VALUES ('11', '1152199397', 'Alejo', null, 'Quiroz', null, 'Sur', null, '123123', null, '1992-07-19', '1', '1');
 INSERT INTO `tbl_deportistas` VALUES ('12', '1152199397', 'Alejo', null, 'Quiroz', null, 'Por ahí', 'Foto_1152199397.png', '21321231', null, '1992-07-26', '1', '1');
 INSERT INTO `tbl_deportistas` VALUES ('13', '12345678', 'Juan', null, 'Ramirez', null, 'sur', 'Foto_12345678.PNG', '123456', null, '1992-12-12', '1', '1');
-INSERT INTO `tbl_deportistas` VALUES ('14', '12314265465', 'Brayan', 'Steven', 'Quiroz', 'Serna', 'Sur', 'Foto_12314265465.jpg', '123564654', '1321321', '2007-05-09', '1', '1');
-INSERT INTO `tbl_deportistas` VALUES ('15', '12314265465', 'Brayan', 'Steven', 'Quiroz', 'Serna', 'Sur', 'Foto_12314265465.jpg', '123564654', '1321321', '2007-05-09', '1', '1');
-INSERT INTO `tbl_deportistas` VALUES ('16', '12314265465', 'Brayan', 'Steven', 'Quiroz', 'Serna', 'Sur', 'Foto_12314265465.jpg', '123564654', '1321321', '2007-05-09', '1', '1');
-INSERT INTO `tbl_deportistas` VALUES ('17', '987654', 'Kevin', 'Jhoan', 'Agudelo', null, '132', 'Foto_987654.png', '132', '123', '0000-00-00', '1', '3');
 
 -- ----------------------------
 -- Table structure for tbl_deportistas_acudientes
@@ -213,7 +238,7 @@ CREATE TABLE `tbl_deportistas_acudientes` (
   KEY `fk_tbl_deportistas_acudientes_tbl_acudientes1_idx` (`acudiente_id`),
   CONSTRAINT `fk_tbl_deportistas_acudientes_tbl_acudientes1` FOREIGN KEY (`acudiente_id`) REFERENCES `tbl_acudientes` (`id_acudiente`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_tbl_deportistas_acudientes_tbl_personas2` FOREIGN KEY (`deportista_id`) REFERENCES `tbl_deportistas` (`id_deportista`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tbl_deportistas_acudientes
@@ -226,7 +251,6 @@ INSERT INTO `tbl_deportistas_acudientes` VALUES ('5', '1', '10');
 INSERT INTO `tbl_deportistas_acudientes` VALUES ('6', '1', '11');
 INSERT INTO `tbl_deportistas_acudientes` VALUES ('8', '1', '1');
 INSERT INTO `tbl_deportistas_acudientes` VALUES ('10', '2', '1');
-INSERT INTO `tbl_deportistas_acudientes` VALUES ('11', '2', '17');
 
 -- ----------------------------
 -- Table structure for tbl_deportistas_documentos
@@ -241,15 +265,12 @@ CREATE TABLE `tbl_deportistas_documentos` (
   KEY `fk_tbl_personas_documentos_tbl_personas1_idx` (`deportista_id`),
   CONSTRAINT `fk_tbl_personas_documentos_tbl_documentos1` FOREIGN KEY (`documento_id`) REFERENCES `tbl_documentos` (`id_documento`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_tbl_personas_documentos_tbl_personas1` FOREIGN KEY (`deportista_id`) REFERENCES `tbl_deportistas` (`id_deportista`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tbl_deportistas_documentos
 -- ----------------------------
 INSERT INTO `tbl_deportistas_documentos` VALUES ('1', '11', '5');
-INSERT INTO `tbl_deportistas_documentos` VALUES ('2', '15', '10');
-INSERT INTO `tbl_deportistas_documentos` VALUES ('3', '16', '11');
-INSERT INTO `tbl_deportistas_documentos` VALUES ('4', '17', '12');
 
 -- ----------------------------
 -- Table structure for tbl_deportistas_equipos
@@ -264,17 +285,14 @@ CREATE TABLE `tbl_deportistas_equipos` (
   KEY `fk_tbl_deportistas_equipos_tbl_personas1_idx` (`deportista_id`),
   CONSTRAINT `fk_tbl_deportistas_equipos_tbl_equipos1` FOREIGN KEY (`equipo_id`) REFERENCES `tbl_equipos` (`id_equipo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_tbl_deportistas_equipos_tbl_personas1` FOREIGN KEY (`deportista_id`) REFERENCES `tbl_deportistas` (`id_deportista`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tbl_deportistas_equipos
 -- ----------------------------
-INSERT INTO `tbl_deportistas_equipos` VALUES ('1', '1', '1');
-INSERT INTO `tbl_deportistas_equipos` VALUES ('2', '2', '1');
-INSERT INTO `tbl_deportistas_equipos` VALUES ('3', '10', '1');
-INSERT INTO `tbl_deportistas_equipos` VALUES ('4', '13', '2');
-INSERT INTO `tbl_deportistas_equipos` VALUES ('5', '5', '2');
-INSERT INTO `tbl_deportistas_equipos` VALUES ('6', '6', '2');
+INSERT INTO `tbl_deportistas_equipos` VALUES ('33', '2', '10');
+INSERT INTO `tbl_deportistas_equipos` VALUES ('34', '10', '11');
+INSERT INTO `tbl_deportistas_equipos` VALUES ('35', '4', '11');
 
 -- ----------------------------
 -- Table structure for tbl_documentos
@@ -289,21 +307,20 @@ CREATE TABLE `tbl_documentos` (
   PRIMARY KEY (`id_documento`),
   KEY `fk_tbl_documentos_tbl_tipos_documento1_idx` (`tipo_id`),
   CONSTRAINT `fk_tbl_documentos_tbl_tipos_documento1` FOREIGN KEY (`tipo_id`) REFERENCES `tbl_tipos_documento` (`id_tipo`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tbl_documentos
 -- ----------------------------
-INSERT INTO `tbl_documentos` VALUES ('1', 'deportistas/7/Documentos personales.jpg', 'Documentos personales', '1', '0');
-INSERT INTO `tbl_documentos` VALUES ('2', 'deportistas/8/Documentos personales.jpg', 'Documentos personales', '1', '0');
-INSERT INTO `tbl_documentos` VALUES ('3', 'deportistas/9/Documentos personales.jpg', 'Documentos personales', '1', '0');
-INSERT INTO `tbl_documentos` VALUES ('4', 'deportistas/10/Documentos personales.jpg', 'Documentos personales', '1', '0');
-INSERT INTO `tbl_documentos` VALUES ('5', 'deportistas/11/Documentos personales.jpg', 'Documentos personales', '1', '0');
-INSERT INTO `tbl_documentos` VALUES ('6', 'acudientes/2/Documentos personales.jpg', 'Documentos personales', '1', '0');
+INSERT INTO `tbl_documentos` VALUES ('1', 'publico/deportistas/7/Documentos personales.jpg', 'Documentos personales', '1', '0');
+INSERT INTO `tbl_documentos` VALUES ('2', 'publico/deportistas/8/Documentos personales.jpg', 'Documentos personales', '1', '0');
+INSERT INTO `tbl_documentos` VALUES ('3', 'publico/deportistas/9/Documentos personales.jpg', 'Documentos personales', '1', '0');
+INSERT INTO `tbl_documentos` VALUES ('4', 'publico/deportistas/10/Documentos personales.jpg', 'Documentos personales', '1', '0');
+INSERT INTO `tbl_documentos` VALUES ('5', 'publico/deportistas/11/Documentos personales.jpg', 'Documentos personales', '1', '0');
+INSERT INTO `tbl_documentos` VALUES ('6', 'publico/acudientes/2/Documentos personales.jpg', 'Documentos personales', '1', '0');
 INSERT INTO `tbl_documentos` VALUES ('7', 'Recibos.png', 'Recibos', '2', '0');
-INSERT INTO `tbl_documentos` VALUES ('10', 'deportistas/15/Tarjeta de identidad.gif', 'Tarjeta de identidad', '1', '0');
-INSERT INTO `tbl_documentos` VALUES ('11', 'deportistas/16/Tarjeta de identidad.gif', 'Tarjeta de identidad', '1', '0');
-INSERT INTO `tbl_documentos` VALUES ('12', 'deportistas/17/Tarjeta de identidad.jpg', 'Tarjeta de identidad', '1', '0');
+INSERT INTO `tbl_documentos` VALUES ('8', 'Documentos personales.jpg', 'Documentos personales', '1', '0');
+INSERT INTO `tbl_documentos` VALUES ('9', 'Documentos personales.PNG', 'Documentos personales', '1', '0');
 
 -- ----------------------------
 -- Table structure for tbl_entradas
@@ -361,13 +378,18 @@ CREATE TABLE `tbl_equipos` (
   PRIMARY KEY (`id_equipo`),
   KEY `fk_equipo_torneo` (`torneo_id`),
   CONSTRAINT `fk_equipo_torneo` FOREIGN KEY (`torneo_id`) REFERENCES `tbl_torneos` (`id_torneo`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tbl_equipos
 -- ----------------------------
 INSERT INTO `tbl_equipos` VALUES ('1', '5', '5', '1', '1', '1', 'Medellín', null);
 INSERT INTO `tbl_equipos` VALUES ('2', '5', '6', '1', '3', '2', 'El 8  hojos', null);
+INSERT INTO `tbl_equipos` VALUES ('4', '12', '12', '1', null, '1', 'equipo1 (1)', '2');
+INSERT INTO `tbl_equipos` VALUES ('5', '5', '5', '1', null, '1', 'Equipo (1)', '3');
+INSERT INTO `tbl_equipos` VALUES ('6', '5', '5', '1', null, '1', 'Equipo', '3');
+INSERT INTO `tbl_equipos` VALUES ('10', '5', '0', '1', null, '1', 'Equipo1 (1)', '1');
+INSERT INTO `tbl_equipos` VALUES ('11', '5', '0', '1', null, '1', 'Equipo1', '1');
 
 -- ----------------------------
 -- Table structure for tbl_estados_evento
@@ -378,11 +400,13 @@ CREATE TABLE `tbl_estados_evento` (
   `nombre` varchar(50) NOT NULL,
   `descripcion` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id_estado`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of tbl_estados_evento
 -- ----------------------------
+INSERT INTO `tbl_estados_evento` VALUES ('1', 'Abierto', null);
+INSERT INTO `tbl_estados_evento` VALUES ('2', 'Finalizado', null);
 
 -- ----------------------------
 -- Table structure for tbl_estados_implementos
@@ -459,16 +483,25 @@ CREATE TABLE `tbl_eventos` (
   `lugar` varchar(200) DEFAULT NULL,
   `hora` time DEFAULT NULL,
   `estado` int(11) DEFAULT NULL,
+  `fecha` date DEFAULT NULL,
+  `autor` int(11) DEFAULT NULL,
   PRIMARY KEY (`id_evento`),
   KEY `fk_tbl_eventos_tbl_tipos_evento1_idx` (`tipo_id`),
   KEY `fk_tbl_eventos_tbl_estados_evento` (`estado`),
   CONSTRAINT `fk_tbl_eventos_tbl_estados_evento` FOREIGN KEY (`estado`) REFERENCES `tbl_estados_evento` (`id_estado`),
   CONSTRAINT `fk_tbl_eventos_tbl_tipos_evento1` FOREIGN KEY (`tipo_id`) REFERENCES `tbl_tipos_evento` (`id_tipo`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tbl_eventos
 -- ----------------------------
+INSERT INTO `tbl_eventos` VALUES ('1', 'Evento1', 'Soy un evento', '2016-09-12 10:40:28', '2016-09-22 10:40:32', '1', 'Alguno', '09:00:00', '1', '2016-09-12', null);
+INSERT INTO `tbl_eventos` VALUES ('2', 'Evento2', 'Soy un evento', '2016-09-12 10:40:28', '2016-09-22 10:40:32', '1', 'Alguno', '10:00:00', '1', '2016-09-12', null);
+INSERT INTO `tbl_eventos` VALUES ('3', 'Evento3', 'Soy un evento', '2016-09-12 10:40:28', '2016-09-22 10:40:32', '1', 'Alguno', '10:00:00', '1', '2016-09-15', null);
+INSERT INTO `tbl_eventos` VALUES ('4', 'Evento4', 'Soy un evento', '2016-09-12 10:40:28', '2016-09-22 10:40:32', '1', 'Alguno', '10:00:00', '1', '2016-09-21', null);
+INSERT INTO `tbl_eventos` VALUES ('5', 'Evento4', 'Soy un evento', '2016-09-12 10:40:28', '2016-09-22 10:40:32', '1', 'Alguno', '10:00:00', '1', '2016-09-21', null);
+INSERT INTO `tbl_eventos` VALUES ('12', 'Mi evento', '<p>Este es un evento muy chido</p>', '2016-09-20 14:41:56', '2016-09-30 00:00:00', '1', 'Av 45 # 45 - 45', '14:10:00', '1', '2016-09-21', '1');
+INSERT INTO `tbl_eventos` VALUES ('13', 'El evento favorito del pueblo', '<p>Este es un evento&nbsp;</p>', '2016-09-20 15:27:32', '2016-09-30 00:00:00', '1', 'Cr 45 # 23 -12', '12:00:00', '1', '2016-09-21', '1');
 
 -- ----------------------------
 -- Table structure for tbl_faltas_x_matriculas
@@ -565,11 +598,14 @@ CREATE TABLE `tbl_galerias` (
   PRIMARY KEY (`id_galeria`),
   KEY `fk_tbl_galerias_tbl_eventos1_idx` (`evento_id`) USING BTREE,
   CONSTRAINT `fk_tbl_galerias_tbl_eventos1` FOREIGN KEY (`evento_id`) REFERENCES `tbl_eventos` (`id_evento`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tbl_galerias
 -- ----------------------------
+INSERT INTO `tbl_galerias` VALUES ('3', 'g', '12');
+INSERT INTO `tbl_galerias` VALUES ('4', 'g', '12');
+INSERT INTO `tbl_galerias` VALUES ('5', 'Galeria', '13');
 
 -- ----------------------------
 -- Table structure for tbl_imagenes
@@ -578,14 +614,27 @@ DROP TABLE IF EXISTS `tbl_imagenes`;
 CREATE TABLE `tbl_imagenes` (
   `id_imagen` int(11) NOT NULL AUTO_INCREMENT,
   `descripcion` varchar(100) DEFAULT NULL,
-  `url` varchar(50) NOT NULL,
+  `url` varchar(200) NOT NULL,
   PRIMARY KEY (`id_imagen`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tbl_imagenes
 -- ----------------------------
-INSERT INTO `tbl_imagenes` VALUES ('1', null, 'prince parca.PNG');
+INSERT INTO `tbl_imagenes` VALUES ('52', null, '11863409_1010871408977567_1416304767942653844_n.jpg');
+INSERT INTO `tbl_imagenes` VALUES ('53', null, '11846741_1013558955375479_7245894287860886372_n.jpg');
+INSERT INTO `tbl_imagenes` VALUES ('54', null, '11866437_1112335482168083_2595705107349108760_n.jpg');
+INSERT INTO `tbl_imagenes` VALUES ('55', null, '11873524_1013649368699771_5397195395460541103_n.jpg');
+INSERT INTO `tbl_imagenes` VALUES ('56', null, '11873472_1015268645204510_4045432949383032702_n.jpg');
+INSERT INTO `tbl_imagenes` VALUES ('57', null, '11870862_1112992228769075_3003191989677629103_n.jpg');
+INSERT INTO `tbl_imagenes` VALUES ('58', null, '11873798_1112764945458470_3598730677379681201_n.jpg');
+INSERT INTO `tbl_imagenes` VALUES ('59', null, '11888087_1019031258161582_3558216739616058145_n.jpg');
+INSERT INTO `tbl_imagenes` VALUES ('60', null, '26a4b2c308964a904a69c76b4446c86c.jpg');
+INSERT INTO `tbl_imagenes` VALUES ('61', null, '639ed62b067e028747052cc17cbbf69b.jpg');
+INSERT INTO `tbl_imagenes` VALUES ('62', null, '1947838_646377598833341_3118370995584117528_n.jpg');
+INSERT INTO `tbl_imagenes` VALUES ('63', null, '12122730_648371118633989_7105395743743005459_n.jpg');
+INSERT INTO `tbl_imagenes` VALUES ('64', null, '3538_644248642379570_3653412228495972524_n.jpg');
+INSERT INTO `tbl_imagenes` VALUES ('65', null, '14432951_1726658147599912_3238717654601223037_n.jpg');
 
 -- ----------------------------
 -- Table structure for tbl_imagenes_galerias
@@ -600,11 +649,36 @@ CREATE TABLE `tbl_imagenes_galerias` (
   KEY `fk_tbl_imagenes_galerias_tbl_galerias1_idx` (`galeria_id`),
   CONSTRAINT `fk_tbl_imagenes_galerias_tbl_galerias1` FOREIGN KEY (`galeria_id`) REFERENCES `tbl_galerias` (`id_galeria`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_tbl_imagenes_galerias_tbl_imagenes1` FOREIGN KEY (`imagen_id`) REFERENCES `tbl_imagenes` (`id_imagen`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tbl_imagenes_galerias
 -- ----------------------------
+INSERT INTO `tbl_imagenes_galerias` VALUES ('16', '61', '3');
+INSERT INTO `tbl_imagenes_galerias` VALUES ('17', '60', '3');
+INSERT INTO `tbl_imagenes_galerias` VALUES ('18', '59', '3');
+INSERT INTO `tbl_imagenes_galerias` VALUES ('19', '58', '3');
+INSERT INTO `tbl_imagenes_galerias` VALUES ('20', '57', '3');
+INSERT INTO `tbl_imagenes_galerias` VALUES ('21', '61', '4');
+INSERT INTO `tbl_imagenes_galerias` VALUES ('22', '60', '4');
+INSERT INTO `tbl_imagenes_galerias` VALUES ('23', '59', '4');
+INSERT INTO `tbl_imagenes_galerias` VALUES ('24', '58', '4');
+INSERT INTO `tbl_imagenes_galerias` VALUES ('25', '57', '4');
+INSERT INTO `tbl_imagenes_galerias` VALUES ('26', '56', '4');
+INSERT INTO `tbl_imagenes_galerias` VALUES ('27', '55', '4');
+INSERT INTO `tbl_imagenes_galerias` VALUES ('28', '54', '4');
+INSERT INTO `tbl_imagenes_galerias` VALUES ('29', '53', '4');
+INSERT INTO `tbl_imagenes_galerias` VALUES ('30', '52', '4');
+INSERT INTO `tbl_imagenes_galerias` VALUES ('31', '64', '5');
+INSERT INTO `tbl_imagenes_galerias` VALUES ('32', '63', '5');
+INSERT INTO `tbl_imagenes_galerias` VALUES ('33', '62', '5');
+INSERT INTO `tbl_imagenes_galerias` VALUES ('34', '61', '5');
+INSERT INTO `tbl_imagenes_galerias` VALUES ('35', '60', '5');
+INSERT INTO `tbl_imagenes_galerias` VALUES ('36', '59', '5');
+INSERT INTO `tbl_imagenes_galerias` VALUES ('37', '58', '5');
+INSERT INTO `tbl_imagenes_galerias` VALUES ('38', '57', '5');
+INSERT INTO `tbl_imagenes_galerias` VALUES ('39', '56', '5');
+INSERT INTO `tbl_imagenes_galerias` VALUES ('40', '55', '5');
 
 -- ----------------------------
 -- Table structure for tbl_implementos
@@ -624,7 +698,7 @@ CREATE TABLE `tbl_implementos` (
   KEY `fk_tbl_implementos_tbl_estados_implementos1_idx` (`estado_id`),
   CONSTRAINT `fk_tbl_implementos_tbl_categorias_implementos1` FOREIGN KEY (`categoria_id`) REFERENCES `tbl_categorias_implementos` (`id_categoria`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_tbl_implementos_tbl_estados_implementos1` FOREIGN KEY (`estado_id`) REFERENCES `tbl_estados_implementos` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tbl_implementos
@@ -634,8 +708,7 @@ INSERT INTO `tbl_implementos` VALUES ('3', '1', 'Sillas', null, '25', '2', '20',
 INSERT INTO `tbl_implementos` VALUES ('4', '2', 'Toallas', 'Toallin gusta.', '25', '5', '10', '1');
 INSERT INTO `tbl_implementos` VALUES ('7', '1', 'Mesa', null, '8', '1', '5', '1');
 INSERT INTO `tbl_implementos` VALUES ('8', '1', 'nuevo', null, '10', '0', '12', '1');
-INSERT INTO `tbl_implementos` VALUES ('9', '2', 'Sillas1', null, '10', '4', '10', '2');
-INSERT INTO `tbl_implementos` VALUES ('10', '1', 'mesa2', null, '10', '3', '10', '1');
+INSERT INTO `tbl_implementos` VALUES ('9', '2', 'Sillas1', null, '10', '4', '10', '1');
 
 -- ----------------------------
 -- Table structure for tbl_matriculas
@@ -655,7 +728,7 @@ CREATE TABLE `tbl_matriculas` (
   KEY `fk_tbl_matriculas_tbl_categorias1_idx` (`categoria_id`),
   CONSTRAINT `fk_tbl_matriculas_tbl_categorias1` FOREIGN KEY (`categoria_id`) REFERENCES `tbl_categorias` (`id_categoria`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_tbl_matriculas_tbl_personas1` FOREIGN KEY (`deportista_id`) REFERENCES `tbl_deportistas` (`id_deportista`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tbl_matriculas
@@ -668,7 +741,6 @@ INSERT INTO `tbl_matriculas` VALUES ('17', '2016-07-29', 'Matricula-2016-1111111
 INSERT INTO `tbl_matriculas` VALUES ('18', '2016-07-30', null, '1', '10', '2', '2016', '2016-07-30 13:41:58');
 INSERT INTO `tbl_matriculas` VALUES ('19', '2016-07-31', null, '1', '4', '2', '2016', '2016-07-31 17:50:18');
 INSERT INTO `tbl_matriculas` VALUES ('20', '2016-08-08', 'Matricula-2016-123456789.PNG', '1', '1', '1', '2016', '2016-08-09 07:34:25');
-INSERT INTO `tbl_matriculas` VALUES ('21', '2016-09-09', 'Matricula-2016-12345678.jpg', '1', '13', '2', '2016', '2016-09-09 22:07:46');
 
 -- ----------------------------
 -- Table structure for tbl_modulos
@@ -887,13 +959,12 @@ CREATE TABLE `tbl_prestamos_deportista` (
   PRIMARY KEY (`id_prestamo`),
   KEY `fk_tbl_prestamos_deportista_tbl_personas1_idx` (`deportista_id`),
   CONSTRAINT `fk_tbl_prestamos_deportista_tbl_personas1` FOREIGN KEY (`deportista_id`) REFERENCES `tbl_deportistas` (`id_deportista`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tbl_prestamos_deportista
 -- ----------------------------
-INSERT INTO `tbl_prestamos_deportista` VALUES ('5', 'Alguno', 'Este', '2016-09-01', '2016-09-30', '0', '2', 'entrada');
-INSERT INTO `tbl_prestamos_deportista` VALUES ('7', 'Alguno', 'Otro', '2016-09-11', '2016-09-11', '1', '2', 'salida');
+INSERT INTO `tbl_prestamos_deportista` VALUES ('1', 'Praxis', 'Otrosss', '2016-08-07', '2016-08-31', '1', '4', 'salida');
 
 -- ----------------------------
 -- Table structure for tbl_publicaciones
@@ -905,13 +976,14 @@ CREATE TABLE `tbl_publicaciones` (
   `contenido` text,
   `consecutivo` int(10) unsigned DEFAULT NULL,
   `fecha_publicacion` datetime NOT NULL,
-  `fecha_disponibilidad` datetime NOT NULL,
+  `fecha_disponibilidad` datetime DEFAULT NULL,
   `tipo_id` int(11) NOT NULL,
   `lugar` varchar(200) DEFAULT NULL,
   `hora` time DEFAULT NULL,
   `estado_id` int(11) NOT NULL,
   `usuario_id` int(11) NOT NULL,
   `resumen` varchar(150) DEFAULT NULL,
+  `img_previsualizacion` varchar(300) DEFAULT NULL,
   PRIMARY KEY (`id_publicacion`),
   KEY `fk_tbl_publicaciones_tbl_usuarios1_idx` (`usuario_id`),
   KEY `fk_tbl_publicaciones_tbl_tipos_publicacion1_idx` (`tipo_id`),
@@ -919,16 +991,45 @@ CREATE TABLE `tbl_publicaciones` (
   CONSTRAINT `fk_tbl_publicaciones_tbl_estados_publicacion1` FOREIGN KEY (`estado_id`) REFERENCES `tbl_estados_publicacion` (`id_estado`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_tbl_publicaciones_tbl_tipos_publicacion1` FOREIGN KEY (`tipo_id`) REFERENCES `tbl_tipos_publicacion` (`id_tipo_publicacion`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_tbl_publicaciones_tbl_usuarios1` FOREIGN KEY (`usuario_id`) REFERENCES `tbl_usuarios` (`id_usuario`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tbl_publicaciones
 -- ----------------------------
-INSERT INTO `tbl_publicaciones` VALUES ('1', 'Nueva publicación', '<p><sup><strong><del>Esta es una publicación...&nbsp;</del></strong></sup></p><p><del><sub>Wola</sub></del></p><p><del><sub><br></sub></del></p><p></p><ul><li><span style=\"font-size: 10.5px; line-height: 0px;\"><del>olkas</del></span></li><li><span style=\"font-size: 10.5px; line-height: 0px;\"><del>okas</del></span></li><li><span style=\"font-size: 10.5px; line-height: 0px;\"><del><em>okas</em></del></span></li></ul><p></p>', null, '2016-08-08 00:00:00', '2016-07-28 00:00:00', '1', null, null, '2', '1', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna');
-INSERT INTO `tbl_publicaciones` VALUES ('2', 'Una publicación', 'Esta es una publicación', '1', '2016-08-08 00:00:00', '2016-07-29 00:00:00', '1', null, null, '1', '1', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna');
-INSERT INTO `tbl_publicaciones` VALUES ('3', 'Titulo', '<p>Soy un contenido sexy</p>', null, '2016-08-08 00:00:00', '0000-00-00 00:00:00', '1', null, null, '1', '1', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna');
-INSERT INTO `tbl_publicaciones` VALUES ('4', 'Estoy muy bueno', '<p>Esta publicación dice que estoy muy bueno ;) </p>', '1', '2016-08-08 00:00:00', '0000-00-00 00:00:00', '2', null, null, '1', '1', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna');
-INSERT INTO `tbl_publicaciones` VALUES ('5', 'Nueva pub...', '<p>Boobies </p>', '1', '2016-08-08 00:00:00', '0000-00-00 00:00:00', '1', null, null, '1', '1', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna');
+INSERT INTO `tbl_publicaciones` VALUES ('1', 'Nueva publicación', '<p><sup><strong><del>Esta es una publicación...&nbsp;</del></strong></sup></p><p><del><sub>Wola</sub></del></p><p><del><sub><br></sub></del></p><p></p><ul><li><span style=\"font-size: 10.5px; line-height: 0px;\"><del>olkas</del></span></li><li><span style=\"font-size: 10.5px; line-height: 0px;\"><del>okas</del></span></li><li><span style=\"font-size: 10.5px; line-height: 0px;\"><del><em>okas</em></del></span></li></ul><p></p>', null, '2016-08-08 00:00:00', '2016-07-28 00:00:00', '1', null, null, '2', '1', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna', null);
+INSERT INTO `tbl_publicaciones` VALUES ('2', 'Una publicación', 'Esta es una publicación', '1', '2016-08-08 00:00:00', '2016-07-29 00:00:00', '1', null, null, '1', '1', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna', null);
+INSERT INTO `tbl_publicaciones` VALUES ('3', 'Titulo', '<p>Soy un contenido sexy</p>', null, '2016-08-08 00:00:00', '0000-00-00 00:00:00', '1', null, null, '1', '1', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna', null);
+INSERT INTO `tbl_publicaciones` VALUES ('4', 'Estoy muy bueno', '<p>Esta publicación dice que estoy muy bueno ;) </p>', '1', '2016-08-08 00:00:00', '0000-00-00 00:00:00', '2', null, null, '1', '1', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna', null);
+INSERT INTO `tbl_publicaciones` VALUES ('5', 'Nueva pub...', '<p>Boobies </p>', '1', '2016-08-08 00:00:00', '0000-00-00 00:00:00', '1', null, null, '1', '1', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna', null);
+INSERT INTO `tbl_publicaciones` VALUES ('6', 'Nueva publicación', '<p><sup><strong><del>Esta es una publicación...&nbsp;</del></strong></sup></p><p><del><sub>Wola</sub></del></p><p><del><sub><br></sub></del></p><p></p><ul><li><span style=\"font-size: 10.5px; line-height: 0px;\"><del>olkas</del></span></li><li><span style=\"font-size: 10.5px; line-height: 0px;\"><del>okas</del></span></li><li><span style=\"font-size: 10.5px; line-height: 0px;\"><del><em>okas</em></del></span></li></ul><p></p>', null, '2016-08-08 00:00:00', '2016-07-28 00:00:00', '1', '', '00:00:00', '2', '1', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna', '');
+INSERT INTO `tbl_publicaciones` VALUES ('7', 'Una publicación', 'Esta es una publicación', '1', '2016-08-08 00:00:00', '2016-07-29 00:00:00', '1', '', '00:00:00', '1', '1', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna', '');
+INSERT INTO `tbl_publicaciones` VALUES ('8', 'Titulo', '<p>Soy un contenido sexy</p>', null, '2016-08-08 00:00:00', '0000-00-00 00:00:00', '1', '', '00:00:00', '1', '1', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna', '');
+INSERT INTO `tbl_publicaciones` VALUES ('9', 'Estoy muy bueno', '<p>Esta publicación dice que estoy muy bueno ;) </p>', '1', '2016-08-08 00:00:00', '0000-00-00 00:00:00', '2', '', '00:00:00', '1', '1', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna', '');
+INSERT INTO `tbl_publicaciones` VALUES ('10', 'Nueva pub...', '<p>Boobies </p>', '1', '2016-08-08 00:00:00', '0000-00-00 00:00:00', '1', '', '00:00:00', '1', '1', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna', '');
+INSERT INTO `tbl_publicaciones` VALUES ('11', 'Publicación', '<p>lorem&nbsp;</p>\r\n<p>Wola&nbsp;</p>\r\n<p>Esto&nbsp;</p>\r\n<p>Es una</p>\r\n<p>publiaci&oacute;n&nbsp;</p>\r\n<p>muy</p>\r\n<p>Chida</p>\r\n<p>&nbsp;</p>', null, '2016-09-14 00:00:00', '2016-09-30 00:00:00', '1', null, null, '1', '1', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna', null);
+INSERT INTO `tbl_publicaciones` VALUES ('13', 'Piernotas', '<p><img src=\"http://localhost/proyecto-formacion/prax-sys/publico/imagenes/galerias/13620981_669070126589333_2451808129287193673_n.jpg\" alt=\"\" width=\"937\" height=\"467\" /></p>', null, '2016-09-17 14:53:00', '2016-09-30 00:00:00', '1', null, null, '1', '1', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna', null);
+INSERT INTO `tbl_publicaciones` VALUES ('14', 'El aseo es important', '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod<br />tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,<br />quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo<br />consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse<br />cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non<br />proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>', '2', '2016-09-17 16:26:06', '2016-09-30 00:00:00', '2', null, null, '1', '1', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna', null);
+INSERT INTO `tbl_publicaciones` VALUES ('15', 'Eva Andressa', '<p>&nbsp;</p>\r\n<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.&nbsp;</p>\r\n<p><img src=\"http://localhost/proyecto-formacion/prax-sys/publico/imagenes/galerias/11870862_1112992228769075_3003191989677629103_n.jpg\" alt=\"\" width=\"639\" height=\"960\" /></p>', null, '2016-09-23 22:36:40', '2016-09-30 00:00:00', '1', null, null, '1', '1', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna', 'http://localhost/proyecto-formacion/prax-sys/publico/imagenes/galerias/3538_644248642379570_3653412228495972524_n.jpg');
+INSERT INTO `tbl_publicaciones` VALUES ('16', 'Piernotas everywhere', '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.&nbsp;</p>\r\n<p><img src=\"http://localhost/proyecto-formacion/prax-sys/publico/imagenes/galerias/14432951_1726658147599912_3238717654601223037_n.jpg\" alt=\"\" width=\"960\" height=\"960\" /></p>', null, '2016-09-25 16:10:53', '2016-09-30 00:00:00', '1', null, null, '1', '1', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna', 'http://localhost/proyecto-formacion/prax-sys/publico/imagenes/galerias/14432951_1726658147599912_3238717654601223037_n.jpg');
+
+-- ----------------------------
+-- Table structure for tbl_reseteopass
+-- ----------------------------
+DROP TABLE IF EXISTS `tbl_reseteopass`;
+CREATE TABLE `tbl_reseteopass` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `idusuario` int(10) unsigned NOT NULL,
+  `username` varchar(15) NOT NULL,
+  `token` varchar(64) NOT NULL,
+  `creado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idusuario` (`idusuario`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+
+-- ----------------------------
+-- Records of tbl_reseteopass
+-- ----------------------------
+INSERT INTO `tbl_reseteopass` VALUES ('1', '1', 'developer', '8218494fe7aeadc5a303827663c4d0e33cb98a25', '2016-09-21 08:57:46');
 
 -- ----------------------------
 -- Table structure for tbl_roles
@@ -940,17 +1041,19 @@ CREATE TABLE `tbl_roles` (
   `descripcion` varchar(300) DEFAULT NULL,
   `desarrollador` tinyint(1) NOT NULL,
   `estado` tinyint(1) NOT NULL DEFAULT '1',
+  `web_site` tinyint(4) DEFAULT '0',
   PRIMARY KEY (`id_rol`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tbl_roles
 -- ----------------------------
-INSERT INTO `tbl_roles` VALUES ('1', 'Desarrollador', null, '1', '1');
-INSERT INTO `tbl_roles` VALUES ('2', 'Administrador', null, '0', '1');
-INSERT INTO `tbl_roles` VALUES ('3', 'Secretaria', null, '0', '1');
-INSERT INTO `tbl_roles` VALUES ('4', 'Entrenador', null, '0', '1');
-INSERT INTO `tbl_roles` VALUES ('5', 'Asistente', null, '0', '1');
+INSERT INTO `tbl_roles` VALUES ('1', 'Desarrollador', null, '1', '1', '0');
+INSERT INTO `tbl_roles` VALUES ('2', 'Administrador', null, '0', '1', '0');
+INSERT INTO `tbl_roles` VALUES ('3', 'Secretaria', null, '0', '1', '0');
+INSERT INTO `tbl_roles` VALUES ('4', 'Entrenador', null, '0', '1', '0');
+INSERT INTO `tbl_roles` VALUES ('5', 'Asistente', null, '0', '1', '0');
+INSERT INTO `tbl_roles` VALUES ('6', 'suscrito', null, '0', '1', '1');
 
 -- ----------------------------
 -- Table structure for tbl_rutas
@@ -1082,7 +1185,7 @@ CREATE TABLE `tbl_tipos_documento` (
   PRIMARY KEY (`id_tipo`),
   KEY `fk_padre_id_tipos_documentos_idx` (`padre_id`),
   CONSTRAINT `fk_padre_id_tipos_documentos` FOREIGN KEY (`padre_id`) REFERENCES `tbl_tipos_documento` (`id_tipo`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tbl_tipos_documento
@@ -1090,8 +1193,6 @@ CREATE TABLE `tbl_tipos_documento` (
 INSERT INTO `tbl_tipos_documento` VALUES ('1', 'Documentos personales', null, null);
 INSERT INTO `tbl_tipos_documento` VALUES ('2', 'Recibos', null, null);
 INSERT INTO `tbl_tipos_documento` VALUES ('3', 'Boletines', null, null);
-INSERT INTO `tbl_tipos_documento` VALUES ('4', 'Nueva', null, '1');
-INSERT INTO `tbl_tipos_documento` VALUES ('5', 'Nueva carpeta', null, '4');
 
 -- ----------------------------
 -- Table structure for tbl_tipos_evento
@@ -1102,11 +1203,12 @@ CREATE TABLE `tbl_tipos_evento` (
   `nombre` varchar(45) DEFAULT NULL,
   `descripcion` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id_tipo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of tbl_tipos_evento
 -- ----------------------------
+INSERT INTO `tbl_tipos_evento` VALUES ('1', 'Bazar', null);
 
 -- ----------------------------
 -- Table structure for tbl_tipos_identificacion
@@ -1151,16 +1253,15 @@ CREATE TABLE `tbl_tipos_publicacion` (
   `id_tipo_publicacion` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(80) NOT NULL,
   `descripcion` varchar(200) DEFAULT NULL,
+  `consecutivo` int(11) DEFAULT NULL,
   PRIMARY KEY (`id_tipo_publicacion`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tbl_tipos_publicacion
 -- ----------------------------
-INSERT INTO `tbl_tipos_publicacion` VALUES ('1', 'Noticia', null);
-INSERT INTO `tbl_tipos_publicacion` VALUES ('2', 'Circular', null);
-INSERT INTO `tbl_tipos_publicacion` VALUES ('3', 'Evento', null);
-INSERT INTO `tbl_tipos_publicacion` VALUES ('4', 'Noticia', 'alert(\"okas\")');
+INSERT INTO `tbl_tipos_publicacion` VALUES ('1', 'Noticia', null, null);
+INSERT INTO `tbl_tipos_publicacion` VALUES ('2', 'Circular', null, null);
 
 -- ----------------------------
 -- Table structure for tbl_torneos
@@ -1177,13 +1278,20 @@ CREATE TABLE `tbl_torneos` (
   `nombre` varchar(50) NOT NULL,
   `observaciones` text,
   `tabla_posiciones` varchar(45) DEFAULT NULL,
+  `descripcion` text,
+  `imagen` varchar(300) DEFAULT NULL,
   PRIMARY KEY (`id_torneo`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tbl_torneos
 -- ----------------------------
-INSERT INTO `tbl_torneos` VALUES ('1', '3', '2', '15', '0', '2016-08-10', '2016-08-11', 'Torneo de Juanda', 'Lorem', null);
+INSERT INTO `tbl_torneos` VALUES ('1', '3', '2', '15', '0', '2016-08-10', '2016-08-11', 'Torneo de Juanda', 'Lorem', null, 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna', null);
+INSERT INTO `tbl_torneos` VALUES ('2', '3', '2', '15', '0', '2016-08-10', '2016-08-11', 'Torneo de Juanda', 'Lorem', '', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna', null);
+INSERT INTO `tbl_torneos` VALUES ('3', '3', '2', '15', '0', '2016-08-10', '2016-08-11', 'Torneo de Juanda', 'Lorem', '', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna', null);
+INSERT INTO `tbl_torneos` VALUES ('4', '3', '2', '15', '0', '2016-08-10', '2016-08-11', 'Torneo de Juanda', 'Lorem', '', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna', null);
+INSERT INTO `tbl_torneos` VALUES ('5', '3', '2', '15', '0', '2016-08-10', '2016-08-11', 'Torneo de Juanda', 'Lorem', '', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna', null);
+INSERT INTO `tbl_torneos` VALUES ('6', '3', '2', '15', '0', '2016-08-10', '2016-08-11', 'Torneo de Juanda', 'Lorem', '', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna', null);
 
 -- ----------------------------
 -- Table structure for tbl_usuarios
@@ -1201,13 +1309,15 @@ CREATE TABLE `tbl_usuarios` (
   `recuperacion` tinyint(1) DEFAULT NULL,
   `estado` tinyint(1) NOT NULL DEFAULT '1',
   `foto` varchar(200) DEFAULT NULL,
+  `url_recuperacion` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id_usuario`),
   KEY `fk_tbl_usuarios_tbl_roles1_idx` (`rol_id`),
   CONSTRAINT `fk_tbl_usuarios_tbl_roles1` FOREIGN KEY (`rol_id`) REFERENCES `tbl_roles` (`id_rol`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tbl_usuarios
 -- ----------------------------
-INSERT INTO `tbl_usuarios` VALUES ('1', '1', 'demo@localhost.com', 'developer', 'Bryan', 'Bedoya', null, '7c4a8d09ca3762af61e59520943dc26494f8941b', null, '0', 'developer.png');
-INSERT INTO `tbl_usuarios` VALUES ('2', '1', 'alejo.jko@gmail.com', 'desarrollador', 'Alejo', 'Quiroz', null, '7c4a8d09ca3762af61e59520943dc26494f8941b', null, '1', 'desarrollador');
+INSERT INTO `tbl_usuarios` VALUES ('1', '1', 'alejoqs@misena.edu.co', 'developer', 'Alejo', 'Quiroz', null, '7c4a8d09ca3762af61e59520943dc26494f8941b', null, '1', 'developer.png', null);
+INSERT INTO `tbl_usuarios` VALUES ('2', '1', 'alejo.jko@gmail.com', 'desarrollador', 'Alejo', 'Quiroz', null, '7c4a8d09ca3762af61e59520943dc26494f8941b', null, '1', 'desarrollador', null);
+INSERT INTO `tbl_usuarios` VALUES ('13', '6', 'demo@localhost.com', 'el_jako', 'Alejandro', 'Quiroz', null, '7c4a8d09ca3762af61e59520943dc26494f8941b', null, '1', 'el_jako.jpg', null);

@@ -2,7 +2,7 @@
     <div class="col-sm-12">
         <button class="btn btn-primary" id="open-modal">
             <i class="fa fa-upload"></i> 
-            Cargar Imagenes
+            Subir imagenes
         </button>        
     </div>
 </div>
@@ -75,7 +75,10 @@
             uploadAsync: true,
             uploadExtraData: {
                 'upload-imgs': true,
-            }
+            },
+            browseLabel: "Buscar",
+            removeLabel: "Remover",
+            uploadLabel: "Subir",
         }).on('fileuploaded', function(event, data, id, index){
             console.log(data.response);
             var respuesta = data.response;

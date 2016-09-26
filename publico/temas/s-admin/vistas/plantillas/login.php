@@ -28,7 +28,7 @@ Sis::Recursos()->css('estilos');
         <meta charset="<?php echo Sis::apl()->charset; ?>">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
         <meta name="format-detection" content="telephone=no">
-        
+        <link rel="icon" href="<?= Sis::UrlRecursos() ?>pics/logo.ico">
     </head>
     <body id="skin-cloth">
         <section id="login">        
