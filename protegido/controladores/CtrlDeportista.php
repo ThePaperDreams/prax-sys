@@ -7,7 +7,7 @@
  * @version 1.0.0
  */
 class CtrlDeportista extends CControlador {
-
+    private $tipoDocDef = 3;
     /**
      * Esta función muestra el inicio y una tabla para listar los datos
      */
@@ -21,6 +21,7 @@ class CtrlDeportista extends CControlador {
      * Esta función permite crear un nuevo registro
      */
     public function accionCrear() {
+        CBoot::text();
         $this->validarIdentificacion();
         $modelo = new Deportista();
         $modelo2 = new Acudiente();
@@ -34,11 +35,13 @@ class CtrlDeportista extends CControlador {
             if ($modelo->guardar()) {
                 $dep = $modelo->id_deportista;
                 $this->asociarAcudientes($dep);
-                $this->asociarDocumentos($dep);
+                $this->asociarDocumentos($dep, $modelo);
                 $this->alertar('success', 'Registro Exitoso');
                 $this->redireccionar('inicio');
             }
         }
+        # seteamos un tipo de documento por defecto al deportista
+        $modelo->tipo_documento_id = $this->tipoDocDef;
         $url = Sis::crearUrl(['Deportista/crear']);
         $this->mostrarVista('crear', ['modelo' => $modelo,
             'modelo2' => $modelo2,
@@ -46,7 +49,7 @@ class CtrlDeportista extends CControlador {
             'url' => $url,
             'url2' => 'vacio',
             'tiposIdentificaciones' => CHtml::modelolista(TipoIdentificacion::modelo()->listar(), "id_tipo_documento", "nombre"),
-            'acudientes' => CHtml::modelolista(Acudiente::modelo()->listar(), "id_acudiente", "Datos"),
+            'acudientes' => CHtml::modelolista(Acudiente::modelo()->listar(['where' => 'estado=1']), "id_acudiente", "Datos"),
             'tiposDocumentos' => CHtml::modelolista(TipoDocumento::modelo()->listar(), "id_tipo", "nombre"),
             'estados' => CHtml::modelolista(EstadoDeportista::modelo()->listar(), "id_estado", "nombre"),
         ]);
@@ -63,12 +66,12 @@ class CtrlDeportista extends CControlador {
         }
     }
 
-    public function asociarDocumentos($dep) {
+    public function asociarDocumentos($dep, $modelo) {
         if (isset($_FILES['Documentos']) && isset($this->_p['TiposDocumentos']) && isset($this->_p['NombresDocumentos'])) {
             foreach ($this->_p['TiposDocumentos'] as $k => $v) {
-                $nomtipo = trim($this->_p['NombresDocumentos'][$k]);
+                $nomtipo = trim($this->_p['NombresDocumentos'][$k]) . '_deportista_' . $modelo->identificacion;
                 $files = CArchivoCargado::instanciarTodasPorNombre('Documentos');
-                $rutaDestino = Sis::resolverRuta(Sis::crearCarpeta("!publico.deportistas.$dep"));
+                $rutaDestino = Sis::resolverRuta(Sis::crearCarpeta("!publico.documentos.deportistas.$dep"));
                 if(!$files[$k]->guardar($rutaDestino, $nomtipo)){continue;}
                 $doc = $this->asociarDocumento($nomtipo, $k, $v, $files, $dep);
                 $this->asociarDeportistaDocumento($dep, $doc);
@@ -129,7 +132,7 @@ class CtrlDeportista extends CControlador {
             'url' => $url,
             'url2' => $url2,
             'tiposIdentificaciones' => CHtml::modelolista(TipoIdentificacion::modelo()->listar(), "id_tipo_documento", "nombre"),
-            'acudientes' => CHtml::modelolista(Acudiente::modelo()->listar(), "id_acudiente", "Datos"),
+                        'acudientes' => CHtml::modelolista(Acudiente::modelo()->listar(['where' => 'estado=1']), "id_acudiente", "Datos"),
             'tiposDocumentos' => CHtml::modelolista(TipoDocumento::modelo()->listar(), "id_tipo", "nombre"),
             'estados' => CHtml::modelolista(EstadoDeportista::modelo()->listar(), "id_estado", "nombre"),
         ]);
@@ -266,24 +269,30 @@ class CtrlDeportista extends CControlador {
     }
 
     public function accionCambiarEstado($pk) {
-        $modelo = $this->cargarModelo($pk);
-        /*if ($modelo->estado_id == 2) {
-            $this->alertar('warning', 'El Deportista ya se encuentra Inactivo');
-            $this->redireccionar('inicio');
-        }*/
+        $modelo = $this->cargarModelo($pk);        
         $cr = new CCriterio();
         $cr->condicion("t.deportista_id", $pk, "=")
            ->y("t.estado", 1, "=");
         $prestamo = PrestamoDeportista::modelo()->listar($cr);
-        //$estado = if($prestamo->)
-        /*echo "<pre>";
-        var_dump($prestamo);        
-        exit();*/
+        
         if(count($prestamo) > 0){
             $this->alertar('error', 'No se puede Inactivar. El Deportista se encuentra en Préstamo');
             $this->redireccionar('inicio');
         }
-        $modelo->estado_id = ($modelo->estado_id != 2) ? 2 : 1;
+
+        # si no activo o inactivo y no hay estado anterior lo activamos o inactivamos según convenga
+        if(($modelo->estado_id == 1 || $modelo->estado_id == 2) && $modelo->estado_anterior == null){
+            $modelo->estado_id = ($modelo->estado_id == 1)? 2 : 1;
+        } else if($modelo->estado_anterior !== null){            
+        # si hay estado anterior definimos el estado anterior
+            $modelo->estado_id = $modelo->estado_anterior;
+            $modelo->estado_anterior = null;
+        }else {            
+        # ni activo ni inactivo y no hay estado anterior inactivamos y guardamos el estado anterior
+            $modelo->estado_anterior = $modelo->estado_id;
+            $modelo->estado_id = 2;
+        }
+
         if ($modelo->guardar()) {
             $this->alertar('success', 'Cambio de estado exitoso');
         }

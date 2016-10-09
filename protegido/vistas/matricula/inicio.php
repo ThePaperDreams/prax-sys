@@ -15,11 +15,13 @@
 
 <?= $this->complemento('!siscoms.bootstrap3.CBGrid', [
     'ajax' => true,
+    'exportar' => [
+        'PDF' => ['url' => ['matricula/reporte'], 'nombre' => 'export-pdf', 'i' => 'file-pdf-o'],
+    ],
     'filtrosAjax' => [
         'deportista_id', 
         'estado' => CBoot::select('', ['Anulado', 'Vigente'], ['defecto' => 'Estado', 'style' => 'min-width: 150px;', 'name' => 'estado']),
-        'anio', 
-        'categoria_id' => CBoot::select('', $categorias, ['defecto' => 'Categoría', 'style' => 'min-width: 150px;', 'name' => 'categoria_id', 'data-s2' => true]),
+        'categoria_id' => CBoot::select('', $categorias, ['defecto' => '---', 'style' => 'min-width: 150px;', 'name' => 'categoria_id', 'data-s22' => true]),
     ],
     'modelo' => 'Matricula',
     'criterios' => [
@@ -39,3 +41,15 @@
     ],
     'paginacion' => 10,
 ]) ?>
+<script>
+    
+    $(function(){
+        $(".btn-exportar-grid").click(function(){
+            var form = $("#form-exportar-grid");
+            var url = $(this).attr("data-action");
+            form.attr("action", url);
+            form.submit();
+        });
+    });
+
+</script>

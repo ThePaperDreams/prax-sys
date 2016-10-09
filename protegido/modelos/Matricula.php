@@ -122,15 +122,22 @@ class Matricula extends CModelo {
         }
     }   
     
-    public static function getDeportistasSinMatricula(){
+    public static function getDeportistasSinMatricula($matricula = false){
         $matriculas = Matricula::modelo()->listar([
             'where' => "estado = 1",
         ]);
         $ids = [];
         foreach($matriculas AS $m){  $ids[] = $m->deportista_id; }
-        $deportistas = Deportista::modelo()->listar([
-            'where' => "id_deportista NOT IN (" . implode(',', $ids) . ")",
-        ]);
+        # si se llama para registrar una matricula
+        if($matricula){
+            $deportistas = Deportista::modelo()->listar([
+                'where' => "id_deportista NOT IN (" . implode(',', $ids) . ")",
+            ]);
+        } else {
+            $deportistas = Deportista::modelo()->listar([
+                'where' => "id_deportista NOT IN (" . implode(',', $ids) . ") AND estado_id <> 4",
+            ]);
+        }
         return $deportistas;
                 
     }

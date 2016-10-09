@@ -96,7 +96,7 @@ class Categoria extends CModelo {
             'estado' => 'Estado',
             'entrenador_id' => 'Entrenador',
             'edad' => 'Edades',
-            'cupos' => 'Cupos',
+            'cupos' => 'Max - Min',
             'tarifaf' => 'Tarifa',
         ];
     }
@@ -119,7 +119,7 @@ class Categoria extends CModelo {
         return "$this->edad_minima - $this->edad_maxima";
     }
 
-    public function getCupos() {
+    public function getCuposDisponibles() {
         return "$this->cupo_minimo - $this->cupo_maximo";
     }
 

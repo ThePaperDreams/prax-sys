@@ -5,7 +5,7 @@ $formulario->abrir();
 <div class="tile p-15">
     <p>Los campos con <span class="text-danger">*</span>  son requeridos</p>
     <hr>    
-    <?php echo $formulario->campoTexto($modelo, 'titulo', ['label' => true, 'group' => true, 'autofocus' => true, 'data-content' => '<i class=\'req\'>Maximo: 10 caracteres</i>', 'data-toggle' => 'popover', 'maxlength' => 10]) ?>
+    <?php echo $formulario->campoTexto($modelo, 'titulo', ['label' => true, 'group' => true, 'autofocus' => true, 'data-content' => '<i class=\'req\'>Maximo: 20 caracteres</i>', 'data-toggle' => 'popover', 'maxlength' => 20]) ?>
     <?php echo $formulario->areaTexto($modelo, 'descripcion', ['label' => true, 'group' => true]) ?>
     <div class="row">
         <div class="col-sm-offset-4 col-sm-4">

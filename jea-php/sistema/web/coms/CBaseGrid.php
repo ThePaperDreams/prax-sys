@@ -18,6 +18,7 @@ abstract class CBaseGrid extends CComplemento{
     protected $filtradoAjax = false;
     protected $_ajax = false;
     protected $_orden = false;
+    protected $_exportar = [];
     /**
      * @var CModelo
      */
@@ -200,7 +201,7 @@ abstract class CBaseGrid extends CComplemento{
     protected function construirColsFila(&$cols, $modelo){
         foreach($this->tColumnas AS $k=>$v){
             $opciones = [];
-            if(is_string($k) && is_array($v)){
+            if(is_string($k) && is_array($v)){                
                 $valor = isset($v['valor'])? $modelo->$v['valor'] : '';
                 $opciones = isset($v['opciones'])? $v['opciones'] : [];
             } else if(is_string($k)){
@@ -270,10 +271,12 @@ abstract class CBaseGrid extends CComplemento{
                   '$(function(){' .  
                     '$("input.j-grid-filtro").keyup(function(e){' .  
                         'if(e.which === 13){' .  
+                            '$("#" + $(this).attr("id") + "-tokken").val($(this).val());' . 
                             'ejefiltroTabla();' .  
                         '}' .  
                     '});' .
                     '$("select.j-grid-filtro").change(function(){' . 
+                        '$("#" + $(this).attr("id") + "-tokken").val($(this).val());' . 
                         'ejefiltroTabla();' . 
                     '});' .
                 

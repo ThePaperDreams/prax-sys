@@ -15,7 +15,7 @@ $formulario->abrir();
     <div role="tabpanel" class="tab-pane active" id="formulario">
         <div class="row">    
             <div class="col-sm-6">
-                <?php echo $formulario->lista($modelo, 'tipo_documento_id', $tiposIdentificaciones, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un Tipo de documento']) ?>
+                <?php echo $formulario->lista($modelo, 'tipo_documento_id', $tiposIdentificaciones, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un Tipo de documento', 'data-s2' => true]) ?>
             </div>
             <div class="col-sm-6">
                 <?php echo $formulario->campoNumber($modelo, 'identificacion', ['label' => true, 'group' => true, 'autofocus' => true, 'min' => '0', 'maxlength' => '45']) ?>
@@ -64,7 +64,7 @@ $formulario->abrir();
                 <?php echo $formulario->campoArchivo($modelo, 'foto', ['label' => true, 'group' => true]) ?>
             </div>
             <div class="col-sm-6">
-                <?php echo $formulario->lista($modelo, 'estado_id', $estados, ['label' => true, 'group' => true]) ?>
+                <?php echo $formulario->lista($modelo, 'estado_id', $estados, ['label' => true, 'group' => true, 'data-s2' => true]) ?>
             </div>
         </div>        
     </div>
@@ -72,7 +72,7 @@ $formulario->abrir();
     <div role="tabpanel" class="tab-pane" id="acus">
         <div class="row">
             <div class="col-sm-6">
-                <?php echo $formulario->lista($modelo2, 'id_acudiente', $acudientes, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un Acudiente']) ?>
+                <?php echo $formulario->lista($modelo2, 'id_acudiente', $acudientes, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un Acudiente', 'data-s2' => true]) ?>
             </div>
             <div class="col-sm-2">
                 <?php echo CBoot::boton(CBoot::fa('plus') . ' Agregar', 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'id' => 'btn-addAcu']) ?>
@@ -144,7 +144,7 @@ $formulario->abrir();
     <div role="tabpanel" class="tab-pane" id="documentos">
         <div class="row">
             <div class="col-sm-6">
-                <?php echo $formulario->lista($modelo3, 'id_tipo', $tiposDocumentos, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un Tipo de documento']) ?>
+                <?php echo $formulario->lista($modelo3, 'id_tipo', $tiposDocumentos, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un Tipo de documento', 'data-s2' => true]) ?>
             </div>
             <div class="col-sm-2">
                 <?php echo CBoot::boton(CBoot::fa('plus-circle') . ' Agregar', 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'id' => 'btn-addDoc']) ?>

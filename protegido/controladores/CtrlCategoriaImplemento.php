@@ -114,7 +114,7 @@ class CtrlCategoriaImplemento extends CControlador {
     public function accionEliminar($pk) {
         $modelo = $this->cargarModelo($pk);
         if ($modelo->eliminar()) {
-            # lógica para borrado exitoso
+            Sis::Sesion()->flash('alert', ['tipo' => 'success', 'msg' => 'Se eliminó correctamente la categoría']);
         } else {
             # lógica para error al borrar
         }

@@ -99,6 +99,22 @@ class CCriterio {
         return $this;
     }
     
+    public function noEsVacio($campo, $y = true){
+        if($this->condicion !== null && $this->condicion !== ""){ 
+            $this->condicion .= " " . ($y? "AND" : "OR");
+        }
+        $this->condicion .= " $campo IS NOT NULL ";
+        return $this;
+    }
+
+    public function esVacio($campo, $y = true){
+        if($this->condicion !== null && $this->condicion !== ""){ 
+            $this->condicion .= " " . ($y? "AND" : "OR");
+        }
+        $this->condicion .= " $campo IS NULL ";
+        return $this;
+    }
+
     /**
      * Esta función permite indicar el orden que se dará a los registros
      * @param string $orden

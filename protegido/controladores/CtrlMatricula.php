@@ -47,6 +47,29 @@ class CtrlMatricula extends CControlador {
         ]);
     }    
     
+    public function accionReporte(){
+        if(!isset($this->_p['modelo'])){
+            $this->redireccionar('inicio');
+        }
+
+        $this->tituloPagina = "Matriculas - praxis";
+        $campos = $this->_p['modelo'];
+        foreach($campos AS $k=>$v){ $campos[$k] = $v == ''? null : $v; }
+        $c = new CCriterio();
+        $c->condicion('deportista_id', $campos['deportista_id'])
+            ->y('estado', $campos['estado'])
+            ->y('categoria_id', $campos['categoria_id']);
+        $matriculas = Matricula::modelo()->listar($c);
+
+        $this->plantilla = "reporte";
+        $pdf = Sis::apl()->mpdf->crear();
+        ob_start();
+        $this->vista('reporte', ['matriculas' => $matriculas]);
+        $texto = ob_get_clean();
+        $pdf->writeHtml($texto);
+        $pdf->Output("Matriculas.pdf", 'I');
+    }
+
     /**
      * 
      * @param Matricula $modelo

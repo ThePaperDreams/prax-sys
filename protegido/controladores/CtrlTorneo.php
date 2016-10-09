@@ -11,10 +11,10 @@ class CtrlTorneo extends CControlador{
      * Esta función muestra el inicio y una tabla para listar los datos
      */
     public function accionInicio(){
-        $modelos = Torneo::modelo()->listar();
-        $this->mostrarVista('inicio', ['modelos' => $modelos,
-            
-            ]);
+        $c = new CCriterio();
+        $c->orden("id_torneo", false);
+
+        $this->mostrarVista('inicio', ['criterios' => $c]);
     }
     
     private function guardarEquipos($equipos, $torneo){

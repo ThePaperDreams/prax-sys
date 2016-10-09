@@ -77,6 +77,16 @@ class CategoriaImplemento extends CModelo {
             return CHtml::e('span', 'Inactivo', ['class' => 'label label-danger']);
         }
     }
+
+    public function getEnUso(){
+        $c = new CCriterio();
+        $c->condicion("categoria_id", $this->id_categoria);
+
+        $implementos = Implemento::modelo()->contar($c);
+
+        return $implementos > 0;
+    }
+
     /**
      * Esta función permite listar todos los registros
      * @param array $criterio

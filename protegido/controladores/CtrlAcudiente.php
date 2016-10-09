@@ -9,6 +9,7 @@
 class CtrlAcudiente extends CControlador {
     public $ayuda;
     public $ayudaTitulo;
+    private $tipoDocDef = 1;
     /**
      * Esta función muestra el inicio y una tabla para listar los datos
      */
@@ -22,16 +23,19 @@ class CtrlAcudiente extends CControlador {
         $this->validarIdentificacion();
         $modelo = new Acudiente();
         $modelo2 = new TipoDocumento();
+        $modelo->tipo_doc_id = $this->tipoDocDef;
         /* Probancia 
         echo "<pre>";
         var_dump($this->_p['TipoDocumentos'], $this->_p['Documentos'],$this->_p['NombresDocumentos']);
         exit(); */
         if (isset($this->_p['Acudientes'])) {            
+            Sis::apl()->bd->begin();
             $modelo->atributos = $this->_p['Acudientes'];
             $modelo->identificacion = trim($this->_p['Acudientes']['identificacion']);
             if ($modelo->guardar()) {
-                $this->asociarDocumentos($modelo->id_acudiente);
+                $this->asociarDocumentos($modelo->id_acudiente, $modelo);
                 $this->alertar('success','Guardado exitoso');                
+                Sis::apl()->bd->commit();
                 $this->redireccionar('inicio');
             }
         }
@@ -69,12 +73,12 @@ class CtrlAcudiente extends CControlador {
         }
     }
     
-    public function asociarDocumentos($acu) {
+    public function asociarDocumentos($acu, $modelo) {
         if (isset($_FILES['Documentos']) && isset($this->_p['TiposDocumentos']) && isset($this->_p['NombresDocumentos'])) {
             foreach ($this->_p['TiposDocumentos'] as $k => $v) {
-                $nomtipo = trim($this->_p['NombresDocumentos'][$k]);
+                $nomtipo = trim($this->_p['NombresDocumentos'][$k]) . '_acudiente_' . $modelo->identificacion;
                 $files = CArchivoCargado::instanciarTodasPorNombre('Documentos');
-                $rutaDestino = Sis::resolverRuta(Sis::crearCarpeta("!publico.acudientes.$acu"));
+                $rutaDestino = Sis::resolverRuta(Sis::crearCarpeta("!publico.documentos.acudientes.$acu"));
                 if(!$files[$k]->guardar($rutaDestino, $nomtipo)){continue;} // La idea es que si no se guardo en el host
                 // el documento no se generen registros en la bd
                 $doc = $this->asociarDocumento($nomtipo, $k, $v, $files, $acu);
@@ -111,9 +115,11 @@ class CtrlAcudiente extends CControlador {
         if (isset($this->_p['Acudientes'])) {
             $modelo->atributos = $this->_p['Acudientes'];
             $modelo->identificacion = trim($this->_p['Acudientes']['identificacion']);
+            Sis::apl()->bd->begin();
             if ($modelo->guardar()) {
-                $this->asociarDocumentos($modelo->id_acudiente);
+                $this->asociarDocumentos($modelo->id_acudiente, $modelo);
                 $this->alertar('success', 'Modificación exitosa');                
+                Sis::apl()->bd->commit();
                 $this->redireccionar('inicio');
             }
         }

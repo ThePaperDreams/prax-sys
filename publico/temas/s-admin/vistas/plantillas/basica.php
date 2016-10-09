@@ -127,9 +127,9 @@ Sis::Recursos()->Js('comunes');
                 ['texto' => 'Formación', 'fa' => 'soccer-ball-o', 'elementos' => [
                     ['texto' => 'Categorías de deportistas', 'url' => ['categoria/inicio']],
                     ['texto' => 'Matriculas', 'url' => ['Matricula/inicio']],
+                    ['texto' => 'Asistencia', 'url' => ['asistencia/inicio']],
                     ['texto' => 'Lista de espera', 'url' => ['Deportista/verListaEspera']],
                     ['texto' => 'Planes de Trabajo', 'url' => ['PlanTrabajo/inicio']],
-                    ['texto' => 'Asistencia', 'url' => ['asistencia/inicio']],
                     ['texto' => 'Objetivos', 'url' => ['objetivo/inicio']],
                     ['texto' => 'Préstamo de deportistas', 'url' => ['PrestamoDeportista/inicio']],
                 ]],
@@ -222,6 +222,31 @@ Sis::Recursos()->Js('comunes');
         </script>
         <?php endif ?>
         <script>
+            $(function(){
+                if(typeof sessionStorage !== "undefined" ){
+                    var mostrarMenu = sessionStorage.getItem("menu-mostrado") || 'false';                    
+                    var sideBar = $("aside#sidebar");
+
+                    setTimeout(function(){
+                        if(mostrarMenu == 'true'){
+                            sideBar.addClass("toggled");
+                            $("html").addClass("menu-active");
+                        } else {
+                            sideBar.removeClass("toggled");
+                            $("html").removeClass("menu-active");
+                        }
+                    }, 5);
+
+                    $("#menu-toggle").click(function(){
+                        setTimeout(function(){
+                            var toggled = sideBar.hasClass("toggled")? 'true' : 'false';
+                            sessionStorage.setItem("menu-mostrado", toggled);
+                        }, 10);
+                    });
+                }
+
+            });
+
             function lobiAlert(tipo, mensaje){
                 Lobibox.notify(tipo, {
                     size: 'mini',
@@ -251,14 +276,7 @@ Sis::Recursos()->Js('comunes');
                     });
                     
                 });
-            });
-            
-//            function traerAyuda(ayuda){
-//                
-////                $.ajax({
-////                    
-////                });
-//            }
+            });            
             
             function abrirCortinaAyuda(title, body){                
                 var html = '<div id="cortina-ayuda" class="cortina" style="display:none">' + 

@@ -124,6 +124,7 @@ final class CAplicacionWeb {
         }
         
         Sis::importar('!sistema.utilidades.Autocarga');
+        Sis::importar('!sistema.utilidades.Funciones');
         $this->iniciarManejadoresDeError();
         $this->ID = hash('md5', $this->nombre);
         # $this->checkSec();

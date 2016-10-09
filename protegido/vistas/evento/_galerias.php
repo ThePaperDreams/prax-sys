@@ -94,6 +94,7 @@ Sis::Recursos()->recursoJs(['url' => Sis::urlRecursos() . 'librerias/boot-file-i
         });
         $("#btn-set-imgs").click(function(){
             setImagesToGallery();
+            $("#modal-add-imgs").modal('hide');
             return false;
         });
     });
@@ -126,12 +127,26 @@ Sis::Recursos()->recursoJs(['url' => Sis::urlRecursos() . 'librerias/boot-file-i
             var link = $("<a/>", {href:'#'});
             var input = $("<input/>", {type: 'hidden', name:'galerias[' + galeriaActual  + '][imagenes][]'});
             var img = $("<img/>", {src:currImg.attr("data-thumb-url"), class: 'thumb-pic'});
-            var li = $("<li/>", { class: 'mTSThumbContainer'});
+            var li = $("<li/>", { class: 'mTSThumbContainer thumb-gallery'});
+            var iconTrash = $("<i/>", { class: 'fa fa-trash'});
+            var buttonDel = $("<button/>", { class: "btn btn-danger btn-del-img-gallery"});
+            /* funciones */
+            var borrarThumb = function(){
+                li.fadeOut(function(){
+                    li.remove();
+                });
+            };
+            
+            buttonDel.append(iconTrash);
             input.val(currImg.attr("data-id"));
             link.append(img);
-            li.append(link, input);
+            li.append(link, input, buttonDel);
             cont.append(li);
             currImg.removeClass("active");
+            buttonDel.click(function(){
+                borrarThumb();
+                return false;
+            });
         });
         if(gallery.attr("data-is-gallery") === undefined){
             $("#thumb-list-" + galeriaActual).mThumbnailScroller({
@@ -189,6 +204,8 @@ Sis::Recursos()->recursoJs(['url' => Sis::urlRecursos() . 'librerias/boot-file-i
         title.append(btnRemove);
         galeria.append(title, photosDiv);
         galeria.append(input);
+        
+        button.click(function(){ return false; });
         
         var contenedorGalerias = $("#galleries-container");
         contenedorGalerias.append(galeria);

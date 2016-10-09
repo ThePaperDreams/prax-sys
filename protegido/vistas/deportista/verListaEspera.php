@@ -9,6 +9,7 @@ $this->migas = [
 $this->opciones = [
     'elementos' => [
         'Registrar deportista' => ['Deportista/crear'],
+        'Enviar a lista' => ['matricula/listaDeEspera'],
     ]
 ];
 ?>

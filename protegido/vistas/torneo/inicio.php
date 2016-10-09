@@ -30,12 +30,11 @@
     'filtrosAjax' => [
         'nombre',
         'cupo_minimo',
-        'fecha_inicio',
+        'fecha_inicio' => CBoot::text('', ['class' => 'campo-fecha j-grid-filtro form-control ', 'name' => 'fecha_inicio']),
         'edad_maxima',
-     ],
-    
+     ],    
     'modelo' => 'Torneo',
-    # id_torneo, cupo_maximo, cupo_minimo, edad_maxima, edad_minima, fecha_inicio, fecha_fin, nombre, observaciones, tabla_posiciones, equipo_id
+    'criterios' => $criterios,
     'columnas' => [
         'nombre',
         'cupo_minimo', 

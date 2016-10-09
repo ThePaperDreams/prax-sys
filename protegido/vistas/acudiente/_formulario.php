@@ -18,7 +18,7 @@ $formulario->abrir();
     <div role="tabpanel" class="tab-pane active" id="formulario">
         <div class="row">
             <div class="col-sm-6">
-                <?php echo $formulario->lista($modelo, 'tipo_doc_id', $tiposIdentificaciones, ['label' => true, 'group' => true, 'defecto' => 'Tipo de documento']) ?>
+                <?php echo $formulario->lista($modelo, 'tipo_doc_id', $tiposIdentificaciones, ['label' => true, 'group' => true, 'defecto' => 'Tipo de documento', 'data-s2' => true]) ?>
             </div>
             <div class="col-sm-6">
                 <?php echo $formulario->campoNumber($modelo, 'identificacion', ['label' => true, 'group' => true, 'autofocus' => true, 'min' => '0', 'maxlength' => '15']) ?>

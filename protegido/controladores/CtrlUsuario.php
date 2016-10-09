@@ -7,14 +7,16 @@
  * @version 1.0.0
  */
 class CtrlUsuario extends CControlador {
-
+    private $rolSuscriptor = 6;
     
     /**
      * Esta función muestra el inicio y una tabla para listar los datos
      */
     public function accionInicio() {
-        $modelos = Usuario::modelo()->listar();
-        $this->mostrarVista('inicio', ['modelos' => $modelos]);
+        $c = new CCriterio();
+        $c->condicion("rol_id", $this->rolSuscriptor, '<>')
+            ->orden("estado", false);
+        $this->mostrarVista('inicio', ['criterios' => $c]);
     }
 
     /**

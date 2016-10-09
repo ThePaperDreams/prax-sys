@@ -92,11 +92,13 @@ class Usuario extends CModelo {
     
     public function filtrosAjx() {
         $criterio = new CCriterio();
+        $rolSuscriptor = 6;
         $criterio->condicion("t.nombres", $this->nombres, "LIKE")
                 ->y("t.apellidos", $this->apellidos, "LIKE")                
-                ->y("t.email", $this->email, "LIKE")                
+                ->y("t.email", $this->email, "LIKE")
                 ->y("t.estado", $this->estado, "=")
-                ->orden("t.estado", "DESC");
+                ->y("t.rol_id", $rolSuscriptor, '<>')
+                ->orden("t.estado", false);
         return $criterio;
     }
     

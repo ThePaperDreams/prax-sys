@@ -587,3 +587,27 @@ li.rep-jugador{
 .thumb-pic-gallery img{
     cursor: pointer;
 }
+.thumb-gallery{
+    position: relative;
+}
+.btn-del-img-gallery{
+    height: 40px !important;
+    width: 40px;
+    padding: 0px;
+    transform: translate(0, -40px);
+    opacity: 1 !important;
+}
+.thumb-gallery:hover .btn-del-img-gallery{
+    transform: translate(0, 0px);
+}
+
+.menu-active .list-unstyled.side-menu{
+    position: absolute !important;
+    left: 100% !important;
+}
+.menu-active #content {
+    margin-left: 30px;
+}
+#sidebar.toggled {
+    position: fixed;
+}

@@ -24,7 +24,42 @@ class CBGrid extends CBaseGrid{
         $info = CHtml::e('th', $infoText, ['colspan' => count($this->ths)]);
         $tr = CHtml::e('tr', $info);
         $tr .= CHtml::e('tr', implode('', $this->ths));
-        $this->cabecera = CHtml::e('thead', $tr . $this->filtros);
+        # incorporamos las opciones de exportar
+        $opcionesExportar = $this->exportar($this->ths);
+        $this->cabecera = CHtml::e('thead', $opcionesExportar . $tr . $this->filtros);
+    }
+
+    private function exportar($encabezados){
+        if(count($this->_exportar) == 0){ return ""; }
+        $totalEncabezados = count($encabezados);
+        $tdRelleno = CHtml::e('th', CHtml::e('h6', 'Exportar a: '), ['colspan' => $totalEncabezados - 2, 'class' => 'text-right']);
+        $td = CHtml::e('th', $this->crearOpcionesExportar(), ['colspan' => 2, 'class' => 'text-right']);
+        $tr = CHtml::e('tr', $tdRelleno . $td);
+        return $tr;
+    }
+
+    private function crearOpcionesExportar(){
+        $botones = [];
+        foreach($this->_exportar AS $k=>$v){
+            $opciones = [];
+            $opciones['name'] = isset($v['nombre'])? $v['nombre'] : $k;
+            $opciones['title'] = $k;
+            $opciones['class'] = 'btn-exportar-grid';
+            $opciones['data-action'] = isset($v['url'])? Sis::crearUrl($v['url']) : Sis::apl()->urlActual();
+            $contenido = isset($v['i'])? CBoot::fa($v['i']) : $k;
+            $botones[] = CBoot::boton($contenido, 'default', $opciones);
+        }
+        return implode('', $botones) . $this->incluirFormularioExportar();
+    }
+
+    private function incluirFormularioExportar(){
+        $form = '';
+        $inputs = [];
+        foreach($this->camposScript AS $campo){
+            $inputs[] = CHtml::input('hidden', '', ['id' => "filtro-tabla-$campo-tokken", 'name' => "modelo[$campo]"]);
+        }
+        $form = CHtml::e("form", implode('', $inputs), ['id' => 'form-exportar-grid', 'action' => '', 'target' => '_blank', 'method' => 'POST']);
+        return $form;
     }
     
     private function encabezados(){
@@ -167,7 +202,7 @@ class CBGrid extends CBaseGrid{
     private function setFiltroPersonalizado(&$campo){
         # extraemos el nombre del input si este existe
         $salida = [];
-        preg_match('/name="(.*)" /', $campo, $salida);        
+        preg_match('/name="([^"]+)" /', $campo, $salida);    
         if(is_array($salida) && count($salida) >= 2){
             $this->camposScript[] = $salida[1];
         } else {

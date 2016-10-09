@@ -35,6 +35,7 @@ $this->complemento('!siscoms.bootstrap3.CBGrid', [
         ['i'=>'eye', 'title' => 'Ver','url'=>'Categoriaimplemento/ver&{id:pk}'],
         ['i'=>'pencil','title' => 'Actualizar','url'=>'Categoriaimplemento/editar&{id:pk}'],
         ['i'=>'refresh','title' => 'Cambiar estado','url'=>'Categoriaimplemento/anular&{id:pk}'],
+        ['i'=>'trash','title' => 'Eliminar','url'=>'Categoriaimplemento/eliminar&{id:pk}', 'visible' => '$m->getEnUso() == false', 'opciones' => ['class' => 'op-eliminar']],
     ],
     'paginacion' => 10,
 ])

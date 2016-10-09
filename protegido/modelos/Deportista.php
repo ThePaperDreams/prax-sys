@@ -28,7 +28,10 @@
  */
 class Deportista extends CModelo{
     public $categoria_id;
+    public $matricula;
     
+    private $matriculado = null;
+
     /**
      * Esta función retorna el nombre de la tabla representada por el modelo
      * @return string
@@ -56,6 +59,7 @@ class Deportista extends CModelo{
             'fecha_nacimiento',
             'estado_id' => ['def' => '1'],
             'tipo_documento_id',
+            'estado_anterior'
         ];
     }
 
@@ -87,7 +91,7 @@ class Deportista extends CModelo{
     }    
     
     public function getDatos() {
-        return $this->identificacion . " (" . $this->nombre1 . " " . $this->apellido1 . ")";
+        return $this->identificacion . " - " . $this->nombre1 . " " . $this->apellido1;
     }
     /**
      * Esta función permite retornar los acudientes de un deportista
@@ -131,18 +135,23 @@ class Deportista extends CModelo{
     }
     
     public function filtrosAjx() {       
-//        var_dump($this);
         $criterio = new CCriterio();
         $concat = "CONCAT_WS(' ', t.nombre1,t.nombre2,t.apellido1,t.apellido2)";
         $criterio->unionIzq("tbl_matriculas", "m")
-                ->donde("t.id_deportista", "=", "m.deportista_id")                
+                ->donde("t.id_deportista", "=", "m.deportista_id AND m.estado = 1")
                 ->condicion($concat, $this->nombre1, "LIKE")
-                ->y("m.categoria_id", $this->categoria_id, "=")
+                // ->y("m.categoria_id", $this->categoria_id, "=")
                 ->y("t.estado_id", $this->estado_id, "=")
                 ->y("t.identificacion", $this->identificacion, "LIKE")
                 ->orden("t.estado_id = 1", false)
-                ->orden("t.id_deportista", false)
-                ->agrupar("t.id_deportista");
+                ->orden("t.id_deportista", false);
+
+        if($this->matricula == 1){
+            $criterio->noEsVacio("m.id_matricula");
+        } else if($this->matricula == 2){
+            $criterio->esVacio("m.id_matricula");
+        }
+
         return $criterio;
     }
     
@@ -160,12 +169,30 @@ class Deportista extends CModelo{
     }
     
     public function getNoMatriculados(){
-        $matriculas = Matricula::modelo()->listar(['group' => 'deportista_id', 'where' => 'estado = 1']);
+        $matriculas = Matricula::modelo()->listar(['select' => 't.deportista_id, t.deportista_id AS id_matricula', 'group' => 'deportista_id', 'where' => 'estado = 1']);
         $matriculados = CHtml::modeloLista($matriculas, "id_matricula", "deportista_id");
         $criterio = new CCriterio();
         $criterio->noEn("id_deportista", $matriculados);
         $deportistas = Deportista::modelo()->listar($criterio);
         return $deportistas;
+    }
+
+    public function getMatriculado(){
+        if($this->matriculado === null){
+            $c = new CCriterio();
+            $c->condicion("deportista_id", $this->id_deportista)
+                ->y("estado", 1);
+            $m = Matricula::modelo()->contar($c);
+            $this->matriculado = $m != null;
+        }
+
+        if($this->matriculado){
+            return CHtml::e("span", 'Si', ['class' => 'label label-success']);
+        } else {
+            return CHtml::e("span", 'No', ['class' => 'label label-default']);
+        }
+
+        return null;
     }
     
     /**
@@ -220,6 +247,9 @@ class Deportista extends CModelo{
             'tipo_documento_id' => 'Tipo Documento',
             'categoria_id' => 'Categoría',
             'edad' => 'Edad',
+            'nombreCompleto' => 'Nombre',
+            'doc' => 'Doc.',
+            'matricula' => 'Matriculado',
         ];
     }
     

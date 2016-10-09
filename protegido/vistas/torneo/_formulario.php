@@ -5,10 +5,10 @@ $formulario->abrir();
 <div class="tile p-15">
 <div class="row">
     <div class="col-sm-6">    
-        <?php echo $formulario->campoTexto($modelo, 'nombre', ['label' => true, 'group' => true]) ?>
+        <?php echo $formulario->campoTexto($modelo, 'nombre', ['label' => true, 'group' => true, 'autofocus' => true]) ?>
     </div>
     <div class="col-sm-6">
-        <?php echo $formulario->campoNumber($modelo, 'cupo_maximo', ['label' => true, 'group' => true, 'autofocus' => true , 'min'=> 1, 'max'=> 3, 'id'=>'total-unidades']) ?>
+        <?php echo $formulario->campoNumber($modelo, 'cupo_maximo', ['label' => true, 'group' => true, 'min'=> 1, 'max'=> 3, 'id'=>'total-unidades']) ?>
     </div>
 </div>
 <div class="row">

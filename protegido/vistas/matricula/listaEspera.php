@@ -8,6 +8,7 @@
     $this->opciones = [
         'elementos' => [
             'Matricular deportista' => ['Matricula/matricular'],
+            'Registrar deportista' => ['Deportista/crear'],
         ]
     ];
 

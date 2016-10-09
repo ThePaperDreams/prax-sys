@@ -8,12 +8,16 @@
 class CtrlCategoria extends CControlador{
     public $ayuda;
     public $ayudaTitulo;
+    private $rolEntrenador = 4;
+
     /**
      * Esta función muestra el inicio y una tabla para listar los datos
      */
     public function accionInicio(){
-        $modelos = Categoria::modelo()->listar();        
-        $this->mostrarVista('inicio', ['modelos' => $modelos]);
+        $criterios = new CCriterio();
+        $criterios->orden('estado = 1', false)
+            ->orden("id_categoria", false);
+        $this->mostrarVista('inicio', ['criterios' => $criterios]);
     }
     
     /**
@@ -32,10 +36,15 @@ class CtrlCategoria extends CControlador{
                 $this->redireccionar('inicio');
             }
         }
+
+        $c = new CCriterio();
+        $c->condicion("rol_id", $this->rolEntrenador);
+        $entrenadores = Usuario::modelo()->listar($c);
+
         $url = Sis::crearUrl(['categoria/crear']);
         $this->mostrarVista('crear', [
             'modelo' => $modelo,
-            'entrenadores' => CHtml::modeloLista(Usuario::modelo()->listar(), "id_usuario", "nombres"),
+            'entrenadores' => CHtml::modeloLista($entrenadores, "id_usuario", "nombres"),
             'url' => $url,
         ]);
     }
@@ -94,11 +103,6 @@ class CtrlCategoria extends CControlador{
     public function accionCambiarEstado($pk){
         # instanciamos el modelo
         $modelo = $this->cargarModelo($pk);
-        # validamos si el modelo ya está inactivo
-        if($modelo->estado == 0){
-            Sis::Sesion()->flash("alerta", [ 'msg' => 'La categoría ya está inactiva', 'tipo' => 'warning']);
-            $this->redireccionar('inicio');
-        }
                 
         $modelo->estado = $modelo->estado == 1? 0 : 1;
         if($modelo->guardar()){
