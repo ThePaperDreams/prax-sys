@@ -16,7 +16,7 @@ $this->opciones = [
 <div class="col-sm-6">
     <div class="panel panel-default">
         <div class="panel-heading text-center">
-            Ver detalles
+            Información de la salida
         </div>
         <table class="table table-bordered">
             <tbody>
@@ -40,6 +40,13 @@ $this->opciones = [
                     <th><?php echo $modelo->obtenerEtiqueta('estado') ?></th>
                     <td><?php echo $modelo->EtiquetaEstado; ?></td>
                 </tr>
+                <tr>
+                    <th colspan="2">
+                        <a class="btn btn-primary btn-block" target="_blank" href="<?= Sis::crearUrl(['salida/imprimir', 'id' => $modelo->id_salida]) ?>">
+                            Enviar a PDF
+                        </a>
+                    </th>
+                </tr>
             </tbody>
         </table>
 
@@ -49,7 +56,7 @@ $this->opciones = [
 <div class="col-sm-6">
     <div class="panel panel-default">
         <div class="panel-heading text-center">
-            Cantidad
+            Ver detalles
         </div>
         <table class="table table-bordered">
             <thead>

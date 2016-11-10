@@ -12,7 +12,7 @@ Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . 'librerias/Trumbowyg/
 Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . 'librerias/lobibox/js/lobibox.js']);
 Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . 'librerias/lobibox/js/notifications.js']);
 Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . 'librerias/Trumbowyg/trumbowyg.js']);
-Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . "/librerias/air-datepicker/js/datepicker.min.js"]);
+Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . "/librerias/air-datepicker/js/datepicker.js"]);
 Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . "/librerias/air-datepicker/js/i18n/datepicker.es.js"]);
 Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . "/librerias/air-datepicker/css/datepicker.min.css"]);
 
@@ -61,31 +61,42 @@ Sis::Recursos()->Js('comunes');
             <div class="media-body">
                 <div class="media" id="top-menu">
                     <div class="pull-left tm-icon">
-                        <a data-drawer="messages" class="drawer-toggle" href="#">
-                            <i class="sa-top-message"></i>
-                            <i class="n-count animated">5</i>
-                            <span>Messages</span>
-                        </a>
-                    </div>
-                    <div class="pull-left tm-icon">
-                        <a data-drawer="notifications" class="drawer-toggle" href="#">
+                    <?php if (count(Sis::ap()->Utilidades->getNotificaciones()) > 0 )  : ?>                        
+                        <a id="notifications-icon" data-drawer="notifications" class="drawer-toggle" href="#">
+                    <?php else: ?>
+                        <a id="notifications-icon" data-drawer="notifications" class="drawer-toggle" href="#" style="display:none;">
+                    <?php endif ?>
                             <i class="sa-top-updates"></i>
-                            <i class="n-count animated">9</i>
-                            <span>Updates</span>
+                            <i class="n-count animated"><?= count(Sis::ap()->Utilidades->getNotificaciones()) ?></i>
+                            <span>Notificaciones</span>
                         </a>
                     </div>
 
 
-                    <div id="time" class="pull-right">
+                    <!-- <div id="time" class="pull-right">
                         <span id="hours"></span>
                         :
                         <span id="min"></span>
                         :
                         <span id="sec"></span>
-                    </div>
+                    </div> -->
 
-                    <div class="media-body">
+                    <!-- <div class="media-body">
                         <input type="text" class="main-search">
+                    </div> -->
+                    <div class="pull-right">
+                        <div class="row">
+                            <div class="dropdown dropdown-mas">
+                                <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                    Información <i class="fa fa-info-circle"></i>
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="<?= Sis::crearUrl(['principal/sobre']) ?>">Acerca</a></li>
+                                    <li><a href="<?= Sis::crearUrl(['principal/mapaNavegacion']) ?>">Mapa de navegación</a></li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -121,7 +132,7 @@ Sis::Recursos()->Js('comunes');
                 ['texto' => '', 'url' => ['principal/inicio'], 'fa' => 'home'],
                 ['texto' => 'Deportistas', 'fa' => 'male', 'elementos' => [
                     ['texto' => 'Acudientes', 'url' => ['Acudiente/inicio']],
-                    ['texto' => 'Deportistas', 'url' => ['Deportista/inicio']],                        
+                    ['texto' => 'Deportistas', 'url' => ['Deportista/inicio']],
                     ['texto' => 'Documentos', 'url' => ['Documento/inicio']],
                 ]],
                 ['texto' => 'Formación', 'fa' => 'soccer-ball-o', 'elementos' => [
@@ -137,7 +148,7 @@ Sis::Recursos()->Js('comunes');
                     ['texto' => 'Categoría implementos', 'url' => ['categoriaImplemento/inicio']],
                     ['texto' => 'Implementos', 'url' => ['implemento/inicio']],
                     ['texto' => 'Entradas', 'url' => ['entrada/inicio']],
-                    ['texto' => 'Salidas', 'url' => ['salida/inicio']],
+                    ['texto' => 'Préstamo', 'url' => ['salida/inicio']],
                 ]],                
                 ['texto' => 'Pagos', 'fa' => 'money', 'elementos' => [
                     ['texto' => 'Pagos pendientes', 'url' => ['Pago/pagosPendientes']],
@@ -153,11 +164,13 @@ Sis::Recursos()->Js('comunes');
                     ['texto' => 'Eventos', 'url' => ['Evento/inicio']],
                     ['texto' => 'Tipo de Eventos', 'url' => ['tipoEvento/inicio']],
                     ['texto' => 'Imágenes', 'url' => ['Publicacion/cargarImagenes']],
+                    ['texto' => 'Configuración', 'url' => ['Publicacion/sitioWeb']],
                     
                 ]],
                 ['texto' => 'Usuarios', 'fa' => 'users', 'elementos' => [
                         ['texto' => 'Roles', 'url' => ['Rol/inicio']],
-                        ['texto' => 'Usuarios', 'url' => ['Usuario/inicio']]
+                        ['texto' => 'Usuarios', 'url' => ['Usuario/inicio']],
+                        ['texto' => 'Permisos', 'url' => ['Permiso/asignar']],
                 ]],
                 ['texto' => 'Configuración', 'fa' => 'cogs', 'elementos' => [
                         ['texto' => 'Rutas', 'url' => ['Ruta/inicio']],
@@ -165,7 +178,6 @@ Sis::Recursos()->Js('comunes');
                         ['texto' => 'Tipos de Documentos', 'url' => ['TipoDocumento/inicio']],
                         ['texto' => 'Estados de Deportista', 'url' => ['EstadoDeportista/inicio']],
                         ['texto' => 'Tipos de Identificación', 'url' => ['TipoIdentificacion/inicio']],
-                        ['texto' => 'Permisos', 'url' => ['Permiso/asignar']],
                 ]],
             ],
             'menuDerecha' => [
@@ -185,6 +197,33 @@ Sis::Recursos()->Js('comunes');
                     </span>
                     <?php endif ?>
                 </div>
+
+                <div id="notifications" class="tile drawer animated">
+                    <div class="listview narrow">
+                        <div class="media">
+                            <a href="#">Notificaciones</a>
+                            <span class="drawer-close">&times;</span>
+                        </div>
+                        <div id="contenedor-notificaciones" class="overflow" style="height: 254px">
+                            <?php foreach (Sis::ap()->Utilidades->getNotificaciones() as $notificacion): ?>
+                                
+                            <div class="media notificacion">
+                                <div class="pull-left">
+                                    <?= CBoot::fa($notificacion['icono']) ?>
+                                </div>
+                                <div class="media-body">
+                                    <a class="t-overflow" href="<?= $notificacion['url'] ?>">
+                                        <?= $notificacion['texto'] ?>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <?php endforeach ?>
+                            
+                        </div>
+                    </div>
+                </div>
+
                 <?php $this->complemento('!siscoms.bootstrap3.CBBreadCrumbs', [
                     'migas' => $this->migas
                 ]) ?>
@@ -339,7 +378,77 @@ Sis::Recursos()->Js('comunes');
                     'overflow': 'hidden',
                 });
             }
-                
+
+            $(function(){
+                setTimeout(function(){
+                    revisarEventosCalendario();
+                }, 500);
+                $(".fc-button").click(function(){
+                    revisarEventosCalendario();
+                });
+            });
+
+            function revisarEventosCalendario(){
+                var dias = $(".fc-day");
+                var eventos = <?= Sis::apl()->Utilidades->eventosCalendario() ?>;
+                console.log(eventos);
+                $.each(dias, function(k,v){
+                    var dia = $(v);
+                    for(var i in eventos){
+                        if(dia.attr("data-date") == eventos[i]){
+                            dia.addClass("con-eventos");
+                            break;
+                        }
+                    }
+                });
+            }
+
+            function consultarNotificaciones(){
+                $.ajax({
+                    type: 'POST',
+                    url: '<?= Sis::crearUrl(['principal/ajx']) ?>',
+                    data: {
+                        'ajx-rqst' : true,
+                    }
+                }).done(function(data){
+                    var boton = $("#notifications-icon");
+                    var contenedor = $("#contenedor-notificaciones");
+
+                    contenedor.html("");
+                    
+                    if(parseInt(data.total) > 0){
+                        boton.show();
+                        boton.find(".n-count").html(data.total);
+
+                        $.each(data.notificaciones, function(k,v){
+                            var media = $("<div/>", {class: "media notificacion"});
+                            var pull = $("<div/>", { class: "pull-left"});
+                            var icono = $("<i/>", {class: ""});
+                            var body = $("<div/>", {class: "media-body"});
+                            var link = $("<a/>", {class: "t-overflow"});
+                            link.attr("href", v.url);
+                            icono.addClass("fa fa-" + v.icono);
+                            link.html(v.texto);
+                            body.html(link);
+                            pull.html(icono);
+                            media.append(pull, body);
+                            contenedor.append(media);
+                        });
+                    } else {
+                        boton.hide();
+                    }
+
+
+                });
+            }
+
+            $(function(){
+                consultarNotificaciones();
+
+                setInterval(function(){
+                    consultarNotificaciones();
+                }, 6000);
+            });
         </script>
         
     </body>

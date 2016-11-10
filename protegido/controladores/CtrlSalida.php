@@ -14,6 +14,54 @@ class CtrlSalida extends CControlador{
         $modelos = Salida::modelo()->listar();        
         $this->mostrarVista('inicio', ['modelos' => $modelos]);
     }
+
+    public function accionImprimir($id){
+        $modelo = $this->cargarModelo($id);
+
+        if($modelo === null){
+            $this->redireccionar('inicio');
+        }
+
+        $this->tituloPagina = "Préstamo-$id-praxis";
+
+        $this->plantilla = "reporte";
+        $pdf = Sis::apl()->mpdf->crear();
+        ob_start();
+        $this->vista('imprimir', ['modelo' => $modelo]);
+        $texto = ob_get_clean();
+        $pdf->writeHtml($texto);
+        $pdf->Output("$this->tituloPagina.pdf", 'I');
+    }
+
+    public function accionReporte(){
+        if(!isset($this->_p['modelo'])){
+            $this->redireccionar('inicio');
+        }
+
+        $this->tituloPagina = "Pŕestamo-de-implementos-praxis";
+        $campos = $this->_p['modelo'];
+        foreach($campos AS $k=>$v){ $campos[$k] = $v == ''? null : $v; }
+
+        $c = new CCriterio();
+        $concat = "CONCAT_WS(' ',t1.nombres)";
+        $c->union("tbl_usuarios", "t1")
+           ->donde("t1.id_usuario", "=", "t.responsable_id")
+           ->condicion($concat, $campos['responsable_id'], "LIKE")
+           ->y("t.estado", $campos['estado'], "=")
+           ->y("t.fecha_realizacion", $campos['fecha_realizacion'], "LIKE")
+           ->y("t.fecha_entrega", $campos['fecha_entrega'], "LIKE")
+           ->orden('t.fecha_realizacion', false);
+
+        $salida = Salida::modelo()->listar($c);
+
+        $this->plantilla = "reporte";
+        $pdf = Sis::apl()->mpdf->crear();
+        ob_start();
+        $this->vista('reporte', ['salidas' => $salida]);
+        $texto = ob_get_clean();
+        $pdf->writeHtml($texto);
+        $pdf->Output("$this->tituloPagina.pdf", 'I');
+    }
     
     /**
      * Esta función permite crear un nuevo registro

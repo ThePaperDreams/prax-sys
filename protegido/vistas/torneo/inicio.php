@@ -11,22 +11,11 @@
     ];
 ?>
 
-<?php $this->abrirSeccion("antes-de-opciones") ?>
-<div class="row">
-    <div class="col-lg-6">
-        <a href="<?= Sis::crearUrl(['torneo/generarReporte']) ?>" target="_blank">
-        <?php
-        $icon=  CBoot::fa('file-pdf-o');
-        echo CBoot::boton('Generar pdf '.$icon,'primary',['id'=>'generar_pdf']);
-        ?>
-        </a>
-        </div>
-</div>
-<div class="p-5"></div>
-<?php $this->cerrarSeccion()?>
-
 <?= $this->complemento('!siscoms.bootstrap3.CBGrid', [
     'ajax' => true,
+    'exportar' => [
+        'pdf' => ['i' => 'file-pdf-o', 'url' => ['torneo/reporte']],
+    ],
     'filtrosAjax' => [
         'nombre',
         'cupo_minimo',
@@ -40,6 +29,7 @@
         'cupo_minimo', 
         'edad_maxima',  
         'fecha_inicio',
+        'totalEquipos' => ['valor' => 'totalEquipos', 'opciones' => ['class' => 'text-center']],
     ],
     'opciones' => [
         ['i' => 'eye', 'url' => 'torneo/ver&{id:pk}', 'title' => 'Ver'],

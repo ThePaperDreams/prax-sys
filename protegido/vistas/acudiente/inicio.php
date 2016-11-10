@@ -1,6 +1,6 @@
 <?php 
     $this->ayuda = "acudientes/inicio";
-    $this->ayudaTitulo = "Acudientes";
+    $this->ayudaTitulo = "Listar Acudientes";
     
     $this->tituloPagina = "Listar Acudientes";
     $this->migas = [
@@ -19,19 +19,24 @@ $this->opciones = [
 
 $this->complemento('!siscoms.bootstrap3.CBGrid', [
     'criterios' => ['order' => 'estado desc, id_acudiente DESC'],
+    'exportar' => [
+        'PDF' => ['url' => ['acudiente/reporte'], 'i' => 'file-pdf-o'],
+    ],
     'ajax' => true,
     'filtrosAjax' => [
         'identificacion',
-        'nombre1', 
+        '_nombreCompleto', 
         'telefono1', 
+        'telefono2',
         'estado' => CBoot::select('', [1 => 'Activo', 0 => 'Inactivo'], ['defecto' => 'Estado', 'style' => 'min-width: 150px;', 'name' => 'estado'])        
      ],
     'modelo' => 'Acudiente',
     # id_acudiente, identificacion, nombre1, nombre2, apellido1, apellido2, direccion, email, telefono1, telefono2, estado, tipo_doc_id
     'columnas' => [
         'identificacion',
-        'nombre1' => 'nombreCompleto',
+        '_nombreCompleto' => 'nombreCompleto',
         'telefono1',
+        'telefono2',
         'estado' => 'EtiquetaEstado',
     ],
     'opciones' => [

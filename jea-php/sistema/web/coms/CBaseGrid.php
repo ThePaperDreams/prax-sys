@@ -297,6 +297,12 @@ abstract class CBaseGrid extends CComplemento{
                     '});' . 
                 
                     'setLinkEvents();' .  
+                    '$(".btn-exportar-grid").click(function(){' .
+                        'var form = $("#form-exportar-grid");' .
+                        'var url = $(this).attr("data-action");' .
+                        'form.attr("action", url);' .
+                        'form.submit();' .
+                    '});' .
                 '});';
         $script .= 'function setLinkEvents(){' . 
                         '$(".j-grid-link-pag").click(function(){ ' . 

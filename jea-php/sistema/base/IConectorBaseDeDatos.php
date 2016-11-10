@@ -18,4 +18,5 @@ interface IConectorBaseDeDatos {
     public static function begin();
     public static function commit();
     public static function rollback();
+    public static function proc($proc, $p = []);
 }

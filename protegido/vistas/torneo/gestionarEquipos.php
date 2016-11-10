@@ -6,21 +6,33 @@ $this->migas = [
     'Gestionar equipos',
 ];
 
-Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . 'librerias/customScrollBar/CustomScrollBar.js']);
-Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . 'librerias/customScrollBar/CustomScrollBar.css']);
+Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . 'librerias/customScrollBar/CustomScrollbar.js']);
+Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . 'librerias/customScrollBar/CustomScrollbar.css']);
 ?>
 <div class="col-sm-6">
     <form method="POST" id="form-equipos">
-        
+
+        <input type="hidden" id="edad-maxima-torneo" value="<?= $torneo->edad_maxima ?>">
+        <input type="hidden" id="cupo-maximo-torneo" value="<?= $torneo->cupo_maximo ?>">
+        <input type="hidden" id="cupo-maximo-torneo" value="<?= $torneo->cupo_minimo ?>">
+
         <div class="tile p-15">
             <div class="row">
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <div class="p-15"></div>
                         <div class="row">
-                            <div class="alert alert-info col-sm-12">
-                                Agregue equipos que participaron en el torneo.
-                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <div class="alert alert-info">
+                                <table class="table table-condensed">
+                                    <tr>
+                                        <td>Edad máxima de jugadores: </td>
+                                        <td><?= $torneo->edad_maxima ?> años</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Máximo equipos: </td>
+                                        <td><?= $torneo->cupo_maximo ?></td>
+                                    </tr>
+                                </table>
                             </div>
                         </div>
                         <div class="row" id="buttons-options">
@@ -155,7 +167,7 @@ Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . 'librerias/customScro
         $(".equipos-antiguos ul").on('sortreceive', function(e, i){
             var equipo = $(this).attr("data-equipo");
             if(addDeportista(e, i, equipo)){
-                lobiAlert("error", "No puede agregar más jugadores a este equipo");
+                // lobiAlert("error", "No puede agregar más jugadores a este equipo");
                 i.sender.sortable('cancel');
             }
         });
@@ -239,6 +251,13 @@ Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . 'librerias/customScro
     };
     
     function agregarEquipo(){
+        var maximoEquipos = parseInt($("#cupo-maximo-torneo").val());
+        var totalEquipos = $("[data-team-name]").length;
+        if(totalEquipos >= maximoEquipos){
+            lobiAlert('error', "No puede agregar más equipos para este torneo");
+            return false;
+        }
+
         var nombre = $("#nombre");
         var entrenador = $("#entrenador");
         var cupoMin = 0;
@@ -293,7 +312,7 @@ Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . 'librerias/customScro
         $("#equipo-" + equipos + " ul").on('sortreceive', function(e, i){
             var equipo = $(this).attr("data-equipo");
             if(addDeportista(e, i, equipo)){
-                lobiAlert("error", "No puede agregar más jugadores a este equipo");
+                // lobiAlert("error", "No puede agregar más jugadores a este equipo");
                 i.sender.sortable('cancel');
             }
         });
@@ -360,15 +379,26 @@ Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . 'librerias/customScro
     }
     
     function addDeportista(e, i, id){
+        var edadMaxima = parseInt($("#edad-maxima-torneo").val());
         var element = i.item;
         var contenedor = $("#div-" + id);
         var idDep = element.attr("data-id");
         deportistas.push(idDep);
         /* Seteamos el id del contenedor */
         element.attr("data-contenedor", "div-" + id);
+
+        var edad = parseInt(element.attr("data-edad"));
+
+        if(edad > edadMaxima){
+            lobiAlert('error', "el jugador no puede participar en este torneo, su edad supera la edad máxima del torneo");
+            return true;
+        }
         
         var devolver = actualizarTotalJugadores(contenedor);
-        if(devolver === true){ return true; }
+        if(devolver === true){ 
+            lobiAlert("error", "No puede agregar más jugadores a este equipo");
+            return true; 
+        }
         
         var idDeportista = element.attr("data-id");
         

@@ -18,8 +18,11 @@ $formulario->abrir();
             <div class="col-sm-4">
                 <?php echo $formulario->lista($modelo, 'tipo_id', $TipoEvento, ['defecto' => 'Seleccione un tipo', 'label' => true]) ?>
             </div>   
-            <div class="col-sm-4">
+<!--             <div class="col-sm-4">
                 <?php echo $formulario->campoTexto($modelo, 'fecha_disponibilidad', ['label' => true, 'group' => true, 'class' => 'campo-fecha']) ?>
+            </div>   -->
+            <div class="col-sm-4">
+                <?php echo $formulario->campoTexto($modelo, 'fecha', ['label' => true, 'group' => true, 'class' => 'campo-fecha']) ?>
             </div>  
             <div class="col-sm-4">
                 <?php echo $formulario->lista($modelo, 'estado', $Estado, ['group' => true, 'label' => true]) ?>

@@ -29,6 +29,21 @@
             right: "180%",
         });
         $("#logo").hide();
+
+        $("#login").submit(function(){
+            var usuario =  $("#usuario");
+            var clave = $("#clave");
+
+            if($.trim(usuario.val()) == ""){
+                lobiAlert("error", "Por favor ingrese su nombre de usuario o e-mail");
+                usuario.focus();
+                return false;
+            } else if($.trim($("#clave").val()) == ""){
+                lobiAlert("error", "Por favor ingrese su contraseña");
+                clave.focus();
+                return false;
+            }
+        });
         
         var delay = 500;
         setTimeout(function(){

@@ -58,7 +58,19 @@ $formulario->abrir();
 </div>
 
 <script>
+    var valorAnterior = 0;
     $(function(){
+
+        $("#Pagos_descuento").keyup(function(e){
+            var cancelado = parseInt($("#Pagos_valor_cancelado").val());
+            var descuento = parseInt($(this).val());
+            if(descuento > cancelado){
+                $(this).val(valorAnterior);
+            } else {
+                valorAnterior = $(this).val();
+            }
+        });
+
         jQuery("#Pagos_url_comprobante").fileinput({
             showPreview: false,
             showRemove: false,

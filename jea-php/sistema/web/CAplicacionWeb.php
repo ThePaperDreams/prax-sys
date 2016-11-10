@@ -68,6 +68,7 @@ final class CAplicacionWeb {
      *  Componentes                                                *
      ***************************************************************/
     private $bd;
+    private $log;
     
     /**
      * array con todos los componentes de la aplicación
@@ -550,6 +551,14 @@ final class CAplicacionWeb {
         }
         
         return $this->bd;
+    }
+
+    public function getLog(){      
+        if($this->log == null){
+            Sis::importar("!sistema.componentes.CLogs");
+            $this->log = new CLogs();
+        }
+        return $this->log;
     }
     /**
      * Esta función devuelve la instancia del tema cargado en la aplicación

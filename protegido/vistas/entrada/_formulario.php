@@ -5,38 +5,37 @@ $formulario->abrir();
 
 ?>
 <div class="tile p-15">
-<?php echo $formulario->lista($modelo, 'responsable_id', $usuarios, ['label' => true, 'group' => true, 'autofocus' => true, 'defecto' => 'Seleccione un Responsable']) ?>
-<?php echo $formulario->areaTexto($modelo, 'descripcion', ['label' => true, 'group' => true]) ?>
-
-<div>
-    <div class="form-group">
-        <?= CBoot::selectM('', 'Implemento', 'id_implemento', 'nombre', ['label'=>'Implementos','defecto' => 'Seleccione un Implemento', 'id' => 'selectId']) ?>  
-    </div>
-    <?= CBoot::number(0, ['min' => 0,'label'=>'Cantidad', 'group' => true, 'id' => 'cant']); ?>     
-    <?= CBoot::boton('Agregar ' . CBoot::fa('plus-circle'), 'default', ['group' => true, 'id' => 'btnAgregar']) ?>
+<div class="col-sm-6">
+    <?php echo $formulario->lista($modelo, 'responsable_id', $usuarios, ['label' => true, 'group' => true, 'autofocus' => true, 'defecto' => 'Seleccione un Responsable', 'data-s2' => true]) ?>
+    <?php echo $formulario->areaTexto($modelo, 'descripcion', ['label' => true, 'group' => true, 'rows' => 8]) ?>
 </div>
-<hr>
-<div class="row">
-    <div class="col-sm-12">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        Nombre del implemento 
-                    </th>
-                    <th>
-                        Cantidad agregada
-                    </th>
-                    <th>
-                        Eliminar 
-                    </th>
-                </tr>
-            </thead>
-            <tbody id="datosTabla">
-            
-            </tbody>
-        </table>
+<div class="col-sm-6">
+    <?= CBoot::selectM('', 'Implemento', 'id_implemento', 'nombre', ['label'=>'Implementos','defecto' => 'Seleccione un Implemento', 'id' => 'selectId', 'group' => true, 'data-s2' => true]) ?>  
+    <?= CBoot::number(0, ['min' => 0,'label'=>'Cantidad', 'group' => true, 'id' => 'cant']); ?>     
+    <?= CBoot::boton('Agregar ' . CBoot::fa('plus-circle'), 'default btn-block', ['group' => true, 'id' => 'btnAgregar']) ?>
+    <div class="row">
+        <div class="col-sm-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Nombre del implemento 
+                        </th>
+                        <th>
+                            Cantidad agregada
+                        </th>
+                        <th>
+                            Eliminar 
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="datosTabla">
+                
+                </tbody>
+            </table>
+        </div>
     </div>
+
 </div>
 <hr>
 <div class="row">
@@ -80,10 +79,49 @@ $formulario->abrir();
             return;
         }
         
-        var hidden = '<input type="hidden" name="articulo[]" value="'+valor+'"><input type="hidden" name="cantity[]" value="'+cantidad+'">';
+        var hidden = '<input type="hidden" name="articulo[]" value="'+valor+'"><input class="cantity" type="hidden" name="cantity[]" value="'+cantidad+'">';
 
         var datosTabla = $("#datosTabla");
-        var fila = '<tr data-implemento="true" id="remover-' + valor + '"><td>' + nombre + hidden + '</td><td>' + cantidad + '</td><td class="text-danger-icon text-center col-sm-1"><i class="fa fa-ban" onclick="Quitar(' + valor + ')" ></i></td></tr>';
+        var fila = $("<tr/>", {"data-implemento": "true", id: 'remover-' + valor});
+        var icon = $("<i/>", {class: 'fa fa-trash'});
+        var tdCantidad = $("<td/>");
+        tdCantidad.html(cantidad);
+
+        fila.append($("<td/>").html(nombre + hidden));
+        fila.append(tdCantidad);
+        fila.append($("<td/>", {class: 'text-danger-icon text-center col-sm-1'}).html(icon));
+
+        // eventos
+        icon.click(function(){
+            Quitar(valor);
+        });
+        tdCantidad.dblclick(function(){
+            var input = $("<input/>", {class: 'form-control', type: 'number'});
+            var td = $(this);
+            var valorActual = td.html();
+            input.val(valorActual);
+            td.html(input);
+            input.focus().select();
+
+            var removerInput = function(){
+                if(input.val() == ""){
+                    td.html(valorActual);
+                } else {
+                    td.html(input.val());
+                    td.closest("tr").find(".cantity").val(input.val());
+                }
+            };
+
+            input.blur(function(){
+                removerInput();  
+            }).keyup(function(e){
+                if(e.which === 13){
+                    removerInput();
+                }
+            });
+
+        });
+
         datosTabla.append(fila);
 
     }

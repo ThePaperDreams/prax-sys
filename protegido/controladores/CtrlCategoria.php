@@ -19,6 +19,32 @@ class CtrlCategoria extends CControlador{
             ->orden("id_categoria", false);
         $this->mostrarVista('inicio', ['criterios' => $criterios]);
     }
+
+    public function accionReporte(){
+        if(!isset($this->_p['modelo'])){
+            $this->redireccionar('inicio');
+        }
+
+        $this->tituloPagina = "Deportistas - praxis";
+        $campos = $this->_p['modelo'];
+        foreach($campos AS $k=>$v){ $campos[$k] = $v == ''? null : $v; }
+
+        $c = new CCriterio();
+        $c->condicion("t.nombre", $campos['nombre'])
+            ->y("t.tarifa", $campos['tarifa'])
+            ->y("t.estado", $campos['estado'])
+            ->orden('id_categoria', false);
+
+        $categorias = Categoria::modelo()->listar($c);
+
+        $this->plantilla = "reporte";
+        $pdf = Sis::apl()->mpdf->crear();
+        ob_start();
+        $this->vista('reporte', ['categorias' => $categorias]);
+        $texto = ob_get_clean();
+        $pdf->writeHtml($texto);
+        $pdf->Output("Categorías-de-formacion-praxis.pdf", 'I');
+    }
     
     /**
      * Esta función permite crear un nuevo registro

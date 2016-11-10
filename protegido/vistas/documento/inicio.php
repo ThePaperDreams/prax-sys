@@ -1,15 +1,12 @@
 <?php 
+    $this->ayuda = 'documentos/inicio';
+    $this->ayudaTitulo = "Documentos";
+
     $this->tituloPagina = "Listar Documentos";
     $this->migas = [
         'Home' => ['principal/inicio'],
         'Listar Documentos'
     ];
-    
-    /*$this->opciones = [
-        'elementos' => [
-            'Crear' => ['Documento/crear'],
-        ]
-    ];*/
 ?>
 <div class="tile p-15">
     <div class="row">

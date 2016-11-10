@@ -38,7 +38,9 @@
            ->y("t.estado_id", $this->estado_id, "=")
            ->y("t.unidades", $this->unidades, "=")
            ->y("t.minimo_unidades", $this->minimo_unidades, "=")      
-           ->y("t.maximo_unidades", $this->maximo_unidades, "=");
+           ->y("t.maximo_unidades", $this->maximo_unidades, "=")
+           ->orden('estado_id = 1', false)
+           ->orden('t.nombre');
         
        return $criterio;
     }
@@ -82,9 +84,9 @@
                 'estado_id' => 'Estado',
 		'nombre' => 'Nombre Implemento', 
 		'descripcion' => 'Descripcion', 
-		'unidades' => 'Unidades Disponibles', 
-		'minimo_unidades' => 'Mínimo Unidades', 
-		'maximo_unidades' => 'Máximo Unidades', 
+		'unidades' => 'Unid. Disponibles', 
+		'minimo_unidades' => 'Min. Unidades', 
+		'maximo_unidades' => 'Max. Unidades', 
         ];
     }
     

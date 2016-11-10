@@ -21,13 +21,15 @@
     
     'modelo' => 'Publicacion',
     'criterios' => [
-        'order' => 'id_publicacion DESC'
+        'order' => 'fn_comentarios_sin_aprobar(t.id_publicacion) > 0 DESC, id_publicacion DESC'
     ],
     # id_publicacion, titulo, contenido, consecutivo, fecha_publicacion, fecha_disponibilidad, tipo_id, lugar, hora, estado_id, usuario_id
     'columnas' => ['titulo', 
         'consecutivo',
         'estado_id' => 'EstadoPublic->nombre',
         'tipo_id' => 'TipoPublicacion->nombre',
+        'comentarios' => ['valor' => 'ComentariosSinAprobar', 'opciones' => ['class' => 'text-center']], 
+        'vistas',
         ],
     'opciones' => [
         ['i' => 'eye', 'url' => 'Publicacion/ver&{id:pk}'],

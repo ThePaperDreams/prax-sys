@@ -42,14 +42,5 @@
     'paginacion' => 10,
 ]) ?>
 <script>
-    
-    $(function(){
-        $(".btn-exportar-grid").click(function(){
-            var form = $("#form-exportar-grid");
-            var url = $(this).attr("data-action");
-            form.attr("action", url);
-            form.submit();
-        });
-    });
 
 </script>

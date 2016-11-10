@@ -14,6 +14,20 @@ class CtrlPrincipal extends CControlador{
         parent::inicializar();
         $this->plantilla = 'login';
     }   
+
+    public function accionAjx(){
+        if(!isset($this->_p['ajx-rqst'])){
+            Sis::fin();
+        }
+        $this->json([
+            'total' => count(Sis::apl()->Utilidades->getNotificaciones()),
+            'notificaciones' => Sis::apl()->Utilidades->getNotificaciones(),
+        ]);
+    }
+
+    public function accionTest(){
+        Sis::ap()->log->escribir("Saludo");
+    }
     
     public function accionRecuperar(){
         $email = "";
@@ -49,12 +63,42 @@ class CtrlPrincipal extends CControlador{
         ]);
     }
     
-    public function accionInicio(){    
+    public function accionInicio(){
         $this->plantilla = 'basica';        
         $this->mostrarVista('inicio');
     }
 
-    public function accionAcerca(){
+    public function accionMapaNavegacion(){
+        if(isset($this->_p['ajx_rq'])){
+            $this->consultarHijosNavegacion();
+            Sis::fin();
+        }
+
+        $this->plantilla = "basica";
+        $c = new CCriterio();
+        $c->esVacio("padre_id");
+        $padres = MapaNavegacion::modelo()->listar($c);
+        $this->vista("mapaNavegacion", [
+            'padres' => $padres
+        ]);
+    }
+
+    private function consultarHijosNavegacion(){
+        $c = new CCriterio();
+        $c->condicion("padre_id", $this->_p['id']);
+        $opciones = MapaNavegacion::modelo()->listar($c);
+        $json = [];
+        foreach($opciones AS $k=>$v){
+            $json[] = ['id' => $v->id_opcion, 'nombre' => $v->nombre];
+        }
+        $this->json([
+            'error' => false,
+            'items' => $json,
+        ]);
+    }
+
+    public function accionSobre(){
+        $this->plantilla = 'basica';    
     	$this->mostrarVista("acerca");
     }
 

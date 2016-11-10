@@ -115,6 +115,14 @@ class CCriterio {
         return $this;
     }
 
+    public function entre($campo, $inf, $sup, $y = true){
+        if($this->condicion !== null && $this->condicion !== ""){ 
+            $this->condicion .= " " . ($y? "AND" : "OR");
+        }
+        $this->condicion .= " $campo BETWEEN '$inf' AND '$sup'";
+        return $this;
+    }
+
     /**
      * Esta función permite indicar el orden que se dará a los registros
      * @param string $orden

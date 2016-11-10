@@ -3,41 +3,56 @@ $formulario = new CBForm(['id' => 'form-salidas']);
 $formulario->abrir();
 ?>
 <div class="tile p-15">
-<?php echo $formulario->lista($modelo, 'responsable_id', $usuarios, ['label' => true, 'group' => true, 'autofocus' => true, 'defecto' => 'Seleccione un Responsable']) ?>
-<?php echo $formulario->areaTexto($modelo, 'descripcion', ['label' => true, 'group' => true]) ?>
-<?php echo $formulario->campoTexto($modelo, 'fecha_entrega', ['label' => true, 'group' => true, 'class'=>'campo-fecha']) ?>
-<div>
-    <div class="form-group">
-        <?= CBoot::selectM('', 'Implemento', 'id_implemento', 'nombre', ['label' => 'Implementos', 'group' => true, 'autofocus' => true, 'defecto' => 'Seleccione un Implemento', 'id' => 'selectId']) ?>   
-    </div>    
-    <div class="form-group"style="">
-        <span style="font-size:12px" class="label label-default">Unidades: <i id="total-unidades">0</i></span>
-    </div>
-    <?= CBoot::number(0, ['min' => 0, 'label' => 'Cantidad', 'group' => true, 'id' => 'cant']); ?>   
-    <?= CBoot::boton('Agregar ' . CBoot::fa('plus-circle'), 'default', ['group' => true, 'id' => 'btnAgregar']) ?>
+<div class="col-sm-6">
+    <?php echo $formulario->lista($modelo, 'responsable_id', $usuarios, ['label' => true, 'group' => true, 'autofocus' => true, 'defecto' => 'Seleccione un Responsable', 'data-s2' => true]) ?>
+    <?php echo $formulario->areaTexto($modelo, 'descripcion', ['label' => true, 'group' => true, 'rows' => 10]) ?>
 </div>
-<hr>
-<div class="row">
-    <div class="col-sm-12">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        Nombre del implemento
-                    </th>
-                    <th>
-                        Cantidad agregada
-                    </th>
-                    <th>
-                        Eliminar
-                    </th>
-                </tr>
-            </thead>
-            <tbody id="datosTabla">
-
-            </tbody>
-        </table>
+<div class="col-sm-6">
+    <?php echo $formulario->campoTexto($modelo, 'fecha_entrega', ['label' => true, 'group' => true, 'class'=>'campo-fecha']) ?>
+    <div class="form-group">
+        <label for="">Implementos</label>
+        <div class="input-group">            
+            <?= CBoot::selectM('', 'Implemento', 'id_implemento', 'nombre', ['data-s2' => true, 'autofocus' => true, 'defecto' => 'Seleccione un Implemento', 'id' => 'selectId']) ?>   
+            <div class="input-group-addon">
+                <span style="font-size:12px" class="label label-default">Unidades: <i id="total-unidades">0</i></span>
+            </div>
+        </div>
+    </div>    
+    <div>
+        <div class="form-group">
+            <label for="">Cantidad</label>
+            <div class="input-group">
+                <?= CBoot::number(0, ['min' => 0, 'id' => 'cant']); ?>   
+                <div class="input-group-btn">                
+                    <?= CBoot::boton('Agregar ' . CBoot::fa('plus-circle'), 'default', ['id' => 'btnAgregar']) ?>
+                </div>
+            </div>
+        </div>
     </div>
+    <hr>
+    <div class="row">
+        <div class="col-sm-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Nombre del implemento
+                        </th>
+                        <th>
+                            Cantidad agregada
+                        </th>
+                        <th>
+                            Eliminar
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="datosTabla">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
 </div>
 <hr>
 <div class="row">
@@ -106,7 +121,7 @@ $formulario->abrir();
         var valor = select.val();
         var nombre = select.find("option:selected").text();
         var cantidad = $("#cant").val();
-
+        var maximo = parseInt($("#total-unidades").html());
 
         if (valor === ""|| cantidad <= 0) {
             return;
@@ -115,11 +130,59 @@ $formulario->abrir();
         if ($("#remover-" + valor).length > 0) {
             return;
         }
+
+        if(parseInt(cantidad) > maximo){
+            cantidad = maximo;
+        }
         
-        var hidden = '<input type="hidden" name="articulo[]" value="'+valor+'"><input type="hidden" name="cantity[]" value="'+cantidad+'">';
+        var hidden = '<input type="hidden" name="articulo[]" value="'+valor+'"><input type="hidden" class="cantidad" name="cantity[]" value="'+cantidad+'">';
         
         var datosTabla = $("#datosTabla");
-        var fila = '<tr data-implemento="true" id="remover-' + valor + '"><td>' + nombre + hidden + '</td><td>' + cantidad + '</td><td class="text-danger-icon text-center col-sm-1"><i class="fa fa-ban" onclick="Quitar(' + valor + ')" ></i></td></tr>';
+        
+        var fila = $("<tr/>", {'data-implemento' : 'true', id: 'remover-' + valor});
+        fila.append($("<td/>").html(nombre + hidden));
+        var tdCantidad = $("<td/>").html(cantidad);
+        tdCantidad.attr("data-max", maximo);
+        fila.append(tdCantidad);
+        var icon = $("<i/>", {class: 'fa fa-trash'});
+        fila.append($("<td/>", {class : 'text-danger-icon text-center col-sm-1'}).html(icon));
+
+        tdCantidad.dblclick(function(){
+            var valor = $(this).html();
+            var input = $("<input/>", {class: 'form-control'});
+            tdCantidad.html(input);
+            input.val(valor);
+            input.focus().select();
+
+            var removerInput = function(){
+                var max = parseInt(tdCantidad.attr("data-max"));
+                var nuevoValor = input.val();
+                if($.trim(nuevoValor) === ""){
+                    tdCantidad.html(valor);
+                } else {
+                    if(parseInt(nuevoValor) > max){ nuevoValor = max; }
+                    tdCantidad.html(nuevoValor);
+                    var hd = tdCantidad.closest("tr").find("input.cantidad");
+                    hd.val(nuevoValor);                    
+                }
+
+            };
+
+            input.blur(function(){
+                removerInput();
+            });
+            input.keyup(function(e){
+                if(e.which == 13){
+                    removerInput();
+                    return;
+                }
+            });
+        });
+
+        icon.click(function(){
+            Quitar(valor);
+        });
+
         datosTabla.append(fila);
 
     }
@@ -129,10 +192,13 @@ $formulario->abrir();
         fila.remove();
     }
     function validarFecha(fecha) {
-        var currDate = new Date();
+        var d = new Date();
+        var fechaActualStr = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + (d.getDate() < 10? '0' : '') + d.getDate();
+        var currDate = Date.parse(fechaActualStr);
         var date = Date.parse(fecha.val());
+
         if (date < currDate) {
-            lobiAlert("error", "Por favor seleccione una fecha mayor a la de hoy");
+            lobiAlert("error", "Por favor seleccione una fecha mayor o igual a la de hoy");
             $('#btn-send').attr("disabled", "disabled");
         } 
         if(date > currDate) {

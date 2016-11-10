@@ -39,6 +39,7 @@ class Torneo extends CModelo {
             'cupo_maximo',
             'cupo_minimo',
             'edad_maxima',
+            'edad_minima',
             'fecha_inicio',
             'fecha_fin',
             'nombre',
@@ -57,6 +58,10 @@ class Torneo extends CModelo {
         ];
     }
 
+    public function antesDeGuardar(){
+        $this->edad_minima = 6;
+    }
+
     /**
      * Esta función retorna un alias dado a cada uno de los atributos del modelo
      * @return string
@@ -64,15 +69,20 @@ class Torneo extends CModelo {
     public function etiquetasAtributos() {
         return [
             'id_torneo' => 'Id Torneo',
-            'cupo_maximo' => 'Cupo Máximo',
-            'cupo_minimo' => 'Cupo Mínimo',
-            'edad_maxima' => 'Edad Máxima',
-            'fecha_inicio' => 'Fecha de Inicio',
+            'cupo_maximo' => 'Cupo Máx.',
+            'cupo_minimo' => 'Cupo Mín.',
+            'edad_maxima' => 'Edad Máx.',
+            'fecha_inicio' => 'Inicio', 
             'fecha_fin' => 'Fecha de Fin',
             'nombre' => 'Nombre',
             'observaciones' => 'Observaciones',
             'tabla_posiciones' => 'Tabla de Posiciones',
+            'totalEquipos' => 'Equipos',
         ];
+    }
+
+    public function getTotalEquipos(){
+        return count($this->Equipos);
     }
 
     public function filtros() {

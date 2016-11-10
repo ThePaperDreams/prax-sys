@@ -37,6 +37,23 @@ class CtrlPlanTrabajo extends CControlador{
         
         $this->mostrarVista('crear', $this->getOpciones($modelo));
     }
+
+    public function accionImprimir($id){
+        $plan = $this->cargarModelo($id);
+        if($plan == null){
+            $this->redireccionar('inicio');
+        }
+
+        $this->tituloPagina = "Plan-de-trabajo-$plan->id_plan_trabajo-praxis";
+
+        $this->plantilla = "reporte";
+        $pdf = Sis::apl()->mpdf->crear();
+        ob_start();
+        $this->vista('imprimir', ['plan' => $plan]);
+        $texto = ob_get_clean();
+        $pdf->writeHtml($texto);
+        $pdf->Output("Plan-de-trabajo-$plan->id_plan_trabajo-praxis.pdf", 'I');
+    }
     
     private function guardarObj(){        
         $error = false;
@@ -76,9 +93,10 @@ class CtrlPlanTrabajo extends CControlador{
      */
     private function getOpciones(&$modelo){
         $criterio = new CCriterio();
-        if(!$modelo->nuevo){
+        if(!$modelo->nuevo && !empty($modelo->idsObjetivos())){
             $criterio->noEn("id_objetivo", $modelo->idsObjetivos());
         }
+        
         $objetivos = Objetivo::modelo()->listar($criterio);
         return [
             'modelo' => $modelo,

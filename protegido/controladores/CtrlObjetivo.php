@@ -35,6 +35,31 @@ class CtrlObjetivo extends CControlador{
         $url = Sis::crearUrl(['objetivo/crear']);
         $this->mostrarVista('crear', ['modelo' => $modelo, 'url' => $url]);
     }
+
+    public function accionReporte(){
+        if(!isset($this->_p['modelo'])){
+            $this->redireccionar('inicio');
+        }
+
+        $this->tituloPagina = "Objetivos-planes-de-trabajo-praxis";
+        $campos = $this->_p['modelo'];
+        foreach($campos AS $k=>$v){ $campos[$k] = $v == ''? null : $v; }
+
+        $c = new CCriterio();
+        $c->condicion("t.titulo", $campos['titulo'], 'LIKE');
+        $c->orden('id_objetivo', false);
+
+        $objetivos = Objetivo::modelo()->listar($c);
+        // var_dump(count($objetivos));
+        // exit();
+        $this->plantilla = "reporte";
+        $pdf = Sis::apl()->mpdf->crear();
+        ob_start();
+        $this->vista('reporte', ['objetivos' => $objetivos]);
+        $texto = ob_get_clean();
+        $pdf->writeHtml($texto);
+        $pdf->Output("Objetivos-planes-de-trabajo-praxis.pdf", 'I');
+    }
     
     /**
      * Esta función permite editar un registro existente

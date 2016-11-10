@@ -17,6 +17,31 @@ class CtrlPublicacion extends CControlador{
             'imagenes' => $imagenes
         ]);
     }
+
+    public function accionConfiguracion(){
+
+        $this->vista("configuracion");
+    }
+
+    public function accionSitioWeb(){
+        if(isset($this->_p['redes'])){
+            foreach($this->_p['redes'] AS $k=>$v){
+                $config = Configuracion::get("redes_" . $k, true);
+                $config->valor = $v;
+                $config->guardar();
+            }
+            $nosotros = Configuracion::get("quienes_somos", true);
+            $nosotros->valor = $this->_p['contenido_publicacion'];
+            $nosotros->guardar();
+            $this->redireccionar("sitioWeb");
+        }
+        $this->vista("sitioWeb", [
+            'facebook' => Configuracion::get("redes_facebook"),
+            'twitter' => Configuracion::get("redes_twitter"),
+            'instagram' => Configuracion::get("redes_instagram"),
+            'youtube' => Configuracion::get("redes_facebook"),
+        ]);
+    }
     
     private function cargarImagen(){        
         $imagen = CArchivoCargado::instanciarPorNombre('imagenes');
@@ -208,6 +233,11 @@ class CtrlPublicacion extends CControlador{
      * @param int $pk
      */
     public function accionVer($pk){
+        if(isset($this->_p['ajxRqst'])){
+            $this->aprobarRemoverComentario();
+            Sis::fin();
+        }
+
         $modelo = $this->cargarModelo($pk);
         $this->mostrarVista('ver',
             ['modelo' => $modelo,
@@ -215,6 +245,26 @@ class CtrlPublicacion extends CControlador{
             'usuar' => CHtml::modelolista(Usuario::modelo()->listar(), "id_usuario", "nombre"),
             'estd' => CHtml::modelolista(EstadoPublicacion::modelo()->listar(), "id_estado", "nombre"),    
             ]);
+    }
+
+    private function aprobarRemoverComentario(){
+        $t = $this->_p['tipo'];
+        $comentario = Comentario::modelo()->porPk($this->_p['id']);
+        $json = [];
+        if($t == 1){
+            $comentario->estado = 1;
+            $json['error'] = !$comentario->guardar();
+            $json['estado'] = 1;
+        } else if($t == 2){
+            if(count($comentario->respuestas) > 0){
+                foreach($comentario->respuestas AS $respuesta){
+                    $respuesta->eliminar();
+                }
+            }
+            $json['error'] = !$comentario->eliminar();
+            $json['estado'] = '0';
+        }
+        $this->json($json);
     }
     
     /**

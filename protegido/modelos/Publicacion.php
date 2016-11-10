@@ -23,7 +23,7 @@
  * @property EstadoPublicacion $EstadoPublicacion
  */
 class Publicacion extends CModelo {
-
+    private $comentarios = null;
     /**
      * Esta función retorna el nombre de la tabla representada por el modelo
      * @return string
@@ -48,7 +48,8 @@ class Publicacion extends CModelo {
             'estado_id',
             'usuario_id',
             'resumen',
-            'img_previsualizacion'
+            'img_previsualizacion',
+            'vistas',
         ];
     }
 
@@ -64,6 +65,14 @@ class Publicacion extends CModelo {
             'TipoPublicacion' => [self::PERTENECE_A, 'TipoPublicacion', 'tipo_id'],
             'EstadoPublic' => [self::PERTENECE_A, 'EstadoPublicacion', 'estado_id'],
         ];
+    }
+
+    public function getComentariosSinAprobar(){
+        $c = new CCriterio();
+        $c->condicion("estado", "2")
+            ->y("publicacion_id", $this->id_publicacion);
+        $total = Comentario::modelo()->contar($c);
+        return $total > 0? CHtml::e('span', $total, ['class' => 'label label-danger']) : $total;
     }
 
     /**
@@ -82,8 +91,22 @@ class Publicacion extends CModelo {
             'estado_id' => 'Estado',
             'usuario_id' => 'Usuario Id',
             'resumen' => 'Resumen',
-            'img_previsualizacion' => 'Imagen de previsualización'
+            'img_previsualizacion' => 'Imagen de previsualización',
+            'comentarios' => 'Comentarios',
+            'vistas' => 'Vistas',
         ];
+    }
+
+    public function getComentarios(){
+        if($this->comentarios ===  null){
+            $c = new CCriterio();
+            $c->condicion("t.publicacion_id", $this->id_publicacion)
+                ->orden("t.estado = 2", false)
+                ->orden("fecha", true);
+            $this->comentarios = Comentario::modelo()->listar($c);
+        }
+
+        return $this->comentarios;
     }
 
     public function getEtiquetaEstado() {

@@ -58,7 +58,9 @@ class CtrlMatricula extends CControlador {
         $c = new CCriterio();
         $c->condicion('deportista_id', $campos['deportista_id'])
             ->y('estado', $campos['estado'])
-            ->y('categoria_id', $campos['categoria_id']);
+            ->y('categoria_id', $campos['categoria_id'])
+            ->orden("estado = 1", false)
+            ->orden("fecha_realizacion", false);
         $matriculas = Matricula::modelo()->listar($c);
 
         $this->plantilla = "reporte";

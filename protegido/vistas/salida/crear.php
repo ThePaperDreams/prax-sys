@@ -1,5 +1,5 @@
 <?php
-$this->tituloPagina = "Crear salida de implementos";
+$this->tituloPagina = "Registrar préstamo de implementos";
 $this->migas = [
     'Home' => ['principal/inicio'],
     'Listar salida de implementos' => ['Salida/inicio'],

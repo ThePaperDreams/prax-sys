@@ -100,14 +100,14 @@ $this->opciones = [
                                 <li>
                                     <div id="deportista-2" data-id="2">
                                         <div class="deportista-equipo row">
-                                            <div class="pic col-sm-3">
+                                            <div class="pic col-sm-2">
                                             <?php if($jugador->Deportista->foto === "" || $jugador->Deportista->foto === null): ?>
                                                 <img src="<?= Sis::UrlBase() ?>/publico/imagenes/deportistas/fotos/sin-foto.jpg">
                                             <?php else: ?>
                                                 <img src="<?= Sis::UrlBase()?>/publico/imagenes/deportistas/fotos/thumbs/tmb_<?= $jugador->Deportista->foto ?>">
                                             <?php endif ?>
                                             </div>
-                                            <div class="info col-sm-9">
+                                            <div class="info col-sm-5">
                                                 <table class="table-info table table-bordered table-condensed" id="table-expanded-2">
                                                     <tbody><tr>
                                                         <td>Nombre: </td>
@@ -127,6 +127,24 @@ $this->opciones = [
                                                     </tr>
                                                 </tbody></table>
                                             </div>
+                                            
+                                            <div class="col-sm-5">
+                                                <table id="tabla-info-<?= $jugador->id_de ?>" data-id="<?= $jugador->id_de ?>" class="table table-bordered table-condensed">
+                                                    <tr>
+                                                        <td>Expulsiones: </td>
+                                                        <td class="expulsiones"><?= $jugador->expulsiones ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Amonestaciones: </td>
+                                                        <td class="amonestaciones"><?= $jugador->amonestaciones ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Anotaciones: </td>
+                                                        <td class="anotaciones"><?= $jugador->anotaciones ?></td>
+                                                    </tr>                                                    
+                                                </table>
+                                            </div>
+
                                         </div>
                                     </div>
                                 </li>

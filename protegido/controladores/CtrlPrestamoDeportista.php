@@ -34,6 +34,37 @@ class CtrlPrestamoDeportista extends CControlador{
         }        
         $this->mostrarVista('crear', $this->opcionesForm($modelo));
     }
+
+    public function accionReporte(){
+        $this->tituloPagina = "Prestamo de deportistas praxis";
+        $this->tituloPagina = str_replace(' ', '-', $this->tituloPagina);
+
+        $campos = $this->_p['modelo'];
+        foreach($campos AS $k=>$v){ $campos[$k] = $v == ''? null : $v; }
+        $concat = "CONCAT_WS(' ', nombre1, nombre2, apellido1, apellido2,t2.apellido2)";
+        $c = new CCriterio();
+        $c->union("tbl_deportistas", "t2")
+                ->donde("t.deportista_id", '=', "t2.id_deportista")
+                ->condicion($concat, $campos['deportista_id'], 'LIKE')
+                ->y("t.club_origen", $campos['club_origen'], 'LIKE')
+                ->y("t.club_destino", $campos['club_destino'], 'LIKE')
+                ->y("t.tipo_prestamo", $campos['tipo_prestamo'])
+                ->y("t.fecha_inicio", $campos['fecha_inicio'])
+                ->y("t.fecha_fin", $campos['fecha_fin'])
+                ->orden("estado = 1", false)
+                ->orden("id_prestamo", false);
+
+        $prestamos = PrestamoDeportista::modelo()->listar($c);
+        // var_dump(count($objetivos));
+        // exit();
+        $this->plantilla = "reporte";
+        $pdf = Sis::apl()->mpdf->crear();
+        ob_start();
+        $this->vista('reporte', ['prestamos' => $prestamos]);
+        $texto = ob_get_clean();
+        $pdf->writeHtml($texto);
+        $pdf->Output("$this->tituloPagina.pdf", 'I');
+    }
     
     /**
      * 

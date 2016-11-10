@@ -42,6 +42,7 @@ class Evento extends CModelo {
             'fecha_disponibilidad',
             'tipo_id',
             'lugar',
+            'fecha',
             'hora',
             'estado',
             'autor',
@@ -103,6 +104,7 @@ class Evento extends CModelo {
         $this->autor = Sis::apl()->usuario->getID();
         if ($this->nuevo) {
             $this->fecha_publicacion = date("Y-m-d H:i:s");
+            $this->fecha_disponibilidad = $this->fecha;
         }
     }
 

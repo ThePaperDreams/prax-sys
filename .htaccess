@@ -1,4 +1,5 @@
-Options -Indexes
+# este es el htaccess
+#Options -Indexes
 RewriteEngine on
 RewriteRule ^(recursos|protegido|publico) - [L]
 RewriteRule ^/?$ index.php?r=principal&%{QUERY_STRING} [NC,L]

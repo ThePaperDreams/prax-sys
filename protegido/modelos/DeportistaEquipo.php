@@ -30,6 +30,9 @@
             'id_de' => ['pk'] ,
                 'deportista_id',
                 'equipo_id',
+                'amonestaciones',
+                'expulsiones',
+                'anotaciones',
             ];
     }
     

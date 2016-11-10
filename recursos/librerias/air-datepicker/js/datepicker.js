@@ -521,7 +521,12 @@
                 }
             }
 
-            _this.views[this.currentView]._render()
+            _this.views[this.currentView]._render();
+            // Golazo
+            var dainput = this.$el;
+            setTimeout(function(){
+                dainput.change();
+            }, 200);
         },
 
         removeDate: function (date) {

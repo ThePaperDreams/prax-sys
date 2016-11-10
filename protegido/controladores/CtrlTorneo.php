@@ -16,6 +16,30 @@ class CtrlTorneo extends CControlador{
 
         $this->mostrarVista('inicio', ['criterios' => $c]);
     }
+
+    public function accionRegistrarResultados($id){
+
+        if(isset($this->_p['data-save-fields'])){
+            $this->guardarCampos($this->_p);
+            Sis::fin();
+        }
+
+        $torneo = $this->cargarModelo($id);
+        $this->vista('registrarResultados', [
+            'torneo' => $torneo,
+            'equipos' => $torneo->Equipos,
+        ]);
+    }
+
+    private function guardarCampos($campos){
+        $registro = DeportistaEquipo::modelo()->porPk($campos['jug-id']);
+        $registro->anotaciones = $campos['anotaciones'];
+        $registro->amonestaciones = $campos['amonestaciones'];
+        $registro->expulsiones = $campos['expulsiones'];
+        $this->json([
+            'error' => !$registro->guardar(),
+        ]);
+    }
     
     private function guardarEquipos($equipos, $torneo){
         $error = false; 

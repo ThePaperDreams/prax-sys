@@ -12,31 +12,19 @@ $this->opciones = [
 ];
 ?>
 
-<?php $this->abrirSeccion("antes-de-opciones") ?>
-
-<div class="row">
-    <div class="col-lg-6">
-        <a href="<?= Sis::crearUrl(['pago/generarReporte']) ?>" target="_blank">
-            <?php
-            $icon = CBoot::fa('file-pdf-o');
-            echo CBoot::boton('Generar pdf ' . $icon, 'primary', ['id' => 'generar_pdf']);
-            ?>
-        </a>
-    </div>
-</div>
-<div class="p-5"></div>
-
-<?php $this->cerrarSeccion() ?>
-
 <?=
 $this->complemento('!siscoms.bootstrap3.CBGrid', [
     'ajax' => true,
+    'exportar' => [
+        'PDF' => ['i' => 'file-pdf-o', 'url' => ['pago/reporte']],
+    ],
     'filtrosAjax' => [
         'fecha',
         'valor_cancelado', 
         'estado' => CBoot::select('', [1 => 'Activo', 0 => 'Anulado'], ['defecto' => 'Estado', 'style' => 'min-width: 150px;', 'name' => 'estado']),
         'descuento',
         'matricula_id',
+        '_categoria'
      ],
     'modelo' => 'Pago',
     # id_plan_trabajo, descripcion, fecha_aplicacion, estado, categoria_id
@@ -46,6 +34,7 @@ $this->complemento('!siscoms.bootstrap3.CBGrid', [
         'url_comprobante' => 'UrlDescarga',
         'estado' => 'EtiquetaEstado',
         'descuento',
+        '_categoria' => 'categoria',
         'matricula_id' => 'MatriculaPago->Deportista->nombreCompleto',
     ],
     'opciones' => [

@@ -17,6 +17,7 @@
  * @property FkTblPagosTblMatriculas1 $fkTblPagosTblMatriculas1
  */
 class Pago extends CModelo {
+    public $_categoria;
 
     /**
      * Esta función retorna el nombre de la tabla representada por el modelo
@@ -70,7 +71,12 @@ class Pago extends CModelo {
             'razon_descuento' => 'Razón Descuento',
             'matricula_id' => 'Deportista',
             'valorFormateado' => 'Valor Cancelado',
+            '_categoria' => 'Categoría',
         ];
+    }
+
+    public function getCategoria(){
+        return $this->MatriculaPago->Categoria->nombre;
     }
 
     public function filtros() {
@@ -82,15 +88,18 @@ class Pago extends CModelo {
      public function filtrosAjx() {
         $criterio = new CCriterio();
         $concat = "CONCAT_WS(' ', d.nombre1,d.apellido1)";
-           $criterio->union("tbl_matriculas", "m")
-                ->donde("m.id_matricula", "=", "t.matricula_id")
-                ->union("tbl_deportistas", "d")
-                ->donde("d.id_deportista", "=", "m.deportista_id")
-                ->condicion($concat, $this->matricula_id, "LIKE")
-                ->y("t.estado", $this->estado, "=")
-                ->y("t.descuento", $this->descuento, "LIKE")
-                ->y("t.fecha", $this->fecha, "LIKE")
-                ->y("t.valor_cancelado", $this->valor_cancelado, "LIKE");
+        $criterio->union("tbl_matriculas", "m")
+            ->donde("m.id_matricula", "=", "t.matricula_id")
+            ->union("tbl_categorias", "ca")
+            ->donde("ca.id_categoria", "=", "m.categoria_id")
+            ->union("tbl_deportistas", "d")
+            ->donde("d.id_deportista", "=", "m.deportista_id")
+            ->condicion($concat, $this->matricula_id, "LIKE")
+            ->y("t.estado", $this->estado, "=")
+            ->y("t.descuento", $this->descuento, "LIKE")
+            ->y("t.fecha", $this->fecha, "LIKE")
+            ->y("t.valor_cancelado", $this->valor_cancelado, "LIKE")
+            ->y("ca.nombre", $this->_categoria, 'LIKE');
         return $criterio;
     }
     

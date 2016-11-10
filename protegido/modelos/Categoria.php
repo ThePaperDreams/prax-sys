@@ -57,9 +57,10 @@ class Categoria extends CModelo {
     
     public function filtrosAjx() {
         $criterio = new CCriterio();
-        $criterio->condicion("t.nombre", $this->nombre);
-        $criterio->condicion("t.tarifa", $this->tarifa);
-        $criterio->condicion("t.estado", $this->estado);
+        $criterio->condicion("t.nombre", $this->nombre)
+            ->y("t.tarifa", $this->tarifa)
+            ->y("t.estado", $this->estado)
+            ->orden('id_categoria', false);
         return $criterio;
     }
     
@@ -98,6 +99,7 @@ class Categoria extends CModelo {
             'edad' => 'Edades',
             'cupos' => 'Max - Min',
             'tarifaf' => 'Tarifa',
+            'matriculados' => 'Matriculados',
         ];
     }
     

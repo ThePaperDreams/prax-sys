@@ -21,7 +21,7 @@
  * @property Documentos[] $Detalles
  */
 class Acudiente extends CModelo{
- 
+    public $_nombreCompleto;
     /**
      * Esta función retorna el nombre de la tabla representada por el modelo
      * @return string
@@ -106,6 +106,7 @@ class Acudiente extends CModelo{
             'telefono2' => 'Teléfono 2',
             'estado' => 'Estado',
             'tipo_doc_id' => 'Tipo Documento',
+            '_nombreCompleto' => 'Nombre',
         ];
     }
     
@@ -156,7 +157,7 @@ class Acudiente extends CModelo{
     public function filtrosAjx() {
         $criterio = new CCriterio();
         $concat = "CONCAT_WS(' ', t.nombre1,t.nombre2,t.apellido1,t.apellido2)";
-           $criterio->condicion($concat, $this->nombre1, "LIKE")
+           $criterio->condicion($concat, $this->_nombreCompleto, "LIKE")
                 ->y("t.estado", $this->estado, "=")
                 ->y("t.telefono1", $this->telefono1, "LIKE")
                 ->y("t.identificacion", $this->identificacion, "LIKE")

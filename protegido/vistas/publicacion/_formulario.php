@@ -88,18 +88,21 @@ $formulario->abrir();
             link_assume_external_targets: true
         });
         
-    $("#check").change(function(){
+    $("#calendar").change(function(){
             validarFecha($(this));
         });
     });
  
  function validarFecha(fecha) {
-        var currDate = new Date();
+        var d = new Date();
+        var fechaActualStr = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + (d.getDate() < 10? '0' : '') + d.getDate();
+        var currDate = Date.parse(fechaActualStr);
         var date = Date.parse(fecha.val());
-        if (date >= currDate) {
+
+        if (date  > currDate) {
             $('#btn-send').removeAttr("disabled");
         } else {
-            mostrarAlert("error", "Mostrar una fecha actual mayor a la de hoy");
+            mostrarAlert("error", "Seleccione una fecha mayor a la de hoy");
             $('#btn-send').attr("disabled", "disabled");
         }
     }

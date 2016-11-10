@@ -37,6 +37,16 @@ $this->opciones = [
                     <th><?php echo $modelo->obtenerEtiqueta('descripcion') ?></th>
                     <td><?php echo $modelo->descripcion; ?></td>
                 </tr>
+                <tr>
+                    <th>&nbsp;</th>
+                    <td>
+                        <a href="<?= Sis::crearUrl(['planTrabajo/imprimir', 'id' => $modelo->id_plan_trabajo]) ?>" target="_blank">
+                            <button class="btn btn-primary btn-block">
+                                Imprimir <i class="fa fa-print"></i>
+                            </button>
+                        </a>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>

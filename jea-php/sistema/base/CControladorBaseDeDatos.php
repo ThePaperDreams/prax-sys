@@ -91,6 +91,8 @@ abstract class CControladorBaseDeDatos
     
     public abstract function commit();
 
+    public abstract function proc($proc, $p = []);
+
 
     /************************************************
      *        Funciones para armar criterios        *

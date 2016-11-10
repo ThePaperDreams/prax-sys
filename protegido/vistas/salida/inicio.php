@@ -1,5 +1,5 @@
 <?php 
-$this->tituloPagina="Salida de implementos";
+$this->tituloPagina="Préstamo de implementos";
     $this->migas = [
         'Home' => ['principal/inicio'],
         'Listar salida de implementos'
@@ -14,6 +14,9 @@ $this->tituloPagina="Salida de implementos";
 
 <?= $this->complemento('!siscoms.bootstrap3.CBGrid', [
     'ajax' => true,
+    'exportar' => [
+        'PDF' => ['i' => 'file-pdf-o', 'url' => ['salida/reporte']],
+    ],
     'filtrosAjax' => [
         'fecha_realizacion',
         'fecha_entrega', 

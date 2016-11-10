@@ -1,4 +1,4 @@
-<li class="rep-jugador" id="deportista-<?= $deportista->id_deportista ?>" data-id="<?= $deportista->id_deportista ?>">
+<li class="rep-jugador" id="deportista-<?= $deportista->id_deportista ?>" data-id="<?= $deportista->id_deportista ?>" data-edad="<?= $deportista->edad ?>">
     <div class="deportista-equipo row">
         <div class="pic col-sm-3">
             <?php if($deportista->foto === "" || $deportista->foto === null): ?>

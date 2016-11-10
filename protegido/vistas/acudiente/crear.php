@@ -1,4 +1,7 @@
 <?php
+$this->ayudaTitulo = "Registrar / Modificar Acudiente";
+$this->ayuda = "acudientes/editarCrear";
+
 $this->tituloPagina = "Registrar Acudiente";
 $this->migas = [
     'Home' => ['principal/inicio'],

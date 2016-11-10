@@ -1,6 +1,11 @@
 <?php 
 $this->tituloPagina = "Registrar seguimiento a "  . CHtml::e("strong", $deportista->nombreCompleto);
-
+$this->migas = [
+    'Home' => ['principal/inicio'],
+    'Listar deportistas' => ['Deportista/inicio'],
+    'Ficha técnica ' . $deportista->nombreCompleto => ['Deportista/fichaTecnica', 'id' => $deportista->id],
+    'Añadir seguimientos',
+];
 ?>
 <div class="col-sm-5">
     <div class="tile p-15">
@@ -46,7 +51,7 @@ $this->tituloPagina = "Registrar seguimiento a "  . CHtml::e("strong", $deportis
                 <ul class="list-group" id="seg-positivos">
                 <?php foreach($positivos AS $seguimiento): ?>
                     <li class="list-group-item">
-                        <?= $seguimiento->descripcion ?>
+                        <?= $seguimiento->descripcion ?> &nbsp;&nbsp;&nbsp;(<?= $seguimiento->evaluacion ?>)
                     </li>
                 <?php endforeach ?>
                 </ul>
@@ -55,7 +60,7 @@ $this->tituloPagina = "Registrar seguimiento a "  . CHtml::e("strong", $deportis
                 <ul class="list-group" id="seg-negativos">
                 <?php foreach($negativos AS $seguimiento): ?>
                     <li class="list-group-item">
-                        <?= $seguimiento->descripcion ?>
+                        <?= $seguimiento->descripcion ?> &nbsp;&nbsp;&nbsp;(<?= $seguimiento->evaluacion ?>)
                     </li>
                 <?php endforeach ?>
                 </ul>
@@ -79,6 +84,17 @@ $this->tituloPagina = "Registrar seguimiento a "  . CHtml::e("strong", $deportis
         var descripcion = $("#Seguimientos_descripcion").val();
         var ficha = $("#id_ficha_tecnica").val();
         var tipo = $("[name='Seguimientos[tipo_seguimiento]']:checked").val();
+
+        if($.trim(evaluacion) == ""){
+            lobiAlert("error", "Por favor ingrese una calificación");
+            $("#Seguimientos_evaluacion").focus();
+            return;
+        } else if($.trim(descripcion) == ""){
+            lobiAlert("error", "Por favor ingrese una descripción");
+            $("#Seguimientos_descripcion").focus();
+            return;
+        }
+
         jQuery.ajax({
             'type' : 'POST',
             'url' : '<?= Sis::crearUrl(['deportista/seguimiento', 'id' => $deportista->id_deportista]) ?>',
@@ -98,8 +114,10 @@ $this->tituloPagina = "Registrar seguimiento a "  . CHtml::e("strong", $deportis
                     } else {
                         cont = $("#seg-negativos");
                     }
-                    var li = $("<li/>", {class: 'list-group-item'}).html(descripcion);
+                    var li = $("<li/>", {class: 'list-group-item'}).html(descripcion + "&nbsp;&nbsp;&nbsp;(" + evaluacion + ")");
                     cont.prepend(li);
+                    $("#Seguimientos_evaluacion").val("").focus();
+                    $("#Seguimientos_descripcion").val("");
                 } else {
                     console.log("Error al guardar el seguimiento");
                 }

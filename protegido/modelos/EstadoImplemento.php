@@ -37,9 +37,7 @@
      */
     protected function relaciones() {        
         return [
-            # el formato es simple: 
-            # tipo de relación | modelo con que se relaciona | campo clave foranea
-                    ];
+            ];
     }
     
     /**

@@ -19,6 +19,36 @@ class CtrlAcudiente extends CControlador {
         ]);
     }
 
+    public function accionReporte(){
+        if(!isset($this->_p['modelo'])){
+            $this->redireccionar('inicio');
+        }
+
+        $this->tituloPagina = "Acudientes - praxis";
+        $campos = $this->_p['modelo'];
+        foreach($campos AS $k=>$v){ $campos[$k] = $v == ''? null : $v; }
+
+        $c = new CCriterio();
+        $concat = "CONCAT_WS(' ', t.nombre1,t.nombre2,t.apellido1,t.apellido2)";
+        $c->condicion($concat, $campos['_nombreCompleto'], "LIKE")
+            ->y("t.identificacion", $campos['identificacion'], "LIKE")
+            ->y("telefono1", $campos['telefono1'], "LIKE")
+            ->y("telefono2", $campos['telefono2'], "LIKE")
+            ->y("t.estado", $campos['estado'], "LIKE")
+            ->orden("t.estado = 1", false)
+            ->orden("t.id_acudiente", false);
+
+        $acudientes = Acudiente::modelo()->listar($c);
+
+        $this->plantilla = "reporte";
+        $pdf = Sis::apl()->mpdf->crear();
+        ob_start();
+        $this->vista('reporte', ['acudientes' => $acudientes]);
+        $texto = ob_get_clean();
+        $pdf->writeHtml($texto);
+        $pdf->Output("Acudientes-praxis.pdf", 'I');
+    }
+
     public function accionCrear() {
         $this->validarIdentificacion();
         $modelo = new Acudiente();

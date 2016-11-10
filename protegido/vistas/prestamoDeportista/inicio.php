@@ -26,6 +26,9 @@
     'criterios' => [
         'order' => 'estado = 1 DESC, id_prestamo DESC'
     ],
+    'exportar' => [
+        'PDF' => ['i' => 'file-pdf-o', 'url' => ['prestamoDeportista/reporte']],
+    ],
     # id_prestamo, clubOrigen, clubDestino, fecha_inicio, fecha_fin, estado, deportista_id, tipo_prestamo
 //    'columnas' => 'nombreDeportista, club_origen, club_destino, fecha_inicio, fecha_fin, etiquetaTipo',
     'columnas' => [

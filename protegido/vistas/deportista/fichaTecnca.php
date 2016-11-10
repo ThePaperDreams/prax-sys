@@ -10,7 +10,13 @@ $this->migas = [
     <div class="page-header">
         <div class="row">
             <div class="col-sm-12">
-                <h4><?= $deportista->nombreCompleto ?></h4>
+                <h4 class="col-sm-10"><?= $deportista->nombreCompleto ?></h4>
+                <span class="col-sm-2">
+                    <a target="_blank" href="<?= Sis::crearUrl(['deportista/imprimirFicha', 'id' => $deportista->id_deportista]) ?>" class="btn btn-primary btn-block">
+                        Imprimir
+                        <i class="fa fa-print"></i>
+                    </a>
+                </span>
             </div>
         </div>
     </div>
@@ -220,27 +226,35 @@ $this->migas = [
             <table class="table">
                 <tr>
                     <th class="text-right">Amonestaciones:</th>
-                    <td><?= $ficha->amonestacion ?></td>
+                    <td><?= $ficha->amonestaciones ?></td>
                 </tr>
                 <tr>
                     <th class="text-right">Expulsiones:</th>
-                    <td><?= $ficha->expulsion ?></td>
+                    <td><?= $ficha->expulsiones ?></td>
                 </tr>
-                <tr>
+                <!-- <tr>
                     <th class="text-right">Partidos jugados: </th>
                     <td><?= $ficha->partidos ?></td>
+                </tr> -->
+                <tr>
+                    <th class="text-right">Torneos jugados:</th>
+                    <td><?= $ficha->torneos ?></td>
                 </tr>
                 <tr>
                     <th class="text-right">Goles anotados:</th>
-                    <td><?= $ficha->goles ?></td>
+                    <td><?= $ficha->anotaciones ?></td>
                 </tr>
             </table>
         </div>
         <div class="col-sm-6">
             <table class="table">
-                <tr>
+                <!-- <tr>
                     <th class="text-right">Torneos jugados:</th>
                     <td><?= $ficha->torneos ?></td>
+                </tr> -->
+                <tr>
+                    <th class="text-right">&nbsp;</th>
+                    <td>&nbsp;</td>
                 </tr>
                 <tr>
                     <th class="text-right">&nbsp;</th>
@@ -261,7 +275,6 @@ $this->migas = [
 <script>
     $(function(){
         $("#btn-editar").click(function(){
-            alert("")
             $("#f-t-info").slideUp(function(){
                 $("#f-t-form").slideDown();
             });        

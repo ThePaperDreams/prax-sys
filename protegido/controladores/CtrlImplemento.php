@@ -14,6 +14,40 @@ class CtrlImplemento extends CControlador{
         $modelos = Implemento::modelo()->listar();
         $this->mostrarVista('inicio', ['modelos' => $modelos]);
     }
+
+
+    public function accionReporte(){
+        if(!isset($this->_p['modelo'])){
+            $this->redireccionar('inicio');
+        }
+
+        $this->tituloPagina = "Implementos praxis";
+        $this->tituloPagina = str_replace(' ', '-', $this->tituloPagina);
+
+        $campos = $this->_p['modelo'];
+        foreach($campos AS $k=>$v){ $campos[$k] = $v == ''? null : $v; }
+
+        $c = new CCriterio();
+        
+        $c->condicion("t1.nombre", $campos['categoria_id'], "LIKE")
+           ->union("tbl_categorias_implementos", "t1")
+           ->donde("t1.id_categoria", "=", "t.categoria_id")
+           ->y("t.nombre", $campos['nombre'], "LIKE")     
+           ->y("t.estado_id", $campos['estado_id'], "=")
+           ->y("t.unidades", $campos['unidades'], "=")
+           ->y("t.minimo_unidades", $campos['minimo_unidades'], "=");
+
+        $implementos = Implemento::modelo()->listar($c);
+
+        $this->plantilla = "reporte";
+        $pdf = Sis::apl()->mpdf->crear();
+        ob_start();
+        $this->vista('reporte', ['implementos' => $implementos]);
+        $texto = ob_get_clean();
+        $pdf->writeHtml($texto);
+        $pdf->Output("$this->tituloPagina.pdf", 'I');
+    }
+
     
     /**
      * Esta función permite crear un nuevo registro

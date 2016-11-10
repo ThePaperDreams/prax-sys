@@ -84,12 +84,21 @@ final class CConectorMySql extends CConectorBaseDeDatos
         self::conectar();
         self::$instancia->resultados = mysqli_query(self::$instancia->recursoBd, $consulta);
         if(!self::$instancia->resultados){
+            # generamos el log
+            $msg = "Error de base de datos: " . mysqli_error(self::$instancia->recursoBd);
+            $msg .= "\n\t\t\t\t\t\t>> Consulta ejecutada: " . $consulta;
+            Sis::ap()->log->escribir("Error BD", $msg);
+            // Sis::ap()->log->escribir("Detalles", "Consulta ejecutada", false);
+
             throw new CExBaseDeDatos("Error al ejecutar la consulta: " 
                     . mysqli_error(self::$instancia->recursoBd) . " " 
                     . CHtml::e('p', 'Consulta ejecutada ')
                     . CHtml::e('b', $consulta)
                     );
-        }       
+        } else {
+            // Sis::ap()->log->escribir("Query", $consulta);
+        }
+        
         return self::$instancia->resultados;
     }
 
@@ -150,6 +159,12 @@ final class CConectorMySql extends CConectorBaseDeDatos
 
     public static function rollback() {
         return mysqli_rollback(self::$instancia->recursoBd);
+    }
+
+    public static function proc($proc, $p = []){
+        $parametros = implode(', ', array_map(function($v){ return "'$v'"; }, $p));
+        $consulta = "CALL $proc($parametros)";
+        return self::ejecutarConsulta($consulta);
     }
 
 }

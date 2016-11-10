@@ -58,6 +58,7 @@ class Seguimiento extends CModelo {
             # el formato es simple: 
             # tipo de relación | modelo con que se relaciona | campo clave foranea
             'fkTblSeguimientosTblFichasTecnicas1' => [self::PERTENECE_A, 'FkTblSeguimientosTblFichasTecnicas1', 'ficha_tecnica_id'],
+            'Entrenador' => [self::PERTENECE_A, 'Usuario', 'realizado_por'],
         ];
     }
 

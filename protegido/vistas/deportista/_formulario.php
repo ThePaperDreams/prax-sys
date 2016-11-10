@@ -1,4 +1,7 @@
 <?php
+$this->ayuda = "deportistas/crear";
+$this->ayudaTitulo = "Registrar / Modificar Deportista";
+
 Sis::Recursos()->recursoCss(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/css/fileinput.min.css']);
 Sis::Recursos()->recursoJs(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/js/fileinput.min.js']);
 $formulario = new CBForm(['id' => 'form-deportistas', 'opcionesHtml' => ['enctype' => 'multipart/form-data']]);
@@ -74,8 +77,13 @@ $formulario->abrir();
             <div class="col-sm-6">
                 <?php echo $formulario->lista($modelo2, 'id_acudiente', $acudientes, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un Acudiente', 'data-s2' => true]) ?>
             </div>
-            <div class="col-sm-2">
-                <?php echo CBoot::boton(CBoot::fa('plus') . ' Agregar', 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'id' => 'btn-addAcu']) ?>
+            <div class="col-sm-6">
+                <!-- <?php echo CBoot::boton(CBoot::fa('plus') . ' Agregar', 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'id' => 'btn-addAcu']) ?> -->
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-default abajo" id="btn-addAcu"><i class="fa fa-plus"></i> Agregar</button>
+                    <button type="button" class="btn btn-success abajo" id="btn-registrar-acudiente"><i class="fa fa-user-plus"></i> Registrar acudiente</button>
+                </div>
+
             </div>
             <?php if(!$modelo->nuevo): ?>                   
             <div class="col-sm-4">
@@ -207,7 +215,107 @@ $formulario->abrir();
         </div>
     </div>
 </div>    
+
+
 <?php $formulario->cerrar(); ?>
+
+<div class="modal fade" id="modal-acudientes">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                
+            </div>
+            <div class="modal-body">
+                <?= $formularioAcudiente ?>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal">
+                    <i class="fa fa-remove"></i> Cancelar
+                </button>
+                <button class="btn btn-primary" id="guardar-acudiente">
+                    <i class="fa fa-floppy-o"></i> 
+                    Guardar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        $("#btn-registrar-acudiente").click(function(){
+            $("#modal-acudientes").modal("show");
+        });
+        $("#guardar-acudiente").click(function(){
+            guardarAcudiente();
+            return false;
+        });
+    });   
+
+    function guardarAcudiente(){
+        var formulario = $("#form-acudientes").serializeArray();
+        var campos = {};
+        var requeridos = false;
+
+        $.each(formulario, function(k,v){
+            var key = v.name.replace(/Acudientes\[/g, '').replace(/\]/g, '');
+            var campo = $("[name='" + v.name + "']");
+            if(campo.attr("requerido") == "1" && $.trim(campo.val()) == ""){
+                requeridos = true;
+            }
+            campos[key] = v.value;
+        });
+
+        if(requeridos){
+            lobiAlert("error", "Los campos con * son requeridos");
+            return false;
+        }
+
+        var limpiarCampos = function(){
+            $.each(formulario, function(k,v){
+                var campo = $("[name='" + v.name + "']");
+                campo.val("");
+            });            
+        };
+
+        var agregarOpcion = function (datos){
+            var opcion = $("<option/>").val(datos.id).html(datos.nombre);
+            var select = $("#Acudientes_id_acudiente");
+            select.select2("destroy");
+            select.append(opcion);
+            select.select2({
+                'width' : '100%',
+            });
+            select.select2("open");
+        };
+
+        console.log(campos, formulario);
+        $.ajax({
+            type:'POST',
+            url: '<?= Sis::crearUrl(['deportista/ajax']) ?>',
+            data: {
+                tipo: 'guardar-acudiente',
+                ajx_request: true,
+                modelo: campos,
+            }
+        }).done(function(obj){
+            if(obj.error == true){
+                lobiAlert('error', obj.msg);
+                $("#modal-acudientes").modal("hide");
+                limpiarCampos();
+            } else if(obj.error == false) {
+                lobiAlert('success', obj.msg);
+                $("#modal-acudientes").modal("hide");                
+                agregarOpcion(obj.acudiente);
+            } else {
+                alert("Ocurrió un error inesperado");
+                console.log(obj);
+            }
+        });
+    } 
+</script>
+
 <script>
     $(function(){  
         var cd = 0; // Contador de documentos para los id de los input hidden

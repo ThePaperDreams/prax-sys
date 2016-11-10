@@ -1,6 +1,4 @@
 <?php
-$this->ayudaTitulo = "Registrar/Modificar Acudiente";
-$this->ayuda = "acudientes/editarCrear";
 
 Sis::Recursos()->recursoCss(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/css/fileinput.min.css']);
 Sis::Recursos()->recursoJs(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/js/fileinput.min.js']);

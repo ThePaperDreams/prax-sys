@@ -14,6 +14,9 @@ $this->tituloPagina="Entrada de implementos";
 
 <?= $this->complemento('!siscoms.bootstrap3.CBGrid', [
     'ajax' => true,
+    'exportar' => [
+        'PDF' => ['i' => 'file-pdf-o', 'url' => ['entrada/reporte']],
+    ],
     'filtrosAjax' => [
         'fecha_realizacion', 
         'estado' => CBoot::select('', ['Anulado', 'Activo'], ['defecto' => 'Estado', 'style' => 'min-width: 150px;', 'name' => 'estado']),

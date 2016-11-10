@@ -89,6 +89,7 @@ class CMySqlDriver extends CControladorBaseDeDatos{
                 $registros[] = $registro;
             }
         }
+        // liberarMemoria::liberarMemoria();
         return $registros;
     }
     
@@ -110,6 +111,16 @@ class CMySqlDriver extends CControladorBaseDeDatos{
 
     public function rollback() {
         return CConectorMySql::rollback();
+    }
+
+    public function proc($proc, $p = []){
+        // CConectorMySql::proc($proc, $p);
+        // $r = [];
+        // while($registro = CConectorMySql::traerSiguiente()){
+        //     $r[] = $registro;
+        // }
+        // // CConectorMySql::liberarMemoria();
+        // return $r;
     }
 
 }

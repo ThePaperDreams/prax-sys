@@ -18,16 +18,18 @@ $this->opciones = [
 
 $this->complemento('!siscoms.bootstrap3.CBGrid', [
     'ajax' => true,
-    'filtrosAjax' => ['identificacion', 'nombre1', 'apellido1'],
-    'modelo' => 'Deportista',
+    'filtrosAjax' => ['identificacion', '_nombreCompleto', 'apellido1'],
+    'exportar' => [
+        'PDF' => ['i' => 'file-pdf-o', 'url' => ['deportista/reporteListaEspera']]
+    ],
+    'modelo' => 'ListaEspera',
     'criterios' => [
         'where' => 'estado_id = 4',
     ],
 # id_deportista, identificacion, nombre1, nombre2, apellido1, apellido2, direccion, foto, telefono1, telefono2, fecha_nacimiento, estado_id, tipo_documento_id
      'columnas' => [
         'identificacion',
-        'nombre1',
-        'apellido1',
+        '_nombreCompleto' => 'nombreCompleto',
         'telefono1',
         'telefono2',
     ],

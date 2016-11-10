@@ -112,6 +112,11 @@ class Matricula extends CModelo {
         }
     }
     
+    public function getFechaRF(){
+        $p = explode(" ", $this->fecha_realizacion);
+        return $p[0];
+    }
+
     public function getComprobante(){
         if($this->url_comprobante !== "" && $this->url_comprobante !== null){
             $icono = CBoot::fa('cloud-download');

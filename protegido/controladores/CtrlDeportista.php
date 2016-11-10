@@ -7,6 +7,9 @@
  * @version 1.0.0
  */
 class CtrlDeportista extends CControlador {
+    public $ayuda;
+    public $ayudaTitulo;
+
     private $tipoDocDef = 3;
     /**
      * Esta función muestra el inicio y una tabla para listar los datos
@@ -17,11 +20,131 @@ class CtrlDeportista extends CControlador {
         ]);
     }
 
+    public function accionVerSeguimientos($id){
+        $deportista = Deportista::modelo()->porPk($id);
+        $ficha = $deportista->getFicha();
+        $positivos = $ficha->seguimientosPositivos;
+        $negativos = $ficha->seguimientosNegativos;
+
+        $this->vista('verSeguimientos', [
+            'deportista' => $deportista,
+            'positivos' => $positivos,
+            'negativos' => $negativos,
+        ]);
+    }
+
+    public function accionImprimirSeguimientos($id){
+        $deportista = Deportista::modelo()->porPk($id);
+        $ficha = $deportista->getFicha();
+        $positivos = $ficha->seguimientosPositivos;
+        $negativos = $ficha->seguimientosNegativos;
+
+        $this->tituloPagina = "Reporte de seguimientos - praxis";
+
+        $this->plantilla = "reporte";
+        $pdf = Sis::apl()->mpdf->crear();
+        ob_start();
+        $this->vista('imprimirSeguimientos', [
+            'deportista' => $deportista,
+            'positivos' => $positivos,
+            'negativos' => $negativos,
+        ]);
+
+        $texto = ob_get_clean();
+        $pdf->writeHtml($texto);
+        $pdf->Output("Deportistas-praxis.pdf", 'I');
+
+    }
+
+    public function accionImprimirFicha($id){
+        $deportista = Deportista::modelo()->porPk($id);
+        $ficha = $deportista->getFicha();
+
+        $this->tituloPagina = "$deportista->nombreCompleto";
+
+        $this->plantilla = "reporte";
+        $pdf = Sis::apl()->mpdf->crear();
+        ob_start();
+        $this->vista('imprimirFicha', [
+            'deportista' => $deportista,
+            'ficha' => $ficha,
+        ]);        
+        $texto = ob_get_clean();
+        // echo $texto;
+        // exit();
+        $pdf->writeHtml($texto);
+        $pdf->Output("Deportistas-praxis.pdf", 'I');
+    }
+
+
+    public function accionReporte(){
+        if(!isset($this->_p['modelo'])){
+            $this->redireccionar('inicio');
+        }
+
+        $this->tituloPagina = "Deportistas - praxis";
+        $campos = $this->_p['modelo'];
+        foreach($campos AS $k=>$v){ $campos[$k] = $v == ''? null : $v; }
+
+        $c = new CCriterio();
+        $concat = "CONCAT_WS(' ', t.nombre1,t.nombre2,t.apellido1,t.apellido2)";
+        $c->unionIzq("tbl_matriculas", "m")
+            ->donde("t.id_deportista", "=", "m.deportista_id AND m.estado = 1")
+            ->condicion($concat, $campos['_nombreCompleto'], "LIKE")
+            ->y("t.identificacion", $campos['doc'], "LIKE")
+            ->y("fecha_nacimiento", $campos['fecha_nacimiento'], "LIKE")
+            ->y("t.estado_id", $campos['estado_id'], "LIKE")
+            ->orden("t.estado_id = 1", false)
+            ->orden("t.id_deportista", false);
+
+        if($campos['matricula'] == 1){
+            $c->noEsVacio("m.id_matricula");
+        } else if($campos['matricula'] == 2){
+            $c->esVacio("m.id_matricula");
+        }
+
+        $deportistas = Deportista::modelo()->listar($c);
+
+        $this->plantilla = "reporte";
+        $pdf = Sis::apl()->mpdf->crear();
+        ob_start();
+        $this->vista('reporte', ['deportistas' => $deportistas]);
+        $texto = ob_get_clean();
+        $pdf->writeHtml($texto);
+        $pdf->Output("Deportistas-praxis.pdf", 'I');
+    }
+
+    public function accionReporteListaEspera(){
+         if(!isset($this->_p['modelo'])){
+            $this->redireccionar('inicio');
+        }
+
+        $this->tituloPagina = "Deportistas en lista de espera - praxis";
+        $campos = $this->_p['modelo'];
+        foreach($campos AS $k=>$v){ $campos[$k] = $v == ''? null : $v; }
+
+        $c = new CCriterio();
+        $concat = "CONCAT_WS(' ', t.nombre1,t.nombre2,t.apellido1,t.apellido2)";
+        $c->condicion($concat, $campos['_nombreCompleto'], "LIKE")
+            ->y("t.identificacion", $campos['identificacion'], "LIKE")
+            ->y("t.estado_id", "4", "LIKE")
+            ->orden("t.id_deportista", false);
+
+        $deportistas = Deportista::modelo()->listar($c);
+
+        $this->plantilla = "reporte";
+        $pdf = Sis::apl()->mpdf->crear();
+        ob_start();
+        $this->vista('reporte', ['deportistas' => $deportistas]);
+        $texto = ob_get_clean();
+        $pdf->writeHtml($texto);
+        $pdf->Output("Deportistas-lista-de-espera-praxis.pdf", 'I');   
+    }
+
     /**
      * Esta función permite crear un nuevo registro
      */
     public function accionCrear() {
-        CBoot::text();
         $this->validarIdentificacion();
         $modelo = new Deportista();
         $modelo2 = new Acudiente();
@@ -31,19 +154,24 @@ class CtrlDeportista extends CControlador {
             $modelo->identificacion = trim($this->_p['Deportistas']['identificacion']);
             if ($this->_p['cambio-foto'] === "1") {
                 $modelo->foto = $this->asociarFoto($modelo->identificacion);                                
-            }            
+            }
+            Sis::apl()->bd->begin();
             if ($modelo->guardar()) {
                 $dep = $modelo->id_deportista;
                 $this->asociarAcudientes($dep);
                 $this->asociarDocumentos($dep, $modelo);
                 $this->alertar('success', 'Registro Exitoso');
+                Sis::apl()->bd->commit();
                 $this->redireccionar('inicio');
             }
+            Sis::apl()->rollback();
         }
+        $formularioAcudiente = $this->getFormAcudientes();
         # seteamos un tipo de documento por defecto al deportista
         $modelo->tipo_documento_id = $this->tipoDocDef;
         $url = Sis::crearUrl(['Deportista/crear']);
         $this->mostrarVista('crear', ['modelo' => $modelo,
+            'formularioAcudiente' => $formularioAcudiente,
             'modelo2' => $modelo2,
             'modelo3' => $modelo3,
             'url' => $url,
@@ -52,7 +180,40 @@ class CtrlDeportista extends CControlador {
             'acudientes' => CHtml::modelolista(Acudiente::modelo()->listar(['where' => 'estado=1']), "id_acudiente", "Datos"),
             'tiposDocumentos' => CHtml::modelolista(TipoDocumento::modelo()->listar(), "id_tipo", "nombre"),
             'estados' => CHtml::modelolista(EstadoDeportista::modelo()->listar(), "id_estado", "nombre"),
+            'formularioAcudiente' => $formularioAcudiente,
         ]);
+    }
+
+    public function accionAjax(){
+        if(!isset($this->_p['ajx_request'])){ $this->redireccionar("inicio"); }
+        if($this->_p['tipo'] == 'guardar-acudiente'){
+            $this->guardarAcudiente();
+        }
+        Sis::fin();
+    }
+
+    private function guardarAcudiente(){
+        $acudiente = new Acudiente();
+
+        $acudiente->atributos = $this->_p['modelo'];
+        $error = !$acudiente->guardar();
+        // $error = false;
+        $this->json([
+            'error' => $error,
+            'acudiente' => [
+                'nombre' => $acudiente->identificacion . " ($acudiente->nombreCompleto)",
+                'id' => $acudiente->id_acudiente,
+            ],
+            'msg' => $error? "Ocurrió un error al guardar el acudiente" : "Se guardó correctamente el acudiente"
+        ]);
+    }
+
+    private function getFormAcudientes(){
+        $ti = TipoIdentificacion::modelo()->listar();
+        $tiposIdentificaciones = CHtml::modeloLista($ti, 'id_tipo_documento', 'nombre');
+        $modelo = new Acudiente();
+        $formularioAcudiente = $this->vistaP('_formulario_acudiente', ['modelo' => $modelo, 'tiposIdentificaciones' => $tiposIdentificaciones]);
+        return $formularioAcudiente;
     }
 
     public function asociarAcudientes($dep) {
@@ -458,6 +619,7 @@ class CtrlDeportista extends CControlador {
     private function guardarSeguimiento($ficha, $deportista){
         $seguimiento = new Seguimiento();
         if($ficha->id_ficha_tecnica == null){
+            $ficha->entrenador_id = Sis::apl()->usuario->getID();
             $ficha->guardar();
         }
         $seguimiento->ficha_tecnica_id = $ficha->id_ficha_tecnica;

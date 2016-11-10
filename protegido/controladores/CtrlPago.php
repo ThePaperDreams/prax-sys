@@ -13,6 +13,45 @@ class CtrlPago extends CControlador{
         ]);
     }
     
+    public function accionReporte(){
+        if(!isset($this->_p['modelo'])){
+            $this->redireccionar('inicio');
+        }
+
+        $this->tituloPagina = "Pagos-realizados-praxis";
+        $campos = $this->_p['modelo'];
+        foreach($campos AS $k=>$v){ $campos[$k] = $v == ''? null : $v; }
+
+        $c = new CCriterio();
+        $concat = "CONCAT_WS(' ', d.nombre1,d.apellido1)";
+        $c->union("tbl_matriculas", "m")
+            ->donde("m.id_matricula", "=", "t.matricula_id")
+            ->union("tbl_categorias", "ca")
+            ->donde("ca.id_categoria", "=", "m.categoria_id")
+            ->union("tbl_deportistas", "d")
+            ->donde("d.id_deportista", "=", "m.deportista_id")
+            ->condicion($concat, $campos['matricula_id'], "LIKE")
+            ->y("t.estado", $campos['estado'], "=")
+            ->y("t.descuento", $campos['descuento'], "LIKE")
+            ->y("t.fecha", $campos['fecha'], "LIKE")
+            ->y("t.valor_cancelado", $campos['valor_cancelado'], "LIKE")
+            ->y("ca.nombre", $campos['_categoria'], 'LIKE');
+
+        $modelos = Pago::modelo()->listar($c);
+        
+        $this->plantilla = "reporte";
+        $pdf = Sis::apl()->mpdf->crear();
+        ob_start();
+        $this->vista('reporte', ['pagos' => $modelos]);
+        $texto = ob_get_clean();
+        $pdf->writeHtml($texto);
+        $pdf->Output("$this->tituloPagina.pdf", 'I');
+    }
+
+    /**
+     * Los pagos de los deportistas son calculados desde que inicia la matricula hasta dos meses
+     * después de la fecha actual
+     */
     public function consultarPagos(){
         
         $id = $this->_p['idDep'];
@@ -33,8 +72,6 @@ class CtrlPago extends CControlador{
             $d = $meses->format('d');
             $m = $meses->format('m');
             $y = $meses->format('Y');
-//            echo "matricula_id= '$id' AND fecha = '$y-$m-$d' AND estado = 1<br>";
-//            continue;
             $pago = Pago::modelo()->primer(['where' => "matricula_id= '$id' AND fecha = '$y-$m-$d' AND estado = 1"]);
             if($pago !== null){ continue; }
             

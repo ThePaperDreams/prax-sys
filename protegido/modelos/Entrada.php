@@ -45,6 +45,7 @@ class Entrada extends CModelo {
             # el formato es simple: 
             # tipo de relación | modelo con que se relaciona | campo clave foranea
             'Usuario' => [self::PERTENECE_A, 'Usuario', 'responsable_id'],
+            'Detalles' => [self::CONTENGAN_A, 'EntradaImplemento', 'entrada_id'],
         ];
     }
 
@@ -79,12 +80,13 @@ class Entrada extends CModelo {
 
     public function filtrosAjx() {
         $criterio = new CCriterio();
-        $concat = "CONCAT_WS(' ', t.fecha_realizacion, t.estado, t1.nombres)";
+        $concat = "CONCAT_WS(' ',t1.nombres)";
         $criterio->union("tbl_usuarios", "t1")
            ->donde("t1.id_usuario", "=", "t.responsable_id")
            ->condicion($concat, $this->responsable_id, "LIKE")
-            ->y("t.estado", $this->estado, "=")
-           ->y("t.fecha_realizacion", $this->fecha_realizacion, "LIKE");
+           ->y("t.estado", $this->estado, "=")
+           ->y("t.fecha_realizacion", $this->fecha_realizacion, "LIKE")
+           ->orden('t.fecha_realizacion', false);
        return $criterio;
     }
     /**

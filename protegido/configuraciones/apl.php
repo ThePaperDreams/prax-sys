@@ -18,7 +18,7 @@ return [
     'modulos' => [
         'codegen' => [
             'ruta' => '!web.modulos.codegen',
-            'clase' => 'codeGen',
+            'clase' => 'CodeGen',
             'controladorPorDefecto' => 'generador',
             'usuario' => 'praxis',
             'clave' => 'praxis-dev',
@@ -30,7 +30,7 @@ return [
             'servidor' => '127.0.0.1',
             'usuario' => 'pdeveloper',
             'clave' => 'pr@x1sdev',
-            'bd' => 'prax_sys_dev',
+            'bd' => 'prax_sys_prod',
             'prefijo' => 'tbl_',
             'charset' => 'utf8',
             'procedimientos' => false,
@@ -43,7 +43,11 @@ return [
             'ruta' => '!aplicacion.componentes',
             'clase' => 'JMail',
             'emailAdmin' => 'info@jakolab.com',
-        ]
+        ],
+        'Utilidades' => [
+            'ruta' => '!aplicacion.componentes',
+            'clase' => 'Utilidades',
+        ],
     ],
     
     'disparadores' => [

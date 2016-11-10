@@ -50,6 +50,13 @@ class Objetivo extends CModelo {
         ];
     }
 
+    public function filtrosAjx(){
+        $criterio = new CCriterio();
+        $criterio->condicion('t.titulo', $this->titulo, 'LIKE');
+        $criterio->orden('id_objetivo', false);
+        return $criterio;
+    }
+
     /**
      * Esta función retorna un alias dado a cada uno de los atributos del modelo
      * @return string

@@ -27,6 +27,7 @@
 class FichaTecnica extends CModelo {
     private $seguimientosPositivos = null;
     private $seguimientosNegativos = null;
+    public $faltas = "0";
     /**
      * Esta función retorna el nombre de la tabla representada por el modelo
      * @return string
@@ -53,7 +54,7 @@ class FichaTecnica extends CModelo {
             'valoracion',
             'rh',
             'deportista_id',
-            'lesiones',
+            'lesiones' => ['def' => 'Ninguna'],
         ];
     }
 
@@ -107,10 +108,19 @@ class FichaTecnica extends CModelo {
             'lesiones' => 'Lesiones',
         ];
     }
-    
+   
+    public function getNumeroDorsal(){
+        if($this->dorsal == null){
+            return "0";
+        }
+        return $this->dorsal;
+    }
+
     
     public function getSeguimientosPositivos(){
-        if($this->seguimientosPositivos === null){
+        if($this->id_ficha_tecnica ==  null){
+            $this->seguimientosPositivos = [];
+        } else if($this->seguimientosPositivos === null){
             $this->seguimientosPositivos = Seguimiento::modelo()->listar([
                 'where' => "tipo_seguimiento=0 AND ficha_tecnica_id = $this->id_ficha_tecnica",
                 'order' => "fecha  DESC, id_seguimiento DESC",
@@ -120,7 +130,9 @@ class FichaTecnica extends CModelo {
     }
     
     public function getSeguimientosNegativos(){
-        if($this->seguimientosNegativos === null){
+        if($this->id_ficha_tecnica == null){
+            $this->seguimientosNegativos = [];
+        } else if($this->seguimientosNegativos === null){
             $this->seguimientosNegativos = Seguimiento::modelo()->listar([
                     'where' => "tipo_seguimiento=1 AND ficha_tecnica_id = $this->id_ficha_tecnica",
                     'order' => "fecha  DESC, id_seguimiento DESC",
@@ -137,6 +149,31 @@ class FichaTecnica extends CModelo {
         } else {
             return "Ambas";
         }
+    }
+
+    public function getTorneos(){
+        $c = new CCriterio();
+        $c->condicion('deportista_id', $this->deportista_id);
+
+        return DeportistaEquipo::modelo()->contar($c);
+    }
+
+    public function getAnotaciones(){
+        $r = Sis::apl()->bd->ejecutarComando("SELECT fn_get_goles($this->deportista_id) AS partidos");
+        $partidos = $r[0]['partidos'];
+        return $partidos == null? 0 : $partidos;
+    }
+
+    public function getAmonestaciones(){
+        $r = Sis::apl()->bd->ejecutarComando("SELECT fn_get_amonestaciones($this->deportista_id) AS partidos");
+        $partidos = $r[0]['partidos'];
+        return $partidos == null? 0 : $partidos;
+    }
+
+    public function getExpulsiones(){
+        $r = Sis::apl()->bd->ejecutarComando("SELECT fn_get_expulsiones($this->deportista_id) AS partidos");
+        $partidos = $r[0]['partidos'];
+        return $partidos == null? 0 : $partidos;
     }
 
     /**

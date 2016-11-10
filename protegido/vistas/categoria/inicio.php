@@ -18,6 +18,9 @@
 <?= $this->complemento('!siscoms.bootstrap3.CBGrid', [
     'modelo' => 'Categoria',
     'criterios' => $criterios,
+    'exportar' => [
+        'PDF' => ['i' => 'file-pdf-o', 'url' => ['categoria/reporte']],
+    ],
     'ajax' => true,
     'filtrosAjax' => [
         'nombre',
@@ -28,6 +31,7 @@
     'columnas' => [
         'nombre',
         'cupos' => ['valor' => 'cuposDisponibles', 'opciones' => ['class' => 'text-center']],
+        'matriculados',
         'tarifa' => ['valor' => 'tarifaf', 'opciones' => ['class' => 'text-center']],
         'edad' => ['valor' => 'edad', 'opciones' => ['class' => 'text-center']],
         'estado' => ['valor' => 'EtiquetaEstado', 'opciones' => ['class' => 'text-center']],

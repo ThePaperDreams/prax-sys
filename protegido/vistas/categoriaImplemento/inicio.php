@@ -8,7 +8,7 @@ $this->migas = [
 
 $this->opciones = [
     'elementos' => [
-        'Registrar' => ['Categoriaimplemento/crear'],
+        'Registrar' => ['CategoriaImplemento/crear'],
     ]
 ];
 ?>
