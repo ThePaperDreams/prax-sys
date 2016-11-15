@@ -9,11 +9,18 @@ class CtrlPrincipal extends CControlador{
                 'tipo' => $tipo,
         ]);
     }
+
     
     public function inicializar() {
         parent::inicializar();
         $this->plantilla = 'login';
     }   
+
+    public function accionConfiguracion(){
+
+        $this->plantilla = 'basica';        
+        $this->vista("configuracion");
+    }
 
     public function accionAjx(){
         if(!isset($this->_p['ajx-rqst'])){

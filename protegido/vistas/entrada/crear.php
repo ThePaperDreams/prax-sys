@@ -3,7 +3,7 @@ $this->tituloPagina="Entrada de implementos";
     $this->migas = [
         'Home' => ['principal/inicio'],
         'Listar entrada de implementos' => ['Entrada/inicio'],        
-        'Crear entrada'
+        'Registrar entrada'
     ];
     
     $this->opciones = [

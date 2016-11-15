@@ -8,7 +8,7 @@
     $this->opciones = [
         'elementos' => [
             'Listar' => ['TipoPublicacion/inicio'],
-            'Crear' => ['TipoPublicacion/crear'],
+            'Registrar' => ['TipoPublicacion/crear'],
         ]
     ];    
 ?>

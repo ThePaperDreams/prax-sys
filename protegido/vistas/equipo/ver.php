@@ -8,7 +8,7 @@
     $this->opciones = [
         'elementos' => [
             'Listar' => ['Equipo/inicio'],
-            'Crear' => ['Equipo/crear'],
+            'Registrar' => ['Equipo/crear'],
             'Modificar' => ['Equipo/editar', 'id' => $modelo->id_equipo],
         ]
     ];

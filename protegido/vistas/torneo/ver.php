@@ -10,7 +10,7 @@ $this->migas = [
 $this->opciones = [
     'elementos' => [
         'Listar' => ['Torneo/inicio'],
-        'Crear' => ['Torneo/crear'],
+        'Registrar' => ['Torneo/crear'],
         'Modificar' => ['Torneo/editar', 'id' => $modelo->id_torneo],
     ]
 ];

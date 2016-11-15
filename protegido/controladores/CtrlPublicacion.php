@@ -23,6 +23,12 @@ class CtrlPublicacion extends CControlador{
         $this->vista("configuracion");
     }
 
+    public function accionVisualizar($id){
+        $url = Configuracion::get('url_sitio_web') . "$id/publicaciones/ver";
+        header("Location: $url");
+        Sis::fin();
+    }
+
     public function accionSitioWeb(){
         if(isset($this->_p['redes'])){
             foreach($this->_p['redes'] AS $k=>$v){

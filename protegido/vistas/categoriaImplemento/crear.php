@@ -3,7 +3,7 @@ $this->tituloPagina="Registrar categoría de implemento";
     $this->migas = [
         'Home' => ['principal/inicio'],
         'Listar categoría de implementos' => ['CategoriaImplemento/inicio'],        
-        'Crear'
+        'Registrar'
     ];
     
     $this->opciones = [

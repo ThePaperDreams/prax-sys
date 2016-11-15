@@ -6,7 +6,7 @@
     
     $this->opciones = [
         'elementos' => [
-            'Crear' => ['Evento/crear'],
+            'Registrar' => ['Evento/crear'],
         ]
     ];
 ?>

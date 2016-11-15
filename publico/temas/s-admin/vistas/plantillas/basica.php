@@ -35,7 +35,7 @@ Sis::Recursos()->recursoJs(['url' => $url . "/js/charts.js"]);
 Sis::Recursos()->recursoJs(['url' => $url . "/js/datetimepicker.min.js"]);
 Sis::Recursos()->recursoJs(['url' => $url . "/js/maps/jvectormap.min.js"]);
 Sis::Recursos()->recursoJs(['url' => $url . "/js/maps/usa.js"]);
-Sis::Recursos()->recursoJs(['url' => $url . "/js/icheck.js"]);
+// Sis::Recursos()->recursoJs(['url' => $url . "/js/icheck.js"]);
 Sis::Recursos()->recursoJs(['url' => $url . "/js/scroll.min.js"]);
 Sis::Recursos()->recursoJs(['url' => $url . "/js/calendar.min.js"]);
 Sis::Recursos()->recursoJs(['url' => $url . "/js/feeds.min.js"]);
@@ -43,6 +43,10 @@ Sis::Recursos()->recursoJs(['url' => $url . "/js/functions.js"]);
 Sis::Recursos()->recursoJs(['url' => $url . "/js/editor.min.js"]);
 Sis::Recursos()->css('estilos');
 Sis::Recursos()->Js('comunes');
+
+Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . '/librerias/bootstrap-switch/bootstrap-switch.css']);
+Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . '/librerias/bootstrap-switch/bootstrap-switch.js']);
+
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -172,12 +176,16 @@ Sis::Recursos()->Js('comunes');
                         ['texto' => 'Usuarios', 'url' => ['Usuario/inicio']],
                         ['texto' => 'Permisos', 'url' => ['Permiso/asignar']],
                 ]],
+                ['texto' => 'Reportes', 'fa' => 'bar-chart-o', 'opciones' => ['title' => 'Reportes'], 'elementos' => [
+                    ['texto' => 'Ver reportes', 'url' => ['reportes/todos']]
+                ]],
                 ['texto' => 'Configuración', 'fa' => 'cogs', 'elementos' => [
-                        ['texto' => 'Rutas', 'url' => ['Ruta/inicio']],
-                        ['texto' => 'Opciones de Menú', 'url' => ['Opmenu/inicio']],
-                        ['texto' => 'Tipos de Documentos', 'url' => ['TipoDocumento/inicio']],
-                        ['texto' => 'Estados de Deportista', 'url' => ['EstadoDeportista/inicio']],
-                        ['texto' => 'Tipos de Identificación', 'url' => ['TipoIdentificacion/inicio']],
+                        ['texto' => 'Configuración Global', 'url' => ['principal/configuracion']],
+                        // ['texto' => 'Rutas', 'url' => ['Ruta/inicio']],
+                        // ['texto' => 'Opciones de Menú', 'url' => ['Opmenu/inicio']],
+                        // ['texto' => 'Tipos de Documentos', 'url' => ['TipoDocumento/inicio']],
+                        // ['texto' => 'Estados de Deportista', 'url' => ['EstadoDeportista/inicio']],
+                        // ['texto' => 'Tipos de Identificación', 'url' => ['TipoIdentificacion/inicio']],
                 ]],
             ],
             'menuDerecha' => [

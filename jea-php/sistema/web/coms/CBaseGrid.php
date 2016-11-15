@@ -28,6 +28,11 @@ abstract class CBaseGrid extends CComplemento{
     protected $_opciones = null;
     protected $_crud = false;
     /**
+     * Función que selrá llamada para obtener los criterios del modelo
+     * @var string
+     */
+    protected $_fnCriterios = 'filtrosAjx';
+    /**
      *
      * @var CCriterio 
      */
@@ -105,8 +110,10 @@ abstract class CBaseGrid extends CComplemento{
         $this->filtradoAjax = true;
         $this->instanciarModelo();
         $this->cModelo->limpiarAtributos();
-        foreach($p AS $k=>$v){ $this->cModelo->$k = $v; }        
-        $criterio = $this->cModelo->filtrosAjx();
+
+        foreach($p AS $k=>$v){ $this->cModelo->$k = $v; }
+
+        $criterio = $this->cModelo->{$this->_fnCriterios}();
         
         if($criterio === null){
             foreach($this->_filtrosAjax AS $k=>$v){

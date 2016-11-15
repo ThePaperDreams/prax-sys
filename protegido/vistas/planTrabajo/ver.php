@@ -9,7 +9,7 @@ $this->migas = [
 $this->opciones = [
     'elementos' => [
         'Listar' => ['PlanTrabajo/inicio'],
-        'Crear' => ['PlanTrabajo/crear'],
+        'Registrar' => ['PlanTrabajo/crear'],
         'Modificar' => ['PlanTrabajo/editar', 'id' => $modelo->id_plan_trabajo],
     ]
 ];

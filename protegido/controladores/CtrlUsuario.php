@@ -59,6 +59,44 @@ class CtrlUsuario extends CControlador {
             unlink($path);            
         }
     }
+
+    public function accionSuscriptores(){
+        $c = new CCriterio();
+        $c->condicion('rol_id', '6');
+        $this->vista("listarSuscritos", [
+            'criterios' => $c,
+        ]);
+    }
+
+    public function accionEnviarEmailSuscriptor(){
+        if(isset($this->_p['ajxsnd'])){
+            $e = $this->_p['email'];
+            $m = $this->_p['msg'];
+            $a = $this->_p['asunto'];
+
+            $texto = $this->vistaP('_emailSuscriptor', [
+                'mensaje' => $m,
+            ]);
+
+            $error = !Sis::apl()->JMail->enviar($e, $a, $texto);
+
+            $msg = $error? "Ocurrió un error al enviar el mensaje" : 
+                "Se envió correctamente el mensaje a \"$e\"";
+                
+            $this->json([
+                'error' => $error,
+                'msg'   => $msg
+            ]);
+        }
+        Sis::fin();
+    }
+
+    public function accionVerSuscriptor($id){
+        $usuario = Usuario::modelo()->porPk($id);
+        $this->vista("verSuscriptor", [
+            'modelo' => $usuario,
+        ]);
+    }
     
     public function guardarFoto($usuario) {
         if ($_FILES['Usuarios']['error'] !== UPLOAD_ERR_OK) {

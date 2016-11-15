@@ -101,6 +101,17 @@ class Usuario extends CModelo {
                 ->orden("t.estado", false);
         return $criterio;
     }
+
+    public function filtrosAjxSuscriptor(){
+        $criterio = new CCriterio();
+        $criterio->condicion('rol_id', '6')
+            ->y('t.nombre_usuario', $this->nombre_usuario, 'LIKE')
+            ->y('t.nombres', $this->nombres, 'LIKE')
+            ->y('t.apellidos', $this->apellidos, 'LIKE')
+            ->y('t.estado', $this->estado)
+            ->orden('t.estado', false);
+        return $criterio;    
+    }
     
     public function getNombreCompleto(){
         return $this->nombres . " " . $this->apellidos;

@@ -6,7 +6,7 @@
     
     $this->opciones = [
         'elementos' => [
-            'Crear' => ['Publicacion/crear'],
+            'Registrar' => ['Publicacion/crear'],
         ]
     ];
 ?>
@@ -34,6 +34,7 @@
     'opciones' => [
         ['i' => 'eye', 'url' => 'Publicacion/ver&{id:pk}'],
         ['i' => 'pencil', 'url' => 'Publicacion/editar&{id:pk}'],
+        ['i' => 'globe', 'url' => 'Publicacion/visualizar&{id:pk}', 'opciones' => ['target' => '_blank']],
     ],
     'paginacion' => 10,
 ]) ?>

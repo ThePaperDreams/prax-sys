@@ -3,7 +3,7 @@
     $this->migas = [
         'Home' => ['principal/inicio'],
         'Listar Objetivos' => ['Objetivo/inicio'],        
-        'Crear'
+        'Registrar'
     ];
     
     $this->opciones = [

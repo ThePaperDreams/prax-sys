@@ -8,7 +8,7 @@ $this->migas = [
 $this->opciones = [
     'elementos' => [
         'Listar' => ['Evento/inicio'],
-        'Crear' => ['Evento/crear'],
+        'Registrar' => ['Evento/crear'],
         'Modificar' => ['Evento/editar', 'id' => $modelo->id_evento],
     ]
 ];

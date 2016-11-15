@@ -40,7 +40,7 @@
         <i class="fa fa-calendar-check-o"></i>
         <small class="t-overflow">Eventos</small>
     </a>
-    <a class="shortcut tile" href="#">
+    <a class="shortcut tile" href="<?= Sis::crearUrl(['usuario/suscriptores']) ?>">
         <!--<img src="<?= Sis::ap()->getTema()->getUrlBase() ?>/img/shortcuts/connections.png" alt="">-->
         <i class="fa fa-users"></i>
         <small class="t-overflow">Suscritos</small>

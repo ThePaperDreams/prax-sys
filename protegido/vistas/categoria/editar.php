@@ -9,7 +9,7 @@ $this->tituloPagina = "Actualizar categoría";
     $this->opciones = [
         'elementos' => [
             'Listar' => ['Categoria/inicio'],
-            'Crear' => ['Categoria/crear'],
+            'Registrar' => ['Categoria/crear'],
         ]
     ];    
 ?>

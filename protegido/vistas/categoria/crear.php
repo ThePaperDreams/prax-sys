@@ -1,11 +1,11 @@
 <?php 
 $this->ayuda = "categoria/crear";
-$this->ayudaTitulo = "Crear categoría de deportista";
+$this->ayudaTitulo = "Registrar categoría de deportista";
 $this->tituloPagina = "Registrar categoría";
     $this->migas = [
         'Home' => ['principal/inicio'],
         'Listar Categorías' => ['Categoria/inicio'],        
-        'Crear'
+        'Registrar'
     ];
     
     $this->opciones = [

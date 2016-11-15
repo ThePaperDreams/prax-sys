@@ -8,7 +8,7 @@ $this->migas = [
 $this->opciones = [
     'elementos' => [
         'Listar' => ['PrestamoDeportista/inicio'],
-        'Crear' => ['PrestamoDeportista/crear'],
+        'Registrar' => ['PrestamoDeportista/crear'],
         'Modificar' => ['PrestamoDeportista/editar', 'id' => $modelo->id_prestamo],
     ]
 ];

@@ -2,7 +2,7 @@
     $this->migas = [
         'Home' => ['principal/inicio'],
         'Listar Eventos' => ['Evento/inicio'],        
-        'Crear'
+        'Registrar'
     ];
     
     $this->opciones = [

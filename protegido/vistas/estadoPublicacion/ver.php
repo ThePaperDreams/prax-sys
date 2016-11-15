@@ -8,7 +8,7 @@
     $this->opciones = [
         'elementos' => [
             'Listar' => ['EstadoPublicacion/inicio'],
-            'Crear' => ['EstadoPublicacion/crear'],
+            'Registrar' => ['EstadoPublicacion/crear'],
             'Modificar' => ['EstadoPublicacion/editar', 'id' => $modelo->id_estado],
         ]
     ];

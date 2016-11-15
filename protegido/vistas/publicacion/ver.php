@@ -8,7 +8,7 @@ $this->migas = [
 $this->opciones = [
     'elementos' => [
         'Listar' => ['Publicacion/inicio'],
-        'Crear' => ['Publicacion/crear'],
+        'Registrar' => ['Publicacion/crear'],
         'Modificar' => ['Publicacion/editar', 'id' => $modelo->id_publicacion],
     ]
 ];
@@ -47,6 +47,13 @@ $this->opciones = [
                 <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('usuario_id') ?></th>
                     <td><?php echo $modelo->Autor->nombres ?></td>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        <a href="<?= Sis::crearUrl(['Publicacion/visualizar', 'id' => $modelo->id_publicacion]) ?>" class="btn-block btn btn-success" target="_blank">
+                            Visualizar <i class="fa fa-globe"></i>
+                        </a>
+                    </th>
                 </tr>
             </tbody>
         </table>

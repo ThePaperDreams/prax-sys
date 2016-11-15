@@ -8,7 +8,7 @@
     $this->opciones = [
         'elementos' => [
             'Listar' => ['TipoEvento/inicio'],
-            'Crear' => ['TipoEvento/crear'],
+            'Registrar' => ['TipoEvento/crear'],
             'Modificar' => ['TipoEvento/editar', 'id' => $modelo->id_tipo],
         ]
     ];

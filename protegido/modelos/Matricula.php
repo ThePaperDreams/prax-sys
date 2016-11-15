@@ -158,6 +158,10 @@ class Matricula extends CModelo {
         foreach($matriculas AS $m){  $deportistas[] = $m->Deportista; }
         return $deportistas;                
     }
+
+    public static function getMatriculados(){
+        return self::getDeportistasMatriculados();
+    }
     
     
 
