@@ -70,6 +70,18 @@ class Configuracion extends CModelo{
         if($modelo){ return $config; }
         return $config !== null? $config->valor : "";
     }
+
+    public static function set($nombre, $valor){
+        $c = new CCriterio();
+        $c->condicion("nombre", $nombre);
+        $config = self::modelo()->primer($c);
+        if($config !== null){
+            $config->valor = $valor;
+            return $config->guardar();
+        } else {
+            return null;
+        }
+    }
     
     /**
      * Esta función permite obtener un registro por su primary key

@@ -24,6 +24,7 @@ $formulario->abrir();
             return false;
         });
     });
+    
     function validarNombre() {
             var nombre = $("#Roles_nombre").val();
             if (nombre === "") {

@@ -26,11 +26,11 @@ $this->migas = [
 							</div>
 						</div>
 					</div>
-					<div class="form-group col-sm-6">
+					<!-- <div class="form-group col-sm-6">
 						<label for="">Calendario de eventos</label>
 						<br>
-						<input type="checkbox" name="my-checkbox" checked id="check">
-					</div>
+						<input id="calenadrio" type="checkbox" name="my-checkbox" checked id="check">
+					</div> -->
 				</div>
 
 				<div class="page-header">
@@ -45,37 +45,41 @@ $this->migas = [
 				<div class="page-header">
 					<h3>Redes sociales</h3>
 				</div>
+
 				<div class="form-group col-sm-3">
 					<label for="">Facebook</label>
 					<div class="input-group">
-						<input name="redes[facebook]" type="text" class="form-control" value="<?= Configuracion::get('redes_facebook') ?>">
+						<input id="redes-facebook" name="redes[facebook]" type="text" class="form-control" value="<?= Configuracion::get('redes_facebook') ?>">
 						<div class="input-group-addon">
 							<i class="fa fa-facebook"></i>
 						</div>
 					</div>
 				</div>
+
 				<div class="form-group col-sm-3">
 					<label for="">Twitter</label>
 					<div class="input-group">
-						<input name="redes[twitter]" type="text" class="form-control" value="<?= Configuracion::get('redes_twitter') ?>">
+						<input id="redes-twitter" name="redes[twitter]" type="text" class="form-control" value="<?= Configuracion::get('redes_twitter') ?>">
 						<div class="input-group-addon">
 							<i class="fa fa-twitter"></i>
 						</div>
 					</div>
 				</div>
+
 				<div class="form-group col-sm-3">
 					<label for="">Instagram</label>
 					<div class="input-group">
-						<input name="redes[instagram]" type="text" class="form-control" value="<?= Configuracion::get('redes_instagram') ?>">
+						<input id="redes-instagram" name="redes[instagram]" type="text" class="form-control" value="<?= Configuracion::get('redes_instagram') ?>">
 						<div class="input-group-addon">
 							<i class="fa fa-instagram"></i>
 						</div>
 					</div>
 				</div>
+
 				<div class="form-group col-sm-3">
 					<label for="">Youtube</label>
 					<div class="input-group">
-						<input name="redes[youtube]" type="text" class="form-control" value="<?= Configuracion::get('redes_youtube') ?>">
+						<input id="redes-youtube" name="redes[youtube]" type="text" class="form-control" value="<?= Configuracion::get('redes_youtube') ?>">
 						<div class="input-group-addon">
 							<i class="fa fa-youtube"></i>
 						</div>
@@ -83,7 +87,16 @@ $this->migas = [
 				</div>
 
 				<hr>
+				<div class="row">
+					<div class="col-sm-offset-4 col-sm-4">
+						<button class="btn-primary btn btn-block" id="btn-guardar">
+							Guardar <i class="fa fa-floppy-o"></i>
+						</button>
+					</div>
+				</div>
 
+				
+					
 				<div class="page-header">
 					<h4>Maestras</h4>
 				</div>
@@ -91,14 +104,7 @@ $this->migas = [
 					<a href="<?= Sis::crearUrl(['TipoDocumento/inicio']) ?>" class="list-group-item">Tipos de Documento</a>
 					<a href="<?= Sis::crearUrl(['EstadoDeportista/inicio']) ?>" class="list-group-item">Estados de Deportista</a>
 					<a href="<?= Sis::crearUrl(['TipoIdentificacion/inicio']) ?>" class="list-group-item">Tipos de Identificación</a>
-				</div>
-				<div class="row">
-					<div class="col-sm-offset-4 col-sm-4">
-						<button class="btn-primary btn btn-block">
-							Guardar <i class="fa fa-floppy-o"></i>
-						</button>
-					</div>
-				</div>
+				</div>				
 			 </div> 		
  		</div>
  	</div>
@@ -107,7 +113,7 @@ $this->migas = [
  </div>
 
  <div class="col-sm-6">
- 	<div class="row">
+ 	<!-- <div class="row">
  		<div class="col-sm-12"> 			
 	 		<div class="tile p-15">
 	 			
@@ -166,21 +172,22 @@ $this->migas = [
 					<a href="<?= Sis::crearUrl(['Ruta/inicio']) ?>" class="list-group-item">Rutas</a>
 					<a href="<?= Sis::crearUrl(['Opmenu/inicio']) ?>" class="list-group-item">Opciones de Menú</a>
 				</div>
-				<!-- tmp -->
 
 	 		</div>
  		</div>
- 	</div>
+ 	</div> -->
  	<!-- fin desarrollador -->
  </div>
 
  <script>
  	
  	$(function(){
+
  		$("#check").bootstrapSwitch({
  			onText: 'Si',
  			offText: 'No',
  		});
+
         tinymce.init({
             selector: '#Publicaciones_contenido',
             language : 'es',
@@ -189,6 +196,44 @@ $this->migas = [
             image_prepend_url: "<?php echo Sis::UrlBase() ?>/imagenes/articulos",
             link_assume_external_targets: true
         });
+
+        $("#btn-guardar").click(function(){
+        	guardarConfiguracion();
+        });
+
  	});
+
+ 	function guardarConfiguracion(){
+ 		var facebook = $("#redes-facebook").val();
+ 		var twitter = $("#redes-twitter").val();
+ 		var instagram = $("#redes-instagram").val();
+ 		var youtube = $("#redes-youtube").val();
+ 		var email = $("#email-admin").val();
+ 		var qs = tinyMCE.get('Publicaciones_contenido').getContent();
+
+ 		$.ajax({
+ 			type : 'POST',
+ 			url  : '<?= Sis::crearUrl(['principal/configuracion']) ?>',
+ 			data : {
+ 				ajx_rqst	: true,
+				facebook 	: facebook,
+				twitter		: twitter,
+				instagram	: instagram,
+				youtube		: youtube,
+				email_admin : email,
+				qs 			: qs,
+ 			}
+ 		}).done(function(data){
+
+ 			if(data.error == true){
+ 				lobiAlert("error", data.msg);
+ 			} else if(data.error == false){
+ 				lobiAlert("success", data.msg);
+ 			} else{
+ 				lobiAlert("error", "Ocurrió un error inseperado");
+ 			}
+
+ 		});
+ 	}
 
  </script>

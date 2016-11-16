@@ -24,6 +24,24 @@ class CtrlReportes extends CControlador{
 		$this->vista('pagos/pagosRealizados');
 	}
 
+	public function accionImplementos(){
+		$this->vista("implementos/implementos");
+	}
+
+	public function accionImplementosPrestados(){
+		$this->vista("implementos/prestamos");
+	}
+
+	public function accionImplementosEntradas(){
+		$this->vista("implementos/entradas");
+	}
+
+	public function accionDeportistasAcudientes(){
+		$this->vista("deportistas/deportistasAcudientes",[
+			'estados' => CHtml::modelolista(EstadoDeportista::modelo()->listar(), "id_estado", "nombre"),
+		]);
+	}
+
 	public function accionDeportistas(){
 		$this->vista("deportistas/todos",[
 			'estados' => CHtml::modelolista(EstadoDeportista::modelo()->listar(), "id_estado", "nombre"),

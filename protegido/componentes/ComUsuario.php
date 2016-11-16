@@ -8,7 +8,9 @@ class ComUsuario extends CComponenteUsuario{
     public function autenticar() {
         $c = new CCriterio();
         $c->condicion('t.nombre_usuario', $this->usuario)
+            ->o('t.email', $this->usuario)
             ->y('rol_id', 6, '<>');
+            
         $usuario = Usuario::modelo()->primer($c);
 
         if ($usuario != null && $usuario->clave === sha1($this->clave) && $usuario->estado == '1') {

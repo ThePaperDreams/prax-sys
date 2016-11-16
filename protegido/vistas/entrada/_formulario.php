@@ -7,11 +7,14 @@ $formulario->abrir();
 <div class="tile p-15">
 <div class="col-sm-6">
     <?php echo $formulario->lista($modelo, 'responsable_id', $usuarios, ['label' => true, 'group' => true, 'autofocus' => true, 'defecto' => 'Seleccione un Responsable', 'data-s2' => true]) ?>
-    <?php echo $formulario->areaTexto($modelo, 'descripcion', ['label' => true, 'group' => true, 'rows' => 8]) ?>
+    <div class="form-group">
+        <label for="">Descripción <span id="total-chars">0</span>/<span id="max-chars">500</span> </label>
+        <?php echo $formulario->areaTexto($modelo, 'descripcion', ['rows' => 8]) ?>
+    </div>
 </div>
 <div class="col-sm-6">
     <?= CBoot::selectM('', 'Implemento', 'id_implemento', 'nombre', ['label'=>'Implementos','defecto' => 'Seleccione un Implemento', 'id' => 'selectId', 'group' => true, 'data-s2' => true]) ?>  
-    <?= CBoot::number(0, ['min' => 0,'label'=>'Cantidad', 'group' => true, 'id' => 'cant']); ?>     
+    <?= CBoot::number(0, ['min' => 0,'label'=>'Cantidad', 'class' => 'solo-numeros', 'group' => true, 'id' => 'cant']); ?>     
     <?= CBoot::boton('Agregar ' . CBoot::fa('plus-circle'), 'default btn-block', ['group' => true, 'id' => 'btnAgregar']) ?>
     <div class="row">
         <div class="col-sm-12">
@@ -49,6 +52,18 @@ $formulario->abrir();
 <?php $formulario->cerrar(); ?>
 <script>
     $(document).ready(function () {
+
+        $("#Entradas_descripcion").keydown(function(e){
+            var t = $(this);
+            var max = parseInt($("#max-chars").html());
+            $("#total-chars").html(t.val().length);
+
+            if(t.val().length >= max && ( e.which != 8 && e.which !== 116)){
+                e.preventDefault();
+                return false;
+            }
+        });
+
         $("#btnAgregar").click(function () {
             Agregar();
             return false;

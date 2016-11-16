@@ -683,3 +683,11 @@ li.rep-jugador{
 .form-inline .separate{
     margin-right: 10px;
 }
+
+.jOrgChart .node {
+    background-color: rgba(241, 242, 247, 0.68);
+    color: black;
+    font-size: 14px;
+    font-weight: 900;
+    border-radius: 10px !important;
+}

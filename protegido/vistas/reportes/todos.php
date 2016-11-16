@@ -9,6 +9,7 @@
 				</div>
 				<div class="list-group">
 					<a href="<?= Sis::crearUrl(['reportes/deportistas']) ?>" class="list-group-item">Todos los deportistas</a>
+					<a href="<?= Sis::crearUrl(['reportes/deportistasAcudientes']) ?>" class="list-group-item">Acudientes por deportista</a>
 				</div>
 			</div>
 
@@ -17,13 +18,12 @@
 			
 			<div class="tile p-15">
 				<div class="page-header">
-					<h5> <i class="fa fa-soccer-ball-o icon-report"></i> Formación</h5>
+					<h5> <i class="fa fa-cubes icon-report"></i> Implementos</h5>
 				</div>
 				<div class="list-group">
-					<a href="#" class="list-group-item">Reporte 1</a>
-					<a href="#" class="list-group-item">Reporte 2</a>
-					<a href="#" class="list-group-item">Reporte 3</a>
-					<a href="#" class="list-group-item">Reporte 4</a>
+					<a href="<?= Sis::crearUrl(['reportes/implementos']) ?>" class="list-group-item">Implementos del club</a>
+					<a href="<?= Sis::crearUrl(['reportes/implementosPrestados']) ?>" class="list-group-item">Préstamos realizados</a>
+					<a href="<?= Sis::crearUrl(['reportes/implementosEntradas']) ?>" class="list-group-item">Entradas realizadas</a>
 				</div>
 			</div>
 
@@ -49,10 +49,7 @@
 					<h5> <i class="fa fa-trophy icon-report"></i> Torneos</h5>
 				</div>
 				<div class="list-group">
-					<a href="#" class="list-group-item">Reporte 1</a>
-					<a href="#" class="list-group-item">Reporte 2</a>
-					<a href="#" class="list-group-item">Reporte 3</a>
-					<a href="#" class="list-group-item">Reporte 4</a>
+
 				</div>
 			</div>
 

@@ -9,7 +9,7 @@
         <div class="alert alert-info">
             Ingrese la dirección de correo electrónico con que se encuentra registrado.
         </div>
-        <?= CBoot::text($email, ['id' => 'usuario', 'placeholder' => 'Ingrese su dirección de correo electrónico', 'class' => 'login-control m-b-10', 'autofocus' => true, 'name' => 'email']) ?>
+        <?= CBoot::text($email, ['id' => 'usuario', 'placeholder' => 'Ingrese su dirección de correo electrónico', 'class' => 'login-control m-b-10', 'autofocus' => true, 'name' => 'email', 'maxlength' => 50]) ?>
         <div class="p-5"></div>
         <?=  CBoot::boton('Enviar correo ' . CBoot::fa('send'), 'success btn-block', ['class' => 'btn btn-sm m-r-5']); ?>
         <div class="p-5"></div>

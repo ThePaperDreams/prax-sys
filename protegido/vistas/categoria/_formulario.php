@@ -7,14 +7,17 @@ $formulario->abrir();
     <hr>    
     <div class="row">
         <div class="col-sm-6">
-            <?php echo $formulario->campoTexto($modelo, 'nombre', ['label' => true, 'group' => true, 'autofocus' => true]) ?>
+            <?php echo $formulario->campoTexto($modelo, 'nombre', ['label' => true, 'group' => true, 'autofocus' => true, 'maxlength' => 30]) ?>
         </div>
         <div class="col-sm-6">
-            <?php echo $formulario->inputAddon($modelo, 'tarifa', 'number', ['label' => true, 'class' => 'text-right', 'group' => true], ['pre' => CBoot::fa('dollar')]) ?>
+            <?php echo $formulario->inputAddon($modelo, 'tarifa', 'number', ['label' => true, 'class' => 'text-right solo-numeros', 'group' => true], ['pre' => CBoot::fa('dollar')]) ?>
         </div>
     </div>
     <?php echo $formulario->lista($modelo, 'entrenador_id', $entrenadores, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un entrenador', 'data-s2' => true]) ?>
-    <?php echo $formulario->areaTexto($modelo, 'descripcion', ['label' => true, 'group' => true]) ?>
+    <div class="form-group">
+        <label for="">Descripción <span id="total-chars">0</span>/<span id="max-chars">500</span> </label>
+        <?php echo $formulario->areaTexto($modelo, 'descripcion', ['class' => '', 'rows' => 8]) ?>        
+    </div>
     <div class="row">
         <div class="col-sm-3">
             <?php echo $formulario->campoNumber($modelo, 'cupo_minimo', ['label' => true, 'class' => 'text-right solo-numeros', 'group' => true, 'min' => 0]) ?>
@@ -75,6 +78,17 @@ $formulario->abrir();
 ?>
 <script>
     $(function(){        
+
+        $("#Categorias_descripcion").keydown(function(e){
+            var t = $(this);
+            var max = parseInt($("#max-chars").html());
+            $("#total-chars").html(t.val().length);
+            if(t.val().length >= max && ( e.which != 8 && e.which !== 116)){
+                e.preventDefault();
+                return false;
+            }
+        });
+
         $("#Categorias_cupo_maximo, #Categorias_cupo_minimo").on('change blur', function(){
             validarCupo();
         });

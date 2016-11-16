@@ -7,6 +7,7 @@ $(function(){
 });
 
 function soloNumeros(elementos, data){
+    
     elementos.each(function(k, v){
         var elemento = $(v);
         elemento.keydown(function(e){
@@ -51,4 +52,4 @@ $(function () {
       trigger: 'focus',
       html: true,
   });
-})
+});

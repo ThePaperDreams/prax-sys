@@ -72,7 +72,7 @@ class CCriterio {
      * @param string $campo2
      * @return CCriterio
      */
-    public function o($campo1, $campo2, $operador){
+    public function o($campo1, $campo2, $operador = '='){
         if($campo2 === null){ return $this; }
         if($this->condicion != "" && $this->condicion != null){ $this->condicion .= " OR "; }        
         if($operador == 'LIKE'){ $campo2 = "'%$campo2%'"; }

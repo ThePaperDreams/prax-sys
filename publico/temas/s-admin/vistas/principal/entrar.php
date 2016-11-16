@@ -11,8 +11,8 @@
     </div>
     <div class=" col-sm-8">
         <h2 class="m-t-0 m-b-15">Iniciar sesión</h2>
-        <?= CBoot::text('', ['id' => 'usuario', 'placeholder' => 'Ingrese su nombre de usuario', 'class' => 'login-control m-b-10', 'autofocus' => true, 'name' => 'login-usr']) ?>
-        <?= CBoot::passwordField('', ['id' => 'clave', 'placeholder' => 'Ingrese su contraseña', 'class' => 'login-control', 'name' => 'login-pwd']) ?>            
+        <?= CBoot::text('', ['id' => 'usuario', 'placeholder' => 'Ingrese su nombre de usuario', 'class' => 'login-control m-b-10', 'autofocus' => true, 'name' => 'login-usr', 'maxlength' => 50]) ?>
+        <?= CBoot::passwordField('', ['id' => 'clave', 'placeholder' => 'Ingrese su contraseña', 'class' => 'login-control', 'name' => 'login-pwd', 'maxlength' => 40]) ?>            
         <div class="p-5"></div>
         <?=  CBoot::boton('Iniciar sesión', 'success btn-block', ['class' => 'btn btn-sm m-r-5']); ?>
         <div class="p-5"></div>
@@ -35,11 +35,11 @@
             var clave = $("#clave");
 
             if($.trim(usuario.val()) == ""){
-                lobiAlert("error", "Por favor ingrese su nombre de usuario o e-mail");
+                lobiAlert("error", "Por favor ingrese nombre de usuario o email y contraseña");
                 usuario.focus();
                 return false;
             } else if($.trim($("#clave").val()) == ""){
-                lobiAlert("error", "Por favor ingrese su contraseña");
+                lobiAlert("error", "Por favor ingrese nombre de usuario o email y contraseña");
                 clave.focus();
                 return false;
             }

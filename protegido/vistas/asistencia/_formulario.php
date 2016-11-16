@@ -9,11 +9,12 @@ $formulario->abrir();
         </div>
         <div class="panel panel-body">
             <div class="col-sm-6">
-                <?= $formulario->inputAddon($modelo, 'fecha', 'text', ['label' => true, 'group' => true, 'autofocus' => true, 'data-date' => true], ['pos' => CBoot::fa('calendar')]) ?>
+                <?= $formulario->inputAddon($modelo, 'fecha', 'text', [ 'readonly' => true, 'label' => true, 'group' => true, 'autofocus' => true, 'data-date' => true], ['pos' => CBoot::fa('calendar')]) ?>
                 <?= $formulario->listaM($modelo, 'categoria_id', 'Categoria', 'id_categoria', 'nombre', ['label' => true, 'group' => true, 'defecto' => 'Seleccione una categoría', 'data-s2' => true]) ?>
             </div>
             <div class="col-sm-6">
-                <?= $formulario->areaTexto($modelo, 'novedad', ['label' => true, 'group' => true, 'rows' => 5]) ?>
+                <label for="">Novedad <span id="total-chars">0</span>/<span id="max-chars">500</span> </label>
+                <?= $formulario->areaTexto($modelo, 'novedad', ['group' => true, 'rows' => 5]) ?>
             </div>
             <hr>
             <div class="col-sm-12">
@@ -49,6 +50,17 @@ $formulario->abrir();
 
 <script>
     $(function(){
+
+        $("#Asistencia_novedad").keydown(function(e){
+            var t = $(this);
+            var max = parseInt($("#max-chars").html());
+            $("#total-chars").html(t.val().length);
+            if(t.val().length >= max && ( e.which != 8 && e.which !== 116)){
+                e.preventDefault();
+                return false;
+            }
+        });
+
         // validamos que si se hayan listado deportistas
         $("#form-asistencia").submit(function(){
             if($("[data-matricula]").length == 0){

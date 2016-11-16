@@ -14,5 +14,5 @@ $this->opciones = [
 ];
 ?>
 <div class="col-sm-12">
-    <?php echo $this->mostrarVistaP('_formulario', ['modelo' => $modelo, 'modelo2' => $modelo2, 'modelo3' => $modelo3, 'tiposIdentificaciones' => $tiposIdentificaciones, 'acudientes' => $acudientes, 'tiposDocumentos' => $tiposDocumentos, 'estados' => $estados, 'url' => $url, 'url2' => $url2, 'formularioAcudiente' => $formularioAcudiente]); ?>
+    <?php echo $this->mostrarVistaP('_formulario', ['modelo' => $modelo, 'formularioAcudiente' => $formularioAcudiente, 'modelo2' => $modelo2, 'modelo3' => $modelo3, 'tiposIdentificaciones' => $tiposIdentificaciones, 'acudientes' => $acudientes, 'tiposDocumentos' => $tiposDocumentos, 'estados' => $estados, 'url' => $url, 'url2' => $url2, 'formularioAcudiente' => $formularioAcudiente]); ?>
 </div> 

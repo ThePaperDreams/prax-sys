@@ -18,7 +18,7 @@ $form->abrir();
                         <div class="alert alert-info">
                             Escribe el email asociado a tu cuenta para recuperar tu contraseña
                         </div>
-                        <input type="email" id="email" class="form-control" name="email" required autofocus="true">
+                        <input type="text" id="email" class="form-control" name="email" autofocus="true" maxlength="50">
                     </div>
                     <div class="p-5"></div>
                     <div class="form-group">
@@ -34,11 +34,12 @@ $form->abrir();
 
 <script>
   $(document).ready(function(){
+
        $("#email,#clave").css({
             position: "relative",
             right: "180%",
         });
-        //$("#logo").hide();
+        $("#logo").hide();
         
         var delay = 500;
         setTimeout(function(){
@@ -55,7 +56,21 @@ $form->abrir();
             });            
             
         }, 1000);
+
     $("#frmRestablecer").submit(function(event){
+        var email = $("#email");
+        if($.trim(email.val()) == ""){
+
+            lobiAlert("error", "Debe ingresar un email");
+            email.focus();
+            return false;
+
+        } else if(!validarEmail(email.val())) {
+            lobiAlert("error", "Debe ingresar un email valido");
+            email.focus();
+            return false;
+        }
+
         if(validarClave()){
             event.preventDefault();
               $.ajax({
@@ -67,12 +82,17 @@ $form->abrir();
                   $("#mensaje").html(respuesta.mensaje);
                   $("#email").val('');
               });
-          });
+
           }else{
             return false;
           }
       });
-      
+
+    });  
+
+    function validarEmail(email){
+        return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
+    } 
 
     function validarClave() {
         var claveRegex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;

@@ -14,12 +14,30 @@ class CtrlPrincipal extends CControlador{
     public function inicializar() {
         parent::inicializar();
         $this->plantilla = 'login';
-    }   
+    }
+
 
     public function accionConfiguracion(){
-
+        if(isset($this->_p['ajx_rqst'])){
+            $guardado = $this->guardarConfiguraciones();
+            $msg = $guardado? "Se guardaron correctamente las configuraciones" : "Ocurrió un error";
+            $this->json([
+                'error' => !$guardado,
+                'msg'   => $msg,
+            ]);
+            Sis::fin();
+        }
         $this->plantilla = 'basica';        
         $this->vista("configuracion");
+    }
+
+    private function guardarConfiguraciones(){
+        return Configuracion::set("redes_facebook", $this->_p['facebook']) && 
+            Configuracion::set("redes_twitter", $this->_p['twitter']) && 
+            Configuracion::set("redes_instagram", $this->_p['instagram']) && 
+            Configuracion::set("redes_youtube", $this->_p['youtube']) &&
+            Configuracion::set("email_admin", $this->_p['email_admin']) && 
+            Configuracion::set("quienes_somos", $this->_p['qs']);
     }
 
     public function accionAjx(){
@@ -51,7 +69,7 @@ class CtrlPrincipal extends CControlador{
                 $mensaje = $this->vistaP("_emailRecuperar");
                 $this->enviarEmail($email, $mensaje);
                 $tipo = 'success';
-                $msg = 'Se ha enviado un email a su cuenta de correo';
+                $msg = 'Se ha enviado un email a la dirección de correo electrónico ingresada.';
             }
             Sis::Sesion()->flash("alerta", [
                 'tipo' => $tipo,
@@ -225,9 +243,11 @@ class CtrlPrincipal extends CControlador{
                 $usuario->recuperacion = 1;
                 $usuario->guardar();
                 if($this->enviarEmail($usuario->email, $url)){
-                    $this->alertar('success','Se ha enviado un email con instrucciones para modificar su contraseña.');
+                    $this->alertar('success','Se ha enviado un email con instrucciones para la modificación de contraseña.');
                     $this->redireccionar("entrar");
                 }
+            } else if($usuario == null){
+                $this->alertar("error", "No existe un usuario asociado a el email ingresado");
             } else if($usuario->recuperacion == '1'){
                 $this->alertar("error", "Ya se ha enviado un email de recuperación a esta dirección de correo");
             }

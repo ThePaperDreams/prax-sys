@@ -21,7 +21,7 @@ $formulario->abrir();
                 <?php echo $formulario->lista($modelo, 'tipo_documento_id', $tiposIdentificaciones, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un Tipo de documento', 'data-s2' => true]) ?>
             </div>
             <div class="col-sm-6">
-                <?php echo $formulario->campoNumber($modelo, 'identificacion', ['label' => true, 'group' => true, 'autofocus' => true, 'min' => '0', 'maxlength' => '45']) ?>
+                <?php echo $formulario->campoNumber($modelo, 'identificacion', ['class' => 'solo-numeros', 'label' => true, 'group' => true, 'autofocus' => true, 'min' => '0', 'maxlength' => '45']) ?>
             </div>    
         </div>
         <div class="row">
@@ -42,10 +42,10 @@ $formulario->abrir();
         </div>
         <div class="row">
             <div class="col-sm-6">
-                <?php echo $formulario->campoNumber($modelo, 'telefono1', ['label' => true, 'group' => true, 'min' => '0', 'maxlength' => '10']) ?>
+                <?php echo $formulario->campoTexto($modelo, 'telefono1', ['label' => true, 'group' => true, 'min' => '0', 'maxlength' => '10']) ?>
             </div>
             <div class="col-sm-6">
-                <?php echo $formulario->campoNumber($modelo, 'telefono2', ['label' => true, 'group' => true, 'min' => '0', 'maxlength' => '10']) ?>
+                <?php echo $formulario->campoTexto($modelo, 'telefono2', ['label' => true, 'group' => true, 'min' => '0', 'maxlength' => '10']) ?>
             </div>
         </div>
         <div class="row">
@@ -53,7 +53,7 @@ $formulario->abrir();
                 <?php echo $formulario->campoTexto($modelo, 'direccion', ['label' => true, 'group' => true, 'maxlength' => '80']) ?>
             </div>
             <div class="col-sm-6">
-                <?php echo $formulario->campoTexto($modelo, 'fecha_nacimiento', ['label' => true, 'group' => true, 'class' => 'campo-fecha']) ?>
+                <?php echo $formulario->inputAddon($modelo, 'fecha_nacimiento', 'text', ['readonly' => true, 'label' => true, 'class' => 'campo-fecha'], ['pos' => CBoot::fa('calendar')]) ?>
             </div>
         </div>
         <div class="row">  

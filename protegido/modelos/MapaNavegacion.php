@@ -12,7 +12,7 @@
  * @property FkMapaNavegacionPadre $fkMapaNavegacionPadre
  */
  class MapaNavegacion extends CModelo{
- 
+    private $hijos = null;
     /**
      * Esta función retorna el nombre de la tabla representada por el modelo
      * @return string
@@ -45,6 +45,15 @@
             # tipo de relación | modelo con que se relaciona | campo clave foranea
             	'fkMapaNavegacionPadre' => [self::PERTENECE_A, 'FkMapaNavegacionPadre', 'padre_id'],
         ];
+    }
+
+    public function getHijos(){
+        if($this->hijos === null){
+            $c = new CCriterio();
+            $c->condicion("padre_id", $this->id_opcion);
+            $this->hijos = self::modelo()->listar($c);
+        }
+        return $this->hijos;
     }
     
     /**

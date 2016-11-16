@@ -280,14 +280,17 @@ class CtrlDeportista extends CControlador {
             }
             if ($modelo->guardar()) {
                 $this->asociarAcudientes($pk);
-                $this->asociarDocumentos($pk);
+                $this->asociarDocumentos($pk, $modelo);
                 $this->alertar('success', 'Actualización Exitosa');
                 $this->redireccionar('inicio');
             }
         }
         $url = Sis::crearUrl(['Deportista/editar', 'id' => $pk]);
         $url2 = Sis::crearUrl(['Deportista/validarNombreDoc', 'id' => $pk]);
+        $formularioAcudiente = $this->getFormAcudientes();
+
         $this->mostrarVista('editar', ['modelo' => $modelo,
+            'formularioAcudiente' => $formularioAcudiente,
             'modelo2' => $modelo2,
             'modelo3' => $modelo3,
             'url' => $url,

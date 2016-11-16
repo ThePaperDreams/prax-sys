@@ -11,9 +11,9 @@
     </div>
     <div class=" col-sm-8">
         <h2 class="m-t-0 m-b-15">Restablecer contraseña</h2>
-        <?= CBoot::passwordField('', ['id' => 'clave', 'placeholder' => 'Ingrese la nueva contraseña', 'class' => 'login-control', 'name' => 'recuperar-pwd', 'id' => 'pwd1', 'autofocus' => true]) ?>
+        <?= CBoot::passwordField('', ['id' => 'clave', 'placeholder' => 'Ingrese la nueva contraseña', 'class' => 'login-control', 'name' => 'recuperar-pwd', 'id' => 'pwd1', 'autofocus' => true, 'maxlength' => 40]) ?>
         <div class="p-5"></div>
-        <?= CBoot::passwordField('', ['id' => 'clave', 'placeholder' => 'Confirme la contraseña', 'class' => 'login-control', 'id' => 'pwd2']) ?>
+        <?= CBoot::passwordField('', ['id' => 'clave', 'placeholder' => 'Confirme la contraseña', 'class' => 'login-control', 'id' => 'pwd2', 'maxlength' => 40]) ?>
         <div class="p-5"></div>
         <?=  CBoot::boton('Restablecer', 'success btn-block', ['class' => 'btn btn-sm m-r-5']); ?>
         <div class="p-5"></div>

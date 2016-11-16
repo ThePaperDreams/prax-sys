@@ -3,8 +3,11 @@ $formulario = new CBForm(['id' => 'form-categoriasimplementos']);
 $formulario->abrir();
 ?>
 <div class="tile p-15">
-    <?php echo $formulario->campoTexto($modelo, 'nombre', ['label' => true, 'group' => true, 'autofocus' => true]) ?>
-    <?php echo $formulario->areaTexto($modelo, 'descripcion', ['label' => true, 'group' => true]) ?>
+    <?php echo $formulario->campoTexto($modelo, 'nombre', ['label' => true, 'group' => true, 'autofocus' => true, 'maxlength' => 50]) ?>
+    <div class="form-group">
+        <label for="">Descripción <span id="total-chars">0</span>/<span id="max-chars">500</span> </label>
+        <?php echo $formulario->areaTexto($modelo, 'descripcion', ['rows' => 8]) ?>
+    </div>
 
     <div class="row">
         <div class="col-sm-offset-6 col-sm-3">
@@ -19,6 +22,17 @@ $formulario->abrir();
     </div>
 <script>
     $(function () {
+
+        $("#CategoriasImplementos_descripcion").keydown(function(e){
+            var t = $(this);
+            var max = parseInt($("#max-chars").html());
+            $("#total-chars").html(t.val().length);
+            if(t.val().length >= max && ( e.which != 8 && e.which !== 116)){
+                e.preventDefault();
+                return false;
+            }
+        });
+
         $("#form-categoriasimplementos").submit(function () {
             validarNombre();
             return false;
