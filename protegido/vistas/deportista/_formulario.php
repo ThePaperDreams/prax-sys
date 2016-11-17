@@ -150,60 +150,62 @@ $formulario->abrir();
     </div>
         
     <div role="tabpanel" class="tab-pane" id="documentos">
-        <div class="row">
-            <div class="col-sm-6">
-                <?php echo $formulario->lista($modelo3, 'id_tipo', $tiposDocumentos, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un Tipo de documento', 'data-s2' => true]) ?>
+        <div class="col-sm-6">
+            <div class="page-header">
+                <h4>Agregar documentos a deportista</h4>
             </div>
-            <div class="col-sm-2">
-                <?php echo CBoot::boton(CBoot::fa('plus-circle') . ' Agregar', 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'id' => 'btn-addDoc']) ?>
-            </div>
-            <?php if(count($modelo->Documento)): ?>                   
-            <div class="col-sm-4">
-                <?php echo CBoot::boton(CBoot::fa('file-text-o') . ' Ver documentos asociados', 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'data-toggle' => 'modal', 'data-target' => '#myModal', 'id' => 'btn-verdocs']) ?>
-            </div>
-            <div class="modal fade cortina" id="myModal" tabindex="-1" role="dialog">
-                <div class="modal-dialog" role="document">
-                    <div class="p-modal-content">
-                        <div class="p-modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title">Documentos </h4>
-                        </div>
-                        <div class="p-modal-body">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Documento</th>
-                                        <th>Eliminar</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php foreach ($modelo->Documento AS $d): ?>
-                                        <tr>
-                                            <td><?php echo $d->Documento->getDocumento($d->Documento->url); ?>
-                                            <td class="col-sm-1 text-center text-danger-icon">
-                                                <a href="#" class="eliminar" data-iddepdoc="<?php echo $d->id; ?>"><i class="fa fa-ban"></i></a>
-                                            </td>
-                                        </tr>
-                                    <?php endforeach ?>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="p-modal-footer">
-                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <?php endif; ?>
+            <button class="btn btn-primary btn-block" id="btn-agregar-doc">
+                Agregar <i class="fa fa-plus-circle"></i>
+            </button>
+
+            <table class="table table-bordered" id="documentos-cargados">
+                <thead>
+                    <tr>
+                        <th colspan="2" class="text-center">Nuevos documentos</th>
+                    </tr>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                </tbody>
+            </table>
         </div>
-        <div class="row">
-            <div class="col-sm-12">        
-                <div id="lst-doc" class="panel-default">
-                    <div class="panel-heading">Documentos</div>
-                    <ul id="list-docs" class="list-group"></ul>
-                </div>
+        <?php if ($modelo->Documento): ?>
+            
+        <div class="col-sm-6">
+            <div class="page-header">
+                <h4>Documentos agregados</h4>
             </div>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Documento</th>
+                        <th>Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php foreach ($modelo->Documento as $detalle): ?>                    
+                    <tr id="row-doc-<?= $detalle->id ?>" >
+                        <td>
+                            <a href="<?= Sis::UrlBase() . '/publico/documentos/' . $detalle->Documento->url ?>" target="_blank" >
+                                <?= $detalle->Documento->titulo  ?>
+                            </a>
+                        </td>
+                        <td class="text-center">
+                            <button data-id="<?= $detalle->id ?>" class="btn btn-danger remove-doc">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                <?php endforeach ?>
+                </tbody>
+            </table>
         </div>
+
+        <?php endif ?>
     </div>
 </div>                
     <div class="row">
@@ -218,6 +220,40 @@ $formulario->abrir();
 
 
 <?php $formulario->cerrar(); ?>
+
+<div class="modal fade" id="modal-cargar-doc">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                Cargar nuevo documento
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <?php echo $formulario->lista($modelo3, 'id_tipo', $tiposDocumentos, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un Tipo de documento', 'data-s2' => true]) ?>
+                </div>
+                <div class="form-group">
+                    <label for="">Nombre del documento</label>
+                    <?= CBoot::text('', ['id' => 'nombre-documento']) ?>
+                </div>
+                <div class="form-group">
+                    <label for="">Seleccione un documento</label>
+                    <div id="file-input-container">
+                        <?= CBoot::fileInput('', ['id' => 'documento-cargar', 'name' => 'Documentos[]']) ?>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal">
+                    <i class="fa fa-remove"></i> Cerrar
+                </button>
+                <button class="btn btn-primary" id="btn-cargar-doc">
+                    <i class="fa fa-floppy-o"></i> 
+                    Guardar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="modal fade" id="modal-acudientes">
     <div class="modal-dialog">
@@ -243,14 +279,126 @@ $formulario->abrir();
 </div>
 
 <script type="text/javascript">
+    function agregareldoc(){
+        var nombre = $("#nombre-documento").val();
+        var file = $("#documento-cargar");
+        var tipoDoc = $("#TiposDocumento_id_tipo").val();
+        if($.trim(tipoDoc) == ""){
+            lobiAlert("error", "Debe seleccionar un tipo de documento");
+            $("#TiposDocumento_id_tipo").select2('open');
+            return false;
+        }else if($.trim(nombre) == ""){
+            lobiAlert("error", "Debe ingresar un nombre al archivo");
+            $("#nombre-documento").focus();
+            return false;
+        }else if($.trim(file.val()) == ""){
+            lobiAlert("error", "Debe ingresar un nombre al archivo");
+            file.focus();
+            return false;
+        } else if($("[data-doc='" + nombre + "']").length > 0){
+            lobiAlert("error", "Ya existe un documento con ese nombre");
+            $("#nombre-documento").focus().select();
+            return false;
+        }
+
+        var newFile = file.clone();
+        var tr = $("<tr/>", {'data-doc' : nombre});
+        var td = $("<td/>");
+        var tdOp = $("<td/>", {'class' : 'text-center col-sm-1'});
+        var button = $("<button/>", {'class' : 'btn btn-danger'});
+        var icon = $("<i/>", {'class' : 'fa fa-trash'});
+        var hidden = $("<input/>", {type: 'hidden', name: 'NombresDocumentos[]' });
+        var hiddenTD = $("<input/>", {type: 'hidden', name: 'TiposDocumentos[]' });
+        hiddenTD.val(tipoDoc);
+        hidden.val(nombre);
+
+        button.append(icon);
+        button.click(function(){
+            var tr = $(this).closest("tr");
+            tr.find("td").slideUp(function(){
+                tr.remove();
+            });
+            return false;
+        });
+
+        tdOp.append(button);
+        file.removeAttr("id");
+        file.hide();
+        td.html(nombre);
+        td.append(file, hidden, hiddenTD);
+        tr.append(td, tdOp);
+
+        $("#file-input-container").html(newFile);
+        $("#documento-cargar").fileinput({
+            showPreview: false,
+            showRemove: false,
+            showUpload: false,
+            browseLabel: "Seleccionar archivo",
+            maxFileSize: 5000,
+            allowedFileExtensions: ['jpg', 'gif', 'png', 'jpeg']
+        });
+        $("#nombre-documento").val("");
+        $("#documentos-cargados > tbody").append(tr);
+        $("#modal-cargar-doc").modal("hide");
+    }
+
+    function removerDoc(id){
+        $.ajax({
+            'type' : 'POST',
+            'url' : '<?= Sis::crearUrl(["deportista/ajx"]); ?>',
+            data: {
+                id: id,
+                'ajx' : true,
+                'remover-doc' : true,
+            }
+        }).done(function(data){
+            if(data.error == true){
+                lobiAlert("error", "Ocurrió un error al remover el documento");
+            } else if(data.error == false){
+                var row = $("#row-doc-" + id);
+                row.find("td").slideUp(function(){
+                    row.remove();
+                });
+            } else {
+                lobiAlert("error", "Ocurrió un error inesperado");
+            }
+        });
+    }
+
     $(function(){
+
+        $(".remove-doc").click(function(){
+            var id = $(this).attr("data-id");
+            if(confirm("¿Realmente desea remover este documento?")){
+                removerDoc(id);
+                return false;
+            }
+        });
+
+        $("#btn-agregar-doc").click(function(){
+            $("#modal-cargar-doc").modal("show");
+            setTimeout(function(){
+                $("#TiposDocumento_id_tipo").select2('open');
+            }, 500);
+            return false;
+        });
+        $("#btn-cargar-doc").click(function(){
+            agregareldoc();
+            return false;
+        });
+    });
+
+    $(function(){       
+
         $("#btn-registrar-acudiente").click(function(){
             $("#modal-acudientes").modal("show");
         });
+
         $("#guardar-acudiente").click(function(){
             guardarAcudiente();
             return false;
         });
+
     });   
 
     function guardarAcudiente(){

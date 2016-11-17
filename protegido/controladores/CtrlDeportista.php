@@ -251,7 +251,7 @@ class CtrlDeportista extends CControlador {
         // Usar DS en vez de / (?)
         $doc->url = "deportistas/$dep/$nomtipo." . $files[$k]->getExtension();
         $doc->tipo_id = $v;
-        $doc->guardar();                
+        $err = $doc->guardar();
         return $doc;
     }
 
@@ -307,6 +307,27 @@ class CtrlDeportista extends CControlador {
             'acudientes' => CHtml::modelolista(Acudiente::modelo()->listar(['where' => 'estado=1']), "id_acudiente", "Datos"),
             'tiposDocumentos' => CHtml::modelolista(TipoDocumento::modelo()->listar(), "id_tipo", "nombre"),
             'estados' => CHtml::modelolista(EstadoDeportista::modelo()->listar($cEst), "id_estado", "nombre"),
+        ]);
+    }
+
+    public function accionAjx(){
+        if(!isset($this->_p['ajx'])){
+            $this->redireccionar("inicio");            
+        }
+        
+        if(isset($this->_p['remover-doc'])){
+            $this->removerDoc();
+        }
+    }
+
+    private function removerDoc(){
+        $id = $this->_p['id'];
+        $detalle = DeportistaDocumento::modelo()->porPk($id);
+        $documento = $detalle->Documento;
+        $rutaBase = Sis::resolverRuta("!publico.documentos");
+        $ruta = $rutaBase . DS . str_replace('/', DS, $documento->url);
+        $this->json([
+            'error' => !(unlink($ruta) && $detalle->eliminar() && $documento->eliminar())
         ]);
     }
     

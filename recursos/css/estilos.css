@@ -691,3 +691,6 @@ li.rep-jugador{
     font-weight: 900;
     border-radius: 10px !important;
 }
+.lobibox-notify-wrapper{
+    z-index: 10000;
+}
