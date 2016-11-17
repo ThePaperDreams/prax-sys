@@ -167,6 +167,27 @@ class CtrlAcudiente extends CControlador {
             'tiposDocumentos' => CHtml::modelolista(TipoDocumento::modelo()->listar(), "id_tipo", "nombre"),
         ]);
     }
+
+    public function accionAjx(){
+        if(!isset($this->_p['ajx'])){
+            $this->redireccionar("inicio");            
+        }
+        
+        if(isset($this->_p['remover-doc'])){
+            $this->removerDoc();
+        }
+    }
+
+    private function removerDoc(){
+        $id = $this->_p['id'];
+        $detalle = AcudienteDocumento::modelo()->porPk($id);
+        $documento = $detalle->Documento;
+        $rutaBase = Sis::resolverRuta("!publico.documentos");
+        $ruta = $rutaBase . DS . str_replace('/', DS, $documento->url);
+        $this->json([
+            'error' => !(unlink($ruta) && $detalle->eliminar() && $documento->eliminar())
+        ]);
+    }
     
     /**
      * Esta función permite ver detalladamente un registro existente

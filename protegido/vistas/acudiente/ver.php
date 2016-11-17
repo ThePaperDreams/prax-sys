@@ -98,16 +98,12 @@ $this->opciones = [
                 <thead>
                     <tr>
                         <th>Descargar</th>
-                        <th>Eliminar</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($modelo->Detalles AS $d): ?>
                         <tr>
                             <td><?php echo $d->Documento->getDocumento($d->Documento->url); ?>
-                            <td class="col-sm-1 text-center text-danger-icon">
-                                <a href="#" class="eliminar" data-idacudoc="<?php echo $d->id; ?>"><i class="fa fa-ban"></i></a>
-                            </td>
                         </tr>
                     <?php endforeach ?>
                 </tbody>

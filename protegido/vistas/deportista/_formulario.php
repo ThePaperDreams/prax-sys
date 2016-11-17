@@ -553,7 +553,25 @@ $formulario->abrir();
             }
             return false;
         });
+        // validamos la edad del deportista
+        $("#Deportistas_fecha_nacimiento").change(function(){
+            var edad = calcularEdad(new Date($(this).val()));
+            if(parseInt(edad) < 6){
+                lobiAlert("error", "El deportista no puede ser menor de 6 años");
+                $("#btn-send").attr("disabled", "disabled");
+                return false;
+            } else {
+                $("#btn-send").removeAttr("disabled");
+            }
+        });
+
     });
+
+    function calcularEdad(birthday) { 
+        var ageDifMs = Date.now() - birthday.getTime();
+        var ageDate = new Date(ageDifMs); // miliseconds from epoch
+        return Math.abs(ageDate.getUTCFullYear() - 1970);
+    }
     
     function vnombredoc(e){ // Validar nombre del documento en actualizar
         if($(e).val() !== ""){
