@@ -23,16 +23,16 @@ $formulario->abrir();
             <?php echo $formulario->lista($modelo, 'deportista_id', $deportistas, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un deportista', 'data-s2' => true]) ?>
         </div>
         <div class="col-sm-6">
-            <?php echo $formulario->campoTexto($modelo, 'club_origen', ['label' => true, 'group' => true]) ?>        
+            <?php echo $formulario->campoTexto($modelo, 'club_origen', ['label' => true, 'group' => true, 'maxlength' => 80]) ?>        
         </div>
         <div class="col-sm-6">
-            <?php echo $formulario->campoTexto($modelo, 'club_destino', ['label' => true, 'group' => true]) ?>        
+            <?php echo $formulario->campoTexto($modelo, 'club_destino', ['label' => true, 'group' => true, 'maxlength' => 80]) ?>        
         </div>
         <div class="col-sm-6">
-            <?php echo $formulario->campoTexto($modelo, 'fecha_inicio', ['label' => true, 'group' => true, 'data-date' => true]) ?>                
+            <?php echo $formulario->campoTexto($modelo, 'fecha_inicio', ['label' => true, 'readonly' => true, 'group' => true, 'data-date' => true]) ?>                
         </div>
         <div class="col-sm-6">
-            <?php echo $formulario->campoTexto($modelo, 'fecha_fin', ['label' => true, 'group' => true, 'data-date' => true]) ?>    
+            <?php echo $formulario->campoTexto($modelo, 'fecha_fin', ['label' => true, 'readonly' => true, 'group' => true, 'data-date' => true]) ?>    
         </div>
         <div class="col-sm-12">
             <div class="row">

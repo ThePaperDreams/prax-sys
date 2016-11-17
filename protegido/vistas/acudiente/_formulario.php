@@ -19,7 +19,7 @@ $formulario->abrir();
                 <?php echo $formulario->lista($modelo, 'tipo_doc_id', $tiposIdentificaciones, ['label' => true, 'group' => true, 'defecto' => 'Tipo de documento', 'data-s2' => true]) ?>
             </div>
             <div class="col-sm-6">
-                <?php echo $formulario->campoNumber($modelo, 'identificacion', ['label' => true, 'class' => 'solo-numeros', 'group' => true, 'autofocus' => true, 'min' => '0', 'maxlength' => '15']) ?>
+                <?php echo $formulario->campoNumber($modelo, 'identificacion', ['label' => true, 'class' => 'campo-doc r-trim-zero solo-numeros', 'group' => true, 'autofocus' => true, 'min' => '0', 'maxlength' => '15']) ?>
             </div>
         </div>
         <div class="row">
@@ -43,7 +43,7 @@ $formulario->abrir();
                 <?php echo $formulario->campoTexto($modelo, 'telefono1', ['label' => true, 'group' => true, 'min' => '0', 'maxlength' => '15']) ?>
             </div>
             <div class="col-sm-6">
-                <?php echo $formulario->campoTextoy($modelo, 'telefono2', ['label' => true, 'group' => true, 'min' => '0', 'maxlength' => '15']) ?>
+                <?php echo $formulario->campoTexto($modelo, 'telefono2', ['label' => true, 'group' => true, 'min' => '0', 'maxlength' => '15']) ?>
             </div>
         </div>
         <div class="row">

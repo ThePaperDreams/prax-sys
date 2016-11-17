@@ -44,7 +44,7 @@ class Evento extends CModelo {
             'lugar',
             'fecha',
             'hora',
-            'estado',
+            'estado' => ['def' => 1],
             'autor',
         ];
     }

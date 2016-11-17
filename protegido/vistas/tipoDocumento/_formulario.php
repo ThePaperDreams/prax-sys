@@ -4,10 +4,19 @@ $formulario->abrir();
 ?>
 <div class="tile p-15">
 <p>Los campos con <span class="text-danger">*</span>  son requeridos</p>
-<?php echo $formulario->campoTexto($modelo, 'nombre', ['label' => true, 'group' => true, 'autofocus' => true]) ?>
-<?php echo $formulario->areaTexto($modelo, 'descripcion', ['label' => true, 'group' => true]) ?>
-<?php echo $formulario->lista($modelo, 'padre_id', $tiposDocumentos, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un tipo de documento']) ?>
-
+<div class="col-sm-6">
+    <?php echo $formulario->campoTexto($modelo, 'nombre', ['label' => true, 'group' => true, 'autofocus' => true]) ?>
+</div>
+<div class="col-sm-6">
+    <?php echo $formulario->lista($modelo, 'padre_id', $tiposDocumentos, ['data-s2' => true, 'label' => true, 'group' => true, 'defecto' => 'Seleccione un tipo de documento']) ?>    
+</div>
+<div class="col-sm-12">
+    <div class="form-group">
+        <label for="">Descripción <span id="total-chars">0</span>/<span id="max-chars">300</span> </label>
+        <?php echo $formulario->areaTexto($modelo, 'descripcion', ['class' => 'rows', 'rows' => 6]) ?>    
+    </div>
+</div>
+<hr>
 <div class="row">
     <div class="col-sm-offset-6 col-sm-3">
         <?php echo CHtml::link(CBoot::fa('undo') . ' Cancelar', ['tipoDocumento/inicio'], ['class' => 'btn btn-primary btn-block']); ?>
@@ -20,6 +29,16 @@ $formulario->abrir();
 <?php $formulario->cerrar(); ?>
 <script>
     $(function () {
+        $("#TiposDocumento_descripcion").keydown(function(e){
+            var t = $(this);
+            var max = parseInt($("#max-chars").html());
+            $("#total-chars").html(t.val().length);
+            if(t.val().length >= max && ( e.which != 8 && e.which !== 116)){
+                e.preventDefault();
+                return false;
+            }
+        });
+
         $("#form-tiposdocumento").submit(function () {
             validarNombre();
             return false;

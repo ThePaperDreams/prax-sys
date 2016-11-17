@@ -25,8 +25,11 @@ $this->migas = [
                     </label>
                 </div>
             </div>
-            <?= $formulario->inputAddon($modelo, 'evaluacion', 'number', ['label' => true, 'max' => 10, 'min' => 0, 'group' => true], ['pos' => '0-10']) ?>
-            <?= $formulario->areaTexto($modelo, 'descripcion', ['label' => true, 'group' => true]) ?>
+            <?= $formulario->inputAddon($modelo, 'evaluacion', 'number', ['label' => true, 'max' => 10, 'min' => 0, 'group' => true, 'class' => 'solo-numeros maximo-numero'], ['pos' => '0-10']) ?>
+            <div class="form-group">
+                <label for="">Descripción <span id="total-chars">0</span>/<span id="max-chars">100</span> </label>
+                <?= $formulario->areaTexto($modelo, 'descripcion', ['rows' => 6]) ?>
+            </div>
             <?= CHtml::campoOculto($ficha->id_ficha_tecnica, null, ['id' => 'id_ficha_tecnica']) ?>
 
             <div class="row">
@@ -71,6 +74,16 @@ $this->migas = [
 
 <script>
     $(function(){
+        $("#Seguimientos_descripcion").keydown(function(e){
+            var t = $(this);
+            var max = parseInt($("#max-chars").html());
+            $("#total-chars").html(t.val().length);
+            if(t.val().length >= max && ( e.which != 8 && e.which !== 116)){
+                e.preventDefault();
+                return false;
+            }
+        });
+
         $("#form-seguimientos").submit(function(){            
             return false;            
         });

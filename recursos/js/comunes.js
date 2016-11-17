@@ -4,7 +4,26 @@ $(function(){
     aSelect2($("[data-s2]"));
     aDate($(".campo-fecha, [data-date='1']"));
     soloNumeros($(".solo-numeros"));
+    maximoNumero($(".maximo-numero"));
+    $(".r-trim-zero").keyup(function(k){
+        $(this).val(rtrimzero($(this).val()));
+    });
+    campoDoc($(".campo-doc"));
 });
+
+function campoDoc(campos){
+    campos.each(function(k,v){
+        var e = $(v);
+        e.keydown(function(evt){
+            var str = e.val() + "";
+            var total = str.length;
+            if(evt.which != 8 && total == 15){
+                evt.preventDefault();
+                return false;
+            }
+        });
+    });
+}
 
 function soloNumeros(elementos, data){
     
@@ -14,6 +33,22 @@ function soloNumeros(elementos, data){
             var c = String.fromCharCode(e.which);
             if(!esTeclaEspecial(e.which) && isNaN(c)){ e.preventDefault(); }
         });
+    });
+}
+
+function rtrimzero(str){
+    return parseInt(str);
+}
+
+function maximoNumero(elementos){
+    elementos.each(function(k, v){
+        var elemento = $(v);
+        elemento.keyup(function(e){
+            var max = parseInt(elemento.attr("max"));
+            if(parseInt($(this).val()) > max){
+                $(this).val(max);
+            }
+        });        
     });
 }
 

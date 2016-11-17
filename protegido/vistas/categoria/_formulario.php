@@ -10,7 +10,7 @@ $formulario->abrir();
             <?php echo $formulario->campoTexto($modelo, 'nombre', ['label' => true, 'group' => true, 'autofocus' => true, 'maxlength' => 30]) ?>
         </div>
         <div class="col-sm-6">
-            <?php echo $formulario->inputAddon($modelo, 'tarifa', 'number', ['label' => true, 'class' => 'text-right solo-numeros', 'group' => true], ['pre' => CBoot::fa('dollar')]) ?>
+            <?php echo $formulario->inputAddon($modelo, 'tarifa', 'number', ['label' => true, 'class' => 'text-right solo-numeros maximo-numero', 'min' => 0, 'max' => 100000, 'group' => true], ['pre' => CBoot::fa('dollar')]) ?>
         </div>
     </div>
     <?php echo $formulario->lista($modelo, 'entrenador_id', $entrenadores, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un entrenador', 'data-s2' => true]) ?>
@@ -20,16 +20,16 @@ $formulario->abrir();
     </div>
     <div class="row">
         <div class="col-sm-3">
-            <?php echo $formulario->campoNumber($modelo, 'cupo_minimo', ['label' => true, 'class' => 'text-right solo-numeros', 'group' => true, 'min' => 0]) ?>
+            <?php echo $formulario->campoNumber($modelo, 'cupo_minimo', ['label' => true, 'max' => 30, 'class' => 'maximo-numero text-right solo-numeros', 'group' => true, 'min' => 0]) ?>
         </div>
         <div class="col-sm-3">
-            <?php echo $formulario->campoNumber($modelo, 'cupo_maximo', ['label' => true, 'class' => 'text-right solo-numeros', 'group' => true, 'min' => 0]) ?>        
+            <?php echo $formulario->campoNumber($modelo, 'cupo_maximo', ['label' => true, 'max' => 30, 'class' => 'maximo-numero text-right solo-numeros', 'group' => true, 'min' => 0]) ?>        
         </div>
         <div class="col-sm-3">
-            <?php echo $formulario->campoNumber($modelo, 'edad_minima', ['label' => true, 'class' => 'text-right solo-numeros', 'group' => true, 'min' => 0]) ?>
+            <?php echo $formulario->campoNumber($modelo, 'edad_minima', ['label' => true, 'max' => 30, 'class' => 'maximo-numero text-right solo-numeros', 'group' => true, 'min' => 0]) ?>
         </div>
         <div class="col-sm-3">
-            <?php echo $formulario->campoNumber($modelo, 'edad_maxima', ['label' => true, 'class' => 'text-right solo-numeros', 'group' => true, 'min' => 0]) ?>            
+            <?php echo $formulario->campoNumber($modelo, 'edad_maxima', ['label' => true, 'max' => 30, 'class' => 'maximo-numero text-right solo-numeros', 'group' => true, 'min' => 0]) ?>            
         </div>
     </div>    
     <hr>

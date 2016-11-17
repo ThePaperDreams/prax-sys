@@ -5,17 +5,20 @@ $formulario->abrir();
 <div class="tile p-15">
     <div class="row">
         <div class="col-sm-6">
-            <?php echo $formulario->lista($modelo, 'categoria_id', $elementos, ['label' => true, 'group' => true, 'autofocus' => true, 'defecto' => 'Selecciona una Categoría']) ?>
+            <?php echo $formulario->lista($modelo, 'categoria_id', $elementos, ['label' => true, 'group' => true, 'autofocus' => true, 'data-s2'  => true, 'defecto' => 'Selecciona una Categoría']) ?>
         </div>
         <div class="col-sm-6">
-            <?php echo $formulario->campoTexto($modelo, 'nombre', ['label' => true, 'group' => true]) ?>            
+            <?php echo $formulario->campoTexto($modelo, 'nombre', ['label' => true, 'group' => true, 'maxlength' => 50]) ?>            
         </div>
         <div class="col-sm-6">
-            <?php echo $formulario->campoNumber($modelo, 'unidades', ['label' => true, 'group' => true, 'min' => '0']) ?>
-            <?php echo $formulario->campoNumber($modelo, 'minimo_unidades', ['label' => true, 'group' => true, 'min' => '0']) ?>            
+            <?php echo $formulario->campoNumber($modelo, 'unidades', ['max' => '300', 'label' => true, 'group' => true, 'min' => '0', 'class' => 'solo-numeros maximo-numero']) ?>
+            <?php echo $formulario->campoNumber($modelo, 'minimo_unidades', ['max' => '300', 'label' => true, 'group' => true, 'min' => '0', 'class' => 'solo-numeros maximo-numero']) ?>
         </div>
         <div class="col-sm-6">
-            <?php echo $formulario->areaTexto($modelo, 'descripcion', ['label' => true, 'group' => true, 'rows' => 6]) ?>            
+            <div class="form-group">
+                <label for="">Descripción <span id="total-chars">0</span>/<span id="max-chars">500</span> </label>
+                <?php echo $formulario->areaTexto($modelo, 'descripcion', ['rows' => 5]) ?>            
+            </div>
         </div>
     </div>
     <hr>
@@ -32,6 +35,15 @@ $formulario->abrir();
 </div>
 <script>
     $(function () {
+        $("#Implementos_descripcion").keydown(function(e){
+            var t = $(this);
+            var max = parseInt($("#max-chars").html());
+            $("#total-chars").html(t.val().length);
+            if(t.val().length >= max && ( e.which != 8 && e.which !== 116)){
+                e.preventDefault();
+                return false;
+            }
+        });
         $("#form-implementos").submit(function () {
             //if(maxMin()){
             if (maxMin() && implementos()) {

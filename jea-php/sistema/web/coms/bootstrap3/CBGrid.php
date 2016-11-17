@@ -187,7 +187,7 @@ class CBGrid extends CBaseGrid{
     protected function construirCampoFiltro($filtros, $atributo){
         if(in_array($atributo, $filtros)){
             $val = isset($this->filtrosPost[$atributo])? $this->filtrosPost[$atributo] : '';
-            $campo = CBoot::text($val, ['name' => "filtro-tabla[$atributo]", 'id' => "filtro-tabla-$atributo", 'class' => 'j-grid-filtro']);
+            $campo = CBoot::text($val, ['name' => "filtro-tabla[$atributo]", 'id' => "filtro-tabla-$atributo", 'class' => 'j-grid-filtro', 'maxlength' => 30]);
             $this->camposScript[] = $atributo;
             return CHtml::e('th', $campo, []);
         } else if(key_exists($atributo, $filtros)){

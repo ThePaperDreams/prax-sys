@@ -103,6 +103,7 @@ $this->migas = [
 				<div class="list-group">
 					<a href="<?= Sis::crearUrl(['TipoDocumento/inicio']) ?>" class="list-group-item">Tipos de Documento</a>
 					<a href="<?= Sis::crearUrl(['EstadoDeportista/inicio']) ?>" class="list-group-item">Estados de Deportista</a>
+					<a href="<?= Sis::crearUrl(['EstadoPublicacion/inicio']) ?>" class="list-group-item">Estados de Publicación</a>
 					<a href="<?= Sis::crearUrl(['TipoIdentificacion/inicio']) ?>" class="list-group-item">Tipos de Identificación</a>
 				</div>				
 			 </div> 		

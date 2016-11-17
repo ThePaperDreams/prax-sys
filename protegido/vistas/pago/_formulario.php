@@ -2,8 +2,12 @@
 $formulario = new CBForm(['id' => 'form-pagos']);
 $formulario->abrir();
 ?>
-<?php echo $formulario->campoTexto($modelo, 'fecha', ['label' => true, 'group' => true, 'autofocus' => true]) ?>
-<?php echo $formulario->campoTexto($modelo, 'valor_cancelado', ['label' => true, 'group' => true]) ?>
+<div class="col-sm-6">
+	<?php echo $formulario->campoTexto($modelo, 'fecha', ['label' => true, 'group' => true, 'autofocus' => true, 'readonly' => true]) ?>
+</div>
+<div class="col-sm-6">	
+	<?php echo $formulario->campoTexto($modelo, 'valor_cancelado', ['label' => true, 'group' => true, 'class' => 'solo-numeros']) ?>
+</div>
 <?php echo $formulario->campoTexto($modelo, 'url_comprobante', ['label' => true, 'group' => true]) ?>
 <?php echo $formulario->campoTexto($modelo, 'estado', ['label' => true, 'group' => true]) ?>
 <?php echo $formulario->campoTexto($modelo, 'descuento', ['label' => true, 'group' => true]) ?>

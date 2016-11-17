@@ -170,16 +170,21 @@ class CtrlDeportista extends CControlador {
         # seteamos un tipo de documento por defecto al deportista
         $modelo->tipo_documento_id = $this->tipoDocDef;
         $url = Sis::crearUrl(['Deportista/crear']);
+        $cDep = new CCriterio();
+        $cDep->en("id_tipo_documento", [2, 3]);
+        $cEst = new CCriterio();
+        $cEst->en("id_estado", [1,2]);
+
         $this->mostrarVista('crear', ['modelo' => $modelo,
             'formularioAcudiente' => $formularioAcudiente,
             'modelo2' => $modelo2,
             'modelo3' => $modelo3,
             'url' => $url,
             'url2' => 'vacio',
-            'tiposIdentificaciones' => CHtml::modelolista(TipoIdentificacion::modelo()->listar(), "id_tipo_documento", "nombre"),
+            'tiposIdentificaciones' => CHtml::modelolista(TipoIdentificacion::modelo()->listar($cDep), "id_tipo_documento", "nombre"),
             'acudientes' => CHtml::modelolista(Acudiente::modelo()->listar(['where' => 'estado=1']), "id_acudiente", "Datos"),
             'tiposDocumentos' => CHtml::modelolista(TipoDocumento::modelo()->listar(), "id_tipo", "nombre"),
-            'estados' => CHtml::modelolista(EstadoDeportista::modelo()->listar(), "id_estado", "nombre"),
+            'estados' => CHtml::modelolista(EstadoDeportista::modelo()->listar($cEst), "id_estado", "nombre"),            
             'formularioAcudiente' => $formularioAcudiente,
         ]);
     }
@@ -288,17 +293,20 @@ class CtrlDeportista extends CControlador {
         $url = Sis::crearUrl(['Deportista/editar', 'id' => $pk]);
         $url2 = Sis::crearUrl(['Deportista/validarNombreDoc', 'id' => $pk]);
         $formularioAcudiente = $this->getFormAcudientes();
-
+        $cDep = new CCriterio();
+        $cDep->en("id_tipo_documento", [2, 3]);
+        $cEst = new CCriterio();
+        $cEst->en("id_estado", [1,2]);
         $this->mostrarVista('editar', ['modelo' => $modelo,
             'formularioAcudiente' => $formularioAcudiente,
             'modelo2' => $modelo2,
             'modelo3' => $modelo3,
             'url' => $url,
             'url2' => $url2,
-            'tiposIdentificaciones' => CHtml::modelolista(TipoIdentificacion::modelo()->listar(), "id_tipo_documento", "nombre"),
-                        'acudientes' => CHtml::modelolista(Acudiente::modelo()->listar(['where' => 'estado=1']), "id_acudiente", "Datos"),
+            'tiposIdentificaciones' => CHtml::modelolista(TipoIdentificacion::modelo()->listar($cDep), "id_tipo_documento", "nombre"),
+            'acudientes' => CHtml::modelolista(Acudiente::modelo()->listar(['where' => 'estado=1']), "id_acudiente", "Datos"),
             'tiposDocumentos' => CHtml::modelolista(TipoDocumento::modelo()->listar(), "id_tipo", "nombre"),
-            'estados' => CHtml::modelolista(EstadoDeportista::modelo()->listar(), "id_estado", "nombre"),
+            'estados' => CHtml::modelolista(EstadoDeportista::modelo()->listar($cEst), "id_estado", "nombre"),
         ]);
     }
     

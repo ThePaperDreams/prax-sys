@@ -146,11 +146,14 @@ class Deportista extends CModelo{
         $c->unionIzq("tbl_matriculas", "m")
             ->donde("t.id_deportista", "=", "m.deportista_id AND m.estado = 1")
             ->condicion($concat, $this->_nombreCompleto, "LIKE")
-            ->y("t.identificacion", $this->doc, "LIKE")
+            ->y("t.identificacion", $this->identificacion, "LIKE")
+            ->y("fn_get_edad_deportistas(t.id_deportista)", $this->_edad, 'LIKE')
             ->y("fecha_nacimiento", $this->fecha_nacimiento, "LIKE")
             ->y("t.estado_id", $this->estado_id, "LIKE")
             ->orden("t.estado_id = 1", false)
             ->orden("t.id_deportista", false);
+            // var_dump($_POST);
+            // exit();
 
         if($this->matricula == 1){
             $c->noEsVacio("m.id_matricula");
@@ -274,6 +277,7 @@ class Deportista extends CModelo{
             '_nombreCompleto' => 'Nombre',
             'doc' => 'Doc.',
             'matricula' => 'Matriculado',
+            '_edad' => 'Edad',
         ];
     }
     

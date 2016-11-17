@@ -21,7 +21,7 @@ $formulario->abrir();
                 <?php echo $formulario->lista($modelo, 'tipo_documento_id', $tiposIdentificaciones, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un Tipo de documento', 'data-s2' => true]) ?>
             </div>
             <div class="col-sm-6">
-                <?php echo $formulario->campoNumber($modelo, 'identificacion', ['class' => 'solo-numeros', 'label' => true, 'group' => true, 'autofocus' => true, 'min' => '0', 'maxlength' => '45']) ?>
+                <?php echo $formulario->campoNumber($modelo, 'identificacion', ['class' => 'campo-doc solo-numeros r-trim-zero', 'label' => true, 'group' => true, 'autofocus' => true,  'min' => '0', 'maxlength' => '45']) ?>
             </div>    
         </div>
         <div class="row">

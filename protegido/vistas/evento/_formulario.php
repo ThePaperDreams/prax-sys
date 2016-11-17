@@ -19,31 +19,35 @@ $formulario->abrir();
                 <?php echo $formulario->lista($modelo, 'tipo_id', $TipoEvento, ['defecto' => 'Seleccione un tipo', 'label' => true]) ?>
             </div>   
 <!--             <div class="col-sm-4">
-                <?php echo $formulario->campoTexto($modelo, 'fecha_disponibilidad', ['label' => true, 'group' => true, 'class' => 'campo-fecha']) ?>
+                <?php echo $formulario->campoTexto($modelo, 'fecha_disponibilidad', ['label' => true, 'group' => true, 'class' => 'campo-fecha', 'readonly' => true]) ?>
             </div>   -->
             <div class="col-sm-4">
-                <?php echo $formulario->campoTexto($modelo, 'fecha', ['label' => true, 'group' => true, 'class' => 'campo-fecha']) ?>
+                <?php echo $formulario->campoTexto($modelo, 'fecha', ['label' => true, 'group' => true, 'class' => 'campo-fecha', 'readonly' => true]) ?>
             </div>  
             <div class="col-sm-4">
+            <?php if ($modelo->esNuevo): ?>
                 <?php echo $formulario->lista($modelo, 'estado', $Estado, ['group' => true, 'label' => true]) ?>
+            <?php else: ?>
+                <?php echo $formulario->lista($modelo, 'estado', $Estado, ['group' => true, 'label' => true, 'disabled' => true]) ?>
+            <?php endif ?>
             </div>
             <div class="col-sm-8">
-                <?php echo $formulario->campoTexto($modelo, 'lugar', ['label' => true, 'group' => true]) ?>
+                <?php echo $formulario->campoTexto($modelo, 'lugar', ['label' => true, 'group' => true, 'maxlength' => '200']) ?>
             </div>
             <div class="col-sm-4">
                 <p id="err-hora" class="text-danger form-requerido" style="display:none">El campo <b>Hora</b> no puede estar vacio</p>
                 <label>Hora</label>
-                <div class="input-icon datetime-pick time-only">
-                    <?php echo $formulario->campoTexto($modelo, 'hora', ['data-format' => 'hh:mm', 'class' => 'input-md']) ?>
-                    <span class="add-on">
-                        <i class="sa-side-ui"></i>
+                <div class="input-group input-icon datetime-pick time-only">
+                    <?php echo $formulario->inputAddon($modelo, 'hora', 'time', ['data-format' => 'hh:mm', 'class' => 'input-md']) ?>
+                    <span class="input-group-addon">
+                        <i class="fa fa-clock-o"></i>
                     </span>
                 </div>
             </div>
             
             <div class="col-sm-12">
                 <div class="form-group">
-                    <?php echo $formulario->campoTexto($modelo, 'titulo', ['label' => true, 'group' => true]) ?>
+                    <?php echo $formulario->campoTexto($modelo, 'titulo', ['label' => true, 'group' => true, 'maxlength' => 100]) ?>
                     <?php echo $formulario->areaTexto($modelo, 'contenido', ['label' => true, 'group' => true, 'class' => 'summernote', 'rows' => 12]) ?>
                 </div>                
             </div>
@@ -91,12 +95,15 @@ $(document).ready(function() {
     
  
  function validarFecha(fecha) {
-        var currDate = new Date();
+        var d = new Date();
+        var fechaActualStr = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + (d.getDate() < 10? '0' : '') + d.getDate();
+        var currDate = Date.parse(fechaActualStr);
         var date = Date.parse(fecha.val());
-        if (date >= currDate) {
+
+        if (date  > currDate) {
             $('#btn-send').removeAttr("disabled");
         } else {
-            alert("Por favor seleccione una fecha mayor a la de hoy");
+            mostrarAlert("error", "Seleccione una fecha mayor a la de hoy");
             $('#btn-send').attr("disabled", "disabled");
         }
     }  

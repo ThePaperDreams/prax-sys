@@ -1,6 +1,7 @@
 <?php 
     $this->migas = [
         'Home' => ['principal/inicio'],
+        'Configuraciones' => ['principal/configuracion'],
         'Listar EstadosPublicacion' => ['EstadoPublicacion/inicio'],        
         'Ver'
     ];

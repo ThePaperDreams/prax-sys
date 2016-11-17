@@ -5,10 +5,13 @@ $formulario->abrir();
 <div class="tile p-15">
 <div class="col-sm-6">
     <?php echo $formulario->lista($modelo, 'responsable_id', $usuarios, ['label' => true, 'group' => true, 'autofocus' => true, 'defecto' => 'Seleccione un Responsable', 'data-s2' => true]) ?>
-    <?php echo $formulario->areaTexto($modelo, 'descripcion', ['label' => true, 'group' => true, 'rows' => 10]) ?>
+    <div class="form-group">
+        <label for="">Descripción <span id="total-chars">0</span>/<span id="max-chars">500</span> </label>
+        <?php echo $formulario->areaTexto($modelo, 'descripcion', ['rows' => 10]) ?>
+    </div>
 </div>
 <div class="col-sm-6">
-    <?php echo $formulario->campoTexto($modelo, 'fecha_entrega', ['label' => true, 'group' => true, 'class'=>'campo-fecha']) ?>
+    <?php echo $formulario->campoTexto($modelo, 'fecha_entrega', ['readonly' => true, 'label' => true, 'group' => true, 'class'=>'campo-fecha']) ?>
     <div class="form-group">
         <label for="">Implementos</label>
         <div class="input-group">            
@@ -22,7 +25,7 @@ $formulario->abrir();
         <div class="form-group">
             <label for="">Cantidad</label>
             <div class="input-group">
-                <?= CBoot::number(0, ['min' => 0, 'id' => 'cant']); ?>   
+                <?= CBoot::number(0, ['min' => 0, 'id' => 'cant', 'class' => 'solo-numeros']); ?>
                 <div class="input-group-btn">                
                     <?= CBoot::boton('Agregar ' . CBoot::fa('plus-circle'), 'default', ['id' => 'btnAgregar']) ?>
                 </div>
@@ -65,6 +68,16 @@ $formulario->abrir();
 </div>
 <script>
     $(document).ready(function () {
+        $("#Salidas_descripcion").keydown(function(e){
+            var t = $(this);
+            var max = parseInt($("#max-chars").html());
+            $("#total-chars").html(t.val().length);
+            if(t.val().length >= max && ( e.which != 8 && e.which !== 116)){
+                e.preventDefault();
+                return false;
+            }
+        });
+
         $("#btnAgregar").click(function () {
             Agregar();
             return false;

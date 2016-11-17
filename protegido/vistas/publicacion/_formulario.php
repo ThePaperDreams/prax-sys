@@ -17,34 +17,30 @@ $formulario->abrir();
         <div role="tabpanel" class="tab-pane active" id="listar">
             <div class="col-sm-6">
               <label>Tipos de Publicación</label>
-                <div class="input-group">  
-                    <?php echo $formulario->lista($modelo, 'tipo_id', $public, []) ?>
-                <div class="input-group-addon"><i class="fa fa-qrcode"></i></div>
-                </div>               
+                <?php echo $formulario->lista($modelo, 'tipo_id', $public, ['data-s2' => true]) ?>
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
                     <label>Estado</label>
-                    <div class="input-group">
-
-                        <?php echo $formulario->lista($modelo, 'estado_id', $estd, []) ?>
-                        <div class="input-group-addon"><i class="fa fa-list-ul"></i></div>
-                    </div>
+                    <?php echo $formulario->lista($modelo, 'estado_id', $estd, ['data-s2' => true]) ?>
                 </div>    
             </div>
             <div class="col-sm-6">
                     <div class="form-group">
-                        <?php echo $formulario->inputAddon($modelo, 'fecha_disponibilidad','texto', ['label' => true, 'group' => true, 'class' => 'campo-fecha', 'id'=>'calendar' ],['pos' => CBoot::fa('calendar-check-o')]) ?>   
+                        <?php echo $formulario->inputAddon($modelo, 'fecha_disponibilidad','texto', ['readonly' => true, 'label' => true, 'group' => true, 'class' => 'campo-fecha', 'id'=>'calendar' ],['pos' => CBoot::fa('calendar-check-o')]) ?>   
                     </div>    
             </div>
             <div class="col-sm-6">
-                <?php echo $formulario->areaTexto($modelo, 'resumen', ['label' => true, 'group' => true]) ?>
+                <div class="form-group">
+                    <label for="">Resumen <span id="total-chars">0</span>/<span id="max-chars">150</span> </label>
+                    <?php echo $formulario->areaTexto($modelo, 'resumen', [ 'maxlengh' => 150]) ?>
+                </div>
             </div>
             <div class="col-sm-6">
-                <?php echo $formulario->inputAddon($modelo, 'titulo', 'texto', ['label' => true, 'group' => true, 'autofocus' => true], 'font') ?>
+                <?php echo $formulario->inputAddon($modelo, 'titulo', 'texto', ['maxlengh' => 100, 'label' => true, 'group' => true, 'autofocus' => true], 'font') ?>
             </div>
             <div class="col-sm-6">
-                <?php echo $formulario->inputAddon($modelo, 'img_previsualizacion', 'texto', ['label' => true, 'group' => true, 'autofocus' => true], ['pos' => CBoot::fa('picture-o')]) ?>
+                <?php echo $formulario->inputAddon($modelo, 'img_previsualizacion', 'texto', ['maxlengh' => 300, 'label' => true, 'group' => true, 'autofocus' => true], ['pos' => CBoot::fa('picture-o')]) ?>
             </div>
             <div class="col-sm-12">
                 <?php echo $formulario->areaTexto($modelo, 'contenido', ['label' => true, 'group' => true, 'class' => 'summernote', 'rows' => 15]) ?>
@@ -71,7 +67,15 @@ $formulario->abrir();
 <script>
     
     $(document).ready(function() {
-        
+        $("#Publicaciones_resumen").keydown(function(e){
+            var t = $(this);
+            var max = parseInt($("#max-chars").html());
+            $("#total-chars").html(t.val().length);
+            if(t.val().length >= max && ( e.which != 8 && e.which !== 116)){
+                e.preventDefault();
+                return false;
+            }
+        });
 //        $("#Publicaciones_img_previsualizacion").fileinput({
 //            showPreview: false,
 //            showUpload: false,

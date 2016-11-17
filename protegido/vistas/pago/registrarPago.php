@@ -40,11 +40,17 @@ $this->tituloPagina="Registrar pago";
 $formulario = new CBForm(['id' => 'form-pagos', 'opcionesHtml' => ['enctype' => 'multipart/form-data']]);
 $formulario->abrir();
 ?>
-<?php echo $formulario->campoNumber($modelo, 'valor_cancelado', ['label' => true, 'group' => true]) ?>
-<?php echo $formulario->campoNumber($modelo, 'descuento', ['label' => true, 'group' => true]) ?>
-<?php echo $formulario->areaTexto($modelo, 'razon_descuento', ['label' => true, 'group' => true]) ?>
-<?php echo $formulario->campoArchivo($modelo, 'url_comprobante', ['label' => true, 'group' => true]) ?>
+<div class="col-sm-6">
+    <?php echo $formulario->campoNumber($modelo, 'valor_cancelado', ['label' => true, 'group' => true, 'class' => 'solo-numeros maximo-numero', 'max' => '100000']) ?>
+    <?php echo $formulario->campoNumber($modelo, 'descuento', ['label' => true, 'group' => true, 'class' => 'solo-numeros maximo-numero', 'max' => '100000']) ?>
+    <?php echo $formulario->campoArchivo($modelo, 'url_comprobante', ['label' => true, 'group' => true]) ?>
+</div>
 
+<div class="col-sm-6">
+    <label for="">Razón descuento <span id="total-chars">0</span>/<span id="max-chars">500</span> </label>
+    <?php echo $formulario->areaTexto($modelo, 'razon_descuento', ['rows' => 8]) ?>
+</div>
+<hr>
 <div class="row">
     <div class="col-sm-offset-6 col-sm-3">
         <?php echo CHtml::link(CBoot::fa('undo').' Cancelar', ['pago/pagosPendientes'], ['class' => 'btn btn-primary btn-block']); ?>
@@ -60,6 +66,16 @@ $formulario->abrir();
 <script>
     var valorAnterior = 0;
     $(function(){
+
+        $("#Pagos_razon_descuento").keydown(function(e){
+            var t = $(this);
+            var max = parseInt($("#max-chars").html());
+            $("#total-chars").html(t.val().length);
+            if(t.val().length >= max && ( e.which != 8 && e.which !== 116)){
+                e.preventDefault();
+                return false;
+            }
+        });
 
         $("#Pagos_descuento").keyup(function(e){
             var cancelado = parseInt($("#Pagos_valor_cancelado").val());

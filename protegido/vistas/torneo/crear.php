@@ -10,6 +10,7 @@
             'Listar' => ['Torneo/inicio'],
         ]
     ];    
+    $this->tituloPagina = "Registrar torneo";
 ?>
 <div class="col-sm-12">
     <?php echo $this->mostrarVistaP('_formulario', ['modelo' => $modelo]); ?>

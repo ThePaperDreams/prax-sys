@@ -5,13 +5,16 @@ $formulario->abrir();
 <div class="tile p-15">
 <p>Los campos con <span class="text-danger">*</span>  son requeridos</p>
 <?php echo $formulario->campoTexto($modelo, 'nombre', ['label' => true, 'group' => true, 'autofocus' => true, 'maxlength' => '45']) ?>
-<?php echo $formulario->areaTexto($modelo, 'descripcion', ['label' => true, 'group' => true, 'maxlength' => '300']) ?>
+<div class="form-group">
+    <label for="">Descripción <span id="total-chars">0</span>/<span id="max-chars">300</span> </label>
+    <?php echo $formulario->areaTexto($modelo, 'descripcion', ['maxlength' => '300', 'rows' => 8]) ?>
+</div>
 
 <div class="row">
     <div class="col-sm-offset-6 col-sm-3">
         <?php echo CHtml::link(CBoot::fa('undo').' Cancelar', ['rol/inicio'], ['class' => 'btn btn-primary btn-block']); ?>
     </div>
-    <div class="col-sm-3">
+    <div class="col-sm-3">        
         <?php echo CBoot::boton(CBoot::fa('save') .' '. ($modelo->nuevo? 'Guardar' : 'Actualizar'), 'success', ['class' => 'btn-block']); ?>
     </div>
 </div>
@@ -19,6 +22,16 @@ $formulario->abrir();
 <?php $formulario->cerrar(); ?>
 <script>
     $(function () {
+        $("#Roles_descripcion").keydown(function(e){
+            var t = $(this);
+            var max = parseInt($("#max-chars").html());
+            $("#total-chars").html(t.val().length);
+            if(t.val().length >= max && ( e.which != 8 && e.which !== 116)){
+                e.preventDefault();
+                return false;
+            }
+        });
+
         $("#form-roles").submit(function () {
             validarNombre();
             return false;

@@ -14,11 +14,14 @@ $formulario->abrir();
             <div class="row">
               <div class="col-sm-12">
                 <div class="col-sm-6">
-                    <?=  $formulario->inputAddon($modelo, 'fecha_aplicacion', 'text', ['class' => 'campo-fecha', 'label' => true, 'group' => true, 'autofocus' => true], ['pos' => CBoot::fa('calendar')]) ?>
+                    <?=  $formulario->inputAddon($modelo, 'fecha_aplicacion', 'text', ['class' => 'campo-fecha', 'label' => true, 'group' => true, 'autofocus' => true, 'readonly' => true], ['pos' => CBoot::fa('calendar')]) ?>
                 </div>
                   <div class="col-sm-6">
                     <?=  $formulario->listaM($modelo, 'categoria_id', 'Categoria' ,'id_categoria', 'nombre', ['class' => 'campo-fecha', 'label' => true, 'group' => true, 'defecto' => 'Selecione una categoría','data-s2' => true]) ?>
-                    <?=  $formulario->areaTexto($modelo, 'descripcion', ['label' => true, 'group' => true, 'rows' => 5]) ?>
+                    <div class="form-group">
+                        <label for="">Descripción <span id="total-chars">0</span>/<span id="max-chars">500</span> </label>
+                        <?=  $formulario->areaTexto($modelo, 'descripcion', ['rows' => 5]) ?>
+                    </div>
                       
                   </div>
               </div>
@@ -107,6 +110,17 @@ $formulario->abrir();
 
 <script>
     $(function(){
+
+        $("#PlanesTrabajo_descripcion").keydown(function(e){
+            var t = $(this);
+            var max = parseInt($("#max-chars").html());
+            $("#total-chars").html(t.val().length);
+            if(t.val().length >= max && ( e.which != 8 && e.which !== 116)){
+                e.preventDefault();
+                return false;
+            }
+        });
+
         $("#btn-send").click(function(){
             var total = $(".input-objetivo").length;
             if(total === 0){
@@ -235,12 +249,15 @@ $formulario->abrir();
     }
     
     function validarFecha(fecha){
-        var currDate = new Date();
+        var d = new Date();
+        var fechaActualStr = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + (d.getDate() < 10? '0' : '') + d.getDate();
+        var currDate = Date.parse(fechaActualStr);
         var date = Date.parse(fecha.val());
-        if(date >= currDate){            
+
+        if (date  > currDate) {
             $('#btn-send').removeAttr("disabled");
         } else {
-            alert("Por favor seleccione una fecha mayor a la de hoy");
+            lobiAlert("error", "Seleccione una fecha mayor a la de hoy");
             $('#btn-send').attr("disabled", "disabled");
         }
     }

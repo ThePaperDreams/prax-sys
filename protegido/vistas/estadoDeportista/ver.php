@@ -2,6 +2,7 @@
     $this->tituloPagina = "Ver Estado de Deportista";
     $this->migas = [
         'Home' => ['principal/inicio'],
+        'Configuraciones' => ['principal/configuracion'],
         'Listar Estados de Deportistas' => ['EstadoDeportista/inicio'],        
         'Ver'
     ];

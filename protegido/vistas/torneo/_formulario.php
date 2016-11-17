@@ -1,30 +1,33 @@
 <?php 
+Sis::Recursos()->recursoCss(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/css/fileinput.min.css']);
+Sis::Recursos()->recursoJs(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/js/fileinput.min.js']);
+
 $formulario = new CBForm(['id' => 'form-torneos', 'opcionesHtml' =>['enctype' => 'multipart/form-data']]);
 $formulario->abrir();
 ?>
 <div class="tile p-15">
 <div class="row">
     <div class="col-sm-6">    
-        <?php echo $formulario->campoTexto($modelo, 'nombre', ['label' => true, 'group' => true, 'autofocus' => true]) ?>
+        <?php echo $formulario->campoTexto($modelo, 'nombre', ['label' => true, 'group' => true, 'autofocus' => true, 'maxlength' => 50]) ?>
     </div>
     <div class="col-sm-6">
-        <?php echo $formulario->campoNumber($modelo, 'cupo_maximo', ['label' => true, 'group' => true, 'min'=> 1, 'id'=>'total-unidades']) ?>
+        <?php echo $formulario->campoNumber($modelo, 'edad_maxima', ['label' => true, 'group' => true, 'min'=> 5, 'max'=> 16,  'class' => 'solo-numeros maximo-numero']) ?>
     </div>
 </div>
 <div class="row">
     <div class="col-sm-6">    
-        <?php echo $formulario->campoNumber($modelo, 'cupo_minimo', ['label' => true, 'group' => true, 'min'=> 1, 'id'=>'cant']) ?>
+        <?php echo $formulario->campoNumber($modelo, 'cupo_minimo', ['label' => true, 'group' => true, 'min'=> 1, 'id'=>'cant', 'class' => 'solo-numeros maximo-numero', 'max' => '16']) ?>
     </div>
     <div class="col-sm-6">
-        <?php echo $formulario->campoNumber($modelo, 'edad_maxima', ['label' => true, 'group' => true, 'min'=> 5, 'max'=> 16]) ?>
+        <?php echo $formulario->campoNumber($modelo, 'cupo_maximo', ['label' => true, 'group' => true,' min'=> 1, 'max' => '16', 'id'=>'total-unidades', 'class' => 'solo-numeros maximo-numero']) ?>
     </div>
 </div>
 <div class="row">
     <div class="col-sm-6">
-        <?php echo $formulario->inputAddon($modelo, 'fecha_inicio', 'texto', ['label' => true, 'group' => true, 'class' => 'campo-fecha'], 'calendar') ?>
+        <?php echo $formulario->inputAddon($modelo, 'fecha_inicio', 'texto', ['label' => true, 'group' => true, 'class' => 'campo-fecha', 'readonly' => true], 'calendar') ?>
     </div>
     <div class="col-sm-6">
-        <?php echo $formulario->inputAddon($modelo, 'fecha_fin','texto', ['label' => true, 'group' => true, 'class' => 'campo-fecha'],'calendar-check-o') ?> 
+        <?php echo $formulario->inputAddon($modelo, 'fecha_fin', 'texto', ['label' => true, 'group' => true, 'class' => 'campo-fecha', 'readonly' => true],'calendar-check-o') ?> 
     </div>
 </div>
 <div class="row">
@@ -33,7 +36,10 @@ $formulario->abrir();
     </div>
     
     <div class="col-sm-6">
-        <?php echo $formulario->areaTexto($modelo, 'observaciones', ['label' => true, 'group' => true]) ?> 
+        <div class="form-group">
+            <label for="">Observaciones <span id="total-chars">0</span>/<span id="max-chars">500</span> </label>
+            <?php echo $formulario->areaTexto($modelo, 'observaciones', ['rows' => 8]) ?> 
+        </div>
     </div>
 </div>    
     <div class="row">
@@ -46,8 +52,26 @@ $formulario->abrir();
     </div>
 </div>
 <script>
-  $(document).ready(function() {  
-        
+  $(document).ready(function() {
+    $("#Torneos_tabla_posiciones").fileinput({ // Para embellecer el file input de la foto
+        showPreview: false,
+        showRemove: false,
+        showUpload: false,
+        browseLabel: "Seleccionar archivo",
+        maxFileSize: 5000,
+        allowedFileExtensions: ['jpg', 'gif', 'png', 'jpeg']
+    });    
+
+    $("#Torneos_observaciones").keydown(function(e){
+        var t = $(this);
+        var max = parseInt($("#max-chars").html());
+        $("#total-chars").html(t.val().length);
+        if(t.val().length >= max && ( e.which != 8 && e.which !== 116)){
+            e.preventDefault();
+            return false;
+        }
+    });
+
     $("#cant").keyup(function(){
         var limite = parseInt($("#total-unidades").html());
         if($(this).val() > limite){
