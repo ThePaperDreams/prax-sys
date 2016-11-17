@@ -69,12 +69,14 @@ class CtrlAcudiente extends CControlador {
                 $this->redireccionar('inicio');
             }
         }
+        $cdocs = new CCriterio();
+        $cdocs->noEn("id_tipo_documento", [2,3]);
         $url = Sis::crearUrl(['Acudiente/crear']);
         $this->mostrarVista('crear', ['modelo' => $modelo,
             'modelo2' => $modelo2,
             'url' => $url,
             'url2' => 'vacio',
-            'tiposIdentificaciones' => CHtml::modelolista(TipoIdentificacion::modelo()->listar(), "id_tipo_documento", "nombre"),
+            'tiposIdentificaciones' => CHtml::modelolista(TipoIdentificacion::modelo()->listar($cdocs), "id_tipo_documento", "nombre"),
             'tiposDocumentos' => CHtml::modelolista(TipoDocumento::modelo()->listar(), "id_tipo", "nombre"),
         ]);
     }
@@ -155,11 +157,13 @@ class CtrlAcudiente extends CControlador {
         }
         $url = Sis::crearUrl(['Acudiente/editar', 'id' => $pk]);
         $url2 = Sis::crearUrl(['Acudiente/validarNombreDoc', 'id' => $pk]);
+        $cdocs = new CCriterio();
+        $cdocs->noEn("id_tipo_documento", [2,3]);
         $this->mostrarVista('editar', ['modelo' => $modelo,
             'modelo2' => $modelo2,
             'url'=>$url,
             'url2'=>$url2,
-            'tiposIdentificaciones' => CHtml::modelolista(TipoIdentificacion::modelo()->listar(), "id_tipo_documento", "nombre"),
+            'tiposIdentificaciones' => CHtml::modelolista(TipoIdentificacion::modelo()->listar($cdocs), "id_tipo_documento", "nombre"),
             'tiposDocumentos' => CHtml::modelolista(TipoDocumento::modelo()->listar(), "id_tipo", "nombre"),
         ]);
     }

@@ -105,8 +105,12 @@ class Asistencia extends CModelo {
             "LEFT JOIN tbl_faltas_x_matriculas t2 ON (t2.matricula_id = t.id_matricula AND t2.asistencia_id = $this->id_asistencia) " .
             "LEFT JOIN tbl_asistencia t4 ON t4.id_asistencia = t2.asistencia_id " .
             "LEFT JOIN tbl_deportistas t3 ON t3.id_deportista = t.deportista_id " .
-            "WHERE t.estado = 1 AND t.categoria_id = t4.categoria_id " . 
+            "WHERE t.estado = 1 " . 
+            // " AND t.categoria_id = t4.categoria_id  " .
+            "AND t.categoria_id = '$this->categoria_id' " .
             "ORDER BY t2.asistencia_id IS NULL ASC, t.fecha_realizacion < '$this->fecha' DESC, t.id_matricula";
+            // echo $consulta;
+            // exit();
         $resultados = Sis::apl()->bd->ejecutarComando($consulta, true);
         return $resultados;
     }

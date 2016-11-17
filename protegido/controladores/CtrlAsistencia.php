@@ -96,7 +96,7 @@ class CtrlAsistencia extends CControlador{
         }
         if(count($matriculas) == 0){
             $td = CHtml::e("td", 'No hay deportistas matriculados en para esta categoría', ['class' => 'text-center', 'colspan' => 2]);
-            $html[] = CHtml::e("tr", $td, ['class' => 'warning']);
+            $html[] = CHtml::e("tr", $td, ['class' => '']);
         }
         header("Content-type: Application:json");
         echo json_encode([
@@ -110,7 +110,9 @@ class CtrlAsistencia extends CControlador{
      */
     public function accionVer($pk){
         $modelo = $this->cargarModelo($pk);
+        
         $asistencias = $modelo->Faltas;
+
         $this->mostrarVista('ver', [
             'modelo' => $modelo,
             'asistencias' => $asistencias,

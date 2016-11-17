@@ -33,6 +33,11 @@
        });
        btnGuardar.click(function(){
            data.justificacion = textArea.val();
+           if($.trim(textArea.val()) == "" || textArea.val().length < 20 || textArea.val().length > 200){
+              lobiAlert("error", "Debe ingresar una justificación mayor a 20 caracteres y menor o igual a 200 caracteres");
+              textArea.focus();
+              return false;
+           }
            jQuery.ajax({
                url: url,
                type: 'POST',

@@ -694,3 +694,14 @@ li.rep-jugador{
 .lobibox-notify-wrapper{
     z-index: 10000;
 }
+.logo-brand{
+    width: 30px;
+    margin-right: 10px;
+    position: absolute;
+    left: 60px;
+    bottom: 10px;
+}
+.logo{
+    font-weight: 900;
+    padding-left: 50px;
+}

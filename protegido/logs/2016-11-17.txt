@@ -1,0 +1,2 @@
+[Error BD] [01:38:18]	Error de base de datos: Algo está equivocado en su sintax cerca 'AND estado = 1' en la linea 1
+						>> Consulta ejecutada: SELECT t.* FROM tbl_matriculas AS t WHERE categoria_id= AND estado = 1 

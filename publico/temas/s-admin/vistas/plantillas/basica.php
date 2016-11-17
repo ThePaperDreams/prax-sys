@@ -60,7 +60,10 @@ Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . '/librerias/bootstrap-
     <body id="skin-cloth">
         <header id="header" class="media">
             <a href="#" id="menu-toggle"></a> 
-            <a class="logo pull-left" href="<?= Sis::UrlBase() ?>"><?= Sis::apl()->nombre ?></a>
+            <a class="logo pull-left" href="<?= Sis::UrlBase() ?>">
+                <img class="logo-brand" src="<?= Sis::UrlRecursos() ?>pics/logo-brand.png" alt="">
+                <?= strtoupper(Sis::apl()->nombre) ?>            
+            </a>
 
             <div class="media-body">
                 <div class="media" id="top-menu">
@@ -96,7 +99,7 @@ Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . '/librerias/bootstrap-
                                     <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a href="<?= Sis::crearUrl(['principal/sobre']) ?>">Acerca</a></li>
+                                    <li><a href="<?= Sis::crearUrl(['principal/sobre']) ?>">Acerca de</a></li>
                                     <li><a href="<?= Sis::crearUrl(['principal/mapaNavegacion']) ?>">Mapa de navegación</a></li>
                                 </ul>
                             </div>

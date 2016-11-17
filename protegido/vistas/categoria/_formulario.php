@@ -10,7 +10,7 @@ $formulario->abrir();
             <?php echo $formulario->campoTexto($modelo, 'nombre', ['label' => true, 'group' => true, 'autofocus' => true, 'maxlength' => 30]) ?>
         </div>
         <div class="col-sm-6">
-            <?php echo $formulario->inputAddon($modelo, 'tarifa', 'number', ['label' => true, 'class' => 'text-right solo-numeros maximo-numero', 'min' => 0, 'max' => 100000, 'group' => true], ['pre' => CBoot::fa('dollar')]) ?>
+            <?php echo $formulario->inputAddon($modelo, 'tarifa', 'number', ['label' => true, 'class' => 'text-right solo-numeros maximo-numero r-trim-zero', 'min' => 0, 'max' => 100000, 'group' => true], ['pre' => CBoot::fa('dollar')]) ?>
         </div>
     </div>
     <?php echo $formulario->lista($modelo, 'entrenador_id', $entrenadores, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un entrenador', 'data-s2' => true]) ?>
