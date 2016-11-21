@@ -326,7 +326,7 @@ abstract class CBaseGrid extends CComplemento{
                             'var link = $(this);' . 
                             'Lobibox.confirm({' .
                                 'title : "Confirmación",' .
-                                'msg : "¿Está seguro de eliminar este registro?",' . 
+                                'msg : "¿Está seguro desea ejecutar esta acción?",' . 
                                 'buttons: { ' . 
                                     'yes: {text : "Si", class : "btn btn-success"},' .
                                     'no: {text : "No", class: "btn btn-default"}, ' . 
