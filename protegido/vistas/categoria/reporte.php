@@ -1,8 +1,3 @@
-<?php if (count($categorias) > 0): ?>
-	<p>
-		<strong>Total categorías: </strong> <?= count($categorias) ?>
-	</p>
-<?php endif ?>
 <table>
 	<thead>
 		<tr>

@@ -1,9 +1,6 @@
 <?php if (count($salidas) == 0): ?>
 	<h4 class="text-center">No hay salidas</h4>
 <?php else: ?>
-<p>
-	<strong>Total salidas: </strong> <?= count($salidas) ?>
-</p>
 <table>
 	<thead>
 		<tr>

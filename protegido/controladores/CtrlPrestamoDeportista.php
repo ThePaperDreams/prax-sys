@@ -91,7 +91,7 @@ class CtrlPrestamoDeportista extends CControlador{
         $dm = Deportista::modelo()->listar($c);
         $entrada = $modelo->tipo_prestamo == 'entrada';
         return [
-            'deportistas' => CHtml::modeloLista($dm, "id_deportista", "nombreCompleto"),
+            'deportistas' => CHtml::modeloLista($dm, "id_deportista", "nombreIdentificacion"),
             'modelo' => $modelo,
             'entrada' => $entrada,
         ];

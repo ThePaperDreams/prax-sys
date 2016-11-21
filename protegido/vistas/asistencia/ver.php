@@ -73,6 +73,20 @@ $this->migas = [
         </table>
     </div>
 </div>
+
+<div id="modal-justificacion" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                
+            </div>
+            <div class="modal-footer text-center">
+                <div class="btn btn-default" data-dismiss="modal">Cerrar</div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     $(function(){
         $(".btn-justificar").click(function(){
@@ -112,10 +126,13 @@ $this->migas = [
         obj.attr("data-j", j);
         obj.click(function(){ mostrarJustificacion(obj); });
     }
+
     function mostrarJustificacion(obj){        
-        Lobibox.alert('info',{
-            msg: obj.attr("data-j"),
-        });
+        $("#modal-justificacion .modal-body").html(obj.attr("data-j"));
+        $("#modal-justificacion").modal("show");
+        // Lobibox.alert('info',{
+        //     msg: obj.attr("data-j"),
+        // });
     }
     
 </script>

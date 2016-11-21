@@ -1,9 +1,7 @@
 <?php if (count($entradas) == 0): ?>
 	<h4 class="text-center">No hay entradas</h4>
 <?php else: ?>
-<p>
-	<strong>Total entradas: </strong> <?= count($entradas) ?>
-</p>
+	
 <table>
 	<thead>
 		<tr>

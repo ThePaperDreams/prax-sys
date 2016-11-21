@@ -14,7 +14,7 @@ $formulario->abrir();
 </div>
 <div class="col-sm-6">
     <?= CBoot::selectM('', 'Implemento', 'id_implemento', 'nombre', ['label'=>'Implementos','defecto' => 'Seleccione un Implemento', 'id' => 'selectId', 'group' => true, 'data-s2' => true]) ?>  
-    <?= CBoot::number(0, ['min' => 0,'label'=>'Cantidad', 'class' => 'solo-numeros', 'group' => true, 'id' => 'cant']); ?>     
+    <?= CBoot::number(0, ['min' => 0,'label'=>'Cantidad', 'class' => 'solo-numeros', 'group' => true, 'id' => 'cant', 'max' => '100']); ?>     
     <?= CBoot::boton('Agregar ' . CBoot::fa('plus-circle'), 'default btn-block', ['group' => true, 'id' => 'btnAgregar']) ?>
     <div class="row">
         <div class="col-sm-12">
@@ -50,6 +50,21 @@ $formulario->abrir();
     </div>
 </div>
 <?php $formulario->cerrar(); ?>
+
+<script>
+    var valOk = 0;
+    $(function(){
+        $("#cant").keyup(function(){
+            var max = parseInt($(this).attr("max"));
+            var val = parseInt($(this).val());
+            if($(this).val() == ""){ valOk = 0; $(this).val(0); }
+            if(val > max){ $(this).val(valOk); }
+            else { valOk = val; }
+            $(this).val(parseInt($(this).val()));
+        });
+    });
+</script>
+
 <script>
     $(document).ready(function () {
 

@@ -24,7 +24,10 @@
     'modelo' => 'Objetivo',
     'filtros' => 'titulo',
     # id_objetivo, titulo, descripcion, plan_trabajo_id
-    'columnas' => 'titulo, descripcion',
+    'columnas' => [
+        'titulo',
+        'resumen',
+    ],
     'opciones' => true,
     'paginacion' => 10,
 ]) ?>

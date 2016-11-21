@@ -92,6 +92,7 @@ class CtrlEvento extends CControlador{
     public function accionEditar($pk){
         $this->validarNombre($pk);
         $modelo = $this->cargarModelo($pk);
+
         if(isset($this->_p['Eventos'])){
             $modelo->atributos = $this->_p['Eventos'];
             if($modelo->guardar()){

@@ -1,0 +1,12 @@
+[Error BD] [15:16:50]	Error de base de datos: La columna 't2.identificaciona' en where clause es desconocida
+						>> Consulta ejecutada: SELECT t.* FROM tbl_matriculas AS t JOIN tbl_deportistas AS t2 ON t2.id_deportista = t.deportista_id WHERE CONCAT_WS(' ', t2.identificaciona, t2.nombre1, t2.nombre2, t2.apellido1, t2.apellido2) LIKE '%juan%'  ORDER BY estado DESC, fecha_realizacion DESC  LIMIT 10  OFFSET 0 
+[Error BD] [15:17:49]	Error de base de datos: La columna 't2.identificaciona' en where clause es desconocida
+						>> Consulta ejecutada: SELECT t.* FROM tbl_matriculas AS t JOIN tbl_deportistas AS t2 ON t2.id_deportista = t.deportista_id WHERE CONCAT_WS(' ', t2.identificaciona, t2.nombre1, t2.nombre2, t2.apellido1, t2.apellido2) LIKE '%juan%'  ORDER BY estado DESC, fecha_realizacion DESC  LIMIT 10  OFFSET 0 
+[Error BD] [15:18:01]	Error de base de datos: La columna 't2.identificaciona' en where clause es desconocida
+						>> Consulta ejecutada: SELECT t.* FROM tbl_matriculas AS t JOIN tbl_deportistas AS t2 ON t2.id_deportista = t.deportista_id WHERE CONCAT_WS(' ', t2.identificaciona, t2.nombre1, t2.nombre2, t2.apellido1, t2.apellido2) LIKE '%juan%'  ORDER BY estado DESC, fecha_realizacion DESC  LIMIT 10  OFFSET 0 
+[Error BD] [15:18:10]	Error de base de datos: La columna 't2.identificaciona' en where clause es desconocida
+						>> Consulta ejecutada: SELECT t.* FROM tbl_matriculas AS t JOIN tbl_deportistas AS t2 ON t2.id_deportista = t.deportista_id WHERE CONCAT_WS(' ', t2.identificaciona, t2.nombre1, t2.nombre2, t2.apellido1, t2.apellido2) LIKE '%juan%'  ORDER BY estado DESC, fecha_realizacion DESC  LIMIT 10  OFFSET 0 
+[Error BD] [15:18:13]	Error de base de datos: La columna 't2.identificaciona' en where clause es desconocida
+						>> Consulta ejecutada: SELECT t.* FROM tbl_matriculas AS t JOIN tbl_deportistas AS t2 ON t2.id_deportista = t.deportista_id WHERE CONCAT_WS(' ', t2.identificaciona, t2.nombre1, t2.nombre2, t2.apellido1, t2.apellido2) LIKE '%juan%'  ORDER BY estado DESC, fecha_realizacion DESC  LIMIT 10  OFFSET 0 
+[Error BD] [23:52:51]	Error de base de datos: La columna 'estado_id' en where clause es desconocida
+						>> Consulta ejecutada: SELECT t.* FROM tbl_lista_espera AS t WHERE estado_id = 4  LIMIT 10  OFFSET 0 

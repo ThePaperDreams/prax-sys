@@ -164,7 +164,7 @@ class CtrlDeportista extends CControlador {
                 Sis::apl()->bd->commit();
                 $this->redireccionar('inicio');
             }
-            Sis::apl()->rollback();
+            Sis::apl()->bd->rollback();
         }
         $formularioAcudiente = $this->getFormAcudientes();
         # seteamos un tipo de documento por defecto al deportista
@@ -266,6 +266,13 @@ class CtrlDeportista extends CControlador {
         $acudoc->guardar();*/
     }
 
+    private function eliminarAcudientesAsociados(){
+        foreach($this->_p['acudientes-borrados'] AS $k=>$v){ 
+            $detalle = DeportistaAcudiente::modelo()->porPk($v);
+            $detalle->eliminar();
+        }
+    }
+
     /**
      * Esta función permite editar un registro existente
      * @param int $pk
@@ -276,6 +283,10 @@ class CtrlDeportista extends CControlador {
         $modelo2 = new Acudiente();
         $modelo3 = new TipoDocumento();
         if (isset($this->_p['Deportistas'])) {
+            if(isset($this->_p['acudientes-borrados'])){
+                # en caso de haber acudientes asociados los eliminamos
+                $this->eliminarAcudientesAsociados();
+            }
             $modelo->atributos = $this->_p['Deportistas'];
             $modelo->identificacion = trim($this->_p['Deportistas']['identificacion']);
             $modelo->id_deportista = $pk;

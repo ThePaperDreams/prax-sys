@@ -31,7 +31,8 @@ class CtrlTipoPublicacion extends CControlador{
                 $this->redireccionar('inicio');
             }
         }
-        $this->mostrarVista('crear', ['modelo' => $modelo]);
+        $url = Sis::crearUrl(['TipoPublicacion/crear']);
+        $this->mostrarVista('crear', ['modelo' => $modelo, 'url' => $url]);
     }
     
     /**
@@ -51,7 +52,8 @@ class CtrlTipoPublicacion extends CControlador{
                 $this->redireccionar('inicio');
             }
         }
-        $this->mostrarVista('editar', ['modelo' => $modelo]);
+        $url = Sis::crearUrl(['TipoPublicacion/editar', 'id' => $pk]);
+        $this->mostrarVista('editar', ['modelo' => $modelo, 'url' => $url]);
     }
     
     private function validarNombre($id = null){

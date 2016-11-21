@@ -705,3 +705,11 @@ li.rep-jugador{
     font-weight: 900;
     padding-left: 50px;
 }
+
+.lobibox-header, .lobibox-footer{
+    background-color: #0760B3 !important;  
+}
+
+.lobibox-icon{
+    color: #0760B3 !important;
+}

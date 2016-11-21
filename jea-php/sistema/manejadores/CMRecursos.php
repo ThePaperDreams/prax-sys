@@ -253,7 +253,7 @@ class CMRecursos {
         $scriptsbody = ''; $scriptshead = ''; $scriptsready = ''; $estiloshead = '';
         foreach ($recursos AS $pos=>$recurso){
             $codigo = implode('', $recurso);
-            if($pos === self::POS_BODY){ $body .= $codigo;}
+            if($pos === self::POS_BODY){ $body .= $codigo;}            
             else if($pos === self::POS_HEAD){ $head .= implode('', $recurso);}
             else if($pos === self::POS_BODY + 3){ $scriptsbody .= implode('', $recurso);}
             else if($pos === self::POS_HEAD + 3){ $scriptshead .= implode('', $recurso);}
@@ -268,7 +268,6 @@ class CMRecursos {
         $html = str_replace('</body>', $body.$sbody.$sready.'</body>', 
                 str_replace('</head>', $head.$ehead.$shead.$metas.'</head>', $html)
             );
-        #$this->sb($html);
     }
     /**
      * Esta función filtra el html

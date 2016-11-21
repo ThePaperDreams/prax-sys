@@ -18,6 +18,7 @@ $formulario->abrir();
         <div class="panel-body">
             <div class="form-group">                
                 <label class="control-label">Matriculados: <span id="cat-data" class="label label-default">0 / 0</span></label>
+                <p><label class="control-label">Edades: <span id="cat-edades"></span></label></p>
                 <?php echo $formulario->lista($modelo, 'categoria_id', $categorias, ['defecto' => 'Seleccionar una categoría']) ?>
             </div>
             <div class="form-group" id="lista-container" style="display:none;">
@@ -100,6 +101,7 @@ $formulario->abrir();
     });
     
     var error = false;
+    
     function doAjax(type, id){
         jQuery.ajax({
             url: "<?= Sis::crearUrl(['matricula/validar']) ?>",
@@ -122,6 +124,10 @@ $formulario->abrir();
                     var max = parseInt(r.datos.max);
                     var span = $("#cat-data");
                     span.html( matriculados + " / " + max);
+                    $("#cat-edades").html(r.datos.edades);
+
+                    consultarDeportistas(r.datos.emin, r.datos.emax);
+
                     if(matriculados >= max){
                         /*no hay cupos*/
                         mostrarLobi("La categoría seleccionada no tiene cupos.");
@@ -145,6 +151,29 @@ $formulario->abrir();
                 } else {
                     $("#btn-send").attr("disabled", "disabled");
                 }
+            }
+        });
+    }
+
+    function consultarDeportistas(min, max){
+        $.ajax({
+            type    :  'POST',
+            url     : '<?= Sis::crearUrl(['matricula/ajax']); ?>',
+            data    : {
+                ajx : true,
+                type: 'deportistas',
+                min : min,
+                max : max,
+            }
+        }).done(function(data){
+            if(data.error == false){
+                var combo = $("#Matriculas_deportista_id");
+                combo.select2("destroy");
+                combo.html(data.ops);
+                combo.select2({ width: '100%'});
+                combo.select2("open");
+            } else {
+                lobiAlert("error", "Error al consultar");
             }
         });
     }

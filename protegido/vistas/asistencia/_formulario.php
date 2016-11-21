@@ -103,14 +103,17 @@ $formulario->abrir();
     function toggleOp(op){
         var on = op.attr("data-on") !== undefined;
         var tr = op.closest("tr");
+
         if(on){
             op.removeAttr("data-on");
             tr.removeClass("danger");
             op.removeClass("btn-danger").addClass("btn-default");
+            op.find("span.txt").text("Asistió");
         } else {
             op.attr("data-on", "true");
             tr.addClass("danger");
             op.removeClass("btn-default").addClass("btn-danger");
+            op.find("span.txt").text("No asistió");
         }
     }
 </script>

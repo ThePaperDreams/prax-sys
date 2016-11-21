@@ -29,7 +29,7 @@ $this->tituloPagina="Entrada de implementos";
     # id_entrada, fecha_realizacion, descripcion, responsable_id, estado
     'columnas' => [
         "fecha_realizacion",
-        "descripcion",
+        "descripcion" => 'resumen',
         "responsable_id" =>"Usuario->nombres",
         "estado"=>'EtiquetaEstado',
     ],

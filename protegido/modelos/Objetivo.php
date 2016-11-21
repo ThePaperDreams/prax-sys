@@ -11,6 +11,7 @@
  * Relaciones del modelo
  */
 class Objetivo extends CModelo {
+    private $_resumen = null;
 
     /**
      * Esta función retorna el nombre de la tabla representada por el modelo
@@ -67,7 +68,16 @@ class Objetivo extends CModelo {
             'titulo' => 'Título',
             'descripcion' => 'Descripción',
             'plan_trabajo_id' => 'Plan Trabajo',
+            'resumen' => 'Descripción',
         ];
+    }
+
+    public function getResumen(){
+        if($this->_resumen == null){
+            $this->_resumen = strlen($this->descripcion) > 100? 
+                substr($this->descripcion, 0, 100) . '...' : $this->descripcion;
+        }
+        return $this->_resumen;
     }
 
     /**

@@ -51,7 +51,7 @@ class Categoria extends CModelo {
     
     public function filtros() {
         return [
-            'requeridos' => 'nombre,cupo_minimo,cupo_maximo,edad_minima,edad_maxima',
+            'requeridos' => 'nombre,cupo_minimo,cupo_maximo,edad_minima,edad_maxima,entrenador_id',
         ];
     }
     
@@ -89,8 +89,8 @@ class Categoria extends CModelo {
             'id_categoria' => 'Id Categoria',
             'nombre' => 'Nombre',
             'descripcion' => 'Descripcion',
-            'cupo_maximo' => 'Cupo máximo',
-            'cupo_minimo' => 'Cupo mínimo',
+            'cupo_maximo' => 'Cupo máximo deportistas',
+            'cupo_minimo' => 'Cupo mínimo deportistas',
             'tarifa' => 'Tarifa',
             'edad_minima' => 'Edad mínima',
             'edad_maxima' => 'Edad máxima',

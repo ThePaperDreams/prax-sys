@@ -13,7 +13,7 @@ $this->opciones = [
     ]
 ];
 ?>
-<div class="col-sm-8">
+<div class="col-sm-12">
     <div class="panel panel-primary">
         <div class="panel-heading text-center">
             Detalles

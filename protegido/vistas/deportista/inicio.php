@@ -28,7 +28,7 @@ $this->complemento('!siscoms.bootstrap3.CBGrid', [
         'identificacion',
         '_nombreCompleto', 
         '_edad' => CBoot::number('', ['name' => '_edad', 'style' => 'max-width: 100px;', 'maxlength' => 2, 'min' => 0, 'max' => 99, 'class' => 'solo-numeros maximo-numero r-trim-zero']),
-        'fecha_nacimiento' => CBoot::text('', ['name' => 'fecha_nacimiento', 'style' => 'max-width: 100px;', 'class' => '']),
+        'fecha_nacimiento' => CBoot::text('', ['name' => 'fecha_nacimiento', 'style' => 'max-width: 100px;', 'class' => 'campo-fecha']),
         'estado_id' => CBoot::select('', $estados, ['defecto' => '---', 'style' => 'max-width: 100px;', 'name' => 'estado_id']),
         'matricula' => CBoot::select('', [1=>'Si', 2=>'No'], ['defecto' => '---', 'style' => 'max-width: 80px;', 'name' => 'matricula']),
      ],

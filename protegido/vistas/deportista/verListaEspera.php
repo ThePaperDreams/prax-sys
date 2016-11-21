@@ -8,6 +8,7 @@ $this->migas = [
 
 $this->opciones = [
     'elementos' => [
+        'Ver Matrículas' => ['matricula/inicio'],
         'Registrar deportista' => ['Deportista/crear'],
         'Enviar a lista' => ['matricula/listaDeEspera'],
     ]
@@ -18,20 +19,17 @@ $this->opciones = [
 
 $this->complemento('!siscoms.bootstrap3.CBGrid', [
     'ajax' => true,
-    'filtrosAjax' => ['identificacion', '_nombreCompleto', 'apellido1'],
+    'filtrosAjax' => ['deportista_id', 'categoria_id', 'fecha_registro'],
     'exportar' => [
         'PDF' => ['i' => 'file-pdf-o', 'url' => ['deportista/reporteListaEspera']]
     ],
     'modelo' => 'ListaEspera',
-    'criterios' => [
-        'where' => 'estado_id = 4',
-    ],
-# id_deportista, identificacion, nombre1, nombre2, apellido1, apellido2, direccion, foto, telefono1, telefono2, fecha_nacimiento, estado_id, tipo_documento_id
-     'columnas' => [
-        'identificacion',
-        '_nombreCompleto' => 'nombreCompleto',
-        'telefono1',
-        'telefono2',
+    'columnas' => [
+        'deportista_id' => 'Deportista->nombreIdentificacion',
+        'categoria_id' => 'Categoria->nombre',
+        'edad' => 'Deportista->edad',
+        'fecha_registro',
+        'estado' => 'etiquetaEstado',
     ],
     'paginacion' => 10,
 ])

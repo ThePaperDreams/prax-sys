@@ -1,3 +1,6 @@
+<?php 
+$this->tituloPagina = "Registrar resultados";
+ ?>
 <div class="tile">
 
 <div class="row">

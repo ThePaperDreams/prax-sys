@@ -29,10 +29,6 @@ $this->opciones = [
                     <th><?php echo $modelo->obtenerEtiqueta('descripcion') ?></th>
                     <td><?php echo $modelo->descripcion; ?></td>
                 </tr>
-                <tr>
-                    <th><?php echo $modelo->obtenerEtiqueta('plan_trabajo_id') ?></th>
-                    <td><?php echo $modelo->plan_trabajo_id; ?></td>
-                </tr>
             </tbody>
         </table>
 

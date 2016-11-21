@@ -16,6 +16,7 @@
  * @property SalidaImplemento[] $Detalles
  */
 class Salida extends CModelo {
+    private $_resumen = null;
 
     /**
      * Esta función retorna el nombre de la tabla representada por el modelo
@@ -85,7 +86,13 @@ class Salida extends CModelo {
             'descripcion' => 'Descripción',
             'responsable_id' => 'Responsable',
             'estado' => 'Estado',
+            'resumen' => 'Descripción',
         ];
+    }
+
+    public function getFechaEntregaF(){
+        $p = explode(" ", $this->fecha_entrega);
+        return $p[0];
     }
 
     public function getEtiquetaEstado() {
@@ -97,6 +104,14 @@ class Salida extends CModelo {
             return CHtml::e('span', 'Devuelto', ['class' => 'label label-info']);
         }
         
+    }
+
+    public function getResumen(){
+        if($this->_resumen == null){
+            $this->_resumen = strlen($this->descripcion) > 50? 
+                substr($this->descripcion, 0, 50) . '...' : $this->descripcion;
+        }
+        return $this->_resumen;
     }
 
     /**

@@ -41,14 +41,14 @@ $formulario = new CBForm(['id' => 'form-pagos', 'opcionesHtml' => ['enctype' => 
 $formulario->abrir();
 ?>
 <div class="col-sm-6">
-    <?php echo $formulario->campoNumber($modelo, 'valor_cancelado', ['label' => true, 'group' => true, 'class' => 'solo-numeros maximo-numero', 'max' => '100000']) ?>
-    <?php echo $formulario->campoNumber($modelo, 'descuento', ['label' => true, 'group' => true, 'class' => 'solo-numeros maximo-numero', 'max' => '100000']) ?>
+    <?php echo $formulario->inputAddon($modelo, 'valor_cancelado', 'number', ['label' => true, 'group' => true, 'class' => 'solo-numeros maximo-numero', 'max' => '100000'], ['pre' => '$']) ?>
+    <?php echo $formulario->inputAddon($modelo, 'descuento', 'number', ['label' => true, 'group' => true, 'class' => 'solo-numeros maximo-numero', 'max' => '100000'], ['pre' => '$']) ?>
     <?php echo $formulario->campoArchivo($modelo, 'url_comprobante', ['label' => true, 'group' => true]) ?>
 </div>
 
 <div class="col-sm-6">
     <label for="">Razón descuento <span id="total-chars">0</span>/<span id="max-chars">500</span> </label>
-    <?php echo $formulario->areaTexto($modelo, 'razon_descuento', ['rows' => 8]) ?>
+    <?php echo $formulario->areaTexto($modelo, 'razon_descuento', ['rows' => 8, 'disabled' => true]) ?>
 </div>
 <hr>
 <div class="row">
@@ -85,6 +85,13 @@ $formulario->abrir();
             } else {
                 valorAnterior = $(this).val();
             }
+
+            if(descuento > 0){
+                $("#Pagos_razon_descuento").removeAttr("disabled").attr("required", "true");
+            } else {
+                $("#Pagos_razon_descuento").attr("disabled", "disabled").removeAttr("required");
+            }
+
         });
 
         jQuery("#Pagos_url_comprobante").fileinput({

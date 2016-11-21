@@ -9,7 +9,43 @@ $(function(){
         $(this).val(rtrimzero($(this).val()));
     });
     campoDoc($(".campo-doc"));
+    aSelect2($("select.form-control:not([data-s2='1'])"));
+    dontOverPass();
+    overMiminum();
 });
+
+function dontOverPass(){
+    $(".dont-overpass").each(function(k,v){
+        var el = $(v);
+        el.keyup(function(e){
+            var max = el.attr("max") != undefined? el.attr("max") : 0;
+            var ok = el.attr("data-ok") != undefined? parseInt(el.attr("data-ok")) : 0;
+            var val = parseInt(el.val());
+            if(el.val() == ''){ el.val(0); }
+            if(val > max){
+                el.val(ok);
+            } else {
+                ok = el.val();
+            }
+            el.attr("data-ok", ok);
+            el.val(parseInt(el.val()));
+        });
+    });
+}
+
+function overMiminum(){
+    $(".over-minimum").each(function(k,v){
+        var el = $(v);
+        el.keyup(function(e){
+            var min = el.attr("min") != undefined? el.attr("min") : 0;
+            var val = parseInt(el.val());
+            console.log(val, min);
+            if(val < min){
+                el.val(min);
+            }
+        });
+    });
+}
 
 function campoDoc(campos){
     campos.each(function(k,v){
@@ -62,15 +98,16 @@ function esTeclaEspecial(cod){
 function aDate(elementos, data){
     if(data === null || data === undefined){
         data = { dateFormat : 'yy-mm-dd' };
-    }
-//    elementos.datepicker();
-    $.each(elementos, function(k, v){
-        $(v).datepicker({
-            language: 'es',
-            dateFormat: 'yyyy-mm-dd',
-        });
+    } 
+
+    elementos.datepicker({
+        language: 'es',
+        format: 'yyyy-mm-dd',   
+    }).on('changeDate', function(e){
+        var el = $(e.delegateTarget);
+        el.change();
+
     });
-//    elementos.datepicker(data);
 }
 
 function aSelect2(elementos, data){

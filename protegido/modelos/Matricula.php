@@ -86,7 +86,23 @@ class Matricula extends CModelo {
         $criterio
             ->union("tbl_deportistas", "t2")
             ->donde("t2.id_deportista", "=", "t.deportista_id")
+            ->condicion('estado', 1)
+            ->y($concat, $this->deportista_id, "LIKE")
+            ->y("t.estado", $this->estado, "=")
+            ->y("t.fecha_pago", $this->anio, "LIKE")
+            ->y("t.categoria_id", $this->categoria_id)
+            ->orden("estado", false)
+            ->orden("fecha_realizacion", false);
+        return $criterio;
+    }
+
+    public function filtrosAnuladas(){
+        $criterio = new CCriterio();
+        $concat = "CONCAT_WS(' ', t2.identificacion, t2.nombre1, t2.nombre2, t2.apellido1, t2.apellido2)";
+        $criterio->union("tbl_deportistas", "t2")
+            ->donde("t2.id_deportista", "=", "t.deportista_id")
             ->condicion($concat, $this->deportista_id, "LIKE")
+            ->y('t.estado', '1')
             ->y("t.estado", $this->estado, "=")
             ->y("t.fecha_pago", $this->anio, "LIKE")
             ->y("t.categoria_id", $this->categoria_id)

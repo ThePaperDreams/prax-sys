@@ -11,8 +11,8 @@ $formulario->abrir();
             <?php echo $formulario->campoTexto($modelo, 'nombre', ['label' => true, 'group' => true, 'maxlength' => 50]) ?>            
         </div>
         <div class="col-sm-6">
-            <?php echo $formulario->campoNumber($modelo, 'unidades', ['max' => '300', 'label' => true, 'group' => true, 'min' => '0', 'class' => 'solo-numeros maximo-numero']) ?>
-            <?php echo $formulario->campoNumber($modelo, 'minimo_unidades', ['max' => '300', 'label' => true, 'group' => true, 'min' => '0', 'class' => 'solo-numeros maximo-numero']) ?>
+            <?php echo $formulario->campoNumber($modelo, 'unidades', ['max' => '300', 'label' => true, 'group' => true, 'min' => '0', 'class' => 'solo-numeros r-trim-zero']) ?>
+            <?php echo $formulario->campoNumber($modelo, 'minimo_unidades', ['max' => '300', 'label' => true, 'group' => true, 'min' => '0', 'class' => 'solo-numeros r-trim-zero']) ?>
         </div>
         <div class="col-sm-6">
             <div class="form-group">
@@ -34,7 +34,37 @@ $formulario->abrir();
     <?php $formulario->cerrar(); ?>
 </div>
 <script>
+    var minOk = 0;
+    var unOk = 0;
+
     $(function () {
+
+        $("#Implementos_minimo_unidades").keyup(function(){
+            var el = $(this);
+            var unidades = parseInt($("#Implementos_unidades").val());
+            if(el.val() == ""){ el.val(0); }
+            if(parseInt(el.val()) <= unidades){
+                minOk = parseInt(el.val());
+            }  else {
+                el.val(minOk);
+            }
+        });
+
+        $("#Implementos_unidades").keyup(function(){
+            var el = $(this);
+            var limit = parseInt(el.attr("max"));
+
+            if(el.val() == ""){ el.val(0); }
+
+            if(parseInt(el.val()) <= limit){
+                unOk = parseInt(el.val());
+            } else {
+                setTimeout(function(){
+                    el.val(unOk);
+                },100);
+            }
+        });
+
         $("#Implementos_descripcion").keydown(function(e){
             var t = $(this);
             var max = parseInt($("#max-chars").html());

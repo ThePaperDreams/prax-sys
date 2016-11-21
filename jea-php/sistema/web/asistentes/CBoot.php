@@ -139,6 +139,7 @@ final class CBoot {
      * @return string
      */
     public static function text($valor = '', $opciones = []){
+        $opciones['maxlength'] = isset($opciones['maxlength'])? $opciones['maxlength'] : 50;
         return self::input('text', $valor, $opciones);
     }
     

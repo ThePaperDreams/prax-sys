@@ -266,9 +266,13 @@ abstract class CBaseGrid extends CComplemento{
     }
     
     private function scriptConfirmar(){
-        $script = '$(".op-eliminar").click(function(){'
-                . 'return confirm("¿Seguro que desea realizar esta acción?");'
-                . '});';
+        // $script = '$(".op-eliminar").click(function(){'
+        //         . 'return confirm("¿Seguro que desea realizar esta acción?");'
+        //         . '});';
+        $script = '$(".op-eliminar").click(function(){
+            alert("about to delete");
+            return false;
+        })';                
         Sis::Recursos()->Script($script, CMRecursos::POS_READY);
     }
     
@@ -282,7 +286,13 @@ abstract class CBaseGrid extends CComplemento{
                             'ejefiltroTabla();' .  
                         '}' .  
                     '});' .
+                    
                     '$("select.j-grid-filtro").change(function(){' . 
+                        '$("#" + $(this).attr("id") + "-tokken").val($(this).val());' . 
+                        'ejefiltroTabla();' . 
+                    '});' .
+
+                    '$("input.campo-fecha.j-grid-filtro").change(function(){' . 
                         '$("#" + $(this).attr("id") + "-tokken").val($(this).val());' . 
                         'ejefiltroTabla();' . 
                     '});' .
@@ -311,15 +321,36 @@ abstract class CBaseGrid extends CComplemento{
                         'form.submit();' .
                     '});' .
                 '});';
+
+        $scriptConfirmar = '$(".op-eliminar").click(function(){' . 
+                            'var link = $(this);' . 
+                            'Lobibox.confirm({' .
+                                'title : "Confirmación",' .
+                                'msg : "¿Está seguro de eliminar este registro?",' . 
+                                'buttons: { ' . 
+                                    'yes: {text : "Si", class : "btn btn-success"},' .
+                                    'no: {text : "No", class: "btn btn-default"}, ' . 
+                                '},' . 
+                                'callback    : function($this, type, evt){' . 
+                                    'if(type == "yes"){' . 
+                                        'window.location = link.attr("href");' .
+                                    '}' . 
+                                '}' . 
+                            '});' . 
+                            'return false;' .
+                        '});';
+
+
         $script .= 'function setLinkEvents(){' . 
                         '$(".j-grid-link-pag").click(function(){ ' . 
                             'p = $(this).attr("data-p");' .
                             'ejefiltroTabla($(this).attr("data-p"));' . 
                             'return false;' . 
                         '});' . 
-                        '$(".op-eliminar").click(function(){' . 
-                            'return confirm("¿Seguro que desea realizar esta acción?");' . 
-                        '});' . 
+                        $scriptConfirmar . 
+                        // '$(".op-eliminar").click(function(){' . 
+                        //     'return confirm("¿Seguro que desea realizar esta acción?");' . 
+                        // '});' . 
                     '}';
         $script .= 'function ejefiltroTabla(p){' . 
                         'var orden = $(".btn-orden[data-active=\'true\']").attr("data-type");' . 

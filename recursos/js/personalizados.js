@@ -16,7 +16,7 @@
        var heading = jQuery("<div/>", {class: 'panel-heading text-center'});
        var body = jQuery("<div/>", {class: 'panel-body'});
        var footer = jQuery("<div/>", {class: 'panel-footer text-center'});
-       var textArea = jQuery("<textarea/>", {class: 'form-control', id: 'txt-justificar'});
+       var textArea = jQuery("<textarea/>", {class: 'form-control', id: 'txt-justificar', 'maxlength' : 200});
        var btnGuardar = jQuery("<button/>", {class: 'btn btn-primary'}).text("Guardar");
        var btnCancelar = jQuery("<button/>", {class: 'btn btn-default'}).text("Cancelar");            
        

@@ -69,11 +69,11 @@ class Torneo extends CModelo {
     public function etiquetasAtributos() {
         return [
             'id_torneo' => 'Id Torneo',
-            'cupo_maximo' => 'Cupo Máx.',
-            'cupo_minimo' => 'Cupo Mín.',
+            'cupo_maximo' => 'Cupo Máximo de deportistas.',
+            'cupo_minimo' => 'Cupo Mínimo de deportistas.',
             'edad_maxima' => 'Edad Máx.',
-            'fecha_inicio' => 'Inicio', 
-            'fecha_fin' => 'Fecha de Fin',
+            'fecha_inicio' => 'Fecha Inicio', 
+            'fecha_fin' => 'Fecha Fin',
             'nombre' => 'Nombre',
             'observaciones' => 'Observaciones',
             'tabla_posiciones' => 'Tabla de Posiciones',

@@ -1,8 +1,4 @@
-<?php if (count($implementos) > 0): ?>
-<p>
-	<strong>Total implementos: </strong> <?= count($implementos) ?>
-</p>
-<?php endif ?>
+
 <table>
 	<thead>
 		<tr>

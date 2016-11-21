@@ -13,7 +13,7 @@
  * Relaciones del modelo
  */
 class Entrada extends CModelo {
-
+    private $_resumen = null;
     /**
      * Esta función retorna el nombre de la tabla representada por el modelo
      * @return string
@@ -89,6 +89,15 @@ class Entrada extends CModelo {
            ->orden('t.fecha_realizacion', false);
        return $criterio;
     }
+
+    public function getResumen(){
+        if($this->_resumen == null){
+            $this->_resumen = strlen($this->descripcion) > 50? 
+                substr($this->descripcion, 0, 50) . '...' : $this->descripcion;
+        }
+        return $this->_resumen;
+    }
+
     /**
      * Esta función permite listar todos los registros
      * @param array $criterio

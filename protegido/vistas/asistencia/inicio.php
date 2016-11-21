@@ -21,8 +21,12 @@
         'realizada_por' => CBoot::select('', $usuarios, ['defecto' => 'Usuario', 'style' => 'min-width: 150px;', 'name' => 'realizada_por', 'data-s2' => true]),
     ],
     'modelo' => 'Asistencia',
+    'criterios' => [
+        'order' => 't.id_asistencia DESC    ',
+    ],
     # id_inasistencia, fecha, novedad, realizada_por, categoria_id
     'columnas' => [
+        'id_asistencia',
         'fecha', 'novedad', 
         'categoria_id' => 'Categoria->nombre',
         'realizada_por' => 'Usuario->nombreMasUsuario'

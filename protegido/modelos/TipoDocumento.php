@@ -14,7 +14,7 @@
  * @property Documento[] $Documentos 
  */
 class TipoDocumento extends CModelo {
-
+    private $_resumen = null;
     /**
      * Esta función retorna el nombre de la tabla representada por el modelo
      * @return string
@@ -67,6 +67,14 @@ class TipoDocumento extends CModelo {
             'descripcion' => 'Descripción',
             'padre_id' => 'Padre',
         ];
+    }
+
+    public function getResumen(){
+        if($this->_resumen == null){
+            $this->_resumen = strlen($this->descripcion) > 50? 
+                substr($this->descripcion, 0, 50) . '...' : $this->descripcion;
+        }
+        return $this->_resumen;
     }
 
     /**

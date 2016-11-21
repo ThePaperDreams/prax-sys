@@ -1,9 +1,7 @@
 <?php if (count($pagos) == 0): ?>
 	<h4 class="text-center">No hay pagos</h4>
 <?php else: ?>
-<p>
-	<strong>Total pagos: </strong> <?= count($pagos) ?>
-</p>
+
 <table>
 	<thead>
 		<tr>

@@ -96,6 +96,7 @@ class CBForm extends CFormulario{
         $label = $this->obtenerEtiqueta($opHtml);
         $requeridos = $this->getRequeridos($modelo);
         $error = $this->obtenerError($requeridos, $atributo);
+        $opHtml['maxlength'] = isset($opHtml['maxlength'])? $opHtml['maxlength'] : 500;
         $text = CBoot::textArea($modelo->$atributo, $opHtml); 
         return CHtml::e('div', $label . $error . $text, ['class' => 'form-group']);
     }

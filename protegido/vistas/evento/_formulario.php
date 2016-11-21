@@ -25,7 +25,7 @@ $formulario->abrir();
                 <?php echo $formulario->campoTexto($modelo, 'fecha', ['label' => true, 'group' => true, 'class' => 'campo-fecha', 'readonly' => true]) ?>
             </div>  
             <div class="col-sm-4">
-            <?php if ($modelo->esNuevo): ?>
+            <?php if ($modelo->nuevo == false): ?>
                 <?php echo $formulario->lista($modelo, 'estado', $Estado, ['group' => true, 'label' => true]) ?>
             <?php else: ?>
                 <?php echo $formulario->lista($modelo, 'estado', $Estado, ['group' => true, 'label' => true, 'disabled' => true]) ?>

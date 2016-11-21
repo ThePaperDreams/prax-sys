@@ -1,8 +1,3 @@
-<?php if (count($acudientes) > 0): ?>
-<p>
-	<strong>Total acudientes: </strong> <?= count($acudientes) ?>
-</p>
-<?php endif ?>
 <table>
 	<thead>
 		<tr>

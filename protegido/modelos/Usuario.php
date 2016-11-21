@@ -48,6 +48,7 @@ class Usuario extends CModelo {
             'estado' => ['def' => '1'],
             'foto',
             'url_recuperacion',
+            'identificacion',
         ];
     }
     
@@ -119,6 +120,10 @@ class Usuario extends CModelo {
     
     public function getNombreMasUsuario(){
         return $this->nombres . ' ' . $this->apellidos . " ($this->nombre_usuario)";
+    }
+
+    public function getNombreDoc(){
+        return "($this->identificacion) " . $this->nombres . " " . $this->apellidos;
     }
     
     public function getEtiquetaEstado(){

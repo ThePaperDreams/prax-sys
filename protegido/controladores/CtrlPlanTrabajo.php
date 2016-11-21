@@ -43,8 +43,9 @@ class CtrlPlanTrabajo extends CControlador{
         if($plan == null){
             $this->redireccionar('inicio');
         }
-
-        $this->tituloPagina = "Plan-de-trabajo-$plan->id_plan_trabajo-praxis";
+        $fecha = new DateTime($plan->fecha_aplicacion);
+        $anio = $fecha->format("Y");
+        $this->tituloPagina = "Plan de trabajo " . $plan->Categoria->nombre . " ($anio)";
 
         $this->plantilla = "reporte";
         $pdf = Sis::apl()->mpdf->crear();

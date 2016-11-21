@@ -24,3 +24,18 @@ $formulario->abrir();
 </div>
 
 <?php $formulario->cerrar(); ?>
+
+<script>
+	var descuentoOk = 0;
+	$(function(){
+		$("#Pagos_descuento").keyup(function(){
+			var limit = parseInt($("#Pagos_valor_cancelado").val());
+			var val = parseInt($(this).val());
+			if(val <= limit){
+				descuentoOk = val();
+			} else {
+				$(this).val(descuentoOk);
+			}
+		});
+	});
+</script>

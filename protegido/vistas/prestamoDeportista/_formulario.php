@@ -51,6 +51,36 @@ $formulario->abrir();
 
 <?php $formulario->cerrar(); ?>
 <script>
+    $(function(){
+        $("#PrestamosDeportista_fecha_inicio").change(function(){
+            var fecha1 = $(this);
+            var fecha2 = $("#PrestamosDeportista_fecha_fin");
+            if(fecha2.val() == ""){
+                fecha2.val(fecha1.val());
+            }          
+            validarFechas();
+        });
+
+        $("#PrestamosDeportista_fecha_fin").change(function(){
+            validarFechas();
+        });
+    });
+
+    function validarFechas(){
+        var fecha1 = $("#PrestamosDeportista_fecha_inicio"); 
+        var fecha2 = $("#PrestamosDeportista_fecha_fin");
+        var fechaIni = new Date(fecha1.val());
+        var fechaFin = new Date(fecha2.val());
+
+        if(fechaFin < fechaIni){
+            lobiAlert("error", "La fecha final no puede ser menor a la inicial");
+            $("#btn-send").attr("disabled", "disabled");
+        } else {
+            $("#btn-send").removeAttr("disabled");
+        }
+
+    }
+
     $(".btn-type").click(function(){
         $(".btn-type input").removeAttr("checked");
         $(this).find("input").attr("checked", "checked");

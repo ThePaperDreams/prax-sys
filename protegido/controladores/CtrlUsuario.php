@@ -174,11 +174,18 @@ class CtrlUsuario extends CControlador {
 
     public function accionEditarPerfil() {
         $modelo = $this->cargarModelo(Sis::apl()->usuario->getID());
-        
+
         if(isset($this->_p['ajx'])){
             $modelo->atributos = $this->_p['ficha'];
+            $error = !$modelo->guardar();
+            if(!$error){                
+                $nombre = $this->_p['ficha']['nombres'] . " " . $this->_p['ficha']['apellidos'];
+                $nombre .= " (" . $modelo->nombre_usuario . ")";                
+                $com = new ComUsuario("temp", "temp");
+                $test = $com->iniciarSesion(Sis::apl()->usuario->getID(), $nombre);                
+            }
             $this->json([
-                'error' => !$modelo->guardar(),
+                'error' => $error,
             ]);
             Sis::fin();
         } 

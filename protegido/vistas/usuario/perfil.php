@@ -23,8 +23,8 @@ Sis::Recursos()->recursoJs([
         </div> 
     </div>
 </div>    
-<div id="f-t-info">
-    <div class="col-sm-8">
+<div class="col-sm-8">
+    <div id="f-t-info">
         <div class="tile p-15">
             <div class="panel panel-default">
                 <h4>Información Personal</h4>
@@ -47,7 +47,7 @@ Sis::Recursos()->recursoJs([
                 </table>
                 <div class="row">
                     <div class="col-sm-offset-4 col-sm-4 text-center">
-                        <br><?= CBoot::boton('Editar ' . CBoot::fa('pencil'), 'primary btn-block', ['id' => 'btn-editar']) ?>
+                        <br><?= CBoot::boton('Cambiar información ' . CBoot::fa('pencil'), 'primary btn-block', ['id' => 'btn-editar']) ?>
                     </div>
                 </div>
             </div>
@@ -79,42 +79,47 @@ Sis::Recursos()->recursoJs([
         </div>
     </div>
 </div> 
-    <div id="f-t-form" style="display: none">
-        <div class="col-sm-8">
-            <div class="page-header">
-                <div class="tile p-15">
-                    <input type="hidden" id="id-ficha" value="<?= $modelo->id ?>">
-                    <h5>Información Personal</h5>
+
+<div id="f-t-form" style="display: none">
+    <div class="col-sm-8">
+        <div class="tile p-15">
+            <div class="row">            
+                <div class="page-header">
+                    <div class="tile p-15">
+                        <input type="hidden" id="id-ficha" value="<?= $modelo->id ?>">
+                        <h5>Información Personal</h5>
+                    </div>
+                    <table class="table">
+                        <tr>
+                            <th class="text-right">Nombres:</th>
+                            <td class="edit-cell"  data-input-edit-cell="true" data-val="<?= $modelo->nombres ?>">
+                                <?= CBoot::text($modelo->nombres, ['id' => 'nombres']) ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="text-right">Apellidos:</th>
+                            <td class="edit-cell" data-input-edit-cell="true" data-val="<?= $modelo->apellidos ?>">
+                                <?= CBoot::text($modelo->apellidos, ['id' => 'apellidos']) ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="text-right">Teléfono:</th>
+                            <td class="edit-cell" data-input-edit-cell="true" data-val="<?= $modelo->telefono ?>">
+                                <?= CBoot::text($modelo->telefono, ['id' => 'telefono']) ?>
+                            </td>
+                        </tr>  
+                    </table>
                 </div>
-                <table class="table">
-                    <tr>
-                        <th class="text-right">Nombres:</th>
-                        <td class="edit-cell"  data-input-edit-cell="true" data-val="<?= $modelo->nombres ?>">
-                            <?= CBoot::text($modelo->nombres, ['id' => 'nombres']) ?>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="text-right">Apellidos:</th>
-                        <td class="edit-cell" data-input-edit-cell="true" data-val="<?= $modelo->apellidos ?>">
-                            <?= CBoot::text($modelo->apellidos, ['id' => 'apellidos']) ?>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="text-right">Teléfono:</th>
-                        <td class="edit-cell" data-input-edit-cell="true" data-val="<?= $modelo->telefono ?>">
-                            <?= CBoot::text($modelo->telefono, ['id' => 'telefono']) ?>
-                        </td>
-                    </tr>  
-                </table>
+                <div class="row">
+                    <div class="col-sm-offset-4 col-sm-4 text-center">
+                        <?= CBoot::boton('Cancelar ', 'default', ['id' => 'btn-cancelar']) ?> 
+                        <?= CBoot::boton('Actualizar ' . CBoot::fa('pencil'), 'success', ['id' => 'btn-actualizar']) ?>
+                    </div>
+                </div> 
             </div>
-            <div class="row">
-                <div class="col-sm-offset-4 col-sm-4 text-center">
-                    <?= CBoot::boton('Cancelar ', 'default', ['id' => 'btn-cancelar']) ?> 
-                    <?= CBoot::boton('Actualizar ' . CBoot::fa('pencil'), 'success', ['id' => 'btn-actualizar']) ?>
-                </div>
-            </div> 
         </div>
     </div>    
+</div>
 
     <script>
         $(function () {
@@ -145,7 +150,9 @@ Sis::Recursos()->recursoJs([
             
             $("#btn-editar").click(function () {
                 $("#f-t-info").slideUp(function () {
-                    $("#f-t-form").slideDown();
+                    $("#f-t-form").slideDown(function(){
+                        $("#nombres").focus();;
+                    });
                 });
             });
 
@@ -164,7 +171,18 @@ Sis::Recursos()->recursoJs([
             var nombres = $("#nombres").val();
             var apellidos = $("#apellidos").val();
             var telefono = $("#telefono").val();
-            
+            // validaciones
+            if($.trim(nombres) == ""){
+                lobiAlert("error", "Por favor ingrese un nombre");
+                $("#nombres").focus().select();
+                return;
+            } else if($.trim(apellidos) == ""){
+                lobiAlert("error", "Por favor ingrese un nombre");
+                $("#apellidos").focus().select();
+                return;
+            }
+
+
             $.ajax({
                 type: 'POST',
                 url: '<?= Sis::crearUrl(['Usuario/editarPerfil', 'id' => $this->_g['id']]) ?>',

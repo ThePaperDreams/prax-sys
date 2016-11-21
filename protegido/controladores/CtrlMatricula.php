@@ -14,9 +14,30 @@ class CtrlMatricula extends CControlador {
     public function accionInicio() {
         $modelos = Matricula::modelo()->listar();
         $categorias = Categoria::modelo()->listar();
+        $c = new CCriterio();
+        $c->condicion("t.estado", '1')
+            ->orden('estado = 1', false)
+            ->orden('fecha_realizacion', false);
+
         $this->mostrarVista('inicio', [
             'modelos' => $modelos,
             'categorias' => CHtml::modeloLista($categorias, "id_categoria", "nombre"),
+            'criterios' => $c,
+        ]);
+    }
+
+    public function accionMatriculasAnuladas(){
+        $modelos = Matricula::modelo()->listar();
+        $categorias = Categoria::modelo()->listar();
+        $c = new CCriterio();
+        $c->condicion("t.estado", '0')
+            ->orden('estado = 1', false)
+            ->orden('fecha_realizacion', false);
+
+        $this->mostrarVista('matriculasAnuladas', [
+            'modelos' => $modelos,
+            'categorias' => CHtml::modeloLista($categorias, "id_categoria", "nombre"),
+            'criterios' => $c,
         ]);
     }
 
@@ -83,6 +104,29 @@ class CtrlMatricula extends CControlador {
         $nombre = "Matricula-" . date("Y") . "-" . $modelo->Deportista->identificacion;
         return $imagen->guardar($dirDestino, $nombre)? $nombre . '.' . $imagen->getExtension() : false;
     }
+
+    public function accionAjax(){
+        if(!isset($this->_p['ajx'])){
+            $this->redireccionar("inicio");
+        }
+        if($this->_p['type'] == 'deportistas'){
+            $this->consultarDeportistas();
+        }
+    }
+
+    private function consultarDeportistas(){
+        $c = new CCriterio();
+        $c->entre("fn_get_edad_deportistas(t.id_deportista)", $this->_p['min'], $this->_p['max']);        
+        // $c->noEn();
+        $deportistas = Deportista::modelo()->listar($c);
+        $ops = [];
+        foreach($deportistas AS $k=>$v){ $ops[] = CHtml::e('option', $v->NombreIdentificacion . " ($v->edad años) ", ['value' => $v->id_deportista]); }
+        $this->json([
+            'error' => false,
+            'ops' => implode('', $ops),
+        ]);
+        Sis::fin();
+    }
     
     public function accionValidar(){
         if(!isset($this->_p['ajx'])){
@@ -106,6 +150,9 @@ class CtrlMatricula extends CControlador {
             $datos = [
                 'max' => $categoria->cupo_maximo,
                 'matriculados' => $categoria->matriculados,
+                'edades' => $categoria->Edad,
+                'emax' => $categoria->edad_maxima,
+                'emin' => $categoria->edad_minima,
             ];
         }
         echo json_encode([
@@ -115,6 +162,8 @@ class CtrlMatricula extends CControlador {
         ]);
         Sis::fin();
     }
+
+
 
     /**
      * Esta función permite ver detalladamente un registro existente
@@ -144,7 +193,16 @@ class CtrlMatricula extends CControlador {
     }
     
     public function accionListaDeEspera(){
+
         if(isset($this->_p['deportista'])){
+            $listaEspera = new ListaEspera();
+            $listaEspera->deportista_id = $this->_p['deportista'];
+            $listaEspera->categoria_id = $this->_p['categoria'];
+            $listaEspera->fecha_registro = date("Y-m-d");
+            $listaEspera->estado = 1;
+
+            $listaEspera->guardar();
+
             $deportista = Deportista::modelo()->porPk($this->_p['deportista']);
             $deportista->estado_id = 4;
             if($deportista->guardar()){
@@ -155,9 +213,12 @@ class CtrlMatricula extends CControlador {
                 $this->redireccionar('deportista/verListaEspera');
             }
         }
+
+        $categorias = Categoria::modelo()->listar();
         $deportistas = Matricula::getDeportistasSinMatricula();
         $this->vista("listaEspera", [
             'deportistas' => CHtml::modeloLista($deportistas, "id_deportista", "nombreDePila"),
+            'categorias' => CHtml::modeloLista($categorias, "id_categoria", "nombre"),
         ]);
     }        
 

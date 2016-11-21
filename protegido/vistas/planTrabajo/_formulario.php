@@ -71,7 +71,7 @@ $formulario->abrir();
                                 Ingrese los datos del nuevo objetivo
                                 </div>
                                 <?= CBoot::text('', ['id' => 'txt-obj-titulo', 'group' => true, 'label' => 'Título']) ?>
-                                <?= CBoot::textArea('', ['id' => 'txt-obj-descripcion', 'group' => true, 'label' => 'Descripción']) ?>
+                                <?= CBoot::textArea('', ['id' => 'txt-obj-descripcion', 'group' => true, 'label' => 'Descripción', 'maxlength' => 200]) ?>
                                 <div class="row">
                                     <div class="col-sm-6">                                
                                       <?= CBoot::boton('Cancelar', 'primary', ['class' => 'btn-block', 'id' => 'btn-cancelar-obj']) ?>
@@ -123,11 +123,16 @@ $formulario->abrir();
 
         $("#btn-send").click(function(){
             var total = $(".input-objetivo").length;
+        });
+
+        $("#form-planestrabajo").submit(function(){
+            var total = $(".input-objetivo").length;
             if(total === 0){
                 lobiAlert("error", "Por favor añada al menos un objetivo");
-                return;
+                return false;
             }
         });
+
         $("#objetivos-container, #objetivos-target").sortable({
             connectWith: ".connectedSortable",
         }).disableSelection();
@@ -198,7 +203,7 @@ $formulario->abrir();
         }
         $.ajax({
             type: 'POST',
-            url: '<?= Sis::apl()->urlActual() ?>',
+            url: '<?= Sis::crearUrl(['PlanTrabajo/crear']) ?>',
             data: {
                 ajxrqst:true,
                 titulo: titulo.val(),

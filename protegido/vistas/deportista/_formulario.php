@@ -42,10 +42,10 @@ $formulario->abrir();
         </div>
         <div class="row">
             <div class="col-sm-6">
-                <?php echo $formulario->campoTexto($modelo, 'telefono1', ['label' => true, 'group' => true, 'min' => '0', 'maxlength' => '10']) ?>
+                <?php echo $formulario->campoTexto($modelo, 'telefono1', ['label' => true, 'group' => true, 'min' => '0', 'maxlength' => '50']) ?>
             </div>
             <div class="col-sm-6">
-                <?php echo $formulario->campoTexto($modelo, 'telefono2', ['label' => true, 'group' => true, 'min' => '0', 'maxlength' => '10']) ?>
+                <?php echo $formulario->campoTexto($modelo, 'telefono2', ['label' => true, 'group' => true, 'min' => '0', 'maxlength' => '50']) ?>
             </div>
         </div>
         <div class="row">
@@ -53,7 +53,7 @@ $formulario->abrir();
                 <?php echo $formulario->campoTexto($modelo, 'direccion', ['label' => true, 'group' => true, 'maxlength' => '80']) ?>
             </div>
             <div class="col-sm-6">
-                <?php echo $formulario->inputAddon($modelo, 'fecha_nacimiento', 'text', ['readonly' => true, 'label' => true, 'class' => 'campo-fecha'], ['pos' => CBoot::fa('calendar')]) ?>
+                <?php echo $formulario->inputAddon($modelo, 'fecha_nacimiento', 'text', ['readonly' => true, 'label' => true, 'class' => 'campo-fecha'], ['pos' => CBoot::fa('calendar', ['id' => 'display-date'])]) ?>
             </div>
         </div>
         <div class="row">  
@@ -85,7 +85,9 @@ $formulario->abrir();
                 </div>
 
             </div>
-            <?php if(!$modelo->nuevo): ?>                   
+
+            <?php if(!$modelo->nuevo): ?>      
+            <!-- 
             <div class="col-sm-4">
                 <?php echo CBoot::boton(CBoot::fa('file-text-o') . ' Ver acudientes asociados', 'default', ['label' => true, 'group' => true, 'type' => 'button', 'class' => 'abajo', 'data-toggle' => 'modal', 'data-target' => '#myModal1', 'id' => 'btn-veracus']) ?>
             </div>
@@ -120,6 +122,7 @@ $formulario->abrir();
                     </div>
                 </div>
             </div>
+             -->
             <?php endif; ?>
         </div>
         
@@ -133,20 +136,18 @@ $formulario->abrir();
                                 <th>Eliminar</th>
                             </tr>
                         </thead>
-                        <tbody id="tab-acus">                            
+                        <tbody id="tab-acus">
+                        <?php foreach ($modelo->Acudiente AS $dc): ?>
+                            <tr>
+                                <td><?= $dc->Acudiente->getAcudiente($dc->Acudiente->id_acudiente, $dc->Acudiente->datos); ?></td>            
+                                <td data="<?= $dc->Acudiente->id_acudiente ?>" val="<?= $dc->Acudiente->id_acudiente ?>" class="x col-sm-1 text-center text-danger-icon"><a class="delete-person" data-iddepacu="<?= $dc->id ?>" href="#"><i class="fa fa-ban"></i></a></td>
+                            </tr>
+                        <?php endforeach ?>                    
                         </tbody>
                     </table>                                            
                 </div>
             </div>
         </div>
-        <!--<div class="row">
-            <div class="col-sm-12">
-                <div class="panel-default">
-                    <div class="panel-heading">Acudientes</div>
-                        <ul id="lis-acu" class="list-group"></ul>
-                </div>
-            </div>        
-        </div>-->
     </div>
         
     <div role="tabpanel" class="tab-pane" id="documentos">
@@ -218,6 +219,9 @@ $formulario->abrir();
     </div>
 </div>    
 
+<div id="acudientes-eliminados">
+    
+</div>
 
 <?php $formulario->cerrar(); ?>
 
@@ -278,7 +282,25 @@ $formulario->abrir();
     </div>
 </div>
 
+<script>
+    $(function(){
+        $(".delete-person").click(function(){
+
+            var id = $(this).attr("data-iddepacu");
+            var input = $("<input/>", {type: 'hidden', name: 'acudientes-borrados[]'});
+            input.val(id);
+            $("#acudientes-eliminados").append(input);
+            var tr = $(this).closest("tr");
+            tr.find("td").slideUp(function(){
+                tr.remove();
+            });
+
+        });
+    });
+</script>
+
 <script type="text/javascript">
+
     function agregareldoc(){
         var nombre = $("#nombre-documento").val();
         var file = $("#documento-cargar");
@@ -465,7 +487,17 @@ $formulario->abrir();
 </script>
 
 <script>
-    $(function(){  
+    $(function(){ 
+        // bug que abre el modal de documentos
+        $("#Deportistas_fecha_nacimiento").on('keyup keydown keypress', function(e){
+            e.preventDefault();
+            return false;
+        });
+
+        $("#display-date").click(function(){
+            $("#Deportistas_fecha_nacimiento").focus();
+        });
+
         var cd = 0; // Contador de documentos para los id de los input hidden
         //bonitoInputFile(); 
         $("input[type=file]").fileinput({ // Para embellecer el file input de la foto
@@ -545,7 +577,12 @@ $formulario->abrir();
             return false;
         });
         $("#form-deportistas").submit(function () {
-            validarSubidaFoto();     
+            /* validamos que el documento sea diferente de cero */
+            if(valIdentificacion()){ return false; }
+
+            if($.trim($("#Deportistas_telefono1").val()) == ""){ return false; }
+
+            validarSubidaFoto();    
             if (validarAcudiente()) {
                 if (validarDocumentos()) {
                     validarIdentificacion();                    
@@ -556,8 +593,13 @@ $formulario->abrir();
         // validamos la edad del deportista
         $("#Deportistas_fecha_nacimiento").change(function(){
             var edad = calcularEdad(new Date($(this).val()));
+            var edadMax = <?= Configuracion::get("edad_max_deps"); ?>;
             if(parseInt(edad) < 6){
                 lobiAlert("error", "El deportista no puede ser menor de 6 años");
+                $("#btn-send").attr("disabled", "disabled");
+                return false;
+            } else if(edad > edadMax){
+                lobiAlert("error", "El deportista no puede ser mayor de " + edadMax + " años");
                 $("#btn-send").attr("disabled", "disabled");
                 return false;
             } else {
@@ -566,6 +608,19 @@ $formulario->abrir();
         });
 
     });
+
+    /** 
+     * Validamos que la identificación sea diferente de cero
+     */
+    function valIdentificacion(){
+        var doc = $("#Deportistas_identificacion");
+        if(doc.val() == '0'){
+            doc.focus().select();
+            lobiAlert("error", "Debe ingresar una identificación diferente de 0");
+            return true;
+        }
+        return false;
+    }
 
     function calcularEdad(birthday) { 
         var ageDifMs = Date.now() - birthday.getTime();

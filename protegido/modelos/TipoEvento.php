@@ -10,7 +10,7 @@
  * Relaciones del modelo
  */
  class TipoEvento extends CModelo{
- 
+    private $_resumen = null; 
     /**
      * Esta función retorna el nombre de la tabla representada por el modelo
      * @return string
@@ -67,6 +67,14 @@
        return $criterio;
     }
     
+    public function getResumen(){
+        if($this->_resumen == null){
+            $this->_resumen = strlen($this->descripcion) > 50? 
+                substr($this->descripcion, 0, 50) . '...' : $this->descripcion;
+        }
+        return $this->_resumen;
+    }
+
     public function getEnPrestamo(){
         if($this->_enPrestamo === null){            
             $sql = "SELECT

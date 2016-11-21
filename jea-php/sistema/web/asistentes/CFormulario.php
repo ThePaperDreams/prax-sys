@@ -94,9 +94,11 @@ class CFormulario {
     }
     
     private function registrarScript(){
-        $script = '$("#' . $this->id . '").submit(function(){' . 
+        $script = 'var _enviar = true;' .
+                '/* JAKO */' .  
+                '$(function(){ $("#' . $this->id . '").submit(function(){' .
                     'var enviar = true;' . 
-                    '$("[requerido]").each(function(k, v){' . 
+                    '$("#' . $this->id . ' [requerido]").each(function(k, v){' . 
                         'var elemento = $(v);' . 
                         'if(elemento.attr("data-err-target") !== undefined){' .
                             'var error = $("#err-" + elemento.attr("data-err-target"));' . 
@@ -110,9 +112,10 @@ class CFormulario {
                             'error.hide();' . 
                         '}' . 
                     '});' . 
+                    '_enviar = enviar;' . 
                     'return enviar;' . 
-                '});';
-        Sis::Recursos()->Script($script, CMRecursos::POS_READY);
+                '}); });';
+        Sis::Recursos()->Script($script, CMRecursos::POS_HEAD);
     }
     
     /**
@@ -210,7 +213,7 @@ class CFormulario {
         # buscamos si hay label
         if(isset($opciones['label']) && $opciones['label'] == true){
             $opciones['label'] = $modelo->obtenerEtiqueta($atributo);
-        }
+        }        
         
         # lo que retornamos es una mezcla entre las opciones ingresadas y las básicas
         # si hay posiciones con el mismo nombre en las opciones ingresadas, estas

@@ -53,6 +53,8 @@ class CtrlCategoria extends CControlador{
         $this->validarCategoria();
         $modelo = new Categoria();
         if(isset($this->_p['Categorias'])){
+            echo "here";
+            exit();
             $modelo->atributos = $this->_p['Categorias'];
             if($modelo->guardar()){
                 Sis::Sesion()->flash("alerta", [
@@ -70,7 +72,7 @@ class CtrlCategoria extends CControlador{
         $url = Sis::crearUrl(['categoria/crear']);
         $this->mostrarVista('crear', [
             'modelo' => $modelo,
-            'entrenadores' => CHtml::modeloLista($entrenadores, "id_usuario", "nombres"),
+            'entrenadores' => CHtml::modeloLista($entrenadores, "id_usuario", "nombreDoc"),
             'url' => $url,
         ]);
     }

@@ -18,7 +18,7 @@
      ],
     'modelo' => 'TipoPublicacion',
     # id_tipo_publicacion, nombre, descripcion
-    'columnas' => ['nombre', 'descripcion'],
+    'columnas' => ['nombre', 'descripcion' => 'resumen'],
     'opciones' => [
         ['i' => 'eye', 'title' => 'Ver','url' => 'TipoPublicacion/ver&{id:pk}'],
         ['i' => 'pencil', 'title' => 'Editar', 'url' => 'TipoPublicacion/editar&{id:pk}',],

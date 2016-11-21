@@ -99,7 +99,9 @@ class CtrlSalida extends CControlador{
                 $this->redireccionar('inicio');
             }
         }
-        $usuarios = CHtml::modeloLista(Usuario::modelo()->listar(), "id_usuario", "nombres");
+        $c = new CCriterio();
+        // $c->condicion("rol_id", 4);
+        $usuarios = CHtml::modeloLista(Usuario::modelo()->listar($c), "id_usuario", "nombres");
         $this->mostrarVista('crear', ['modelo' => $modelo, 'usuarios' => $usuarios]);
     }
 

@@ -1,2 +1,6 @@
 [Error BD] [01:38:18]	Error de base de datos: Algo está equivocado en su sintax cerca 'AND estado = 1' en la linea 1
 						>> Consulta ejecutada: SELECT t.* FROM tbl_matriculas AS t WHERE categoria_id= AND estado = 1 
+[Error BD] [06:53:36]	Error de base de datos: La columna 'entrenador_id' no puede ser nula
+						>> Consulta ejecutada: INSERT INTO tbl_categorias (nombre, descripcion, cupo_maximo, cupo_minimo, tarifa, edad_minima, edad_maxima, estado, entrenador_id) VALUES ('Mayores', null, '0', '0', '0', '0', '0', '1', null)
+[Error BD] [06:53:56]	Error de base de datos: La columna 'entrenador_id' no puede ser nula
+						>> Consulta ejecutada: INSERT INTO tbl_categorias (nombre, descripcion, cupo_maximo, cupo_minimo, tarifa, edad_minima, edad_maxima, estado, entrenador_id) VALUES ('Mayores', null, '0', '0', '0', '0', '0', '1', null)

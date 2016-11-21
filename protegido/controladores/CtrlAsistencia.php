@@ -86,7 +86,7 @@ class CtrlAsistencia extends CControlador{
         ]);
         $html = [];
         foreach($matriculas AS $m){
-            $i = CHtml::input('checkbox', $m->id_matricula, ['autocomplete' => 'off', 'name' => 'matriculas[]']) . 'No asistió';
+            $i = CHtml::input('checkbox', $m->id_matricula, ['autocomplete' => 'off', 'name' => 'matriculas[]']) . '<span class="txt">Asistió</span>';
             $l = CHtml::e('label', $i, ['class' => 'btn btn-default', 'onclick'=>'toggleOp($(this))']);
             $g = CHtml::e('div', $l, ['class' => 'btn-group', 'data-toggle' => 'buttons']);
             

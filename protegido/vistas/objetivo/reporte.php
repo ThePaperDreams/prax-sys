@@ -1,9 +1,7 @@
 <?php if (count($objetivos) == 0): ?>
 	<h4 class="text-center">No hay objetivos</h4>
 <?php else: ?>
-<p>
-	<strong>Total objetivos: </strong> <?= count($objetivos) ?>
-</p>
+
 <table>
 	<thead>
 		<tr>

@@ -250,6 +250,8 @@ class CtrlTorneo extends CControlador{
             $rutaDestino = Sis::resolverRuta(Sis::crearCarpeta("!publico.imagenes.torneos.fotos"));
             $rutaThumbs = Sis::resolverRuta(Sis::crearCarpeta("!publico.imagenes.torneos.fotos.thumbs"));
             $nom = $files->getNombre();
+            // var_dump($rutaDestino, file_exists($rutaDestino));
+            // exit();
             if($files->guardar($rutaDestino, $nom)){
                 $modelo->tabla_posiciones =  $nom . "." . $files->getExtension();
                 $files->thumbnail($rutaThumbs, [

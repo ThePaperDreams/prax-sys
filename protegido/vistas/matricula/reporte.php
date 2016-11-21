@@ -28,3 +28,8 @@
 		<?php endif ?>
 	</tbody>
 </table>
+<?php if (count($matriculas) > 0): ?>s
+<p>
+	<strong>Total objetivos: </strong> <?= count($matriculas) ?>
+</p>
+<?php endif ?>

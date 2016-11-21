@@ -29,8 +29,8 @@ $this->tituloPagina="Préstamo de implementos";
     ],
     'columnas' => [
         "fecha_realizacion",
-        "fecha_entrega",
-        "descripcion",
+        "fecha_entrega" => 'fechaEntregaF',
+        "resumen",
         "responsable_id" =>"Usuario->nombres",
         'estado' => 'EtiquetaEstado',
     ],

@@ -20,16 +20,16 @@ $formulario->abrir();
     </div>
     <div class="row">
         <div class="col-sm-3">
-            <?php echo $formulario->campoNumber($modelo, 'cupo_minimo', ['label' => true, 'max' => 30, 'class' => 'maximo-numero text-right solo-numeros', 'group' => true, 'min' => 0]) ?>
+            <?php echo $formulario->campoNumber($modelo, 'cupo_minimo', ['label' => true, 'max' => 30, 'class' => 'dont-overpass text-right solo-numeros', 'group' => true, 'min' => 0]) ?>
         </div>
         <div class="col-sm-3">
-            <?php echo $formulario->campoNumber($modelo, 'cupo_maximo', ['label' => true, 'max' => 30, 'class' => 'maximo-numero text-right solo-numeros', 'group' => true, 'min' => 0]) ?>        
+            <?php echo $formulario->campoNumber($modelo, 'cupo_maximo', ['label' => true, 'max' => 30, 'class' => 'dont-overpass text-right solo-numeros', 'group' => true, 'min' => 0]) ?>        
         </div>
         <div class="col-sm-3">
-            <?php echo $formulario->campoNumber($modelo, 'edad_minima', ['label' => true, 'max' => 30, 'class' => 'maximo-numero text-right solo-numeros', 'group' => true, 'min' => 0]) ?>
+            <?php echo $formulario->campoNumber($modelo, 'edad_minima', ['label' => true, 'max' => 16, 'min' => 6, 'class' => 'over-minimum     dont-overpass text-right solo-numeros', 'group' => true]) ?>
         </div>
         <div class="col-sm-3">
-            <?php echo $formulario->campoNumber($modelo, 'edad_maxima', ['label' => true, 'max' => 30, 'class' => 'maximo-numero text-right solo-numeros', 'group' => true, 'min' => 0]) ?>            
+            <?php echo $formulario->campoNumber($modelo, 'edad_maxima', ['label' => true, 'max' => 16, 'min' => 6, 'class' => 'over-minimum     dont-overpass text-right solo-numeros', 'group' => true]) ?>
         </div>
     </div>    
     <hr>
@@ -45,6 +45,7 @@ $formulario->abrir();
 
 <?php $formulario->cerrar(); ?>
 <?php
+
     $script = '$(function(){$("#form-categorias").submit(function(){validarCategoria(); return false;});});'
             . 'function validarCategoria(){'
                 . 'if($.trim($("#Categorias_nombre").val()) === ""){ return false; }'
@@ -59,7 +60,19 @@ $formulario->abrir();
                             . 'mostrarAlerta("error", "Ya hay una categoría registrada con ese nombre");'
                             . '$("#Categorias_nombre").focus().select();'
                         . '} else {'
-                            . 'document.getElementById("form-categorias").submit();'
+
+                            . 'var cupoMin = $("#Categorias_cupo_minimo");' 
+                            . 'var cupoMax = $("#Categorias_cupo_max");' 
+                            . 'var edadMin = $("#Categorias_edad_minima");' 
+                            . 'var edadMax = $("#Categorias_edad_maxima");' 
+                            . 'var enviar = true;' 
+                            . 'var msg = "";' 
+                            . 'if(cupoMin.val() == \'0\'){ msg = "Cupo mínimo no puede ser cero"; enviar = false; } ' 
+                            . 'else if(cupoMax.val() == \'0\'){ msg = "Cupo mínimo no puede ser cero"; enviar = false; }' 
+                            . 'else if(edadMin.val() == \'0\'){ msg = "Cupo mínimo no puede ser cero"; enviar = false; }' 
+                            . 'else if(edadMax.val() == \'0\'){ msg = "Cupo mínimo no puede ser cero"; enviar = false; }'             
+                            . 'if(enviar == false){lobiAlert("error", msg);}' 
+                            . 'else {document.getElementById("form-categorias").submit();}'
                         . '}'
                     . '},'
                 . '});'
@@ -78,6 +91,13 @@ $formulario->abrir();
 ?>
 <script>
     $(function(){        
+        $("#Categorias_tarifa").blur(function(){
+            if($.trim($(this).val()) == ''){ $(this).val(0); }
+        });
+
+        // $("#form-categorias").submit(function(){
+
+        // });
 
         $("#Categorias_descripcion").keydown(function(e){
             var t = $(this);
@@ -101,8 +121,8 @@ $formulario->abrir();
         var cmin = parseInt($("#Categorias_cupo_minimo").val());
         var cmax = parseInt($("#Categorias_cupo_maximo").val());
         if(cmin > cmax){
-            $("#Categorias_cupo_maximo").val(cmin + cmin);
-            mostrarAlerta("info", "El cupo mínimo no puede ser mayor al máximo, se subió al doble.");
+            $("#Categorias_cupo_maximo").val(cmin);
+            // mostrarAlerta("info", "El cupo mínimo no puede ser mayor al máximo, se subió al doble.");
             return true;
         } else if(cmin === cmax){
             mostrarAlerta("info", "¿Seguro desea que el cupo máximo y mínimo sean iguales?");

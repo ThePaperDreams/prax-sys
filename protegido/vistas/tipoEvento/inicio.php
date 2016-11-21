@@ -18,7 +18,7 @@
      ],
     'modelo' => 'TipoEvento',
     # id_tipo, nombre, descripcion
-    'columnas' => 'nombre, descripcion',
+    'columnas' => ['nombre', 'descripcion' => 'resumen'],
     'opciones' => [
         ['i' => 'eye', 'title' => 'Ver','url' => 'TipoEvento/ver&{id:pk}'],
         ['i' => 'pencil', 'title' => 'Editar', 'url' => 'TipoEvento/editar&{id:pk}', 'visible' => '$m->getEnPrestamo() == false'],

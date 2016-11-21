@@ -3,8 +3,11 @@ $formulario = new CBForm(['id' => 'form-tiposevento']);
 $formulario->abrir();
 ?>
 <div class="tile p-15">
-<?php echo $formulario->campoTexto($modelo, 'nombre', ['label' => true, 'group' => true, 'autofocus' => true]) ?>
-<?php echo $formulario->areaTexto($modelo, 'descripcion', ['label' => true, 'group' => true]) ?>
+    <?php echo $formulario->campoTexto($modelo, 'nombre', ['label' => true, 'group' => true, 'autofocus' => true]) ?>
+    <div class="form-group">
+        <label for="">Descripción <span id="total-chars">0</span>/<span id="max-chars">500</span> </label>
+        <?php echo $formulario->areaTexto($modelo, 'descripcion', ['rows' => 6]) ?>
+    </div>
 
     <div class="row">
         <div class="col-sm-offset-6 col-sm-3">
@@ -16,7 +19,19 @@ $formulario->abrir();
     </div>
 </div>
 <?php $formulario->cerrar(); ?>
-
+<script>
+    $(function(){
+        $("#TiposEvento_descripcion").keydown(function(e){
+            var t = $(this);
+            var max = parseInt($("#max-chars").html());
+            $("#total-chars").html(t.val().length);
+            if(t.val().length >= max && ( e.which != 8 && e.which !== 116)){
+                e.preventDefault();
+                return false;
+            }
+        });
+    });
+</script>
 <script>
  $(function(){
         $("#form-tiposevento").submit(function(){
