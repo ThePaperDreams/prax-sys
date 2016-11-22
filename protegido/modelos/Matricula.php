@@ -39,13 +39,14 @@ class Matricula extends CModelo {
             'deportista_id',
             'categoria_id',
             'anio',
-            'fecha_realizacion'
+            'fecha_realizacion',
+            'club_id',
         ];
     }
     
     public function filtros() {
         return [
-            'requeridos' => 'deportista_id,fecha_pago,categoria_id',
+            'requeridos' => 'deportista_id,fecha_pago,categoria_id,club_id',
             'seguros' => '*',
         ];
     }
@@ -60,6 +61,7 @@ class Matricula extends CModelo {
             # tipo de relación | modelo con que se relaciona | campo clave foranea
             'Deportista' => [self::PERTENECE_A, 'Deportista', 'deportista_id'],
             'Categoria' => [self::PERTENECE_A, 'Categoria', 'categoria_id'],
+            'Club' => [self::PERTENECE_A, 'Club', 'club_id'],
         ];
     }
 
@@ -77,6 +79,7 @@ class Matricula extends CModelo {
             'categoria_id' => 'Categoría',
             'anio' => 'Año de vigencia',
             'fecha_realizacion' => 'Realizado',
+            'club_id' => 'Club',
         ];
     }
     
@@ -139,7 +142,8 @@ class Matricula extends CModelo {
             $url = Sis::UrlBase() . 'publico/documentos/comprobantes/matriculas/' . $this->url_comprobante;
             return CHtml::link('Descargar ' . $icono, $url, ['target' => '_blank', 'download' => $this->url_comprobante]);
         } else {
-            return CHtml::e("span", 'Ninguno', ['class' => 'label label-default']);
+            // return CHtml::e("span", 'Ninguno', ['class' => 'label label-default']);
+            return false;
         }
     }   
     
@@ -173,6 +177,20 @@ class Matricula extends CModelo {
         $deportistas = [];        
         foreach($matriculas AS $m){  $deportistas[] = $m->Deportista; }
         return $deportistas;                
+    } 
+
+    public static function getDeporitstasMatriculadosClub($club = true){
+        $criterio = new CCriterio();
+        $criterio->condicion("estado", 1);
+
+        if($club == true){ $criterio->y("club_id", 1); }
+        else { $criterio->y("club_id", 1, '<>'); }
+        $matriculas = Matricula::modelo()->listar($criterio);
+        $deportistas = [];
+        foreach($matriculas AS $m){  
+            if($m->Deportista->estado_id == '1'){ $deportistas[] = $m->Deportista; }
+        }
+        return $deportistas;           
     }
 
     public static function getMatriculados(){

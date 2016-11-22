@@ -31,6 +31,7 @@
     # id_matricula, fecha_pago, url_comprobante, estado, deportista_id, categoria_id
     'columnas' => [
         'deportista_id' => 'Deportista->NombreIdentificacion',
+        'club_id' => 'Club->nombre',
         'estado' => ['valor' => 'EtiquetaEstado', 'opciones' => ['class' => 'text-center']],
         'url_comprobante' => ['valor' => 'Comprobante', 'opciones' => ['class' => 'text-center']],
         'anio',

@@ -13,5 +13,5 @@
     ];    
 ?>
 <div class="col-sm-12">    
-    <?php echo $this->mostrarVistaP('_formulario', ['modelo' => $modelo, 'deportistas' => $deportistas, 'categorias' => $categorias]); ?>
+    <?php echo $this->mostrarVistaP('_formulario', ['modelo' => $modelo, 'deportistas' => $deportistas, 'categorias' => $categorias, 'clubes' => $clubes]); ?>
 </div>

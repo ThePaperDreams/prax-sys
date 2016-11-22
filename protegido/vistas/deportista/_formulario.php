@@ -4,15 +4,16 @@ $this->ayudaTitulo = "Registrar / Modificar Deportista";
 
 Sis::Recursos()->recursoCss(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/css/fileinput.min.css']);
 Sis::Recursos()->recursoJs(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/js/fileinput.min.js']);
+
 $formulario = new CBForm(['id' => 'form-deportistas', 'opcionesHtml' => ['enctype' => 'multipart/form-data']]);
 $formulario->abrir();
 ?>
 <div class="tile p-15">
 <p>Los campos con <span class="text-danger">*</span>  son requeridos</p>
 <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#formulario" aria-controls="formulario" role="tab" data-toggle="tab">Deportista</a></li>
-    <li role="presentation"><a href="#acus" aria-controls="acus" role="tab" data-toggle="tab">Acudientes</a></li>
-    <li role="presentation"><a href="#documentos" aria-controls="documentos" role="tab" data-toggle="tab">Documentos</a></li>
+    <li disabled="disabled" role="presentation" class="active"><a href="#formulario" aria-controls="formulario" role="tab" data-toggle-na="tab">Deportista</a></li>
+    <li disabled="disabled" role="presentation"><a href="#acus" aria-controls="acus" role="tab" data-toggle-na="tab">Acudientes</a></li>
+    <li disabled="disabled" role="presentation"><a href="#documentos" aria-controls="documentos" role="tab" data-toggle-na="tab">Documentos</a></li>
 </ul>
 <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="formulario">
@@ -69,7 +70,13 @@ $formulario->abrir();
             <div class="col-sm-6">
                 <?php echo $formulario->lista($modelo, 'estado_id', $estados, ['label' => true, 'group' => true, 'data-s2' => true]) ?>
             </div>
-        </div>        
+        </div> 
+        <hr>
+        <div class="row">
+            <div class="col-sm-12 text-right">
+                <button class="btn btn-primary" id="next-acudientes">Siguiente</button>
+            </div>
+        </div>       
     </div>
     
     <div role="tabpanel" class="tab-pane" id="acus">
@@ -148,6 +155,13 @@ $formulario->abrir();
                 </div>
             </div>
         </div>
+        <hr>
+        <div class="row">
+            <div class="col-sm-12 text-right">
+                <button class="btn btn-default" id="back-form">Atrás</button>
+                <button class="btn btn-primary" id="next-docs">Siguiente</button>
+            </div>
+        </div>
     </div>
         
     <div role="tabpanel" class="tab-pane" id="documentos">
@@ -174,9 +188,9 @@ $formulario->abrir();
                 </tbody>
             </table>
         </div>
+        <div class="col-sm-6">
         <?php if ($modelo->Documento): ?>
             
-        <div class="col-sm-6">
             <div class="page-header">
                 <h4>Documentos agregados</h4>
             </div>
@@ -191,7 +205,7 @@ $formulario->abrir();
                 <?php foreach ($modelo->Documento as $detalle): ?>                    
                     <tr id="row-doc-<?= $detalle->id ?>" >
                         <td>
-                            <a href="<?= Sis::UrlBase() . '/publico/documentos/' . $detalle->Documento->url ?>" target="_blank" >
+                            <a class="document-preview" href="<?= Sis::UrlBase() . '/publico/documentos/' . $detalle->Documento->url ?>" target="_blank" >
                                 <?= $detalle->Documento->titulo  ?>
                             </a>
                         </td>
@@ -204,19 +218,25 @@ $formulario->abrir();
                 <?php endforeach ?>
                 </tbody>
             </table>
-        </div>
-
         <?php endif ?>
+        </div>
+        <hr>
+        <!-- inicio -->
+        <div class="row">
+            <div class="col-sm-offset-4 col-sm-2">
+                <button class="btn btn-default btn-block" id="back-acus">Atrás</button>
+            </div>
+            <div class=" col-sm-3">
+                <?php echo CHtml::link(CBoot::fa('undo') . ' Cancelar', ['deportista/inicio'], ['class' => 'btn btn-primary btn-block']); ?>
+            </div>
+            <div class="col-sm-3">
+                <?php echo CBoot::boton(CBoot::fa('save') . ' ' . ($modelo->nuevo ? 'Guardar' : 'Actualizar'), 'success', ['class' => 'btn-block', 'id' => 'btn-send']); ?>
+            </div>
+        </div>
+        <!-- fin -->
     </div>
 </div>                
-    <div class="row">
-        <div class="col-sm-offset-6 col-sm-3">
-            <?php echo CHtml::link(CBoot::fa('undo') . ' Cancelar', ['deportista/inicio'], ['class' => 'btn btn-primary btn-block']); ?>
-        </div>
-        <div class="col-sm-3">
-            <?php echo CBoot::boton(CBoot::fa('save') . ' ' . ($modelo->nuevo ? 'Guardar' : 'Actualizar'), 'success', ['class' => 'btn-block', 'id' => 'btn-send']); ?>
-        </div>
-    </div>
+    
 </div>    
 
 <div id="acudientes-eliminados">
@@ -224,6 +244,24 @@ $formulario->abrir();
 </div>
 
 <?php $formulario->cerrar(); ?>
+
+<div class="modal fade" id="modal-preview">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Previsualización</h4>
+            </div>
+            <div class="modal-body">
+                <img src="" alt="" id="preview-img">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <a href="#" id="preview-img-download" download class="btn btn-primary">Descargar <i class="fa fa-download"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="modal fade" id="modal-cargar-doc">
     <div class="modal-dialog">
@@ -284,6 +322,46 @@ $formulario->abrir();
 
 <script>
     $(function(){
+        $("#next-acudientes, #back-acus").click(function(){
+            var tab = $("a[href='#acus']");
+            var nav = tab.closest(".nav-tabs");
+            nav.find("li").removeClass("active");
+            tab.parent().addClass("active");
+            $(".tab-pane").removeClass("active");
+            $(tab.attr("href")).addClass("active");
+            return false;
+        });
+
+        $("#next-docs").click(function(){
+            var tab = $("a[href='#documentos']");
+            var nav = tab.closest(".nav-tabs");
+            nav.find("li").removeClass("active");
+            tab.parent().addClass("active");
+            $(".tab-pane").removeClass("active");
+            $(tab.attr("href")).addClass("active");
+            return false;
+        });
+
+        $("#back-form").click(function(){
+            var tab = $("a[href='#formulario']");
+            var nav = tab.closest(".nav-tabs");
+            nav.find("li").removeClass("active");
+            tab.parent().addClass("active");
+            $(".tab-pane").removeClass("active");
+            $(tab.attr("href")).addClass("active");
+            return false;
+        });
+
+        // $("#back-acus").click(function(){
+        //     var tab = $("a[href='#acus']");
+        //     var nav = tab.closest(".nav-tabs");
+        //     nav.find("li").removeClass("active");
+        //     tab.parent().addClass("active");
+        //     $(".tab-pane").removeClass("active");
+        //     $(tab.attr("href")).addClass("active");
+        //     return false;
+        // });        
+
         $(".delete-person").click(function(){
 
             var id = $(this).attr("data-iddepacu");
@@ -488,6 +566,13 @@ $formulario->abrir();
 
 <script>
     $(function(){ 
+        $(".document-preview").click(function(){
+            $("#preview-img").attr("src", $(this).attr("href"));
+            $("#preview-img-download").attr("href", $(this).attr("href"));
+            $("#modal-preview").modal("show");
+            return false;
+        });
+
         // bug que abre el modal de documentos
         $("#Deportistas_fecha_nacimiento").on('keyup keydown keypress', function(e){
             e.preventDefault();

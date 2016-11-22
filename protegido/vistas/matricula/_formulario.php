@@ -31,9 +31,13 @@ $formulario->abrir();
             </div>
             <div id="otros-campos-container">
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-12">
                         <input type="hidden" id="flag-dep" value="0">
                         <?php echo $formulario->lista($modelo, 'deportista_id', $deportistas, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un deportista']) ?>
+                    </div>
+                    <div class="col-sm-6">
+                        <input type="hidden" id="flag-dep" value="0">
+                        <?php echo $formulario->lista($modelo, 'club_id', $clubes, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un club']) ?>
                     </div>
                     <div class="col-sm-6">
                         <?php echo $formulario->inputAddon($modelo, 'fecha_pago', 'text', ['label' => true, 'readonly' => true, 'group' => true, 'class' => 'campo-fecha'], ['pos' => CBoot::fa('calendar')]) ?>
@@ -58,6 +62,11 @@ $formulario->abrir();
         </div>
     </div>
 </div>
+
+<?php if (isset($this->_g['id'])): ?>
+    <input type="hidden" name="id_lista_espera" value="<?= $this->_g['id'] ?>">
+<?php endif ?>
+
 <?php $formulario->cerrar(); ?>
 <script>
     jQuery(function(){
@@ -189,3 +198,27 @@ $formulario->abrir();
         });
     }
 </script>
+
+<?php if (isset($this->_g['id'])): ?>
+    <script>
+        $(function(){
+            var dep = $("#Matriculas_deportista_id");
+            var cat = $("#Matriculas_categoria_id");
+
+            setTimeout(function(){
+                cat.select2("destroy");
+                cat.val(<?= $this->_g['c'] ?>);
+                cat.select2({width: '100%'});
+                cat.change();
+            }, 100);
+
+            setTimeout(function(){
+                dep.select2("destroy");
+                dep.val(<?= $this->_g['d'] ?>);
+                dep.select2({width: '100%'});
+                dep.change();
+
+            }, 1000);
+        });
+    </script>
+<?php endif ?>

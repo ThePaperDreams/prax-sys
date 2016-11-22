@@ -90,12 +90,39 @@ class CtrlPrestamoDeportista extends CControlador{
         $c->condicion("estado_id", "1");
         $dm = Deportista::modelo()->listar($c);
         $entrada = $modelo->tipo_prestamo == 'entrada';
+
+        $clubes = Club::modelo()->listar();
+
         return [
             'deportistas' => CHtml::modeloLista($dm, "id_deportista", "nombreIdentificacion"),
             'modelo' => $modelo,
             'entrada' => $entrada,
+            'clubes' => CHtml::modeloLista($clubes, 'id', 'nombre'),
         ];
     }
+
+    public function accionAjax(){
+        if(!isset($this->_p['ajax'])){ Sis::fin(); }
+
+        if($this->_p['tipo'] == 'entrada'){
+            $dm = Matricula::getDeporitstasMatriculadosClub(false);
+        } else {
+            $dm = Matricula::getDeporitstasMatriculadosClub(true);
+        }
+        $c = new CCriterio();
+        $c->condicion("estado_id", "1");
+        $ops = [CHtml::e('option', 'Seleccione un deportista')];
+        foreach($dm AS $k=>$v){
+            $ops[] = CHtml::e('option', $v->nombreIdentificacion, ['value' => $v->id_deportista]);
+        }
+        // var_dump($dm);
+        // exit();
+        $this->json([
+            'opciones' => $ops,
+            'error' => false,
+        ]);
+    }
+
     
     /**
      * Esta función permite editar un registro existente

@@ -52,9 +52,11 @@ class CtrlCategoria extends CControlador{
     public function accionCrear(){
         $this->validarCategoria();
         $modelo = new Categoria();
+        $modelo->edad_minima = 6;
+        $modelo->edad_maxima = 6;
         if(isset($this->_p['Categorias'])){
-            echo "here";
-            exit();
+            // echo "here";
+            // exit();
             $modelo->atributos = $this->_p['Categorias'];
             if($modelo->guardar()){
                 Sis::Sesion()->flash("alerta", [

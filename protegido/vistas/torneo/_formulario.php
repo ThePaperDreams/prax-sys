@@ -80,9 +80,26 @@ $formulario->abrir();
             cant.val(limite);
             }
         });      
+        $("#Torneos_fecha_inicio, #Torneos_fecha_fin").change(function(){
+            validarFechas();
+        });
+        // var f1 = $("#Torneos_fecha_inicio");
+        // var f2 = $("#Torneos_fecha_fin");
     });
 
-  
+    function validarFechas(){
+        var f1 = $("#Torneos_fecha_inicio");
+        var f2 = $("#Torneos_fecha_fin");
+
+        var fecha1 = Date.parse(f1.val());
+        var fecha2 = Date.parse(f2.val());
+
+        if(fecha1 > fecha2){
+            lobiAlert("error", "La fecha inicial no puede ser mayor a la final");
+            f2.val(f1.val());
+        }
+
+    }
  </script>
 
 <?php $formulario->cerrar(); ?>

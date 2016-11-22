@@ -60,7 +60,10 @@ $this->opciones = [
         <h3>Equipos</h3>
         <div class="tile p-15">
             <a href="<?= Sis::CrearUrl(['torneo/gestionarEquipos', 'id' => $modelo->id_torneo]) ?>" class="btn btn-primary"> Gestionar equipos </a>
+            <?php if (count($equipos) > 0): ?>            
             <a href="<?= Sis::CrearUrl(['torneo/registrarResultados', 'id' => $modelo->id_torneo]) ?>" class="btn btn-success"> Registrar resultados </a>
+            <?php endif ?>
+
             <div class="p-15">
             </div>
             <ul class="nav nav-tabs" role="tablist">

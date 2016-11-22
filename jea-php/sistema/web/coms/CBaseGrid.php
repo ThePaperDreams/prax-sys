@@ -418,14 +418,13 @@ abstract class CBaseGrid extends CComplemento{
      * @param CModelo $modelo
      * @return boolean
      */
-    protected function tokken($t, $modelo){       
-        
+    protected function tokken($t, $modelo){
         if(key_exists($t, $this->tokkens)){
             switch ($this->tokkens[$t]){
                 case 1: return $modelo->{$modelo->getPk()}; 
                 default: null;
             }
-        }else if(!key_exists($t, $this->tokkens) && property_exists($modelo, $t)){ 
+        }else if(!key_exists($t, $this->tokkens) && $modelo->$t !== null){ 
             return $modelo->$t;
         } else {
             return $t;

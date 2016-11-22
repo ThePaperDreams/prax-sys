@@ -58,7 +58,7 @@ Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . 'librerias/customScro
                                     <?= CBoot::select('', $usuarios, ['group' => true, 'label' => 'Entrenador', 'defecto' => 'Seleccione un entrenador', 'id' => 'entrenador']) ?>
                                 </div>
                                 <div class="col-sm-6">
-                                    <?= CBoot::number('', ['group' => true, 'label' => 'Cupo máximo', 'min' => '1', 'id' => 'cupo-max']) ?>
+                                    <?= CBoot::number('', ['group' => true, 'label' => 'Máximo de Jugadores', 'min' => '1', 'id' => 'cupo-max']) ?>
                                 </div>
                             </div>
                             <div class="row">

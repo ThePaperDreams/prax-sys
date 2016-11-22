@@ -1,39 +1,37 @@
 <?php
 /**
- * Este modelo es la representación de la tabla tbl_lista_espera
+ * Este modelo es la representación de la tabla tbl_clubes
  *
  * Atributos del modelo
- * @property int $id_lista
- * @property int $deportista_id
- * @property int $categoria_id
- * @property datetime $fecha_registro
+ * @property int $id
+ * @property string $nombre
+ * @property string $direccion
+ * @property string $telefono
  * @property int $estado
  * 
  * Relaciones del modelo
- * @property FkListasCategorias $fkListasCategorias
- * @property FkListaDeportista $fkListaDeportista
  */
- class ListaEspera extends CModelo{
+ class Club extends CModelo{
  
     /**
      * Esta función retorna el nombre de la tabla representada por el modelo
      * @return string
      */
     public function tabla() {
-        return "lista_espera";
+        return "clubes";
     }
 
     /**
-     * Esta función retorna los atributos de la tabla tbl_lista_espera
+     * Esta función retorna los atributos de la tabla tbl_clubes
      * @return array
      */
     public function atributos() {
         return [
-            'id_lista' => ['pk'] ,
-                'deportista_id',
-                'categoria_id',
-                'fecha_registro',
-                'estado' => ['def' => '1'] ,
+            'id' => ['pk'] ,
+                'nombre',
+                'direccion',
+                'telefono',
+                'estado',
             ];
     }
     
@@ -45,9 +43,7 @@
         return [
             # el formato es simple: 
             # tipo de relación | modelo con que se relaciona | campo clave foranea
-            'Categoria' => [self::PERTENECE_A, 'Categoria', 'categoria_id'],
-           'Deportista' => [self::PERTENECE_A, 'Deportista', 'deportista_id'],
-        ];
+                    ];
     }
     
     /**
@@ -56,28 +52,18 @@
      */
     public function etiquetasAtributos() {
         return [
-        'edad' => 'Edad del deportista',
-		'id_lista' => 'Id Lista', 
-		'deportista_id' => 'Deportista', 
-		'categoria_id' => 'Categoria', 
-		'fecha_registro' => 'Fecha Registro', 
+		'id' => 'Id', 
+		'nombre' => 'Nombre', 
+		'direccion' => 'Direccion', 
+		'telefono' => 'Telefono', 
 		'estado' => 'Estado', 
         ];
     }
     
-
-    public function getEtiquetaEstado(){
-        if($this->estado == 1){
-            return CHtml::e('span', 'Activo', ['class' => 'label label-success']);
-        } else if($this->estado == 0){
-            return CHtml::e('span', 'Matriculado', ['class' => 'label label-default']);
-        }
-    }
-
     /**
      * Esta función permite listar todos los registros
      * @param array $criterio
-     * @return ListaEspera
+     * @return Club
      */
     public function listar($criterio = array()) {
         return parent::listar($criterio);
@@ -86,7 +72,7 @@
     /**
      * Esta función permite obtener un registro por su primary key
      * @param int $pk
-     * @return ListaEspera
+     * @return Club
      */
     public function porPk($pk) {
         return parent::porPk($pk);
@@ -95,16 +81,16 @@
     /**
      * Esta función permite obtener el primer registro
      * @param array $criterio
-     * @return ListaEspera
+     * @return Club
      */
     public function primer($criterio = array()) {
         return parent::primer($criterio);
     } 
 
     /**
-     * Esta función retorna una instancia del modelo tbl_lista_espera
+     * Esta función retorna una instancia del modelo tbl_clubes
      * @param string $clase
-     * @return ListaEspera
+     * @return Club
      */
     public static function modelo($clase = __CLASS__) {
         return parent::modelo($clase);

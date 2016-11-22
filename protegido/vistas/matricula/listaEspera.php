@@ -4,7 +4,7 @@
         'Listar Matriculas' => ['Matricula/inicio'],
         'Lista de espera',
     ];
-    
+    $this->tituloPagina = "Enviar deportista a lista de espera";
     $this->opciones = [
         'elementos' => [
             'Lista de espera' => ['deportista/verListaEspera'],

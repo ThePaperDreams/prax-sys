@@ -26,6 +26,28 @@ class CtrlMatricula extends CControlador {
         ]);
     }
 
+    public function accionCargar($pk){
+        $matricula = $this->cargarModelo($pk);
+        // var_dump($matricula, $_FILES);
+
+        $doc = CArchivoCargado::instanciarPorNombre('Documentos');
+        $dirDestino = Sis::resolverRuta(Sis::crearCarpeta("!publico.documentos.comprobantes.matriculas"));
+        $nombre = "Matricula-" . date("Y") . "-" . $matricula->Deportista->identificacion;
+        $guardado = $doc->guardar($dirDestino, $nombre);
+        if($guardado){ 
+            $matricula->url_comprobante = $nombre . "." . $doc->getExtension();
+            if($matricula->guardar()){
+
+            } else {
+
+            }
+            $this->redireccionar('matricula/ver', ['id' => $pk]);
+        }
+        var_dump($matricula);
+        // $imagen = CArchivoCargado::instanciarModelo('Matriculas', 'url_comprobante');
+        // return $imagen->guardar($dirDestino, $nombre)? $nombre . '.' . $imagen->getExtension() : false;
+    }
+
     public function accionMatriculasAnuladas(){
         $modelos = Matricula::modelo()->listar();
         $categorias = Categoria::modelo()->listar();
@@ -50,6 +72,12 @@ class CtrlMatricula extends CControlador {
             $modelo->atributos = $this->_p['Matriculas'];
             $modelo->url_comprobante = $this->cargarComprobante($modelo);
             if ($modelo->guardar()) {
+                # actualizamos la lista de espera
+                if(isset($this->_p['id_lista_espera'])){
+                    $lista = ListaEspera::modelo()->porPk($this->_p['id_lista_espera']);
+                    $lista->estado = 0;
+                    $lista->guardar();
+                }
                 Sis::Sesion()->flash("alerta", [
                     'msg' => 'Deportista matriculado exitosamente!',
                     'tipo' => 'success',
@@ -60,11 +88,13 @@ class CtrlMatricula extends CControlador {
         
         $deportistas = Deportista::modelo()->getNoMatriculados();
         $categorias = Categoria::modelo()->listar();
+        $clubes = Club::modelo()->listar();
         
         $this->mostrarVista('crear', [
             'modelo' => $modelo,
             'deportistas' => CHtml::modeloLista($deportistas, "id_deportista", "NombreIdentificacion"),
             'categorias' => CHtml::modeloLista($categorias, "id_categoria", "nombre"),
+            'clubes' => CHtml::modeloLista($clubes, "id", "nombre"),
         ]);
     }    
     
@@ -119,8 +149,14 @@ class CtrlMatricula extends CControlador {
         $c->entre("fn_get_edad_deportistas(t.id_deportista)", $this->_p['min'], $this->_p['max']);        
         // $c->noEn();
         $deportistas = Deportista::modelo()->listar($c);
-        $ops = [];
-        foreach($deportistas AS $k=>$v){ $ops[] = CHtml::e('option', $v->NombreIdentificacion . " ($v->edad años) ", ['value' => $v->id_deportista]); }
+        $ops = [
+            CHtml::e('option', 'Seleccione un deportista'),
+        ];
+        foreach($deportistas AS $k=>$v){ 
+            if($v->estaMatriculado() == false){
+                $ops[] = CHtml::e('option', $v->NombreIdentificacion . " ($v->edad años) ", ['value' => $v->id_deportista]); 
+            }
+        }
         $this->json([
             'error' => false,
             'ops' => implode('', $ops),

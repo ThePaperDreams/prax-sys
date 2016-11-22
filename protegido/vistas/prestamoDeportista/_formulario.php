@@ -7,26 +7,33 @@ $formulario->abrir();
         <div class="col-sm-12">
             <div class="form-group">
                 <label>Tipo de préstamo</label>
-                <div class="form-group">        
-                    <div class="btn-group" data-toggle="buttons">
+                <div class="form-group">
+                    <?= CBoot::select('', ['Seleccione un tipo de préstamo', 'entrada' => 'Entrada', 'salida' => 'Salida'], ['id' => 'tipo-prestamo', 'name' => 'PrestamosDeportista[tipo_prestamo]']) ?>
+<!--                     <div class="btn-group" data-toggle="buttons">
                         <label class="btn btn-gr-gray btn-sm <?= $entrada? '' : 'active' ?> btn-type">
                             <input type="radio" name="PrestamosDeportista[tipo_prestamo]" id="option1" <?= $entrada? '' : 'checked="true"' ?> value="salida"> Salida <i class="fa fa-arrow-circle-up"></i>
                         </label>
                         <label class="btn btn-gr-gray btn-type btn-sm  <?= $entrada? 'active' : '' ?> ">
                             <input type="radio" name="PrestamosDeportista[tipo_prestamo]" id="option2" <?= $entrada? 'checked="true"' : '' ?>  value="entrada"> Entrada <i class="fa fa-arrow-circle-down"></i>
                         </label>
-                    </div>
+                    </div> -->
                 </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label for="">Club de origen</label>
+                <?php echo $formulario->lista($modelo, 'club_origen', $clubes, ['defecto' => 'Seleccione un club de destino', 'data-s2' => true]) ?>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label for="">Club destino</label>
+                <?php echo $formulario->lista($modelo, 'club_destino', $clubes, ['defecto' => 'Seleccione un club de destino', 'data-s2' => true]) ?>
             </div>
         </div>
         <div class="col-sm-12">
             <?php echo $formulario->lista($modelo, 'deportista_id', $deportistas, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un deportista', 'data-s2' => true]) ?>
-        </div>
-        <div class="col-sm-6">
-            <?php echo $formulario->campoTexto($modelo, 'club_origen', ['label' => true, 'group' => true, 'maxlength' => 80]) ?>        
-        </div>
-        <div class="col-sm-6">
-            <?php echo $formulario->campoTexto($modelo, 'club_destino', ['label' => true, 'group' => true, 'maxlength' => 80]) ?>        
         </div>
         <div class="col-sm-6">
             <?php echo $formulario->campoTexto($modelo, 'fecha_inicio', ['label' => true, 'readonly' => true, 'group' => true, 'data-date' => true]) ?>                
@@ -51,7 +58,31 @@ $formulario->abrir();
 
 <?php $formulario->cerrar(); ?>
 <script>
+    var club_principal = '<?= Configuracion::get("club_principal") ?>';
     $(function(){
+
+        $("#tipo-prestamo").change(function(){
+            consultarDeportista($(this).val());
+            if($(this).val() == "entrada"){
+                var selectM = $("#PrestamosDeportista_club_origen");
+                var selectM1 = $("#PrestamosDeportista_club_destino");
+            } else if($(this).val() == "salida"){
+                var selectM = $("#PrestamosDeportista_club_destino");
+                var selectM1 = $("#PrestamosDeportista_club_origen");
+            }
+
+            selectM1.select2("destroy");
+            selectM1.val(club_principal);
+            selectM1.select2({width: '100%'});
+            selectM1.select2("enable", false);
+
+            selectM.select2("enable", true);
+            selectM.select2("open");
+
+        });
+
+        $("#PrestamosDeportista_deportista_id").select2("enable", false);
+
         $("#PrestamosDeportista_fecha_inicio").change(function(){
             var fecha1 = $(this);
             var fecha2 = $("#PrestamosDeportista_fecha_fin");
@@ -65,6 +96,30 @@ $formulario->abrir();
             validarFechas();
         });
     });
+
+    function consultarDeportista(tipo){
+        $.ajax({
+            type    : 'POST',
+            url     : '<?= Sis::crearUrl(['prestamoDeportista/ajax']) ?>',
+            data    : {
+                tipo : tipo,
+                ajax : true,
+            }
+        }).done(function(data){ 
+            if(data.error == false){
+                var select = $("#PrestamosDeportista_deportista_id");
+                select.select2("destroy");
+                select.html(data.opciones);
+                select.select2({
+                    width: '100%',
+                });
+                select.select2("enable", true)
+                // select.select2("open");
+            } else {
+                lobiAlert("error", "Ocurrió un error");
+            }
+        });
+    }
 
     function validarFechas(){
         var fecha1 = $("#PrestamosDeportista_fecha_inicio"); 

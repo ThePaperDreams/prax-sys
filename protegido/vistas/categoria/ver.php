@@ -5,6 +5,8 @@ $this->migas = [
     'Ver'
 ];
 
+$this->tituloPagina = "Ver categoría de deportista";
+
 $this->opciones = [
     'elementos' => [
         'Listar' => ['Categoria/inicio'],
@@ -13,7 +15,7 @@ $this->opciones = [
     ]
 ];
 ?>
-<div class="col-sm-8">
+<div class="col-sm-12">
     <div class="panel panel-primary">
         <div class="panel-heading text-center">
             Ver detalles

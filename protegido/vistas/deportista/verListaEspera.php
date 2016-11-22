@@ -31,6 +31,9 @@ $this->complemento('!siscoms.bootstrap3.CBGrid', [
         'fecha_registro',
         'estado' => 'etiquetaEstado',
     ],
+    'opciones' => [
+        ['i' => 'arrow-circle-right', 'url' => 'Matricula/matricular&{id:pk}{d:deportista_id}{c:categoria_id}', 'title' => 'Matricular', 'visible' => '$m->estado == 1'],
+    ],
     'paginacion' => 10,
 ])
 ?>

@@ -154,6 +154,8 @@ class CtrlAcudiente extends CControlador {
                 Sis::apl()->bd->commit();
                 $this->redireccionar('inicio');
             }
+            // var_dump($modelo->getErrores());
+            // exit();
         }
         $url = Sis::crearUrl(['Acudiente/editar', 'id' => $pk]);
         $url2 = Sis::crearUrl(['Acudiente/validarNombreDoc', 'id' => $pk]);

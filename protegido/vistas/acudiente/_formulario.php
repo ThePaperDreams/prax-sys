@@ -98,7 +98,7 @@ $formulario->abrir();
                 <?php foreach ($modelo->Detalles as $detalle): ?>                    
                     <tr id="row-doc-<?= $detalle->id ?>" >
                         <td>
-                            <a href="<?= Sis::UrlBase() . '/publico/documentos/' . $detalle->Documento->url ?>" target="_blank" >
+                            <a class="document-preview" href="<?= Sis::UrlBase() . '/publico/documentos/' . $detalle->Documento->url ?>" target="_blank" >
                                 <?= $detalle->Documento->titulo  ?>
                             </a>
                         </td>
@@ -127,6 +127,23 @@ $formulario->abrir();
     </div>
 </div>
 <?php $formulario->cerrar(); ?>
+<div class="modal fade" id="modal-preview">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Previsualización</h4>
+            </div>
+            <div class="modal-body">
+                <img src="" alt="" id="preview-img">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <a href="#" id="preview-img-download" download class="btn btn-primary">Descargar <i class="fa fa-download"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="modal fade" id="modal-cargar-doc">
     <div class="modal-dialog">
@@ -163,6 +180,14 @@ $formulario->abrir();
 </div>
 
 <script>
+    $(function(){
+        $(".document-preview").click(function(){
+            $("#preview-img").attr("src", $(this).attr("href"));
+            $("#preview-img-download").attr("href", $(this).attr("href"));
+            $("#modal-preview").modal("show");
+            return false;
+        });
+    });
         function agregareldoc(){
         var nombre = $("#nombre-documento").val();
         var file = $("#documento-cargar");

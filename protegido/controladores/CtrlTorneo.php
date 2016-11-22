@@ -116,8 +116,9 @@ class CtrlTorneo extends CControlador{
             $this->guardarEquipos($this->_p['equipos'], $id);
         }
         
-        
-        $usuarios = Usuario::modelo()->listar();
+        $c = new CCriterio();
+        $c->condicion("rol_id", 4);
+        $usuarios = Usuario::modelo()->listar($c);
         $torneo = $this->cargarModelo($id);
         
         $this->vista('gestionarEquipos', [

@@ -1,4 +1,6 @@
 <?php
+Sis::Recursos()->recursoCss(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/css/fileinput.min.css']);
+Sis::Recursos()->recursoJs(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/js/fileinput.min.js']);
 $this->tituloPagina = "Ver matricula";
 $this->migas = [
     'Home' => ['principal/inicio'],
@@ -30,7 +32,15 @@ $this->opciones = [
                 </tr>
                 <tr>
                     <th><?= $modelo->obtenerEtiqueta('url_comprobante') ?></th>
+                    <?php if ($modelo->Comprobante !== false): ?>
                     <td><?= $modelo->Comprobante; ?></td>
+                    <?php else: ?>
+                    <td>
+                        <?= CHtml::e("span", 'Ninguno', ['class' => 'label label-default']); ?> 
+
+                        <a data-toggle="modal" href="#cargar-comprobante-modal" id="cargar-comprobante">¿Cargar comprobante?</a>
+                    </td>
+                    <?php endif ?>
                 </tr>
                 <tr>
                     <th><?= $modelo->obtenerEtiqueta('estado') ?></th>
@@ -51,3 +61,39 @@ $this->opciones = [
 
     </div>
 </div>
+
+<form action="<?= Sis::crearUrl(['matricula/cargar', 'id' => $this->_g['id']]) ?>" method="POST" enctype="multipart/form-data">
+    <div class="modal fade" id="cargar-comprobante-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Cargar comprobante</h4>
+                </div>
+                <div class="modal-body">
+                        <label for="">Seleccione un documento</label>
+                        <div id="file-input-container">
+                            <?= CBoot::fileInput('', ['id' => 'documento-cargar', 'name' => 'Documentos']) ?>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-success">Enviar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    $(function(){
+        $("#documento-cargar").fileinput({
+            showPreview: false,
+            showRemove: false,
+            showUpload: false,
+            browseLabel: "Seleccionar archivo",
+            maxFileSize: 5000,
+            allowedFileExtensions: ['jpg', 'gif', 'png', 'jpeg']
+        });
+    });
+</script>
