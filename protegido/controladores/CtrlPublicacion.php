@@ -97,7 +97,8 @@ class CtrlPublicacion extends CControlador{
     }
     
     private function cargarImagenesGaleria(){
-        $rutaDestino = $rutaDestino = Sis::resolverRuta("!publico.imagenes.galerias");
+        Sis::crearCarpeta("!publico.imagenes.galerias.thumbs");
+        $rutaDestino = $rutaDestino = Sis::resolverRuta(Sis::crearCarpeta("!publico.imagenes.galerias"));
         $nombreImagen = $this->guardarLaImagen($rutaDestino);
         $mImagen = new Imagen();
         $mImagen->url = $nombreImagen;

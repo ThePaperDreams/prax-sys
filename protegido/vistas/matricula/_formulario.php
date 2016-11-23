@@ -40,7 +40,7 @@ $formulario->abrir();
                         <?php echo $formulario->lista($modelo, 'club_id', $clubes, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un club']) ?>
                     </div>
                     <div class="col-sm-6">
-                        <?php echo $formulario->inputAddon($modelo, 'fecha_pago', 'text', ['label' => true, 'readonly' => true, 'group' => true, 'class' => 'campo-fecha'], ['pos' => CBoot::fa('calendar')]) ?>
+                        <?php echo $formulario->inputAddon($modelo, 'fecha_pago', 'text', ['label' => true, 'readonly' => true, 'group' => true, 'class' => 'campo-fecha', 'data-val-maxmin' => true, 'data-only-min' => true], ['pos' => CBoot::fa('calendar')]) ?>
                     </div>
                 </div>
                 <div class="row">

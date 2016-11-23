@@ -21,7 +21,7 @@ $this->complemento('!siscoms.bootstrap3.CBGrid', [
     'ajax' => true,
     'filtrosAjax' => ['deportista_id', 'categoria_id', 'fecha_registro'],
     'exportar' => [
-        'PDF' => ['i' => 'file-pdf-o', 'url' => ['deportista/reporteListaEspera']]
+        // 'PDF' => ['i' => 'file-pdf-o', 'url' => ['deportista/reporteListaEspera']]
     ],
     'modelo' => 'ListaEspera',
     'columnas' => [
@@ -33,6 +33,7 @@ $this->complemento('!siscoms.bootstrap3.CBGrid', [
     ],
     'opciones' => [
         ['i' => 'arrow-circle-right', 'url' => 'Matricula/matricular&{id:pk}{d:deportista_id}{c:categoria_id}', 'title' => 'Matricular', 'visible' => '$m->estado == 1'],
+        ['i' => 'trash', 'url' => 'Deportista/eliminarLista&{id:pk}', 'title' => 'Eliminar de lista', 'opciones' => ['class' => 'op-eliminar']],
     ],
     'paginacion' => 10,
 ])

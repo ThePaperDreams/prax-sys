@@ -74,7 +74,7 @@ $formulario->abrir();
         <hr>
         <div class="row">
             <div class="col-sm-12 text-right">
-                <button class="btn btn-primary" id="next-acudientes">Siguiente</button>
+                <a href="#" class="btn btn-primary" id="next-acudientes">Siguiente</a>
             </div>
         </div>       
     </div>
@@ -158,8 +158,8 @@ $formulario->abrir();
         <hr>
         <div class="row">
             <div class="col-sm-12 text-right">
-                <button class="btn btn-default" id="back-form">Atrás</button>
-                <button class="btn btn-primary" id="next-docs">Siguiente</button>
+                <a href="#" class="btn btn-default" id="back-form">Atrás</a>
+                <a href="#" class="btn btn-primary" id="next-docs">Siguiente</a>
             </div>
         </div>
     </div>
@@ -321,8 +321,13 @@ $formulario->abrir();
 </div>
 
 <script>
+    var enviar_form = false;
+
     $(function(){
         $("#next-acudientes, #back-acus").click(function(){
+            if(!__validar_form__()){ return false; }
+            if(!validarIdentificacion()){ return false; }
+
             var tab = $("a[href='#acus']");
             var nav = tab.closest(".nav-tabs");
             nav.find("li").removeClass("active");
@@ -333,6 +338,8 @@ $formulario->abrir();
         });
 
         $("#next-docs").click(function(){
+            if(!validarAcudiente()){ return false; }
+
             var tab = $("a[href='#documentos']");
             var nav = tab.closest(".nav-tabs");
             nav.find("li").removeClass("active");
@@ -662,6 +669,7 @@ $formulario->abrir();
             return false;
         });
         $("#form-deportistas").submit(function () {
+
             /* validamos que el documento sea diferente de cero */
             if(valIdentificacion()){ return false; }
 
@@ -670,7 +678,8 @@ $formulario->abrir();
             validarSubidaFoto();    
             if (validarAcudiente()) {
                 if (validarDocumentos()) {
-                    validarIdentificacion();                    
+                    validarIdentificacion();
+                    document.getElementById("form-deportistas").submit();                    
                 }
             }
             return false;
@@ -775,8 +784,12 @@ $formulario->abrir();
     function validarIdentificacion() { // validar que la identificacion es unique
         var identificacion = $("#Deportistas_identificacion").val();
         if (identificacion === "") {
-            return;
+            return false;
+        }else if(identificacion.length < 10){
+            lobiAlert("error", "la identificación debe ser mayor o igual a 10 dígitos");
+            return false;
         }
+
         $.ajax({
             type: 'POST',
             url: '<?php echo $url ?>',
@@ -787,11 +800,18 @@ $formulario->abrir();
             success: function (respuesta) {
                 if (respuesta.error === true) {
                     lobiAlert("error", "Ya existe un Deportista con esta Identificación");
+                    var tab = $("a[href='#formulario']");
+                    var nav = tab.closest(".nav-tabs");
+                    nav.find("li").removeClass("active");
+                    tab.parent().addClass("active");
+                    $(".tab-pane").removeClass("active");
+                    $(tab.attr("href")).addClass("active");
                 } else {
-                    document.getElementById("form-deportistas").submit();
+                    // document.getElementById("form-deportistas").submit();
                 }
             }
         });
+        return true;
     }
     
     function validarDocumentos(){ // Validar que se ingrese el nombre y se suba algun archivo a los

@@ -43,8 +43,13 @@ class CtrlUsuario extends CControlador {
             }
         }
         $url = Sis::crearUrl(['Usuario/crear']);
+        $c = new CCriterio();
+        $c->noEn('id_tipo_documento', [2,3]);
+        $tipos = TipoIdentificacion::modelo()->listar($c);
+
         $this->mostrarVista('crear', ['modelo' => $modelo,
             'url' => $url,
+            'tiposIdentificacion' => CHtml::modeloLista($tipos, "id_tipo_documento", "nombre"),
             'roles' => CHtml::modeloLista(Rol::modelo()->listar(), 'id_rol', 'nombre'),
         ]);
     }
@@ -166,9 +171,14 @@ class CtrlUsuario extends CControlador {
             }
         }
         $url = Sis::crearUrl(['Usuario/editar', 'id' => $pk]);
+        $c = new CCriterio();
+        $c->noEn('id_tipo_documento', [2,3]);
+        $tipos = TipoIdentificacion::modelo()->listar($c);
+
         $this->mostrarVista('editar', ['modelo' => $modelo,
             'url' => $url,
             'roles' => CHtml::modeloLista(Rol::modelo()->listar(), 'id_rol', 'nombre'),
+            'tiposIdentificacion' => CHtml::modeloLista($tipos, "id_tipo_documento", "nombre"),
         ]);
     }
 

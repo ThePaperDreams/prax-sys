@@ -9,7 +9,7 @@ $formulario->abrir();
         </div>
         <div class="panel panel-body">
             <div class="col-sm-6">
-                <?= $formulario->inputAddon($modelo, 'fecha', 'text', [ 'readonly' => true, 'label' => true, 'group' => true, 'autofocus' => true, 'data-date' => true], ['pos' => CBoot::fa('calendar')]) ?>
+                <?= $formulario->inputAddon($modelo, 'fecha', 'text', ['data-val-maxmin' => true, 'readonly' => true, 'label' => true, 'group' => true, 'autofocus' => true, 'data-date' => true], ['pos' => CBoot::fa('calendar')]) ?>
                 <?= $formulario->listaM($modelo, 'categoria_id', 'Categoria', 'id_categoria', 'nombre', ['label' => true, 'group' => true, 'defecto' => 'Seleccione una categoría', 'data-s2' => true]) ?>
             </div>
             <div class="col-sm-6">

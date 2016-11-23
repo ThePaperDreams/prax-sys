@@ -57,7 +57,6 @@ class CMRutas {
     private $get;
     
     public function __construct() {
-//        var_dump($_SERVER);exit();
         /**
          * En algunos servidores no se defininen algunas variables, por lo
          * que podría explotar este manejador si no encuentra dichas variables
@@ -85,7 +84,7 @@ class CMRutas {
         $this->esquemaSolicitado = strtolower(substr($e, 0, strpos($e, '/')));
         $this->emailAdmin = $sc['SERVER_ADMIN'];
         $this->scriptSolicitado = $sc['SCRIPT_FILENAME'];
-        $this->peticionUri = $sc['REQUEST_URI'];
+        $this->peticionUri = $sc['REQUEST_URI'];        
         $this->puerto = $sc['SERVER_PORT'];
     }
     
@@ -164,6 +163,10 @@ class CMRutas {
      */
     public function getDominio(){
         return $this->esquemaSolicitado.'://'.$this->httpHost;
+    }
+
+    public function getRUri(){
+        return $this->peticionUri;
     }
     
     /**

@@ -19,10 +19,10 @@ $formulario->abrir();
                 <?php echo $formulario->lista($modelo, 'tipo_id', $TipoEvento, ['defecto' => 'Seleccione un tipo', 'label' => true]) ?>
             </div>   
 <!--             <div class="col-sm-4">
-                <?php echo $formulario->campoTexto($modelo, 'fecha_disponibilidad', ['label' => true, 'group' => true, 'class' => 'campo-fecha', 'readonly' => true]) ?>
+                <?php echo $formulario->campoTexto($modelo, 'fecha_disponibilidad', ['label' => true, 'data-val-maxmin' => true, 'group' => true, 'class' => 'campo-fecha', 'readonly' => true]) ?>
             </div>   -->
             <div class="col-sm-4">
-                <?php echo $formulario->campoTexto($modelo, 'fecha', ['label' => true, 'group' => true, 'class' => 'campo-fecha', 'readonly' => true]) ?>
+                <?php echo $formulario->campoTexto($modelo, 'fecha', ['data-val-maxmin' => true, 'label' => true, 'group' => true, 'class' => 'campo-fecha', 'readonly' => true]) ?>
             </div>  
             <div class="col-sm-4">
             <?php if ($modelo->nuevo == false): ?>

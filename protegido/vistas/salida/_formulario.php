@@ -11,7 +11,7 @@ $formulario->abrir();
     </div>
 </div>
 <div class="col-sm-6">
-    <?php echo $formulario->campoTexto($modelo, 'fecha_entrega', ['readonly' => true, 'label' => true, 'group' => true, 'class'=>'campo-fecha']) ?>
+    <?php echo $formulario->campoTexto($modelo, 'fecha_entrega', ['data-val-maxmin' => true, 'readonly' => true, 'label' => true, 'group' => true, 'class'=>'campo-fecha']) ?>
     <div class="form-group">
         <label for="">Implementos</label>
         <div class="input-group">            

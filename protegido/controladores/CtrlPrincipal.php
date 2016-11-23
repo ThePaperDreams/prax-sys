@@ -14,6 +14,9 @@ class CtrlPrincipal extends CControlador{
     public function inicializar() {
         parent::inicializar();
         $this->plantilla = 'login';
+        # nos aseguramos que no se creen las migas de pan en la navegación
+        # Esto ayuda a que este método no interrumpa con la navegación de urls
+        if($_GET['r'] == 'principal/ajx'){ Sis::apl()->setMigas("false"); }
     }
 
 

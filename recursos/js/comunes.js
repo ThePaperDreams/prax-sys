@@ -102,11 +102,51 @@ function aDate(elementos, data){
 
     elementos.datepicker({
         language: 'es',
-        format: 'yyyy-mm-dd',   
+        format: 'yyyy-mm-dd',
+        startDate: '-2m',
+        endDate: '+2d'
     }).on('changeDate', function(e){
         var el = $(e.delegateTarget);
         el.change();
 
+    });
+
+    /* Capturamos él año maximo y minimo */
+
+    elementos.each(function(k,v){
+        var el = $(v);
+        if(el.attr("data-val-maxmin") != undefined){
+            el.datepicker().on('changeDate', function(event){
+                var input = $(event.delegateTarget);
+                var d = new Date();
+                var selectedDate = event.date;
+                var syear = parseInt(selectedDate.getFullYear());
+                var cyear = parseInt(d.getFullYear());
+                var diff = Math.abs(cyear - syear);
+                var minDiff = cyear - syear;
+                var maxdiff = parseInt($("#max-date-range").val());
+                var min = cyear - maxdiff;
+                var max = cyear + maxdiff;
+                var under = el.attr("data-only-min") != undefined;
+                var currDate = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + (d.getDate() < 10? '0' : '') + d.getDate();
+
+                if(under == true && (selectedDate > d || diff > maxdiff)){
+                    lobiAlert("error", "Debe ingresar una fecha inferior o igual a la de hoy y superior al año " + min);
+                    setTimeout(function(){
+                        input.val(currDate);
+                    }, 100);
+
+                } else {
+                    if(diff > maxdiff){ 
+                        lobiAlert("error", "Por favor ingrese una fecha comprendida entre " + min + " y " + max);
+                        setTimeout(function(){
+                            input.val(currDate);
+                        }, 100);
+                    }                    
+                }
+
+            });
+        }
     });
 }
 

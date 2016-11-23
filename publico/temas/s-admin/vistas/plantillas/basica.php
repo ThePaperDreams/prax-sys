@@ -58,7 +58,7 @@ Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . "/librerias/bootstrap-
         <meta name="format-detection" content="telephone=no">
         <link rel="icon" href="<?= Sis::UrlRecursos() ?>pics/logo.ico">
     </head>
-    <body id="skin-cloth">
+    <body id="skin-cloth">        
         <header id="header" class="media">
             <a href="#" id="menu-toggle"></a> 
             <a class="logo pull-left" href="<?= Sis::UrlBase() ?>">
@@ -113,6 +113,9 @@ Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . "/librerias/bootstrap-
         <div class="clearfix"></div>
         
         <section id="main" class="p-relative" role="main">
+            <div id="configs" style="display: none">
+                <input type="hidden" id="max-date-range" value="<?= Configuracion::get('max_date_range') ?>">
+            </div>
             <aside id="sidebar">
                 <!-- Sidbar Widgets -->
                 <div class="side-widgets overflow">

@@ -27,7 +27,7 @@ $formulario->abrir();
             </div>
             <div class="col-sm-6">
                     <div class="form-group">
-                        <?php echo $formulario->inputAddon($modelo, 'fecha_disponibilidad','texto', ['readonly' => true, 'label' => true, 'group' => true, 'class' => 'campo-fecha', 'id'=>'calendar' ],['pos' => CBoot::fa('calendar-check-o')]) ?>   
+                        <?php echo $formulario->inputAddon($modelo, 'fecha_disponibilidad','texto', ['data-val-maxmin' => true, 'readonly' => true, 'label' => true, 'group' => true, 'class' => 'campo-fecha', 'id'=>'calendar' ],['pos' => CBoot::fa('calendar-check-o')]) ?>   
                     </div>    
             </div>
             <div class="col-sm-6">

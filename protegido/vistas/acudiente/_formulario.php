@@ -9,11 +9,15 @@ $formulario->abrir();
 <div class="tile p-15">
 <p>Los campos con <span class="text-danger">*</span>  son requeridos</p>
 <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#formulario" aria-controls="formulario" role="tab" data-toggle="tab">Acudiente</a></li>
-    <li role="presentation"><a href="#documentos" aria-controls="documentos" role="tab" data-toggle="tab">Documentos</a></li>
+    <li role="presentation" class="active"><a href="#formulario" aria-controls="formulario" role="tab" >Acudiente</a></li>
+    <li role="presentation"><a href="#documentos" aria-controls="documentos" role="tab" >Documentos</a></li>
 </ul>
+
 <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="formulario">
+        
+        <input type="hidden" name="Acudientes[usuario_id]" value="" id="usuario_id">
+
         <div class="row">
             <div class="col-sm-6">
                 <?php echo $formulario->lista($modelo, 'tipo_doc_id', $tiposIdentificaciones, ['label' => true, 'group' => true, 'defecto' => 'Tipo de documento', 'data-s2' => true]) ?>
@@ -54,6 +58,12 @@ $formulario->abrir();
                 <?php echo $formulario->campoTexto($modelo, 'email', ['label' => true, 'group' => true, 'maxlength' => '60']) ?>
             </div>
         </div>                    
+        <hr>
+        <div class="row">
+            <div class="col-sm-12 text-right">
+                <a href="#" class="btn btn-primary tab-next" id="next-docs" data-target="#documentos">Siguiente</a>
+            </div>
+        </div>       
     </div>
         
     <div role="tabpanel" class="tab-pane" id="documentos">
@@ -115,16 +125,22 @@ $formulario->abrir();
 
         <?php endif ?>
         
+        <hr>
+        <div class="row">
+            <div class="col-sm-offset-4 col-sm-2">
+                <a href="#" class="btn btn-default btn-block tab-next" id="next-form" data-target="#formulario" id="back-acus">Atrás</a>
+            </div>
+            <div class="col-sm-3">
+                <?php echo CHtml::link(CBoot::fa('undo') . ' Cancelar', ['acudiente/inicio'], [ 'class' => 'btn btn-primary btn-block']); ?>
+            </div>
+            <div class="col-sm-3">
+                <?php echo CBoot::boton(CBoot::fa('save') . ' ' . ($modelo->nuevo ? 'Guardar' : 'Actualizar'), 'success', ['id' => 'save-btn', 'class' => 'btn-block']); ?>
+            </div>
+        </div>  
+
     </div>
+
 </div>
-    <div class="row">
-        <div class="col-sm-offset-6 col-sm-3">
-            <?php echo CHtml::link(CBoot::fa('undo') . ' Cancelar', ['acudiente/inicio'], [ 'class' => 'btn btn-primary btn-block']); ?>
-        </div>
-        <div class="col-sm-3">
-            <?php echo CBoot::boton(CBoot::fa('save') . ' ' . ($modelo->nuevo ? 'Guardar' : 'Actualizar'), 'success', ['id' => 'save-btn', 'class' => 'btn-block']); ?>
-        </div>
-    </div>
 </div>
 <?php $formulario->cerrar(); ?>
 <div class="modal fade" id="modal-preview">
@@ -181,14 +197,86 @@ $formulario->abrir();
 
 <script>
     $(function(){
+        $("#Acudientes_identificacion").blur(function(){
+            validarExistenciaUsuario();
+        });
         $(".document-preview").click(function(){
             $("#preview-img").attr("src", $(this).attr("href"));
             $("#preview-img-download").attr("href", $(this).attr("href"));
             $("#modal-preview").modal("show");
             return false;
         });
+
+        $("#next-docs").click(function(){
+            if(!__validar_form__()){ return false; }
+            validarIdentificacion();
+
+            var tab = $("a[href='" + $(this).attr("data-target") + "']");
+            var nav = tab.closest(".nav-tabs");
+            nav.find("li").removeClass("active");
+            tab.parent().addClass("active");
+            $(".tab-pane").removeClass("active");
+            $(tab.attr("href")).addClass("active");
+            return false;
+
+        });
+
+        $("#next-form").click(function(){
+            var tab = $("a[href='" + $(this).attr("data-target") + "']");
+            var nav = tab.closest(".nav-tabs");
+            nav.find("li").removeClass("active");
+            tab.parent().addClass("active");
+            $(".tab-pane").removeClass("active");
+            $(tab.attr("href")).addClass("active");
+            return false;
+        });
     });
-        function agregareldoc(){
+
+    function validarExistenciaUsuario(){
+        $.ajax({
+            type: 'POST',
+            url: '<?= Sis::crearUrl(["acudiente/ajx"]) ?>',
+            data: {
+                'consultar-usuario' : true,
+                documento : $("#Acudientes_identificacion").val(),
+                ajx:true,
+            },
+        }).done(function(data){
+            if(data.error == false){
+                if(data.existe == true){
+                    Lobibox.confirm({
+                        title: 'Documento ya registrado',
+                        msg: 'Este documento ya está asociado a un usuario, puede indicar que este usuario también es acudiente ¿Desea continuar?',
+                        buttons: {
+                            yes: {class: 'btn btn-success', text: 'Si'},
+                            no: {class: 'btn btn-default', text: 'No'},
+                        },
+                        callback: function($this, type, evt){
+                            if(type == 'yes'){
+                                $("#Acudientes_nombre1").val(data.primer_nombre);
+                                $("#Acudientes_apellido1").val(data.primer_apellido);
+                                $("#Acudientes_telefono1").val(data.telefono);
+                                $("#Acudientes_email").val(data.email);
+                                $("#Acudientes_nombre1").focus().select();
+                                $("#usuario_id").val(data.id_usuario);
+                            } else {
+                                $("#Acudientes_identificacion").focus().select();
+                                lobiAlert("error", "Debe ingresar un documento diferente");
+                                $("#save-btn").attr("disabled", "disabled");
+                                $("#usuario_id").val("");
+                            }
+                        }
+                    });
+                } else {
+                    $("#save-btn").removeAttr("disabled");
+                }
+            } else {
+                console.log("error al consultar");
+            }
+        });
+    }
+
+    function agregareldoc(){
         var nombre = $("#nombre-documento").val();
         var file = $("#documento-cargar");
         var tipoDoc = $("#TiposDocumento_id_tipo").val();
@@ -349,6 +437,7 @@ $formulario->abrir();
         $("#form-acudientes").submit(function () {
             if (validarDocumentos() && validarEmail()) {
                 validarIdentificacion();
+                document.getElementById("form-acudientes").submit();
             }            
             return false;
         });
@@ -369,8 +458,17 @@ $formulario->abrir();
             success: function (respuesta) {
                 if (respuesta.error === true) {
                     lobiAlert("error", "Ya existe un Acudiente con esta Identificación");
+                    setTimeout(function(){
+                        var tab = $("a[href='#formulario']");
+                        var nav = tab.closest(".nav-tabs");
+                        nav.find("li").removeClass("active");
+                        tab.parent().addClass("active");
+                        $(".tab-pane").removeClass("active");
+                        $(tab.attr("href")).addClass("active");
+                        return false;
+                    }, 100);
                 } else {
-                    document.getElementById("form-acudientes").submit();
+                    // document.getElementById("form-acudientes").submit();
                 }
             }
         });

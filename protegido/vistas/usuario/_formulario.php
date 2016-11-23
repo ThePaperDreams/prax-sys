@@ -7,6 +7,16 @@ $formulario->abrir();
 
 <div class="tile p-15">
     <p>Los campos con <span class="text-danger">*</span>  son requeridos</p>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <?php echo $formulario->lista($modelo, 'tipo_identificacion', $tiposIdentificacion, ['label' => true, 'group' => true, 'autofocus' => true, 'defecto' => 'Seleccione un tipo de identificación']) ?>
+        </div>
+        <div class="col-sm-6">
+            <?php echo $formulario->campoTexto($modelo, 'identificacion', ['label' => true, 'group' => true, 'maxlength' => '40']) ?>        
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-sm-6">
             <?php echo $formulario->lista($modelo, 'rol_id', $roles, ['label' => true, 'group' => true, 'autofocus' => true, 'defecto' => 'Seleccione un Rol']) ?>
@@ -83,6 +93,7 @@ $formulario->abrir();
 </div>
 <script>
     $(function () {
+
         $("#usuario-clave").attr("title", "La Clave debe contener: 6 o más caracteres, mínimo un número, una letra minúscula y una letra mayúscula.");
         $("#Usuarios_nombre_usuario").attr("title", "El Nombre de Usuario debe contener: 6 o más caracteres.");
         $('[data-toggle="tooltip"]').tooltip();         
@@ -107,8 +118,8 @@ $formulario->abrir();
             return false;
         });
     });
-    
-        function validarUsuarioEmail() {
+        
+    function validarUsuarioEmail() {
         var email = $("#Usuarios_email").val();
         var usuario = $("#Usuarios_nombre_usuario").val();
         if (email === "" || usuario === "" || usuario.length < 6) {

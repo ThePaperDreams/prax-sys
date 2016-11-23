@@ -11,6 +11,19 @@ class CtrlDeportista extends CControlador {
     public $ayudaTitulo;
 
     private $tipoDocDef = 3;
+
+    public function accionEliminarLista($pk){
+        $lista = ListaEspera::modelo()->porPk($pk);
+        if($lista !== null){
+            if($lista->eliminar()){
+                $this->alertar("success", "Se eliminó correctamente de la lista de espera");                
+            } else {
+                $this->alertar("error", "Ocurrió un error al eliminar de la lista de espera");
+            }
+        }
+        $this->redireccionar('verListaEspera');
+    }
+
     /**
      * Esta función muestra el inicio y una tabla para listar los datos
      */
@@ -405,7 +418,7 @@ class CtrlDeportista extends CControlador {
 
         if(isset($this->_p['btn-vista'])){
             $this->limpiarPost($this->_p);
-            var_dump($this->p);exit();
+            
             $criterios->unionIzq("tbl_matriculas", "m")
                 ->donde("t.id_deportista", "=", "m.deportista_id")
                 ->condicion($concat, $this->_p['deportista'], 'LIKE')

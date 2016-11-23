@@ -48,6 +48,7 @@ class Acudiente extends CModelo{
             'telefono2',
             'estado' => ['def' => '1'],
             'tipo_doc_id',
+            'usuario_id',
         ];
     }
 

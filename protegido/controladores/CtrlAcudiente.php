@@ -54,11 +54,8 @@ class CtrlAcudiente extends CControlador {
         $modelo = new Acudiente();
         $modelo2 = new TipoDocumento();
         $modelo->tipo_doc_id = $this->tipoDocDef;
-        /* Probancia 
-        echo "<pre>";
-        var_dump($this->_p['TipoDocumentos'], $this->_p['Documentos'],$this->_p['NombresDocumentos']);
-        exit(); */
-        if (isset($this->_p['Acudientes'])) {            
+        if (isset($this->_p['Acudientes'])) {        
+
             Sis::apl()->bd->begin();
             $modelo->atributos = $this->_p['Acudientes'];
             $modelo->identificacion = trim($this->_p['Acudientes']['identificacion']);
@@ -178,6 +175,27 @@ class CtrlAcudiente extends CControlador {
         if(isset($this->_p['remover-doc'])){
             $this->removerDoc();
         }
+
+        if(isset($this->_p['consultar-usuario'])){
+            $this->consultarUsuario();
+        }
+    }
+
+    private function consultarUsuario(){
+        $c = new CCriterio();
+        $c->condicion("identificacion", $this->_p['documento']);
+        $usuario = Usuario::modelo()->primer($c);
+        if($usuario == null){ $usuario = new Usuario(); }
+
+        $this->json([
+            'error' => false,
+            'existe' => $usuario->id_usuario != null,
+            'primer_nombre' => $usuario->nombres,
+            'primer_apellido' => $usuario->apellidos,
+            'telefono' => $usuario->telefono,
+            'email' => $usuario->email,
+            'id_usuario' => $usuario->id_usuario,
+        ]);
     }
 
     private function removerDoc(){

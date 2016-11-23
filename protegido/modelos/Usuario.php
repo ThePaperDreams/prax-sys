@@ -49,6 +49,7 @@ class Usuario extends CModelo {
             'foto',
             'url_recuperacion',
             'identificacion',
+            'tipo_identificacion',
         ];
     }
     
@@ -87,6 +88,8 @@ class Usuario extends CModelo {
             'clave' => 'Clave',
             'recuperacion' => 'Recuperación',
             'estado' => 'Estado',
+            'identificacion' => 'Identificación',
+            'tipo_identificacion' => 'Tipo de identificación',
             'foto' => 'Foto',
         ];
     }

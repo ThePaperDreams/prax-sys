@@ -50,6 +50,8 @@ final class CAplicacionWeb {
     private $modoProduccion = false;
     private $apacheRewrite = false;
     private $version = "1.0.0";
+
+    private $migas = true;
     
     /***************************************************************
      *  Manejadores                                                *
@@ -144,14 +146,42 @@ final class CAplicacionWeb {
     public function iniciar(){
         $this->iniciarConfiguraciones();
         $this->prepararRuta();
-        
+
         if($this->nombreModulo !== null){
             #flujo con módulo
             $this->flujoConModulo($this->nombreModulo);
         } else {
             #flujo sin módulo
             $this->flujoNormal();
+        }      
+    }
+
+    public function setMigas($migas){
+        $this->migas = $migas;
+    }
+
+    private function guardarUrls(){
+        if($this->migas == false){ return false; }
+        $urls = [];
+        if($this->sesion->getAtributo("rutas") !== false){
+            $urls = $this->sesion->getAtributo("rutas");
+        } else {
+            $urls = [
+                'urlAnterior' => $this->urlActual(),
+                'urlActual' => $this->urlActual(),
+            ];
         }
+
+        if($urls['urlActual'] !== $this->urlActual()){
+            $urls['urlAnterior'] = $urls['urlActual'];
+            $urls['urlActual'] = $this->urlActual();
+        }
+        $this->sesion->setAtributo('rutas', $urls);
+    }
+
+    public function urlAnterior(){
+        $rutas = $this->sesion->getAtributo('rutas');
+        return $rutas != false? $rutas['urlAnterior'] : false;
     }
     
     /**
@@ -161,11 +191,16 @@ final class CAplicacionWeb {
     private function flujoNormal(){
         $this->controlador = $this->cargarControlador();
         $this->controlador->inicializar();
+
+        $this->guardarUrls();
+
         $this->controlador->antesDeIniciar();
         $this->disInicializarCotrolador($this->controlador);
         # definimos la ruta dependiendo del controlador invocado y la acción cargada
         $this->ruta = $this->controlador->ID."/".$this->controlador->getAccion();
         $this->controlador->iniciar();
+        
+        # guardamos las url de la navegación
     }
     
     /**
@@ -495,7 +530,7 @@ final class CAplicacionWeb {
     }
     
     public function urlActual(){
-        return $this->crearUrl([$this->ruta]);
+        return $this->rutas->getDominio() . $this->rutas->getRUri();
     }
     
     /**
@@ -646,5 +681,9 @@ final class CAplicacionWeb {
      */
     public function getVersion(){
         return $this->version;
+    }
+
+    public function getUrlAnterior(){
+
     }
 }

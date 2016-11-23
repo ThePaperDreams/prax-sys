@@ -94,27 +94,33 @@ class CFormulario {
     }
     
     private function registrarScript(){
-        $script = 'var _enviar = true;' .
+        $script = 'function __validar_form__(){'.
+                'var enviar = true;' . 
+                '$("#' . $this->id . ' [requerido]").each(function(k, v){' . 
+                    'var elemento = $(v);' . 
+                    'if(elemento.attr("data-err-target") !== undefined){' .
+                        'var error = $("#err-" + elemento.attr("data-err-target"));' . 
+                    '} else {' . 
+                        'var error = elemento.closest(".form-group").parent().find(".form-requerido");' . 
+                    '}' .
+                    'if($.trim(elemento.val()) === ""){' . 
+                        'enviar = false;' . 
+                        'error.show();' . 
+                    '}else {' . 
+                        'error.hide();' . 
+                    '}' . 
+                '});' . 
+                'return enviar;' . 
+            '}';
+
+        $script .= 'var _enviar = true;' .
                 '/* JAKO */' .  
-                '$(function(){ $("#' . $this->id . '").submit(function(){' .
-                    'var enviar = true;' . 
-                    '$("#' . $this->id . ' [requerido]").each(function(k, v){' . 
-                        'var elemento = $(v);' . 
-                        'if(elemento.attr("data-err-target") !== undefined){' .
-                            'var error = $("#err-" + elemento.attr("data-err-target"));' . 
-                        '} else {' . 
-                            'var error = elemento.closest(".form-group").parent().find(".form-requerido");' . 
-                        '}' .
-                        'if($.trim(elemento.val()) === ""){' . 
-                            'enviar = false;' . 
-                            'error.show();' . 
-                        '}else {' . 
-                            'error.hide();' . 
-                        '}' . 
-                    '});' . 
+                '$(function(){ $("#' . $this->id . '").submit(function(){' .                    
+                    'var enviar = __validar_form__();' . 
                     '_enviar = enviar;' . 
-                    'return enviar;' . 
+                    'return enviar;' .
                 '}); });';
+
         Sis::Recursos()->Script($script, CMRecursos::POS_HEAD);
     }
     

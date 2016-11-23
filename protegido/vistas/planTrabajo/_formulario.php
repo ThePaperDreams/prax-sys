@@ -14,10 +14,10 @@ $formulario->abrir();
             <div class="row">
               <div class="col-sm-12">
                 <div class="col-sm-6">
-                    <?=  $formulario->inputAddon($modelo, 'fecha_aplicacion', 'text', ['class' => 'campo-fecha', 'label' => true, 'group' => true, 'autofocus' => true, 'readonly' => true], ['pos' => CBoot::fa('calendar')]) ?>
+                    <?=  $formulario->inputAddon($modelo, 'fecha_aplicacion', 'text', ['autofocus' => true, 'class' => 'campo-fecha', 'data-val-maxmin' => true, 'label' => true, 'group' => true, 'autofocus' => true, 'readonly' => true], ['pos' => CBoot::fa('calendar')]) ?>
                 </div>
                   <div class="col-sm-6">
-                    <?=  $formulario->listaM($modelo, 'categoria_id', 'Categoria' ,'id_categoria', 'nombre', ['class' => 'campo-fecha', 'label' => true, 'group' => true, 'defecto' => 'Selecione una categoría','data-s2' => true]) ?>
+                    <?=  $formulario->listaM($modelo, 'categoria_id', 'Categoria' ,'id_categoria', 'nombre', ['label' => true, 'group' => true, 'defecto' => 'Selecione una categoría','data-s2' => true]) ?>
                     <div class="form-group">
                         <label for="">Descripción <span id="total-chars">0</span>/<span id="max-chars">500</span> </label>
                         <?=  $formulario->areaTexto($modelo, 'descripcion', ['rows' => 5]) ?>
