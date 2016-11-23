@@ -19,7 +19,7 @@ $this->tituloPagina="Préstamo de implementos";
     ],
     'filtrosAjax' => [
         'fecha_realizacion',
-        'fecha_entrega', 
+        'fecha_entrega' => CBoot::text('', ['name' => 'fecha_entrega', 'class' => 'campo-fecha']), 
         'estado' => CBoot::select('', ['Inactivo', 'Activo', 'Devuelto'], ['defecto' => 'Estado', 'style' => 'min-width: 150px;', 'name' => 'estado']),
         'responsable_id', 
      ],

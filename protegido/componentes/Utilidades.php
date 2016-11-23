@@ -51,9 +51,68 @@ class Utilidades extends CComponenteAplicacion{
 			$this->notiEventosHoy();
 			$this->notiEventos();	
 			$this->notiComentarios();
-
+			$this->listaEspera();
+			$this->entregaImplementos();
 		}
 		return $this->notificaciones;
+	}
+
+	private function entregaImplementos(){
+		$c = new CCriterio();
+		$c->condicion("fecha_entrega", date("Y-m-d"));
+		$implementos = Salida::modelo()->contar($c);
+		# implementos que se entregan el día actual
+		if($implementos > 0){
+			$this->notificaciones[] = [
+				'texto' => 'Hay implementos que deben ser recibidos hoy',
+				'icono' => 'exchange',
+				'url' => Sis::crearUrl(['salida/inicio']),
+			];
+		}
+
+		# implementos que ya vencio la entrega
+		$c->limpiar('condicion');
+		$c->condicion("fecha_entrega", date("Y-m-d"), '<')
+			->y("estado", 1);
+		$implementos = Salida::modelo()->contar($c);
+
+		if($implementos > 0){
+			$this->notificaciones[] = [
+				'texto' => 'Hay implementos préstados cuya fecha de entrega expiró',
+				'icono' => 'exclamation-triangle',
+				'url' => Sis::crearUrl(['salida/inicio']),
+			];
+		}
+	}
+
+	private function listaEspera(){
+		$cl = new CCriterio();
+		$cl->condicion("estado", 1)
+			->agrupar("categoria_id");
+		$listaEspera = CHtml::modeloLista(ListaEspera::modelo()->listar($cl), 'id_lista', 'categoria_id');
+
+		$disponibles = [];
+		
+		if(count($listaEspera) > 0){
+			$cc = new CCriterio();
+			$cc->en("id_categoria", $listaEspera);
+			$categorias = Categoria::modelo()->listar($cc);
+
+			foreach($categorias AS $k=>$v){
+				if($v->getDisponibilidad() > 0){
+					$disponibles[] = $v->nombre;
+				}
+			}
+		}
+
+		if(count($disponibles) > 0){
+			$this->notificaciones[] = [
+				'texto' => 'Hay deportistas en lista de espera para las categorías: <b>' . implode(', ', $disponibles) . '</b>',
+				'icono' => 'check-circle-o',
+				'url' => Sis::crearUrl(['deportista/verListaEspera']),
+			];
+		}
+
 	}
 
 	private function notiEventos(){

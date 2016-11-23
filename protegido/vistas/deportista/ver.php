@@ -153,7 +153,19 @@ $this->opciones = [
                 <tbody>
                     <?php foreach ($modelo->Acudiente AS $dc): ?>
                         <tr>                                    
-                            <td><?= $dc->Acudiente->getAcudiente($dc->Acudiente->id_acudiente, $dc->Acudiente->datos); ?></td>            
+                            <!-- <td><?= $dc->Acudiente->getAcudiente($dc->Acudiente->id_acudiente, $dc->Acudiente->datos); ?></td>             -->
+                            <td>
+                                <?= CHtml::link($dc->Acudiente->identificacion . " - " . $dc->Acudiente->nombreCompleto, '#', [
+                                    'data-ide' => $dc->Acudiente->identificacion,
+                                    'data-n' => $dc->Acudiente->nombre1 . " " . $dc->Acudiente->nombre2,
+                                    'data-a' => $dc->Acudiente->apellido1 . " " . $dc->Acudiente->apellido2,
+                                    'data-email' => $dc->Acudiente->email,
+                                    'data-t1' => $dc->Acudiente->telefono1,
+                                    'data-t2' => $dc->Acudiente->telefono2,
+                                    'data-d' => $dc->Acudiente->direccion,
+                                    'class' => 'btn-acudiente',
+                                ]) ?>
+                            </td>
                         </tr>
                     <?php endforeach ?>
                 </tbody>
@@ -181,9 +193,69 @@ $this->opciones = [
     </div>
 </div>
 
+
+<div class="modal fade" id="modal-acudiente">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Información del acudiente</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered table-hover">
+                    <tr>
+                        <th>Identificación: </th>
+                        <td id="acu-ide"></td>
+                    </tr>
+                    <tr>
+                        <th>Nombres: </th>
+                        <td id="acu-nombre"></td>
+                    </tr>
+                    <tr>
+                        <th>Apellidos: </th>
+                        <td id="acu-apellido"></td>
+                    </tr>
+                    <tr>
+                        <th>Email: </th>
+                        <td id="acu-email"></td>
+                    </tr>
+                    <tr>
+                        <th>Dirección: </th>
+                        <td id="acu-dir"></td>
+                    </tr>
+                    <tr>
+                        <th>Teléfono: </th>
+                        <td id="acu-tel"></td>
+                    </tr>
+                    <tr>
+                        <th>Teléfono 2: </th>
+                        <td id="acu-tel2"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     $(function () {
-        
+        $(".btn-acudiente").click(function(){
+            var e = $(this);
+            $("#acu-ide").html(e.attr("data-ide"));
+            $("#acu-nombre").html(e.attr("data-n"));
+            $("#acu-apellido").html(e.attr("data-a"));
+            $("#acu-email").html(e.attr("data-email"));
+            $("#acu-tel").html(e.attr("data-t1"));
+            $("#acu-tel2").html(e.attr("data-t2"));
+            $("#acu-dir").html(e.attr("data-d"));
+
+            $("#modal-acudiente").modal("show");
+            return false;
+        }); 
+
         $(".document-preview").click(function(){
             $("#preview-img").attr("src", $(this).attr("href"));
             $("#preview-img-download").attr("href", $(this).attr("href"));

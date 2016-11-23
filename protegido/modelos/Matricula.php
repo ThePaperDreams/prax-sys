@@ -153,16 +153,28 @@ class Matricula extends CModelo {
         ]);
         $ids = [];
         foreach($matriculas AS $m){  $ids[] = $m->deportista_id; }
+        $c = new CCriterio();
         # si se llama para registrar una matricula
-        if($matricula){
-            $deportistas = Deportista::modelo()->listar([
-                'where' => "id_deportista NOT IN (" . implode(',', $ids) . ")",
-            ]);
-        } else {
-            $deportistas = Deportista::modelo()->listar([
-                'where' => "id_deportista NOT IN (" . implode(',', $ids) . ") AND estado_id <> 4",
-            ]);
+        // if($matricula){
+        //     // $deportistas = Deportista::modelo()->listar([
+        //     //     'where' => "id_deportista NOT IN (" . implode(',', $ids) . ")",
+        //     // ]);            
+        // } else {
+
+        //     // $deportistas = Deportista::modelo()->listar([
+        //     //     'where' => "id_deportista NOT IN (" . implode(',', $ids) . ") AND estado_id <> 4",
+        //     // ]);
+        // }
+
+        if(!$matricula){
+            $c->condicion("estado_id", 4, '<>');
         }
+
+        if(count($ids) > 0){
+            $c->noEn("id_deportista", $ids);
+        }
+
+        $deportistas = Deportista::modelo()->listar($c);
         return $deportistas;
                 
     }

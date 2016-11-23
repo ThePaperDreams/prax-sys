@@ -399,7 +399,7 @@ $formulario->abrir();
             $("#nombre-documento").focus();
             return false;
         }else if($.trim(file.val()) == ""){
-            lobiAlert("error", "Debe ingresar un nombre al archivo");
+            lobiAlert("error", "Debe cargar un archivo");
             file.focus();
             return false;
         } else if($("[data-doc='" + nombre + "']").length > 0){

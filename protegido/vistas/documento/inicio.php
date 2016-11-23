@@ -26,6 +26,26 @@
         
     </div>
 </div>
+
+<div class="modal fade" id="modal-preview">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Previsualización: <span id="img-title"></span></h4>
+            </div>
+            <div class="modal-body">
+                <img src="" alt="" id="preview-img">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <a href="#" id="preview-img-download" download class="btn btn-primary">Descargar <i class="fa fa-download"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script>
     $(function(){
         $(".carpeta-adentro").click(function(){ abrirCarpeta($(this)); });
@@ -73,9 +93,22 @@
                 $("#carpetas").html(obj.items);
                 $(".carpeta-adentro").click(function(){ abrirCarpeta($(this)); });
                 $(".carpeta-atras").click(function(){ abrirCarpeta($(this), true); });
+                $(".preview-doc").click(function(){
+                    mostrarDoc($(this));
+                    return false;
+                });
                 enviar = true;
             }
         });
+    }
+
+    function mostrarDoc(doc){
+        $("#preview-img").attr("src", doc.attr("href"));
+        var li = doc.closest("li");
+        var title = li.attr("data-nombre");
+        $("#img-title").html(title);
+        $("#preview-img-download").attr("href", doc.attr("href")).attr("download", doc.attr("download"));
+        $("#modal-preview").modal("show");
     }
     
 </script>

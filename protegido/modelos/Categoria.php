@@ -143,6 +143,12 @@ class Categoria extends CModelo {
         ]);
         return $matriculas;
     }
+
+    public function getDisponibilidad(){
+        $matriculados = intval($this->getMatriculados());
+        return intval($this->cupo_maximo) - $matriculados;
+    }
+
     /**
      * 
      */

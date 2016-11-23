@@ -21,31 +21,38 @@ Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . 'librerias/customScro
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <div class="p-15"></div>
-                        <div class="row">
-                            <div class="alert alert-info">
+                        <div class="row" id="buttons-options">
+                            <div class="col-sm-8">
                                 <table class="table table-condensed">
-                                    <tr>
-                                        <td>Edad máxima de jugadores: </td>
-                                        <td><?= $torneo->edad_maxima ?> años</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Máximo equipos: </td>
-                                        <td><?= $torneo->cupo_maximo ?></td>
-                                    </tr>
+                                    <thead>
+                                        <tr>
+                                            <th colspan="2">Información del torneo</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th>Edad máxima de jugadores: </th>
+                                            <td><?= $torneo->edad_maxima ?> años</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Mínimo de equipos: </th>
+                                            <td><?= $torneo->cupo_minimo ?></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Máximo equipos: </th>
+                                            <td><?= $torneo->cupo_maximo ?></td>
+                                        </tr>
+                                    </tbody>
                                 </table>
                             </div>
+                            <div class="col-sm-4">
+                                <a href="<?= Sis::apl()->crearUrl(['torneo/inicio']) ?>" class="btn btn-default btn-block">Volver </a>                            
+                                <button type="submit" class="btn btn-success btn-block" id="finish-editing">Guardar equipos <i class="fa fa-send"></i></button>
+                                <a href="#" id="btn-show-form" class="btn btn-primary btn-block">Nuevo equipo <i class="fa fa-plus"></i></a>
+                            </div>
+                            <hr>
                         </div>
-                        <div class="row" id="buttons-options">
-                            <div class="col-sm-4">
-                                <a href="<?= Sis::apl()->crearUrl(['torneo/inicio']) ?>" class="btn btn-default btn-block">Cancelar </a>
-                            </div>
-                            <div class="col-sm-4">
-                                <a href="#" id="btn-show-form" class="btn btn-primary btn-block">Agregar equipo <i class="fa fa-plus"></i></a>
-                            </div>
-                            <div class="col-sm-4">
-                                <button type="submit" class="btn btn-success btn-block" id="finish-editing">Terminar <i class="fa fa-send"></i></button>
-                            </div>
-                        </div>
+
                         <div id="form-team" style="display:none;">
 
                             <div class="row">                        
@@ -58,7 +65,7 @@ Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . 'librerias/customScro
                                     <?= CBoot::select('', $usuarios, ['group' => true, 'label' => 'Entrenador', 'defecto' => 'Seleccione un entrenador', 'id' => 'entrenador']) ?>
                                 </div>
                                 <div class="col-sm-6">
-                                    <?= CBoot::number('', ['group' => true, 'label' => 'Máximo de Jugadores', 'min' => '1', 'id' => 'cupo-max']) ?>
+                                    <?= CBoot::number('', ['group' => true, 'label' => 'Máximo de Jugadores', 'min' => '1', 'id' => 'cupo-max', 'max' => '30', 'class' => 'dont-overpass']) ?>
                                 </div>
                             </div>
                             <div class="row">
@@ -120,21 +127,25 @@ Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . 'librerias/customScro
 <div class="col-sm-6">
     <div class="tile p-15">
         <div class="row p-15">
-            <h3>Jugadores</h3>
-            <div class="alert alert-info">
-                Seleccione la categoría en la cual desea buscar jugadores. Una vez seleccionada la categoría puede 
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            </div>
-            <div id="filtros-deportista">
-                <?= CBoot::select('', $categorias, ['id' => 'cmb-categoria', 'defecto' => 'Seleccione una categoría', 'data-s2' => true, 'group' => true]) ?>
-                <?= CBoot::text('',['placeholder' => 'Ingrese el nombre del deportista']) ?>                
-            </div>
-            <hr>
-            <div class="contenedor-jugadores">
-                <ul id="listado-deportistas" class="listado-deportistas sorteable">
+            <div id="panel-players" style="<?= count($torneo->Equipos) > 0? '' : 'display: none;'; ?>">
+                            
+                <h3>Jugadores</h3>
+                <div class="alert alert-info">
+                    Seleccione la categoría en la cual desea buscar jugadores. Una vez seleccionada la categoría puede 
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                </div>
+                <div id="filtros-deportista">
+                    <?= CBoot::select('', $categorias, ['id' => 'cmb-categoria', 'defecto' => 'Seleccione una categoría', 'data-s2' => true, 'group' => true]) ?>
+                    <?= CBoot::text('',['placeholder' => 'Ingrese el nombre del deportista']) ?>                
+                </div>
+                <hr>
+                <div class="contenedor-jugadores">
+                    <ul id="listado-deportistas" class="listado-deportistas sorteable">
 
-                </ul>
+                    </ul>
+                </div>
             </div>
+
         </div>
     </div>    
 </div>     
@@ -271,7 +282,7 @@ Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . 'librerias/customScro
         
         if(vc(nombre, 'Nombre')){ return false; }
         else if(vc(entrenador, 'Entrenador')) {return false;}
-        else if(vc(cupoMax, 'Cupo máximo')){ return false;}
+        else if(vc(cupoMax, 'Máximo de jugadores')){ return false;}
         
         var nombreTexto = nombre.val();
         var totalMismoNombre = $("[data-team-name='" + nombre.val() + "']").length;        
@@ -322,6 +333,10 @@ Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . 'librerias/customScro
            theme: "rounded-dots", 
         });
         equipos ++;
+        $("#panel-players").slideDown();
+        $("#form-team").slideUp(function(){
+            $("#buttons-options").slideDown();
+        });
     }
     
     function removerEquipo(id){

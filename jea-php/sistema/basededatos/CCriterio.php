@@ -85,8 +85,10 @@ class CCriterio {
         if($this->condicion !== null && $this->condicion !== ""){
             $this->condicion .= ($y? " AND" : " OR");
         }
+
         $valores = implode(', ', $lista);
         $this->condicion .= " $campo IN(" . $valores . ")";
+        
         return $this;
     }
     

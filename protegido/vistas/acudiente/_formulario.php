@@ -209,6 +209,10 @@ $formulario->abrir();
 
         $("#next-docs").click(function(){
             if(!__validar_form__()){ return false; }
+            if($("#Acudientes_identificacion").val().length < 10 ){
+                lobiAlert("error", "La identificación debe ser de 10 dígitos o más");
+                return false;
+            }
             validarIdentificacion();
 
             var tab = $("a[href='" + $(this).attr("data-target") + "']");
@@ -289,7 +293,7 @@ $formulario->abrir();
             $("#nombre-documento").focus();
             return false;
         }else if($.trim(file.val()) == ""){
-            lobiAlert("error", "Debe ingresar un nombre al archivo");
+            lobiAlert("error", "Debe cargar un archivo");
             file.focus();
             return false;
         } else if($("[data-doc='" + nombre + "']").length > 0){

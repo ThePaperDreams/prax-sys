@@ -56,10 +56,12 @@ class CtrlDocumento extends CControlador{
         $urlBase = Sis::urlBase();
         foreach($documentos AS $doc){
             $nombre = str_replace('/', '', substr($doc->url, strrpos($doc->url, '/')));
-            $icono = $this->encontrarIcono($nombre);
-            $i = CBoot::fa($icono);
-            $a = CHtml::link($doc->titulo, $urlBase . 'publico/documentos/' . $doc->url, ['download' => $nombre]);
-            $li = CHtml::e('li', $i . $a, ['class' => 'carpeta archivo', 'data-nombre' => strtolower($nombre)]);
+            // $icono = $this->encontrarIcono($nombre);
+            // $i = CBoot::fa($icono);
+            $pre = CHtml::img($urlBase . 'publico/documentos/' . $doc->url);
+            $input = CBoot::text($doc->titulo, ['readonly' => true, 'onclick' => '$(this).select();']);
+            $a = CHtml::link($pre, $urlBase . 'publico/documentos/' . $doc->url, ['download' => $nombre, 'class' => 'preview-doc']);
+            $li = CHtml::e('li', $a. $input, ['class' => 'carpeta archivo', 'data-nombre' => strtolower($nombre)]);
             $html[] = $li;
         }
     }

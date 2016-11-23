@@ -1,5 +1,21 @@
 <?php 
 $this->tituloPagina = "Registrar resultados";
+
+$this->migas = [
+    'Home' => ['principal/inicio'],
+    'Listar Torneos' => ['Torneo/inicio'],
+    $torneo->nombre => ['Torneo/ver', 'id' => $torneo->id_torneo],
+    'Registrar resultados',
+];
+
+$this->opciones = [
+    'elementos' => [
+        'Listar' => ['Torneo/inicio'],
+        'Registrar' => ['Torneo/crear'],
+        'Modificar' => ['Torneo/editar', 'id' => $torneo->id_torneo],
+    ]
+];
+
  ?>
 <div class="tile">
 

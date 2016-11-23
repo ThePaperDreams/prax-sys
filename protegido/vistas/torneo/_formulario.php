@@ -11,23 +11,23 @@ $formulario->abrir();
         <?php echo $formulario->campoTexto($modelo, 'nombre', ['label' => true, 'group' => true, 'autofocus' => true, 'maxlength' => 50]) ?>
     </div>
     <div class="col-sm-6">
-        <?php echo $formulario->campoNumber($modelo, 'edad_maxima', ['label' => true, 'group' => true, 'min'=> 5, 'max'=> 16,  'class' => 'solo-numeros maximo-numero']) ?>
+        <?php echo $formulario->campoNumber($modelo, 'edad_maxima', ['label' => true, 'group' => true, 'min'=> 5, 'max'=> 16,  'class' => 'solo-numeros dont-overpass']) ?>
     </div>
 </div>
 <div class="row">
     <div class="col-sm-6">    
-        <?php echo $formulario->campoNumber($modelo, 'cupo_minimo', ['label' => true, 'group' => true, 'min'=> 1, 'id'=>'cant', 'class' => 'solo-numeros maximo-numero', 'max' => '16']) ?>
+        <?php echo $formulario->campoNumber($modelo, 'cupo_minimo', ['label' => true, 'group' => true, 'min'=> 1, 'id'=>'cant', 'class' => 'solo-numeros dont-overpass', 'max' => '4']) ?>
     </div>
     <div class="col-sm-6">
-        <?php echo $formulario->campoNumber($modelo, 'cupo_maximo', ['label' => true, 'group' => true,' min'=> 1, 'max' => '16', 'id'=>'total-unidades', 'class' => 'solo-numeros maximo-numero']) ?>
+        <?php echo $formulario->campoNumber($modelo, 'cupo_maximo', ['label' => true, 'group' => true,' min'=> 1, 'max' => '4', 'id'=>'total-unidades', 'class' => 'solo-numeros dont-overpass']) ?>
     </div>
 </div>
 <div class="row">
     <div class="col-sm-6">
-        <?php echo $formulario->inputAddon($modelo, 'fecha_inicio', 'texto', ['label' => true, 'group' => true, 'class' => 'campo-fecha', 'readonly' => true], 'calendar') ?>
+        <?php echo $formulario->inputAddon($modelo, 'fecha_inicio', 'texto', ['data-val-maxmin' => true, 'label' => true, 'group' => true, 'class' => 'campo-fecha', 'readonly' => true], 'calendar') ?>
     </div>
     <div class="col-sm-6">
-        <?php echo $formulario->inputAddon($modelo, 'fecha_fin', 'texto', ['label' => true, 'group' => true, 'class' => 'campo-fecha', 'readonly' => true],'calendar-check-o') ?> 
+        <?php echo $formulario->inputAddon($modelo, 'fecha_fin', 'texto', ['data-val-maxmin' => true, 'label' => true, 'group' => true, 'class' => 'campo-fecha', 'readonly' => true],'calendar-check-o') ?> 
     </div>
 </div>
 <div class="row">
@@ -53,6 +53,16 @@ $formulario->abrir();
 </div>
 <script>
   $(document).ready(function() {
+
+    $("#total-unidades").blur(function(){
+        var min = parseInt($("#cant").val());
+        var max = parseInt($(this).val());
+        if(max < min){
+            $(this).val(min);
+            lobiAlert("error", "Cupo máximo no puede ser menor al cupo mínimo");
+        }
+    });
+
     $("#Torneos_tabla_posiciones").fileinput({ // Para embellecer el file input de la foto
         showPreview: false,
         showRemove: false,

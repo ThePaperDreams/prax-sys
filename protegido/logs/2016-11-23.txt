@@ -1,0 +1,116 @@
+[Error BD] [01:08:31]	Error de base de datos: Algo está equivocado en su sintax cerca 'AND estado = 1' en la linea 1
+						>> Consulta ejecutada: SELECT t.* FROM tbl_matriculas AS t WHERE deportista_id=  AND estado = 1 
+[Error BD] [01:26:34]	Error de base de datos: Algo está equivocado en su sintax cerca ')' en la linea 1
+						>> Consulta ejecutada: SELECT t.* FROM tbl_categorias AS t WHERE  id_categoria IN() 
+[Error BD] [01:26:37]	Error de base de datos: Algo está equivocado en su sintax cerca ')' en la linea 1
+						>> Consulta ejecutada: SELECT t.* FROM tbl_categorias AS t WHERE  id_categoria IN() 
+[Error BD] [01:26:43]	Error de base de datos: Algo está equivocado en su sintax cerca ')' en la linea 1
+						>> Consulta ejecutada: SELECT t.* FROM tbl_categorias AS t WHERE  id_categoria IN() 
+[Error BD] [01:26:49]	Error de base de datos: Algo está equivocado en su sintax cerca ')' en la linea 1
+						>> Consulta ejecutada: SELECT t.* FROM tbl_categorias AS t WHERE  id_categoria IN() 
+[Error BD] [01:26:55]	Error de base de datos: Algo está equivocado en su sintax cerca ')' en la linea 1
+						>> Consulta ejecutada: SELECT t.* FROM tbl_categorias AS t WHERE  id_categoria IN() 
+[Error BD] [01:27:01]	Error de base de datos: Algo está equivocado en su sintax cerca ')' en la linea 1
+						>> Consulta ejecutada: SELECT t.* FROM tbl_categorias AS t WHERE  id_categoria IN() 
+[Error BD] [01:27:07]	Error de base de datos: Algo está equivocado en su sintax cerca ')' en la linea 1
+						>> Consulta ejecutada: SELECT t.* FROM tbl_categorias AS t WHERE  id_categoria IN() 
+[Error BD] [01:27:13]	Error de base de datos: Algo está equivocado en su sintax cerca ')' en la linea 1
+						>> Consulta ejecutada: SELECT t.* FROM tbl_categorias AS t WHERE  id_categoria IN() 
+[Error BD] [01:27:19]	Error de base de datos: Algo está equivocado en su sintax cerca ')' en la linea 1
+						>> Consulta ejecutada: SELECT t.* FROM tbl_categorias AS t WHERE  id_categoria IN() 
+[Error BD] [01:27:25]	Error de base de datos: Algo está equivocado en su sintax cerca ')' en la linea 1
+						>> Consulta ejecutada: SELECT t.* FROM tbl_categorias AS t WHERE  id_categoria IN() 
+[Error BD] [01:28:43]	Error de base de datos: Algo está equivocado en su sintax cerca ')' en la linea 1
+						>> Consulta ejecutada: SELECT t.* FROM tbl_categorias AS t WHERE  id_categoria IN() 
+[Error BD] [01:28:46]	Error de base de datos: Algo está equivocado en su sintax cerca ')' en la linea 1
+						>> Consulta ejecutada: SELECT t.* FROM tbl_categorias AS t WHERE  id_categoria IN() 
+[Error BD] [01:28:49]	Error de base de datos: Algo está equivocado en su sintax cerca ')' en la linea 1
+						>> Consulta ejecutada: SELECT t.* FROM tbl_categorias AS t WHERE  id_categoria IN() 
+[Error BD] [01:28:52]	Error de base de datos: Algo está equivocado en su sintax cerca ')' en la linea 1
+						>> Consulta ejecutada: SELECT t.* FROM tbl_categorias AS t WHERE  id_categoria IN() 
+[Error BD] [01:28:55]	Error de base de datos: Algo está equivocado en su sintax cerca ')' en la linea 1
+						>> Consulta ejecutada: SELECT t.* FROM tbl_categorias AS t WHERE  id_categoria IN() 
+[Error BD] [01:28:58]	Error de base de datos: Algo está equivocado en su sintax cerca ')' en la linea 1
+						>> Consulta ejecutada: SELECT t.* FROM tbl_categorias AS t WHERE  id_categoria IN() 
+[Error BD] [01:29:01]	Error de base de datos: Algo está equivocado en su sintax cerca ')' en la linea 1
+						>> Consulta ejecutada: SELECT t.* FROM tbl_categorias AS t WHERE  id_categoria IN() 
+[Error BD] [01:29:04]	Error de base de datos: Algo está equivocado en su sintax cerca ')' en la linea 1
+						>> Consulta ejecutada: SELECT t.* FROM tbl_categorias AS t WHERE  id_categoria IN() 
+[Error BD] [01:29:07]	Error de base de datos: Algo está equivocado en su sintax cerca ')' en la linea 1
+						>> Consulta ejecutada: SELECT t.* FROM tbl_categorias AS t WHERE  id_categoria IN() 
+[Error BD] [01:57:06]	Error de base de datos: La columna: 'estado' en order clause es ambigua
+						>> Consulta ejecutada: SELECT t.* FROM tbl_salidas AS t JOIN tbl_usuarios AS t1 ON t1.id_usuario = t.responsable_id  ORDER BY estado = 1 DESC  LIMIT 10  OFFSET 0 
+[Error BD] [01:57:08]	Error de base de datos: La columna: 'estado' en order clause es ambigua
+						>> Consulta ejecutada: SELECT t.* FROM tbl_salidas AS t JOIN tbl_usuarios AS t1 ON t1.id_usuario = t.responsable_id  ORDER BY estado = 1 DESC  LIMIT 10  OFFSET 0 
+[Error BD] [01:57:10]	Error de base de datos: La columna: 'estado' en order clause es ambigua
+						>> Consulta ejecutada: SELECT t.* FROM tbl_salidas AS t JOIN tbl_usuarios AS t1 ON t1.id_usuario = t.responsable_id WHERE t.fecha_entrega LIKE '%2016-11-23%'  ORDER BY estado = 1 DESC  LIMIT 10  OFFSET 0 
+[Error BD] [01:57:34]	Error de base de datos: La columna: 'estado' en order clause es ambigua
+						>> Consulta ejecutada: SELECT t.* FROM tbl_salidas AS t JOIN tbl_usuarios AS t1 ON t1.id_usuario = t.responsable_id WHERE t.fecha_entrega LIKE '%2016-11-23%'  ORDER BY estado = 1 DESC  LIMIT 10  OFFSET 0 
+[Error BD] [01:59:39]	Error de base de datos: La columna 'fecha_entrega' en where clause es desconocida
+						>> Consulta ejecutada: SELECT COUNT(*) AS total FROM tbl_implementos AS t WHERE fecha_entrega = '2016-11-23' 
+[Error BD] [01:59:40]	Error de base de datos: La columna 'fecha_entrega' en where clause es desconocida
+						>> Consulta ejecutada: SELECT COUNT(*) AS total FROM tbl_implementos AS t WHERE fecha_entrega = '2016-11-23' 
+[Error BD] [01:59:45]	Error de base de datos: La columna 'fecha_entrega' en where clause es desconocida
+						>> Consulta ejecutada: SELECT COUNT(*) AS total FROM tbl_implementos AS t WHERE fecha_entrega = '2016-11-23' 
+[Error BD] [01:59:46]	Error de base de datos: La columna 'fecha_entrega' en where clause es desconocida
+						>> Consulta ejecutada: SELECT COUNT(*) AS total FROM tbl_implementos AS t WHERE fecha_entrega = '2016-11-23' 
+[Error BD] [01:59:51]	Error de base de datos: La columna 'fecha_entrega' en where clause es desconocida
+						>> Consulta ejecutada: SELECT COUNT(*) AS total FROM tbl_implementos AS t WHERE fecha_entrega = '2016-11-23' 
+[Error BD] [01:59:52]	Error de base de datos: La columna 'fecha_entrega' en where clause es desconocida
+						>> Consulta ejecutada: SELECT COUNT(*) AS total FROM tbl_implementos AS t WHERE fecha_entrega = '2016-11-23' 
+[Error BD] [01:59:57]	Error de base de datos: La columna 'fecha_entrega' en where clause es desconocida
+						>> Consulta ejecutada: SELECT COUNT(*) AS total FROM tbl_implementos AS t WHERE fecha_entrega = '2016-11-23' 
+[Error BD] [01:59:58]	Error de base de datos: La columna 'fecha_entrega' en where clause es desconocida
+						>> Consulta ejecutada: SELECT COUNT(*) AS total FROM tbl_implementos AS t WHERE fecha_entrega = '2016-11-23' 
+[Error BD] [02:00:03]	Error de base de datos: La columna 'fecha_entrega' en where clause es desconocida
+						>> Consulta ejecutada: SELECT COUNT(*) AS total FROM tbl_implementos AS t WHERE fecha_entrega = '2016-11-23' 
+[Error BD] [02:00:04]	Error de base de datos: La columna 'fecha_entrega' en where clause es desconocida
+						>> Consulta ejecutada: SELECT COUNT(*) AS total FROM tbl_implementos AS t WHERE fecha_entrega = '2016-11-23' 
+[Error BD] [02:00:09]	Error de base de datos: La columna 'fecha_entrega' en where clause es desconocida
+						>> Consulta ejecutada: SELECT COUNT(*) AS total FROM tbl_implementos AS t WHERE fecha_entrega = '2016-11-23' 
+[Error BD] [02:00:10]	Error de base de datos: La columna 'fecha_entrega' en where clause es desconocida
+						>> Consulta ejecutada: SELECT COUNT(*) AS total FROM tbl_implementos AS t WHERE fecha_entrega = '2016-11-23' 
+[Error BD] [02:00:15]	Error de base de datos: La columna 'fecha_entrega' en where clause es desconocida
+						>> Consulta ejecutada: SELECT COUNT(*) AS total FROM tbl_implementos AS t WHERE fecha_entrega = '2016-11-23' 
+[Error BD] [02:00:16]	Error de base de datos: La columna 'fecha_entrega' en where clause es desconocida
+						>> Consulta ejecutada: SELECT COUNT(*) AS total FROM tbl_implementos AS t WHERE fecha_entrega = '2016-11-23' 
+[Error BD] [02:00:21]	Error de base de datos: La columna 'fecha_entrega' en where clause es desconocida
+						>> Consulta ejecutada: SELECT COUNT(*) AS total FROM tbl_implementos AS t WHERE fecha_entrega = '2016-11-23' 
+[Error BD] [02:00:22]	Error de base de datos: La columna 'fecha_entrega' en where clause es desconocida
+						>> Consulta ejecutada: SELECT COUNT(*) AS total FROM tbl_implementos AS t WHERE fecha_entrega = '2016-11-23' 
+[Error BD] [02:00:27]	Error de base de datos: La columna 'fecha_entrega' en where clause es desconocida
+						>> Consulta ejecutada: SELECT COUNT(*) AS total FROM tbl_implementos AS t WHERE fecha_entrega = '2016-11-23' 
+[Error BD] [02:00:28]	Error de base de datos: La columna 'fecha_entrega' en where clause es desconocida
+						>> Consulta ejecutada: SELECT COUNT(*) AS total FROM tbl_implementos AS t WHERE fecha_entrega = '2016-11-23' 
+[Error BD] [02:00:33]	Error de base de datos: La columna 'fecha_entrega' en where clause es desconocida
+						>> Consulta ejecutada: SELECT COUNT(*) AS total FROM tbl_implementos AS t WHERE fecha_entrega = '2016-11-23' 
+[Error BD] [02:00:34]	Error de base de datos: La columna 'fecha_entrega' en where clause es desconocida
+						>> Consulta ejecutada: SELECT COUNT(*) AS total FROM tbl_implementos AS t WHERE fecha_entrega = '2016-11-23' 
+[Error BD] [02:00:39]	Error de base de datos: La columna 'fecha_entrega' en where clause es desconocida
+						>> Consulta ejecutada: SELECT COUNT(*) AS total FROM tbl_implementos AS t WHERE fecha_entrega = '2016-11-23' 
+[Error BD] [02:00:40]	Error de base de datos: La columna 'fecha_entrega' en where clause es desconocida
+						>> Consulta ejecutada: SELECT COUNT(*) AS total FROM tbl_implementos AS t WHERE fecha_entrega = '2016-11-23' 
+[Error BD] [02:00:45]	Error de base de datos: La columna 'fecha_entrega' en where clause es desconocida
+						>> Consulta ejecutada: SELECT COUNT(*) AS total FROM tbl_implementos AS t WHERE fecha_entrega = '2016-11-23' 
+[Error BD] [02:00:46]	Error de base de datos: La columna 'fecha_entrega' en where clause es desconocida
+						>> Consulta ejecutada: SELECT COUNT(*) AS total FROM tbl_implementos AS t WHERE fecha_entrega = '2016-11-23' 
+[Error BD] [02:00:51]	Error de base de datos: La columna 'fecha_entrega' en where clause es desconocida
+						>> Consulta ejecutada: SELECT COUNT(*) AS total FROM tbl_implementos AS t WHERE fecha_entrega = '2016-11-23' 
+[Error BD] [02:00:52]	Error de base de datos: La columna 'fecha_entrega' en where clause es desconocida
+						>> Consulta ejecutada: SELECT COUNT(*) AS total FROM tbl_implementos AS t WHERE fecha_entrega = '2016-11-23' 
+[Error BD] [02:00:57]	Error de base de datos: La columna 'fecha_entrega' en where clause es desconocida
+						>> Consulta ejecutada: SELECT COUNT(*) AS total FROM tbl_implementos AS t WHERE fecha_entrega = '2016-11-23' 
+[Error BD] [02:00:58]	Error de base de datos: La columna 'fecha_entrega' en where clause es desconocida
+						>> Consulta ejecutada: SELECT COUNT(*) AS total FROM tbl_implementos AS t WHERE fecha_entrega = '2016-11-23' 
+[Error BD] [02:01:03]	Error de base de datos: La columna 'fecha_entrega' en where clause es desconocida
+						>> Consulta ejecutada: SELECT COUNT(*) AS total FROM tbl_implementos AS t WHERE fecha_entrega = '2016-11-23' 
+[Error BD] [02:01:04]	Error de base de datos: La columna 'fecha_entrega' en where clause es desconocida
+						>> Consulta ejecutada: SELECT COUNT(*) AS total FROM tbl_implementos AS t WHERE fecha_entrega = '2016-11-23' 
+[Error BD] [02:01:09]	Error de base de datos: La columna 'fecha_entrega' en where clause es desconocida
+						>> Consulta ejecutada: SELECT COUNT(*) AS total FROM tbl_implementos AS t WHERE fecha_entrega = '2016-11-23' 
+[Error BD] [02:01:10]	Error de base de datos: La columna 'fecha_entrega' en where clause es desconocida
+						>> Consulta ejecutada: SELECT COUNT(*) AS total FROM tbl_implementos AS t WHERE fecha_entrega = '2016-11-23' 
+[Error BD] [02:20:55]	Error de base de datos: Algo está equivocado en su sintax cerca ') AND estado_id <> 4' en la linea 1
+						>> Consulta ejecutada: SELECT t.* FROM tbl_deportistas AS t WHERE id_deportista NOT IN () AND estado_id <> 4 
+[Error BD] [02:22:30]	Error de base de datos: Algo está equivocado en su sintax cerca ') AND estado_id <> 4' en la linea 1
+						>> Consulta ejecutada: SELECT t.* FROM tbl_deportistas AS t WHERE id_deportista NOT IN () AND estado_id <> 4 

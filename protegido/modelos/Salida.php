@@ -56,7 +56,8 @@ class Salida extends CModelo {
            ->condicion($concat, $this->responsable_id, "LIKE")
            ->y("t.estado", $this->estado, "=")
            ->y("t.fecha_realizacion", $this->fecha_realizacion, "LIKE")
-           ->y("t.fecha_entrega", $this->fecha_entrega, "LIKE");
+           ->y("t.fecha_entrega", $this->fecha_entrega, "LIKE")
+           ->orden("t.estado = 1", false);
        return $criterio;
     }
     /**

@@ -75,7 +75,35 @@ $formulario->abrir();
                 jQuery("#Matriculas_categoria_id").select2("open");
                 return false;
             }
-            return true;
+            if(!__validar_form__()){ return false; }
+
+            var table = $("<table/>", {class: 'table table-bordered table-hover'});
+            var categoria = $("#Matriculas_categoria_id option:selected").html();
+            var club = $("#Matriculas_club_id option:selected").html();
+            var dep = $("#Matriculas_deportista_id option:selected").html().split("-");
+            var nombre = dep[1].split('(');
+
+            var p = $("<p/>").html("¿Realmente desea matricular a " + nombre[0] + "?");
+
+            table.append($("<tr/>").append($("<th/>").html("Categoría: "), $("<td/>").html(categoria)));
+            table.append($("<tr/>").append($("<th/>").html("Club: "), $("<td/>").html(club)));
+
+            Lobibox.confirm({
+                title: 'Confirmar',
+                msg: p[0].outerHTML + table[0].outerHTML,
+                buttons: {
+                    yes: {class: 'btn btn-success', text: 'Si'},
+                    no: {class: 'btn btn-default', text: 'No'},
+                },
+                callback: function($this, type, evt){
+                    if(type == 'yes'){
+                        document.getElementById("form-matriculas").submit();
+                    } else {
+                        
+                    }
+                }
+            });
+            return false;
         });
         
         jQuery("#Matriculas_deportista_id, #Matriculas_categoria_id").select2({

@@ -77,6 +77,8 @@ class CtrlMatricula extends CControlador {
                     $lista = ListaEspera::modelo()->porPk($this->_p['id_lista_espera']);
                     $lista->estado = 0;
                     $lista->guardar();
+                    $modelo->Deportista->estado_id = 1;
+                    $modelo->Deportista->guardar();
                 }
                 Sis::Sesion()->flash("alerta", [
                     'msg' => 'Deportista matriculado exitosamente!',
