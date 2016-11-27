@@ -15,6 +15,8 @@ Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . 'librerias/Trumbowyg/t
 // Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . "/librerias/air-datepicker/js/datepicker.js"]);
 // Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . "/librerias/air-datepicker/js/i18n/datepicker.es.js"]);
 // Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . "/librerias/air-datepicker/css/datepicker.min.css"]);
+// 
+// Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . 'librerias/uikit/css/uikit.css']);
 
 $url = Sis::ap()->getTema()->getUrlBase();
 Sis::Recursos()->recursoCss(['url' => $url . "/css/animate.css"]);
@@ -174,9 +176,7 @@ Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . "/librerias/bootstrap-
                     ['texto' => 'Tipos de publicación', 'url' => ['tipoPublicacion/inicio']],
                     ['texto' => 'Eventos', 'url' => ['Evento/inicio']],
                     ['texto' => 'Tipo de Eventos', 'url' => ['tipoEvento/inicio']],
-                    ['texto' => 'Imágenes', 'url' => ['Publicacion/cargarImagenes']],
-                    ['texto' => 'Configuración', 'url' => ['Publicacion/sitioWeb']],
-                    
+                    // ['texto' => 'Imágenes', 'url' => ['Publicacion/cargarImagenes']],                    
                 ]],
                 ['texto' => 'Usuarios', 'fa' => 'users', 'elementos' => [
                         ['texto' => 'Roles', 'url' => ['Rol/inicio']],
@@ -187,7 +187,7 @@ Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . "/librerias/bootstrap-
                     ['texto' => 'Ver reportes', 'url' => ['reportes/todos']]
                 ]],
                 ['texto' => 'Configuración', 'fa' => 'cogs', 'elementos' => [
-                        ['texto' => 'Configuración Global', 'url' => ['principal/configuracion']],
+                        ['texto' => 'Configuración General', 'url' => ['principal/configuracion']],
                         // ['texto' => 'Rutas', 'url' => ['Ruta/inicio']],
                         // ['texto' => 'Opciones de Menú', 'url' => ['Opmenu/inicio']],
                         // ['texto' => 'Tipos de Documentos', 'url' => ['TipoDocumento/inicio']],
@@ -314,6 +314,28 @@ Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . "/librerias/bootstrap-
                     soundPath: '<?= Sis::UrlRecursos() ?>librerias/lobibox/sounds/',
                 });
             }
+
+            function confirmar(titulo, msg, callback, noCallback){
+                callback = callback == undefined? function(){} : callback;
+                noCallback = noCallback == undefined? function(){} : noCallback;
+
+                Lobibox.confirm({
+                    title: titulo,
+                    msg: msg,
+                    buttons: {
+                        'yes': {'text' : 'Si', 'class' : 'btn btn-success'},
+                        'no': {'text' : 'No', 'class' : 'btn btn-default'},
+                    },
+                    callback: function($this, type, evt){
+                        if(type == "yes"){
+                            callback($this, type, evt);
+                        } else {
+                            noCallback($this, type, evt);
+                        }
+                    }
+                });
+            }
+
             $(function(){
                 $("#icono-ayuda i").click(function(){
                     var ayuda = $(this).attr("data-help");

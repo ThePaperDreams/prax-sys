@@ -12,7 +12,24 @@ $(function(){
     aSelect2($("select.form-control:not([data-s2='1'])"));
     dontOverPass();
     overMiminum();
+    triggerCalendar();
+    cleanField();
 });
+
+function triggerCalendar(){
+    $(".t-calendar").click(function(){
+        var t = $(this).attr("data-t");
+        $(t).focus();
+    });
+}
+
+function cleanField(){
+    $(".clean-field").click(function(){
+        var t = $(this).attr("data-t");
+        $(t).val("");
+        return false;
+    });
+}
 
 function dontOverPass(){
     $(".dont-overpass").each(function(k,v){

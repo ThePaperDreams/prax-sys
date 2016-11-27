@@ -1,6 +1,8 @@
 <?php
 Sis::Recursos()->recursoCss(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/css/fileinput.min.css']);
 Sis::Recursos()->recursoJs(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/js/fileinput.min.js']);
+Sis::Recursos()->recursoJs(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/js/fileinput_locale_es.js']);
+
 $this->tituloPagina = "Ver matricula";
 $this->migas = [
     'Home' => ['principal/inicio'],
@@ -93,7 +95,8 @@ $this->opciones = [
             showUpload: false,
             browseLabel: "Seleccionar archivo",
             maxFileSize: 5000,
-            allowedFileExtensions: ['jpg', 'gif', 'png', 'jpeg']
+            allowedFileExtensions: ['jpg', 'gif', 'png', 'jpeg'],
+            language: 'es',
         });
     });
 </script>

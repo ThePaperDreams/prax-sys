@@ -11,6 +11,7 @@
             'Registrar' => ['Publicacion/crear'],
         ]
     ];    
+    $this->tituloPagina = "Actualizar publicación";
 ?>
 <div class="col-sm-12">    
     <?php echo $this->mostrarVistaP('_formulario', ['modelo' => $modelo, 'public' => $public, 'estd' => $estd, 'url'=>$url, 'imagenes' => $imagenes]); ?>

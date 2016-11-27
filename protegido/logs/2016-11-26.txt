@@ -1,0 +1,6 @@
+[Error BD] [17:10:36]	Error de base de datos: FUNCTION prax_sys_prod.get_fn_edad_deportistas does not exist
+						>> Consulta ejecutada: SELECT t.* FROM tbl_matriculas AS t WHERE categoria_id=1 AND estado = 1 AND get_fn_edad_deportistas() <= 5  
+[Error BD] [17:12:25]	Error de base de datos: La columna 't.id_deportista' en where clause es desconocida
+						>> Consulta ejecutada: SELECT t.* FROM tbl_matriculas AS t WHERE categoria_id=3 AND estado = 1 AND fn_get_edad_deportistas(t.id_deportista) <= 16  
+[Error BD] [17:14:10]	Error de base de datos: Algo está equivocado en su sintax cerca 'categoria_id=1 AND estado = 1 AND fn_get_edad_deportistas(t2.id_deportista) <= 1' en la linea 1
+						>> Consulta ejecutada: SELECT t.* FROM tbl_matriculas AS t JOIN tbl_deportistas t2 ON t2.id_deportista = t.deportista_idWHERE categoria_id=1 AND estado = 1 AND fn_get_edad_deportistas(t2.id_deportista) <= 16  

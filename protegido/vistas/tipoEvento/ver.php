@@ -12,6 +12,7 @@
             'Modificar' => ['TipoEvento/editar', 'id' => $modelo->id_tipo],
         ]
     ];
+    $this->tituloPagina = "Ver tipo de evento";
 ?>
 <div class="col-sm-12">
     <div class="panel panel-default">

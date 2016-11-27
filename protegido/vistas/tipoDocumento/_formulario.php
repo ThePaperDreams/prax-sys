@@ -12,7 +12,7 @@ $formulario->abrir();
 </div>
 <div class="col-sm-12">
     <div class="form-group">
-        <label for="">Descripción <span id="total-chars">0</span>/<span id="max-chars">300</span> </label>
+        <label for="">Descripción <span id="total-chars">0</span>/<span id="max-chars">500</span> </label>
         <?php echo $formulario->areaTexto($modelo, 'descripcion', ['class' => 'rows', 'rows' => 6]) ?>    
     </div>
 </div>

@@ -79,6 +79,7 @@ class Evento extends CModelo {
             'hora' => 'Hora',
             'estado' => 'Estado',
             'autor' => 'Autor',
+            'fecha' => 'Fecha',
         ];
     }
 
@@ -95,7 +96,7 @@ class Evento extends CModelo {
 
     public function filtros() {
         return [
-            'requeridos' => 'titulo,contenido,fecha_disponibilidad,tipo_id,lugar,hora,estado',
+            'requeridos' => 'titulo,fecha_disponibilidad,tipo_id,lugar,hora,estado',
             'seguros' => 'titulo,fecha_publicacion,fecha_disponibilidad', 'lugar', 'hora', 'autor',
         ];
     }

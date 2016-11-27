@@ -91,6 +91,12 @@ class CtrlPublicacion extends CControlador{
         $rutaBase = Sis::resolverRuta('!publico.imagenes.galerias');
         unlink($rutaBase . DS . $modelo->url);
         unlink($rutaBase . DS . 'thumbs' . DS . "tmb_" . $modelo->url);
+        $c = new CCriterio();
+        $c->condicion("imagen_id", $pk);
+        $galerias = ImagenGaleria::modelo()->listar($c);
+        # rompemos la relación con galerías
+        foreach($galerias AS $v){ $v->eliminar(); }
+        
         $this->json([
             'error' => !$modelo->eliminar(),
         ]);
@@ -154,8 +160,7 @@ class CtrlPublicacion extends CControlador{
        $this->validarNombre();
         $modelo = new Publicacion();
         if(isset($this->_p['Publicaciones'])){
-            $modelo->atributos = $this->_p['Publicaciones'];
-            
+            $modelo->atributos = $this->_p['Publicaciones'];            
             $modelo->usuario_id = Sis::apl()->usuario->ID;
             if($modelo->tipo_id == 2){
             $modelo->consecutivo = $modelo->getUltimo();
@@ -190,6 +195,8 @@ class CtrlPublicacion extends CControlador{
             $modelo->atributos = $this->_p['Publicaciones'];
             $modelo->usuario_id = Sis::apl()->usuario->ID;
             if($modelo->guardar()){
+                // var_dump($this->_p, $modelo);
+                // exit();
                 # lógica para guardado exitoso
                 Sis::Sesion()->flash("alerta", [
                     'msg' => 'Publicación editada exitosamente!',
@@ -213,14 +220,14 @@ class CtrlPublicacion extends CControlador{
         if(isset($this->_p['validarNombre'])){
             if($id === null){
                 $criterio = [
-                    'where' => "LOWER(titulo) = LOWER('" . $this->_p['titulo'] . "')"
+                    'where' => "LOWER(titulo) = LOWER('" . $this->_p['nombre'] . "')"
                 ];
             } else {
                 $criterio = [
-                    'where' => "id_publicacion <> $id AND LOWER(titulo) = LOWER('" . $this->_p['titulo'] . "')"
+                    'where' => "id_publicacion <> $id AND LOWER(titulo) = LOWER('" . $this->_p['nombre'] . "')"
                 ];
             }
-            $categoria = CategoriaImplemento::modelo()->primer($criterio);
+            $categoria = Publicacion::modelo()->primer($criterio);
             
             if($categoria != null){
                 $error = true;

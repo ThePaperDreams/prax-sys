@@ -170,19 +170,25 @@ final class CBoot {
         $pre = '';
         $pos = '';
         # agregamos el tokken que se prepone
-        if(isset($opciones['pre']) || isset($opciones['pre-btn'])){
-            $clase = isset($opciones['pre-btn']) ? 'btn' : 'addon';
-            $contenido = isset($opciones['pre'])? $opciones['pre'] : $opciones['pre-btn'];
+        if(isset($opciones['pre'])){
+            $clase = 'addon';
+            $contenido = $opciones['pre'];
             $pre = CHtml::e('span', $contenido, ['class' => "input-group-$clase"]);
             unset($opciones['pre']);
-            unset($opciones['pre-btn']);
         }
+
         # agregamos el tokken que se sobrepone
-        if(isset($opciones['pos']) || isset($opciones['pos-btn'])){
-            $clase = isset($opciones['pos-btn']) ? 'btn' : 'addon';
-            $contenido = isset($opciones['pos'])? $opciones['pos'] : $opciones['pos-btn'];
+        if(isset($opciones['pos'])){
+            $clase = 'addon';
+            $contenido = $opciones['pos'];
             $pos = CHtml::e('span', $contenido, ['class' => "input-group-$clase"]);
             unset($opciones['pos']);
+        }
+
+        if(isset($opciones['pos-btn'])){
+            $clase = 'btn';
+            $contenido = $opciones['pos-btn'];
+            $pos .= CHtml::e('span', $contenido, ['class' => "input-group-$clase"]);
             unset($opciones['pos-btn']);
         }
         

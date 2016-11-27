@@ -4,6 +4,7 @@ Sis::Recursos()->RecursoJS(['url' => Sis::apl()->tema->getUrlBase() . '/js/pirob
 
 Sis::Recursos()->recursoCss(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/css/fileinput.min.css']);
 Sis::Recursos()->recursoJs(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/js/fileinput.min.js']);
+Sis::Recursos()->recursoJs(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/js/fileinput_locale_es.js']);
 
 $formulario = new CBForm(['id' => 'form-publicaciones']);
 $formulario->abrir();
@@ -27,20 +28,20 @@ $formulario->abrir();
             </div>
             <div class="col-sm-6">
                     <div class="form-group">
-                        <?php echo $formulario->inputAddon($modelo, 'fecha_disponibilidad','texto', ['data-val-maxmin' => true, 'readonly' => true, 'label' => true, 'group' => true, 'class' => 'campo-fecha', 'id'=>'calendar' ],['pos' => CBoot::fa('calendar-check-o')]) ?>   
+                        <?php echo $formulario->inputAddon($modelo, 'fecha_disponibilidad','texto', ['data-val-maxmin' => true, 'readonly' => true, 'label' => true, 'group' => true, 'class' => 'campo-fecha', 'id'=>'calendar' ],['pos' => CBoot::fa('calendar-check-o', ['class' => 't-calendar', 'data-t' => '#calendar'])]) ?>   
                     </div>    
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
                     <label for="">Resumen <span id="total-chars">0</span>/<span id="max-chars">150</span> </label>
-                    <?php echo $formulario->areaTexto($modelo, 'resumen', [ 'maxlengh' => 150]) ?>
+                    <?php echo $formulario->areaTexto($modelo, 'resumen', [ 'maxlength' => 150]) ?>
                 </div>
             </div>
             <div class="col-sm-6">
-                <?php echo $formulario->inputAddon($modelo, 'titulo', 'texto', ['maxlengh' => 100, 'label' => true, 'group' => true, 'autofocus' => true], 'font') ?>
+                <?php echo $formulario->inputAddon($modelo, 'titulo', 'texto', ['maxlength' => 100, 'label' => true, 'group' => true, 'autofocus' => true], 'font') ?>
             </div>
             <div class="col-sm-6">
-                <?php echo $formulario->inputAddon($modelo, 'img_previsualizacion', 'texto', ['maxlengh' => 300, 'label' => true, 'group' => true, 'autofocus' => true], ['pos' => CBoot::fa('picture-o')]) ?>
+                <?php echo $formulario->inputAddon($modelo, 'img_previsualizacion', 'texto', ['readonly' => true, 'maxlength' => 200, 'label' => true, 'group' => true, 'autofocus' => true], ['pos' => CBoot::fa('picture-o', ['id' => 'open-modal-img', 'class' => 'pointer'])]) ?>
             </div>
             <div class="col-sm-12">
                 <?php echo $formulario->areaTexto($modelo, 'contenido', ['label' => true, 'group' => true, 'class' => 'summernote', 'rows' => 15]) ?>
@@ -64,9 +65,49 @@ $formulario->abrir();
     </div>
 </div>    
 
+<div class="modal fade modal-wide" id="modal-imgs">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Imagenes</h4>
+            </div>
+            <div class="modal-body">
+                
+                <?php foreach ($imagenes as $imagen): ?>
+                <div class="img-pre">
+                    <img src="<?= Sis::UrlBase() . "publico/imagenes/galerias/thumbs/tmb_" . $imagen->url ?>" alt="" width="150">    
+                    <div class="input-group">        
+                        <button class="btn btn-primary btn-block add-img-button" data-real-url="<?= Sis::UrlBase() . "publico/imagenes/galerias/" . $imagen->url ?>">
+                            Usar <fa class="fa fa-hand-pointer-o"></fa>
+                        </button>
+                    </div>
+                </div>
+                <?php endforeach ?>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     
     $(document).ready(function() {
+
+        $("#open-modal-img").click(function(){
+            $("#modal-imgs").modal('show');
+        });
+
+        $(".add-img-button").click(function(){
+            var url = $(this).attr("data-real-url");
+            $("#Publicaciones_img_previsualizacion").val(url);
+            $("#modal-imgs").modal("hide");
+            return false;
+        });
+
         $("#Publicaciones_resumen").keydown(function(e){
             var t = $(this);
             var max = parseInt($("#max-chars").html());
@@ -133,23 +174,33 @@ $formulario->abrir();
             },
             success: function (respuesta) {
                 if (respuesta.error == true) {
-                    mostrarAlert("error", "Ya existe ese nombre");
+                    mostrarAlert("error", "Ya existe una publicación con ese título");
                 } else {
-                    document.getElementById("form-publicaciones").submit();
+                    setTimeout(function(){
+                        if($("#Publicaciones_contenido").val() == ""){
+                            confirmar("Confirmar envio", "¿Realmente desea guardar sin contenido?", function(){
+                                document.getElementById("form-publicaciones").submit();
+                            });
+                        } else {
+                            document.getElementById("form-publicaciones").submit();
+                        }
+
+                    }, 300);
                 }
             }
         });
     }
 
     function mostrarAlert(tipo, msg) {
-        Lobibox.notify(tipo, {
-            size: 'mini',
-            showClass: 'bounceInRight',
-            hideClass: 'bounceOutRight',
-            msg: msg,
-            delay: 8000,
-            soundPath: '<?= Sis::UrlRecursos() ?>librerias/lobibox/sounds/',
-        });
+        lobiAlert(tipo, msg);
+        // Lobibox.notify(tipo, {
+        //     size: 'mini',
+        //     showClass: 'bounceInRight',
+        //     hideClass: 'bounceOutRight',
+        //     msg: msg,
+        //     delay: 8000,
+        //     soundPath: '<?= Sis::UrlRecursos() ?>librerias/lobibox/sounds/',
+        // });
     }
     
 </script>

@@ -8,6 +8,9 @@ $this->migas = [
 
 Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . 'librerias/customScrollBar/CustomScrollbar.js']);
 Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . 'librerias/customScrollBar/CustomScrollbar.css']);
+Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . 'librerias/uikit/js/uikit.js']);
+Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . 'librerias/uikit/js/components/sticky.min.js']);
+
 ?>
 <div class="col-sm-6">
     <form method="POST" id="form-equipos">
@@ -47,7 +50,7 @@ Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . 'librerias/customScro
                             </div>
                             <div class="col-sm-4">
                                 <a href="<?= Sis::apl()->crearUrl(['torneo/inicio']) ?>" class="btn btn-default btn-block">Volver </a>                            
-                                <button type="submit" class="btn btn-success btn-block" id="finish-editing">Guardar equipos <i class="fa fa-send"></i></button>
+                                <button type="submit" class="btn btn-success btn-block" id="finish-editing">Guardar cambios <i class="fa fa-send"></i></button>
                                 <a href="#" id="btn-show-form" class="btn btn-primary btn-block">Nuevo equipo <i class="fa fa-plus"></i></a>
                             </div>
                             <hr>
@@ -63,9 +66,15 @@ Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . 'librerias/customScro
                             <div class="row">
                                 <div class="col-sm-6">
                                     <?= CBoot::select('', $usuarios, ['group' => true, 'label' => 'Entrenador', 'defecto' => 'Seleccione un entrenador', 'id' => 'entrenador']) ?>
+                                    <br>
                                 </div>
                                 <div class="col-sm-6">
-                                    <?= CBoot::number('', ['group' => true, 'label' => 'Máximo de Jugadores', 'min' => '1', 'id' => 'cupo-max', 'max' => '30', 'class' => 'dont-overpass']) ?>
+                                    <label for="">Máximo de Jugadores</label>
+                                    <div class="input-group">
+                                        <?= CBoot::number('', ['min' => '1', 'id' => 'cupo-max', 'max' => '30', 'class' => 'dont-overpass']) ?>
+                                        <span class="input-group-addon">Min: 11</span>
+                                    </div>
+                                    <br>
                                 </div>
                             </div>
                             <div class="row">
@@ -125,15 +134,15 @@ Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . 'librerias/customScro
     </form>    
 </div>       
 <div class="col-sm-6">
-    <div class="tile p-15">
+    <div data-uk-sticky="{top:50, animation: 'uk-animation-slide-top'}" class="tile p-15">
         <div class="row p-15">
             <div id="panel-players" style="<?= count($torneo->Equipos) > 0? '' : 'display: none;'; ?>">
                             
                 <h3>Jugadores</h3>
-                <div class="alert alert-info">
+                <!-- <div class="alert alert-info">
                     Seleccione la categoría en la cual desea buscar jugadores. Una vez seleccionada la categoría puede 
                     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                </div>
+                </div> -->
                 <div id="filtros-deportista">
                     <?= CBoot::select('', $categorias, ['id' => 'cmb-categoria', 'defecto' => 'Seleccione una categoría', 'data-s2' => true, 'group' => true]) ?>
                     <?= CBoot::text('',['placeholder' => 'Ingrese el nombre del deportista']) ?>                
@@ -195,6 +204,12 @@ Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . 'librerias/customScro
         });
         
         $("#add-team").click(function(){
+            var cupoJug = parseInt($("#cupo-max").val());
+            if(cupoJug < 11){
+                lobiAlert("error", "El máximo de jugadores debe ser mayor o igual a 11");
+                $("#cupo-max").focus();
+                return false;
+            }
             agregarEquipo();
         });
         $("#cmb-categoria").change(function(){
@@ -225,19 +240,22 @@ Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . 'librerias/customScro
     var equiposRemovidos = 0;
     
     function removerEquipoAnt(id){
-        if(!confirm("¿Seguro que desea remover este equipo?")){
-            return;
-        }
-        
-        var div = $("#div-" + id);
-        
-        div.slideUp(function(){
-            var input = $("<input/>", { type: 'hidden', name : 'equipos-remover[]'});
-            input.val(id);
-            div.remove();
-            $("#equipos-remover").append(input);
-            equiposRemovidos ++;
+        confirmar('Confirmar', "¿Seguro que desea remover este equipo?", function(){
+            var div = $("#div-" + id);
+            
+            div.slideUp(function(){
+                var input = $("<input/>", { type: 'hidden', name : 'equipos-remover[]'});
+                input.val(id);
+                div.remove();
+                $("#equipos-remover").append(input);
+                equiposRemovidos ++;
+            });            
         });
+
+        // if(!confirm("¿Seguro que desea remover este equipo?")){
+        //     return;
+        // }
+        
     }
     
     var deportistas = [<?= implode(',', array_map(function($v){ return "'$v'"; }, $deportistas)) ?>];
@@ -250,6 +268,7 @@ Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . 'librerias/customScro
                 'ajx' : true,
                 'id' : id,
                 'deportistas' : deportistas,
+                'edad' : $("#edad-maxima-torneo").val()
             },
             'success' : function (obj){
                 $("#listado-deportistas").html(obj.html);
@@ -336,17 +355,30 @@ Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . 'librerias/customScro
         $("#panel-players").slideDown();
         $("#form-team").slideUp(function(){
             $("#buttons-options").slideDown();
+            $("#nombre").val("");
+            $("#cupo-max").val("");
+            /* inhabilitar el agregar de equipos*/
         });
+
+        maximoEquipos = parseInt($("#cupo-maximo-torneo").val());
+        totalEquipos = $("[data-team-name]").length;
+
+        if(totalEquipos >= maximoEquipos){
+            $("#btn-show-form").attr("disabled", "disabled");
+        }
     }
     
     function removerEquipo(id){
         var equipo = $("#" + id);
+
         equipo.slideUp(function(){
             equipo.find("li.rep-jugador").each(function(k,v){
                 var e = $(v);
                 removeFromArray(e.attr("data-id"));
             });
+
             equipo.remove();
+            $("#btn-show-form").removeAttr("disabled");
         });
     }
     

@@ -60,8 +60,12 @@ class CBForm extends CFormulario{
         $requeridos = $this->getRequeridos($modelo);
         $opHtml['data-err-target'] = "$atributo";
         $error = $this->obtenerError($requeridos, $atributo);
+
         if(isset($addons['pre'])){ $opHtml['pre'] = $addons['pre']; }
         if(isset($addons['pos'])){ $opHtml['pos'] = $addons['pos']; }
+        if(isset($addons['pos-btn'])){ $opHtml['pos-btn'] = $addons['pos-btn']; }
+        if(isset($addons['pre-btn'])){ $opHtml['pre-btn'] = $addons['pre-btn']; }
+
         $input = CBoot::fieldAddOn($modelo->$atributo, $tipo, $opHtml);
         return CHtml::e('div', $label.$error.$input, ['class' => 'form-group']);
     }

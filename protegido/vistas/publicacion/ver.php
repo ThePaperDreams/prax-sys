@@ -12,6 +12,7 @@ $this->opciones = [
         'Modificar' => ['Publicacion/editar', 'id' => $modelo->id_publicacion],
     ]
 ];
+$this->tituloPagina = "Ver publicación";
 ?>
 <div class="col-sm-6">
     <div class="panel panel-default">

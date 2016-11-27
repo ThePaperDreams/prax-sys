@@ -10,6 +10,7 @@
             'Listar' => ['Evento/inicio'],
         ]
     ];    
+    $this->tituloPagina = "Registrar evento";
 ?>
 <div class="col-sm-12">    
     <?php echo $this->mostrarVistaP('_formulario', ['modelo' => $modelo,
@@ -17,6 +18,7 @@
         'Estado' => $Estado,
         'Autor' => $Autor,
         'url' => $url,
-        'imagenes' => $imagenes
+        'imagenes' => $imagenes,
+        'isEnable' => $bloquear? 'disabled' : 'enabled',
         ]); ?>
 </div>

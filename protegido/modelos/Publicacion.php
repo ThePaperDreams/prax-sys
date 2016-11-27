@@ -89,7 +89,7 @@ class Publicacion extends CModelo {
             'fecha_disponibilidad' => 'Disponible hasta',
             'tipo_id' => 'Tipo de Publicación',
             'estado_id' => 'Estado',
-            'usuario_id' => 'Usuario Id',
+            'usuario_id' => 'Autor',
             'resumen' => 'Resumen',
             'img_previsualizacion' => 'Imagen de previsualización',
             'comentarios' => 'Comentarios',
@@ -130,7 +130,7 @@ class Publicacion extends CModelo {
 
     public function filtros() {
         return [
-            'requeridos' => 'titulo,contenido,fecha_disponibilidad,tipo_id,estado_id',
+            'requeridos' => 'titulo,fecha_disponibilidad,tipo_id,estado_id',
             'seguros' => 'titulo,fecha_publicacion,fecha_disponibilidad',
         ];
     }
@@ -142,15 +142,18 @@ class Publicacion extends CModelo {
         if($this->nuevo){
             $this->fecha_publicacion = date("Y-m-d H:i:s");
         }
-        $this->contenido = str_replace('../', Sis::UrlBase(), $this->contenido);
+        $this->contenido = str_replace('../../', Sis::UrlBase(),$this->contenido);
+        // $this->contenido = str_replace('../', Sis::UrlBase(), $this->contenido);
     }
     
     private function validarCircular(){
-        $c = new CCriterio();
-        $c->condicion("tipo_id", "2");
-        $c->orden("id_publicacion", false);
-        $ultima = Publicacion::modelo()->primer($c);
-        $this->consecutivo = intval($ultima->consecutivo) + 1;
+        if($this->nuevo){
+            $c = new CCriterio();
+            $c->condicion("tipo_id", "2");
+            $c->orden("consecutivo", false);
+            $ultima = Publicacion::modelo()->primer($c);
+            $this->consecutivo = $ultima === null? 1 : intval($ultima->consecutivo) + 1;
+        }
     }
 
     public function filtrosAjx() {

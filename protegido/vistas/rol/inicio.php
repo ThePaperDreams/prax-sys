@@ -24,9 +24,9 @@
     # id_rol, nombre, descripcion, desarrollador, estado
     'columnas' => ['nombre', 'estado' => 'etiquetaEstado'],
     'opciones' => [
-        ['i' => 'eye', 'url' => 'Rol/ver&{id:pk}'],
-        ['i' => 'pencil', 'url' => 'Rol/editar&{id:pk}'],
-        ['i' => 'refresh', 'url' => 'Rol/cambiarEstado&{id:pk}'],
+        ['i' => 'eye', 'url' => 'Rol/ver&{id:pk}', 'title' => 'Ver'],
+        ['i' => 'pencil', 'url' => 'Rol/editar&{id:pk}', 'title' => 'Editar'],
+        ['i' => 'refresh', 'url' => 'Rol/cambiarEstado&{id:pk}', 'title' => 'Cambiar estado'],
     ],
     'paginacion' => 10,
 ]) ?>

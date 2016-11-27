@@ -27,7 +27,7 @@ $this->migas = [
             </div>
             <?= $formulario->inputAddon($modelo, 'evaluacion', 'number', ['label' => true, 'max' => 10, 'min' => 0, 'group' => true, 'class' => 'solo-numeros maximo-numero'], ['pos' => '0-10']) ?>
             <div class="form-group">
-                <label for="">Descripción <span id="total-chars">0</span>/<span id="max-chars">100</span> </label>
+                <label for="">Descripción <span id="total-chars">0</span>/<span id="max-chars">500</span> </label>
                 <?= $formulario->areaTexto($modelo, 'descripcion', ['rows' => 6]) ?>
             </div>
             <?= CHtml::campoOculto($ficha->id_ficha_tecnica, null, ['id' => 'id_ficha_tecnica']) ?>

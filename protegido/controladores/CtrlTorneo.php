@@ -74,6 +74,7 @@ class CtrlTorneo extends CControlador{
         } else {
             Sis::apl()->bd->commit();
         }
+        unset($_POST['equipos']);
         $this->redireccionar('inicio');
     }
     
@@ -135,6 +136,36 @@ class CtrlTorneo extends CControlador{
             foreach($jugadores AS $j){ $j->eliminar(); }
             $equipo->eliminar();
         }
+        unset($_POST['equipos-remover']);
+    }
+
+    public function accionReporte(){
+        if(!isset($this->_p['modelo'])){
+            $this->redireccionar('inicio');
+        }
+
+        $this->tituloPagina = "Torneos praxis";
+        // $this->tituloPagina = str_replace(' ', '-', $this->tituloPagina);
+
+        $campos = $this->_p['modelo'];
+        foreach($campos AS $k=>$v){ $campos[$k] = $v == ''? null : $v; }
+
+        $c = new CCriterio();
+        
+        $c->condicion("nombre", $this->nombre, "LIKE")
+                ->y("cupo_minimo", $this->cupo_minimo, "=")
+                ->y("edad_maxima", $this->edad_maxima, "=")
+                ->y("fecha_inicio", $this->fecha_inicio, "=");
+
+        $torneos = Torneo::modelo()->listar($c);
+
+        $this->plantilla = "reporte";
+        $pdf = Sis::apl()->mpdf->crear();
+        ob_start();
+        $this->vista('reporte', ['torneos' => $torneos]);
+        $texto = ob_get_clean();
+        $pdf->writeHtml($texto);
+        $pdf->Output("$this->tituloPagina.pdf", 'I');
     }
     
     private function removerJugadores($jugadores){
@@ -147,20 +178,35 @@ class CtrlTorneo extends CControlador{
                 throw new CExAplicacion("Error al remover el deportista del equipo.");
             }
         }
+        unset($_POST['deportista-remover']);
     }
+
+
     
     public function accionAjx(){
         if(!isset($this->_p['ajx'])){ Sis::fin(); }
         $id = $this->_p['id'];
         $categoria = Categoria::modelo()->porPk($id);
-        $cond = '';
-        if(isset($this->_p['deportistas'])){ $cond = 'AND deportista_id NOT IN(' . implode(',', $this->_p['deportistas']) . ')'; }
+        $edad = $this->_p['edad'];        
+        // $cond = '';
+        // $c = new CCriterio();
+        $cond = "AND fn_get_edad_deportistas(t2.id_deportista) <= $edad ";
+        if(isset($this->_p['deportistas'])){ 
+            $cond = 'AND deportista_id NOT IN(' . implode(',', $this->_p['deportistas']) . ')'; 
+        }
+
         $deportistas =  $categoria->getDeportistasMatriculados($cond);
         
         $html = '';
         foreach($deportistas AS $deportista){
             $html .= $this->vistaP('_itemDeportista', ['deportista' => $deportista]);
         }
+
+        if($html == ""){
+            $t = "No hay jugadores matriculados para esta categoría o no tienen edad para participar en este torneo";
+            $html = CHtml::e('div', $t, ['class' => 'alert alert-warning']);
+        }
+
         $this->json([
             'html' => $html,
         ]);

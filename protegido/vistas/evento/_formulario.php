@@ -4,6 +4,10 @@ Sis::Recursos()->RecursoJS(['url' => Sis::apl()->tema->getUrlBase() . '/js/pirob
 
 Sis::Recursos()->recursoCss(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/css/fileinput.min.css']);
 Sis::Recursos()->recursoJs(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/js/fileinput.min.js']);
+Sis::Recursos()->recursoJs(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/js/fileinput_locale_es.js']);
+
+Sis::Recursos()->recursoCss(['url' => Sis::urlRecursos() . 'librerias/timepicker/css/wickedpicker.min.css']);
+Sis::Recursos()->recursoJs(['url' => Sis::urlRecursos() . 'librerias/timepicker/js/wickedpicker.min.js']);
 
 $formulario = new CBForm(['id' => 'form-eventos']);
 $formulario->abrir();
@@ -14,41 +18,41 @@ $formulario->abrir();
         <li role="presentation"><a href="#cargar" aria-controls="cargar" role="tab" data-toggle="tab">Galerías</a></li>
     </ul>
     <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active" id="listar">
+        <div role="tabpanel" class="tab-pane active" id="listar" disabled="disabled">
             <div class="col-sm-4">
-                <?php echo $formulario->lista($modelo, 'tipo_id', $TipoEvento, ['defecto' => 'Seleccione un tipo', 'label' => true]) ?>
+                <?php echo $formulario->lista($modelo, 'tipo_id', $TipoEvento, [ $isEnable => true, 'defecto' => 'Seleccione un tipo', 'label' => true]) ?>
             </div>   
 <!--             <div class="col-sm-4">
                 <?php echo $formulario->campoTexto($modelo, 'fecha_disponibilidad', ['label' => true, 'data-val-maxmin' => true, 'group' => true, 'class' => 'campo-fecha', 'readonly' => true]) ?>
             </div>   -->
             <div class="col-sm-4">
-                <?php echo $formulario->campoTexto($modelo, 'fecha', ['data-val-maxmin' => true, 'label' => true, 'group' => true, 'class' => 'campo-fecha', 'readonly' => true]) ?>
+                <?php echo $formulario->campoTexto($modelo, 'fecha', [$isEnable => true, 'data-val-maxmin' => true, 'label' => true, 'group' => true, 'class' => 'campo-fecha', 'readonly' => true]) ?>
             </div>  
             <div class="col-sm-4">
             <?php if ($modelo->nuevo == false): ?>
                 <?php echo $formulario->lista($modelo, 'estado', $Estado, ['group' => true, 'label' => true]) ?>
             <?php else: ?>
-                <?php echo $formulario->lista($modelo, 'estado', $Estado, ['group' => true, 'label' => true, 'disabled' => true]) ?>
+                <?php echo $formulario->lista($modelo, 'estado', $Estado, [$isEnable => true, 'group' => true, 'label' => true, 'disabled' => true]) ?>
             <?php endif ?>
             </div>
             <div class="col-sm-8">
-                <?php echo $formulario->campoTexto($modelo, 'lugar', ['label' => true, 'group' => true, 'maxlength' => '200']) ?>
+                <?php echo $formulario->campoTexto($modelo, 'lugar', [$isEnable => true, 'label' => true, 'group' => true, 'maxlength' => '200']) ?>
             </div>
             <div class="col-sm-4">
-                <p id="err-hora" class="text-danger form-requerido" style="display:none">El campo <b>Hora</b> no puede estar vacio</p>
-                <label>Hora</label>
-                <div class="input-group input-icon datetime-pick time-only">
-                    <?php echo $formulario->inputAddon($modelo, 'hora', 'time', ['data-format' => 'hh:mm', 'class' => 'input-md']) ?>
-                    <span class="input-group-addon">
+                <!-- <p id="err-hora" class="text-danger form-requerido" style="display:none">El campo <b>Hora</b> no puede estar vacio</p> -->
+                <!-- <label>Hora</label> -->
+                <?php echo $formulario->inputAddon($modelo, 'hora', 'text', [$isEnable => true, 'readonly' => true, 'label' => true, 'data-format' => 'hh:mm', 'class' => 'input-md'], ['pos' => CBoot::fa('clock-o', ['id' => 'trigger-time', 'class' => 't-calendar', 'data-t' => '#Eventos_hora'])]) ?>
+                <!-- <div class="input-group input-icon datetime-pick time-only"> -->
+                    <!-- <span class="input-group-addon">
                         <i class="fa fa-clock-o"></i>
-                    </span>
-                </div>
+                    </span> -->
+                <!-- </div> -->
             </div>
             
             <div class="col-sm-12">
                 <div class="form-group">
-                    <?php echo $formulario->campoTexto($modelo, 'titulo', ['label' => true, 'group' => true, 'maxlength' => 100]) ?>
-                    <?php echo $formulario->areaTexto($modelo, 'contenido', ['label' => true, 'group' => true, 'class' => 'summernote', 'rows' => 12]) ?>
+                    <?php echo $formulario->campoTexto($modelo, 'titulo', [$isEnable => true, 'label' => true, 'group' => true, 'maxlength' => 100]) ?>
+                    <?php echo $formulario->areaTexto($modelo, 'contenido', [$isEnable => true, 'label' => true, 'group' => true, 'class' => 'summernote', 'rows' => 12]) ?>
                 </div>                
             </div>
         </div>
@@ -75,12 +79,29 @@ $(document).ready(function() {
 //    $('.summernote').summernote({
 //        height: 300,
 //    });
+//    
+    $("#trigger-time").click(function(){
+        $("#Eventos_hora").focus();
+        setTimeout(function(){
+            $("#Eventos_hora").trigger("click");
+        }, 100);
+    });
+    
+    $("#Eventos_hora").wickedpicker({
+        'now' : '12:00',
+        'title' : 'Hora',
+        showSeconds : false,
+        minutesInterval : 15,
+        twentyFour: true,
+    });
+
     tinymce.init({
         selector: '#Eventos_contenido',
         language : 'es',
         plugins: "code,image,pagebreak,advlist,fullscreen,imagetools,link,media,paste,textcolor,wordcount,example,",
         image_advtab: true,
-        link_assume_external_targets: true
+        link_assume_external_targets: true,
+        <?= $isEnable == 'disabled'? 'readonly: 1,' : '' ?>
     });
     
     $(".campo-fecha").change(function(){
@@ -126,7 +147,16 @@ $(document).ready(function() {
                 if (respuesta.error == true) {
                     mostrarAlert("error", "Ya existe ese nombre");
                 } else {
-                    document.getElementById("form-eventos").submit();
+                    setTimeout(function(){
+                        if($("#Eventos_contenido").val() == ""){
+                            confirmar("Confirmar envio", "¿Realmente desea guardar sin contenido?", function(){
+                                document.getElementById("form-eventos").submit();
+                            });
+                        } else {
+                            document.getElementById("form-eventos").submit();
+                        }
+
+                    }, 300);
                 }
             }
         });

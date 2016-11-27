@@ -10,6 +10,7 @@
             'Listar' => ['TipoEvento/inicio'],
         ]
     ];    
+    $this->tituloPagina = "Registrar tipo de evento";
 ?>
 <div class="col-sm-12">    
     <?php echo $this->mostrarVistaP('_formulario', ['modelo' => $modelo, 'url' => $url]); ?>

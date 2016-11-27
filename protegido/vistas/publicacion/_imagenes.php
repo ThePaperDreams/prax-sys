@@ -68,17 +68,20 @@
         
         $(".btn-eliminar").click(function(){
             eliminarImagen($(this).attr("data-id"));
+            return false;
         });
         
         $("#cargar-imagen").fileinput({
             uploadUrl: "<?= Sis::crearUrl(['publicacion/ajx']) ?>",
             uploadAsync: true,
+            language: 'es',
             uploadExtraData: {
                 'upload-imgs': true,
             },
             browseLabel: "Buscar",
             removeLabel: "Remover",
             uploadLabel: "Subir",
+            allowedFileExtensions: ["jpg", "png"],
         }).on('fileuploaded', function(event, data, id, index){
             console.log(data.response);
             var respuesta = data.response;
@@ -108,6 +111,7 @@
         
         button.click(function(){
             eliminarImagen($(this).attr("data-id"));
+            return false;
         });
         
         icon.click(function(){
@@ -126,27 +130,45 @@
     
     function eliminarImagen(id){
         var msg = "¿Seguro que desea borrar esta imagen? Al hacerlo la imagen desaparecerá de cualquier publicación en que se encuentre ¿desea continuar? ";
-        if(!confirm(msg)){
-            return false;
-        }
-        $.ajax({
-            'type' : 'POST',
-            'url' : '<?= Sis::crearUrl(['publicacion/ajx']) ?>',
-            data: {
-                'delete-img' : true,
-                'id' : id,
+
+        // if(!confirm(msg)){
+        //     return false;
+        // }
+        // 
+        Lobibox.confirm({
+            title: 'Confirmar',
+            msg: msg,
+            buttons: {
+                yes: {class: 'btn btn-success', text: 'Si'},
+                no: {class: 'btn btn-default', text: 'No'},
             },
-            success: function(obj){
-                if(obj.error === false){
-                    var img = $("#rep-img-" + id);
-                    img.fadeOut(function(){
-                        img.remove();
+            callback: function($this, type, evt){
+                if(type == 'yes'){
+
+                    $.ajax({
+                        'type' : 'POST',
+                        'url' : '<?= Sis::crearUrl(['publicacion/ajx']) ?>',
+                        data: {
+                            'delete-img' : true,
+                            'id' : id,
+                        },
+                        success: function(obj){
+                            if(obj.error === false){
+                                var img = $("#rep-img-" + id);
+                                img.fadeOut(function(){
+                                    img.remove();
+                                });
+                            } else {
+                                lobiAlert('error', 'Ocurrió un error al eliminar la imagen');
+                            }
+                        }
                     });
+
                 } else {
-                    lobiAlert('error', 'Ocurrió un error al eliminar la imagen');
+                    
                 }
             }
-        });
+        });        
         
     }
 </script>

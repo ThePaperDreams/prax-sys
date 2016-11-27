@@ -11,6 +11,7 @@
  */
  class TipoEvento extends CModelo{
     private $_resumen = null; 
+    private $_yaAsociado = null;
     /**
      * Esta función retorna el nombre de la tabla representada por el modelo
      * @return string
@@ -37,6 +38,7 @@
      */
     protected function relaciones() {        
         return [
+            'Eventos' => [self::CONTENGAN_A, 'Evento', 'tipo_id'],
             # el formato es simple: 
             # tipo de relación | modelo con que se relaciona | campo clave foranea
                     ];
@@ -67,6 +69,16 @@
        return $criterio;
     }
     
+    public function getYaAsociado(){
+        if($this->_yaAsociado == null){
+            $c = new CCriterio();
+            $c->condicion("t.tipo_id", $this->id_tipo);
+            $eventos = Evento::modelo()->contar($c);
+            $this->_yaAsociado = $eventos > 0;
+        }
+        return $this->_yaAsociado;
+    }
+
     public function getResumen(){
         if($this->_resumen == null){
             $this->_resumen = strlen($this->descripcion) > 50? 

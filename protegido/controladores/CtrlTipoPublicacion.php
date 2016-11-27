@@ -20,6 +20,7 @@ class CtrlTipoPublicacion extends CControlador{
      */
     public function accionCrear(){
         $modelo = new TipoPublicacion();
+        $this->validarNombre();
         if(isset($this->_p['TiposPublicacion'])){
             $modelo->atributos = $this->_p['TiposPublicacion'];
             if($modelo->guardar()){
@@ -41,6 +42,7 @@ class CtrlTipoPublicacion extends CControlador{
      */
     public function accionEditar($pk){
         $modelo = $this->cargarModelo($pk);
+        $this->validarNombre();
         if(isset($this->_p['TiposPublicacion'])){
             $modelo->atributos = $this->_p['TiposPublicacion'];
             if($modelo->guardar()){
@@ -67,7 +69,7 @@ class CtrlTipoPublicacion extends CControlador{
                     'where' => "id_tipo_publicacion <> $id AND LOWER(nombre) = LOWER('" . $this->_p['nombre'] . "')"
                 ];
             }
-            $categoria = CategoriaImplemento::modelo()->primer($criterio);
+            $categoria = TipoPublicacion::modelo()->primer($criterio);
             
             if($categoria != null){
                 $error = true;
@@ -96,11 +98,20 @@ class CtrlTipoPublicacion extends CControlador{
      */
     public function accionEliminar($pk){
         $modelo = $this->cargarModelo($pk);
-        if($modelo->eliminar()){
-            # lógica para borrado exitoso
+        $publicaciones = $modelo->Publicaciones;
+        if(count($publicaciones) > 0){
+            Sis::Sesion()->flash("alerta", [
+                'msg' => 'No se puede eliminar este tipo, ya se encuentra asociado a una publicación o más',
+                'tipo' => 'error',
+            ]);
         } else {
-            # lógica para error al borrar
+            if($modelo->eliminar()){
+                # lógica para borrado exitoso
+            } else {
+                # lógica para error al borrar
+            }            
         }
+
         $this->redireccionar('inicio');
     }
     

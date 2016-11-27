@@ -1,4 +1,5 @@
 <?php 
+    $this->tituloPagina = "Listar publicaciones";
     $this->migas = [
         'Home' => ['principal/inicio'],
         'Listar Publicaciones'
@@ -32,9 +33,9 @@
         'vistas',
         ],
     'opciones' => [
-        ['i' => 'eye', 'url' => 'Publicacion/ver&{id:pk}'],
-        ['i' => 'pencil', 'url' => 'Publicacion/editar&{id:pk}'],
-        ['i' => 'globe', 'url' => 'Publicacion/visualizar&{id:pk}', 'opciones' => ['target' => '_blank']],
+        ['i' => 'eye', 'url' => 'Publicacion/ver&{id:pk}', 'title' => 'Ver'],
+        ['i' => 'pencil', 'url' => 'Publicacion/editar&{id:pk}', 'title' => 'Editar'],
+        ['i' => 'globe', 'url' => 'Publicacion/visualizar&{id:pk}', 'title' => 'Ver en sitio web' , 'opciones' => ['target' => '_blank']],
     ],
     'paginacion' => 10,
 ]) ?>

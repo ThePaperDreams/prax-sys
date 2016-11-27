@@ -1,7 +1,7 @@
 <?php 
 Sis::Recursos()->RecursoJS(['url' => Sis::Recursos()->getUrlRecursos().'librerias/tinyMce/tinymce.js']);
 
-$this->tituloPagina = "Configuración Global";
+$this->tituloPagina = "Configuración general";
 $this->migas = [
 	'Home' => ['principal/inicio'],
 	'Configuración'
@@ -20,7 +20,7 @@ $this->migas = [
 					<div class="form-group col-sm-6">
 						<label for="">E-mail Administrador</label>
 						<div class="input-group">
-							<input type="text" class="form-control" id="email-admin" value="<?= Configuracion::get('email_admin') ?>">
+							<input type="text" class="form-control" maxlength="40" id="email-admin" value="<?= Configuracion::get('email_admin') ?>">
 							<div class="input-group-addon">
 								<i class="fa fa-envelope"></i>
 							</div>
@@ -29,7 +29,7 @@ $this->migas = [
 					<!-- <div class="form-group col-sm-6">
 						<label for="">Calendario de eventos</label>
 						<br>
-						<input id="calenadrio" type="checkbox" name="my-checkbox" checked id="check">
+						<input maxlength="100" id="calenadrio" type="checkbox" name="my-checkbox" checked id="check">
 					</div> -->
 				</div>
 
@@ -39,7 +39,7 @@ $this->migas = [
 
 				<div class="form-group">
 					<label for="">Quienes somos</label>
-					<textarea name="contenido_publicacion" id="Publicaciones_contenido" cols="30" rows="15" class="form-control"><?= Configuracion::get("quienes_somos") ?></textarea>
+					<textarea maxlength="1000" name="contenido_publicacion" id="Publicaciones_contenido" cols="30" rows="15" class="form-control"><?= Configuracion::get("quienes_somos") ?></textarea>
 				</div>
 
 				<div class="page-header">
@@ -49,7 +49,7 @@ $this->migas = [
 				<div class="form-group col-sm-3">
 					<label for="">Facebook</label>
 					<div class="input-group">
-						<input id="redes-facebook" name="redes[facebook]" type="text" class="form-control" value="<?= Configuracion::get('redes_facebook') ?>">
+						<input maxlength="100" id="redes-facebook" name="redes[facebook]" type="text" class="form-control" value="<?= Configuracion::get('redes_facebook') ?>">
 						<div class="input-group-addon">
 							<i class="fa fa-facebook"></i>
 						</div>
@@ -59,7 +59,7 @@ $this->migas = [
 				<div class="form-group col-sm-3">
 					<label for="">Twitter</label>
 					<div class="input-group">
-						<input id="redes-twitter" name="redes[twitter]" type="text" class="form-control" value="<?= Configuracion::get('redes_twitter') ?>">
+						<input maxlength="100" id="redes-twitter" name="redes[twitter]" type="text" class="form-control" value="<?= Configuracion::get('redes_twitter') ?>">
 						<div class="input-group-addon">
 							<i class="fa fa-twitter"></i>
 						</div>
@@ -69,7 +69,7 @@ $this->migas = [
 				<div class="form-group col-sm-3">
 					<label for="">Instagram</label>
 					<div class="input-group">
-						<input id="redes-instagram" name="redes[instagram]" type="text" class="form-control" value="<?= Configuracion::get('redes_instagram') ?>">
+						<input maxlength="100" id="redes-instagram" name="redes[instagram]" type="text" class="form-control" value="<?= Configuracion::get('redes_instagram') ?>">
 						<div class="input-group-addon">
 							<i class="fa fa-instagram"></i>
 						</div>
@@ -79,7 +79,7 @@ $this->migas = [
 				<div class="form-group col-sm-3">
 					<label for="">Youtube</label>
 					<div class="input-group">
-						<input id="redes-youtube" name="redes[youtube]" type="text" class="form-control" value="<?= Configuracion::get('redes_youtube') ?>">
+						<input maxlength="100" id="redes-youtube" name="redes[youtube]" type="text" class="form-control" value="<?= Configuracion::get('redes_youtube') ?>">
 						<div class="input-group-addon">
 							<i class="fa fa-youtube"></i>
 						</div>
@@ -97,7 +97,7 @@ $this->migas = [
 
 				
 					
-				<div class="page-header">
+				<!-- <div class="page-header">
 					<h4>Maestras</h4>
 				</div>
 				<div class="list-group">
@@ -105,7 +105,7 @@ $this->migas = [
 					<a href="<?= Sis::crearUrl(['EstadoDeportista/inicio']) ?>" class="list-group-item">Estados de Deportista</a>
 					<a href="<?= Sis::crearUrl(['EstadoPublicacion/inicio']) ?>" class="list-group-item">Estados de Publicación</a>
 					<a href="<?= Sis::crearUrl(['TipoIdentificacion/inicio']) ?>" class="list-group-item">Tipos de Identificación</a>
-				</div>				
+				</div>		 -->		
 			 </div> 		
  		</div>
  	</div>

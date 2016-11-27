@@ -9,6 +9,8 @@
             'Crear' => ['TipoEvento/crear'],
         ]
     ];
+
+    $this->tituloPagina = "Tipos de evento";
 ?>
 
 <?= $this->complemento('!siscoms.bootstrap3.CBGrid', [
@@ -20,9 +22,9 @@
     # id_tipo, nombre, descripcion
     'columnas' => ['nombre', 'descripcion' => 'resumen'],
     'opciones' => [
-        ['i' => 'eye', 'title' => 'Ver','url' => 'TipoEvento/ver&{id:pk}'],
-        ['i' => 'pencil', 'title' => 'Editar', 'url' => 'TipoEvento/editar&{id:pk}', 'visible' => '$m->getEnPrestamo() == false'],
-        ['i' => 'refresh', 'title' => 'Cambiar estado','url' => 'TipoEvento/eliminar&{id:pk}', 'visible' => '$m->getEnPrestamo() == false'],
+        ['i' => 'eye', 'title' => 'Ver','url' => 'TipoEvento/ver&{id:pk}', 'title' => 'Ver'],
+        ['i' => 'pencil', 'title' => 'Editar', 'url' => 'TipoEvento/editar&{id:pk}', 'title' => 'Editar'],
+        ['i' => 'trash', 'title' => 'Eliminar','url' => 'TipoEvento/eliminar&{id:pk}', 'title' => 'Eliminar', 'visible' => '$m->yaAsociado == false', 'opciones' => ['class' => 'op-eliminar']],  
     ],
     'paginacion' => 10,
 ]) ?>

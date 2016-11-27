@@ -2,6 +2,7 @@
 
 $formulario = new CBForm(['id' => 'form-tipospublicacion']);
 $formulario->abrir();
+
 ?>
 <div class="tile p-15">
     <?php echo $formulario->inputAddon($modelo, 'nombre', 'texto', ['label' => true, 'group' => true, 'autofocus' => true], 'font') ?>
@@ -57,7 +58,7 @@ $formulario->abrir();
                 if (respuesta.error == true) {
                     mostrarAlert("error", "Ya existe ese nombre");
                 } else {
-                    document.getElementById("form-tipospublicacion").submit();
+                    // document.getElementById("form-tipospublicacion").submit();
                 }
             }
         });

@@ -13,6 +13,7 @@
  */
 class TipoPublicacion extends CModelo {
     private $_resumen = null;
+    private $_yaAsociado = null;
     /**
      * Esta función retorna el nombre de la tabla representada por el modelo
      * @return string
@@ -39,6 +40,7 @@ class TipoPublicacion extends CModelo {
      */
     protected function relaciones() {
         return [
+            'Publicaciones' => [self::CONTENGAN_A, 'Publicacion', 'tipo_id'],
                 # el formato es simple: 
                 # tipo de relación | modelo con que se relaciona | campo clave foranea
         ];
@@ -76,6 +78,17 @@ class TipoPublicacion extends CModelo {
         $criterio = new CCriterio();
         $criterio->condicion("nombre", $this->nombre, "LIKE");
         return $criterio;
+    }
+
+    public function getYaAsociado(){
+        if($this->_yaAsociado == null){
+            $c = new CCriterio();
+            $c->condicion("t.tipo_id", $this->id_tipo_publicacion);
+            $publicaciones = Publicacion::modelo()->contar($c);
+            $this->_yaAsociado = $publicaciones > 0;
+        }
+        
+        return $this->_yaAsociado;
     }
 
     /**

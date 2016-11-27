@@ -20,6 +20,7 @@
         'nombre',
         'cupo_minimo',
         'fecha_inicio' => CBoot::text('', ['class' => 'campo-fecha j-grid-filtro form-control ', 'name' => 'fecha_inicio']),
+        'fecha_fin' => CBoot::text('', ['class' => 'campo-fecha j-grid-filtro form-control ', 'name' => 'fecha_fin']),
         'edad_maxima',
      ],    
     'modelo' => 'Torneo',
@@ -29,6 +30,7 @@
         'cupo_minimo', 
         'edad_maxima',  
         'fecha_inicio',
+        'fecha_fin',
         'totalEquipos' => ['valor' => 'totalEquipos', 'opciones' => ['class' => 'text-center']],
     ],
     'opciones' => [

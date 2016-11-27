@@ -76,6 +76,8 @@ Sis::Recursos()->recursoJs(['url' => Sis::urlRecursos() . 'librerias/boot-file-i
         $("#input-cargar-imagen").fileinput({
             uploadUrl: "<?= Sis::crearUrl(['publicacion/ajx']) ?>",
             uploadAsync: true,
+            maxFileCount : 5,
+            language: 'es',
             uploadExtraData: {
                 'upload-imgs': true,
             }

@@ -12,6 +12,7 @@
             'Modificar' => ['TipoPublicacion/editar', 'id' => $modelo->id_tipo_publicacion],
         ]
     ];
+    $this->tituloPagina = "Ver tipo de publicación";
 ?>
 <div class="col-sm-12">
     <div class="panel panel-default">

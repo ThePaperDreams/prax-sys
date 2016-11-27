@@ -61,7 +61,7 @@ class CtrlTipoEvento extends CControlador{
                     'where' => "id_tipo <> $id AND LOWER(nombre) = LOWER('" . $this->_p['nombre'] . "')"
                 ];
             }
-            $categoria = CategoriaImplemento::modelo()->primer($criterio);
+            $categoria = TipoEvento::modelo()->primer($criterio);
             
             if($categoria != null){
                 $error = true;
@@ -90,11 +90,20 @@ class CtrlTipoEvento extends CControlador{
      */
     public function accionEliminar($pk){
         $modelo = $this->cargarModelo($pk);
-        if($modelo->eliminar()){
-            # lógica para borrado exitoso
+        $eventos = $modelo->Eventos;
+        if(count($eventos) > 0){
+            Sis::Sesion()->flash("alerta", [
+                'msg' => 'No se puede eliminar este tipo, ya se encuentra asociado a una publicación o más',
+                'tipo' => 'error',
+            ]);
         } else {
-            # lógica para error al borrar
+            if($modelo->eliminar()){
+                # lógica para borrado exitoso
+            } else {
+                # lógica para error al borrar
+            }            
         }
+
         $this->redireccionar('inicio');
     }
     

@@ -11,6 +11,7 @@
             'Registrar' => ['TipoEvento/crear'],
         ]
     ];    
+    $this->tituloPagina = "Actualiar tipo de evento";
 ?>
 <div class="col-sm-12">    
     <?php echo $this->mostrarVistaP('_formulario', ['modelo' => $modelo, 'url' => $url]); ?>

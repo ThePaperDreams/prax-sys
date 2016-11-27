@@ -12,6 +12,9 @@ Sis::Recursos()->recursoCss([
 Sis::Recursos()->recursoJs([
     'url' => Sis::urlRecursos() . 'librerias/boot-file-input/js/fileinput.min.js',
 ]);
+Sis::Recursos()->recursoJs([
+    'url' => Sis::urlRecursos() . 'librerias/boot-file-input/js/fileinput_locale_es.js',
+]);
 
 ?>
 
@@ -48,11 +51,12 @@ Sis::Recursos()->recursoJs([
 <script>
     $(function(){
         $("#cargar-imagen").fileinput({
+            language: 'es',
             uploadUrl: "<?= Sis::crearUrl(['publicacion/cargarImagenes']) ?>",
             uploadAsync: true,
             uploadExtraData: {
                 ajx: true,
-            }
+            },
         }).on('fileuploaded', function(event, data, id, index){
             var respuesta = data.response;
             if(respuesta.uploadErr === false){

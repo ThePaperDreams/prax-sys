@@ -100,7 +100,6 @@ class CtrlEvento extends CControlador{
                 $this->redireccionar('inicio');
             }
         }
-        
         $url = Sis::crearUrl(['Evento/editar', 'id' => $pk]);
         $this->mostrarVista('editar', $this->getOpciones($modelo, $url));
     }
@@ -108,6 +107,7 @@ class CtrlEvento extends CControlador{
     
     public function getOpciones(&$modelo, $url){
         return ['modelo' => $modelo,'url' => $url,
+            'bloquear' => $modelo->nuevo == false && $modelo->estado == 2,
             'TipoEvento' => CHtml::modelolista(TipoEvento::modelo()->listar(), "id_tipo", "nombre"),      
             'Autor' => CHtml::modelolista(Usuario::modelo()->listar(), "id_usuario", "nombre"),
             'Estado' => CHtml::modelolista(EstadoEvento::modelo()->listar(), "id_estado", "nombre"),

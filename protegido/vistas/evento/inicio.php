@@ -9,6 +9,7 @@
             'Registrar' => ['Evento/crear'],
         ]
     ];
+    $this->tituloPagina = "Listar eventos";
 ?>
 
 <?= $this->complemento('!siscoms.bootstrap3.CBGrid', [

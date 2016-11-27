@@ -114,3 +114,21 @@
 						>> Consulta ejecutada: SELECT t.* FROM tbl_deportistas AS t WHERE id_deportista NOT IN () AND estado_id <> 4 
 [Error BD] [02:22:30]	Error de base de datos: Algo está equivocado en su sintax cerca ') AND estado_id <> 4' en la linea 1
 						>> Consulta ejecutada: SELECT t.* FROM tbl_deportistas AS t WHERE id_deportista NOT IN () AND estado_id <> 4 
+[Error BD] [03:44:58]	Error de base de datos: Cannot delete or update a parent row: a foreign key constraint fails (`prax_sys_prod`.`tbl_imagenes_galerias`, CONSTRAINT `fk_tbl_imagenes_galerias_tbl_imagenes1` FOREIGN KEY (`imagen_id`) REFERENCES `tbl_imagenes` (`id_imagen`) ON DELETE NO ACTION ON UPDATE NO )
+						>> Consulta ejecutada: DELETE FROM tbl_imagenes WHERE id_imagen=1
+[Error BD] [07:48:33]	Error de base de datos: La columna 'id_tipo' en where clause es desconocida
+						>> Consulta ejecutada: SELECT t.* FROM tbl_categorias_implementos AS t WHERE id_tipo <> 1 AND LOWER(nombre) = LOWER('Bazarlfasdlfhsdhfkjasdhfkjashdfjkhsdkjfhsdkjfhkjds')  LIMIT 1 
+[Error BD] [07:48:47]	Error de base de datos: La columna 'id_tipo' en where clause es desconocida
+						>> Consulta ejecutada: SELECT t.* FROM tbl_categorias_implementos AS t WHERE id_tipo <> 1 AND LOWER(nombre) = LOWER('                           ')  LIMIT 1 
+[Error BD] [07:48:55]	Error de base de datos: La columna 'id_tipo' en where clause es desconocida
+						>> Consulta ejecutada: SELECT t.* FROM tbl_categorias_implementos AS t WHERE id_tipo <> 1 AND LOWER(nombre) = LOWER('                           ')  LIMIT 1 
+[Error BD] [07:49:00]	Error de base de datos: La columna 'id_tipo' en where clause es desconocida
+						>> Consulta ejecutada: SELECT t.* FROM tbl_categorias_implementos AS t WHERE id_tipo <> 1 AND LOWER(nombre) = LOWER('                           ')  LIMIT 1 
+[Error BD] [07:49:14]	Error de base de datos: La columna 'id_tipo' en where clause es desconocida
+						>> Consulta ejecutada: SELECT t.* FROM tbl_categorias_implementos AS t WHERE id_tipo <> 1 AND LOWER(nombre) = LOWER('                                                  ')  LIMIT 1 
+[Error BD] [07:49:33]	Error de base de datos: La columna 'id_tipo' en where clause es desconocida
+						>> Consulta ejecutada: SELECT t.* FROM tbl_categorias_implementos AS t WHERE id_tipo <> 1 AND LOWER(nombre) = LOWER('Bazar     ')  LIMIT 1 
+[Error BD] [07:50:04]	Error de base de datos: La columna 'id_tipo' en where clause es desconocida
+						>> Consulta ejecutada: SELECT t.* FROM tbl_categorias_implementos AS t WHERE id_tipo <> 1 AND LOWER(nombre) = LOWER('Bazar     ')  LIMIT 1 
+[Error BD] [07:50:28]	Error de base de datos: La columna 'id_tipo' en where clause es desconocida
+						>> Consulta ejecutada: SELECT t.* FROM tbl_categorias_implementos AS t WHERE id_tipo <> 2 AND LOWER(nombre) = LOWER('Bazar')  LIMIT 1 

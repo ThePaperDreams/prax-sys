@@ -1,6 +1,8 @@
 <?php
 Sis::Recursos()->recursoCss(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/css/fileinput.min.css']);
 Sis::Recursos()->recursoJs(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/js/fileinput.min.js']);
+Sis::Recursos()->recursoJs(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/js/fileinput_locale_es.js']);
+
 $formulario = new CBForm(['id' => 'form-usuarios', 'opcionesHtml' => ['enctype' => 'multipart/form-data']]);
 $formulario->abrir();
 ?>
@@ -103,6 +105,7 @@ $formulario->abrir();
             showUpload: false,
             browseLabel: "Seleccionar archivo",
             maxFileSize: 5000,
+            language: 'es',
             allowedFileExtensions: ['jpg', 'gif', 'png', 'jpeg']         
         });
         $("#form-usuarios").submit(function(){            

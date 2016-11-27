@@ -6,7 +6,7 @@ $formulario->abrir();
 <p>Los campos con <span class="text-danger">*</span>  son requeridos</p>
 <?php echo $formulario->campoTexto($modelo, 'nombre', ['label' => true, 'group' => true, 'autofocus' => true, 'maxlength' => '45']) ?>
 <div class="form-group">
-    <label for="">Descripción <span id="total-chars">0</span>/<span id="max-chars">300</span> </label>
+    <label for="">Descripción <span id="total-chars">0</span>/<span id="max-chars">500</span> </label>
     <?php echo $formulario->areaTexto($modelo, 'descripcion', ['maxlength' => '300', 'rows' => 8]) ?>
 </div>
 
@@ -61,13 +61,14 @@ $formulario->abrir();
         }
 
         function mostrarAlert(tipo, msg) {
-            Lobibox.notify(tipo, {
-                size: 'mini',
-                showClass: 'bounceInRight',
-                hideClass: 'bounceOutRight',
-                msg: msg,
-                delay: 8000,
-                soundPath: '<?= Sis::UrlRecursos() ?>librerias/lobibox/sounds/',
-            });
+            lobiAlert(tipo, msg);
+            // Lobibox.notify(tipo, {
+            //     size: 'mini',
+            //     showClass: 'bounceInRight',
+            //     hideClass: 'bounceOutRight',
+            //     msg: msg,
+            //     delay: 8000,
+            //     soundPath: '<?= Sis::UrlRecursos() ?>librerias/lobibox/sounds/',
+            // });
         }
 </script>

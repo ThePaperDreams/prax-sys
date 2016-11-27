@@ -4,6 +4,7 @@ $this->ayudaTitulo = "Registrar / Modificar Deportista";
 
 Sis::Recursos()->recursoCss(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/css/fileinput.min.css']);
 Sis::Recursos()->recursoJs(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/js/fileinput.min.js']);
+Sis::Recursos()->recursoJs(['url' => Sis::urlRecursos() . 'librerias/boot-file-input/js/fileinput_locale_es.js']);
 
 $formulario = new CBForm(['id' => 'form-deportistas', 'opcionesHtml' => ['enctype' => 'multipart/form-data']]);
 $formulario->abrir();
@@ -442,7 +443,8 @@ $formulario->abrir();
             showUpload: false,
             browseLabel: "Seleccionar archivo",
             maxFileSize: 5000,
-            allowedFileExtensions: ['jpg', 'gif', 'png', 'jpeg']
+            allowedFileExtensions: ['jpg', 'gif', 'png', 'jpeg'],
+            language: 'es',
         });
         $("#nombre-documento").val("");
         $("#documentos-cargados > tbody").append(tr);
@@ -838,7 +840,8 @@ $formulario->abrir();
             showRemove: false,
             showUpload: false,
             browseLabel: "Seleccionar archivo",
-            maxFileSize: 5000            
+            maxFileSize: 5000,
+            language: 'es',
         });    
     }
     
