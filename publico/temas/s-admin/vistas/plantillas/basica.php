@@ -483,10 +483,10 @@ Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . "/librerias/bootstrap-
             }
 
             $(function(){
-                consultarNotificaciones();
+                // consultarNotificaciones();
 
                 setInterval(function(){
-                    consultarNotificaciones();
+                    // consultarNotificaciones();
                 }, 6000);
             });
 
