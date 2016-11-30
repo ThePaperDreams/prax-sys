@@ -47,10 +47,37 @@ class CtrlPrincipal extends CControlador{
         if(!isset($this->_p['ajx-rqst'])){
             Sis::fin();
         }
+
+        if(isset($this->_p["ajx-rqst"]) && isset($this->_p["get-eventos-dia"])){
+            $this->consultarEventosDia();
+        }
         $this->json([
             'total' => count(Sis::apl()->Utilidades->getNotificaciones()),
             'notificaciones' => Sis::apl()->Utilidades->getNotificaciones(),
         ]);
+    }
+
+    private function consultarEventosDia(){
+        $fecha = $this->_p['dia'];
+        $c = new CCriterio();
+        $c->condicion("t.fecha", $fecha);
+        $eventos = Evento::modelo()->listar($c);
+        $res = [];
+
+        foreach($eventos AS $evento){
+            $res[] = [
+                'nombre' => $evento->titulo,
+                'hora' => $evento->hora,
+                'url' => Sis::crearUrl(['evento/ver', 'id' => $evento->id_evento]),
+            ];
+        }
+
+        $this->json([
+            'error' => false,
+            'eventos' => $res, 
+        ]);
+
+        Sis::fin();
     }
 
     public function accionTest(){

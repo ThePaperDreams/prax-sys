@@ -35,11 +35,20 @@ $formulario->abrir();
                         <input type="hidden" id="flag-dep" value="0">
                         <?php echo $formulario->lista($modelo, 'deportista_id', $deportistas, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un deportista']) ?>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-7">
                         <input type="hidden" id="flag-dep" value="0">
-                        <?php echo $formulario->lista($modelo, 'club_id', $clubes, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un club']) ?>
+                        <div class="col-sm-8">
+                            <?php echo $formulario->lista($modelo, 'club_id', $clubes, ['label' => true, 'group' => true, 'defecto' => 'Seleccione un club']) ?>
+                        </div>
+                        <div class="col-sm-4">
+                            <label for="">&nbsp;</label>
+                            <button class="btn btn-block btn-primary" id="button-add-club">
+                                Nuevo club
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-5">
                         <?php echo $formulario->inputAddon($modelo, 'fecha_pago', 'text', ['label' => true, 'readonly' => true, 'group' => true, 'class' => 'campo-fecha', 'data-val-maxmin' => true, 'data-only-min' => true], ['pos' => CBoot::fa('calendar')]) ?>
                     </div>
                 </div>
@@ -63,6 +72,40 @@ $formulario->abrir();
     </div>
 </div>
 
+<div class="modal fade" id="modal-clubes">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Gestionar clubes</h4>
+            </div>
+            <div class="modal-body">
+                
+                <ul class="nav nav-tabs" role="tablist">
+                    <li disabled="disabled" role="presentation" class="active"><a href="#registrar" aria-controls="registrar" role="tab" data-toggle="tab">Registrar club</a></li>
+                    <li disabled="disabled" role="presentation"><a href="#gestionar" aria-controls="gestionar" role="tab" data-toggle="tab">Gestionar clubes</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="registrar">
+                        
+                        <div class="form-group">
+                            
+                        </div>
+
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="gestionar">
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?php if (isset($this->_g['id'])): ?>
     <input type="hidden" name="id_lista_espera" value="<?= $this->_g['id'] ?>">
 <?php endif ?>
@@ -70,6 +113,11 @@ $formulario->abrir();
 <?php $formulario->cerrar(); ?>
 <script>
     jQuery(function(){
+        $("#button-add-club").click(function(){
+            $("#modal-clubes").modal("show");
+            return false;
+        });
+
         jQuery("#form-matriculas").submit(function(){
             if(jQuery("#Matriculas_categoria_id").val() == ""){
                 jQuery("#Matriculas_categoria_id").select2("open");

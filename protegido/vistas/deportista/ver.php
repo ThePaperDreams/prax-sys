@@ -92,21 +92,25 @@ $this->opciones = [
 </div>
 </div>
 <?php if (!is_null($modelo->foto)): ?>
-<div id="photo" class="modal cortina">
-  <div class="p-modal"> <!-- p-modal-content el modal toma el tamaño de la foto -->
-      <div class="p-modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Foto del Deportista</h4>
-      </div>
-      <div class="p-modal-body">
-        <!--<img src="<?php #echo Sis::UrlBase() ?>publico/imagenes/deportistas/fotos/thumbs/tmb_<?php #echo $modelo->foto . '?t=' . time(); ?>" alt="">-->
-        <img src="<?= Sis::UrlBase() ?>publico/imagenes/deportistas/fotos/<?= $modelo->foto . '?t=' . time(); ?>" alt="">                
-      </div>
-      <div class="p-modal-footer">
-        <a class="btn btn-primary" target="_blank" href="<?php echo Sis::UrlBase() ?>publico/imagenes/deportistas/fotos/<?= $modelo->foto; ?>" download="<?php echo $modelo->foto; ?>"><i class="fa fa-cloud-download"></i> Descargar</a>
-        <button id="cerrar-modal" type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
-        <button id="btn-eliminar" class="btn btn-primary" type="button"><i class="fa fa-trash"></i> Eliminar</button>
-      </div>
+<div id="photo" class="modal fade cortina">
+    <div class="p-modal- modal-dialog"> <!-- p-modal-content el modal toma el tamaño de la foto -->
+        <div class="modal-content">
+
+          <div class="p-modal-header- modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Foto del Deportista</h4>
+          </div>
+          <div class="p-modal-body">
+            <!--<img src="<?php #echo Sis::UrlBase() ?>publico/imagenes/deportistas/fotos/thumbs/tmb_<?php #echo $modelo->foto . '?t=' . time(); ?>" alt="">-->
+            <img src="<?= Sis::UrlBase() ?>publico/imagenes/deportistas/fotos/<?= $modelo->foto . '?t=' . time(); ?>" alt="">                
+          </div>
+          <div class="p-modal-footer">
+            <a class="btn btn-primary" target="_blank" href="<?php echo Sis::UrlBase() ?>publico/imagenes/deportistas/fotos/<?= $modelo->foto; ?>" download="<?php echo $modelo->foto; ?>"><i class="fa fa-cloud-download"></i> Descargar</a>
+            <button id="cerrar-modal" type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+            <button id="btn-eliminar" class="btn btn-primary" type="button"><i class="fa fa-trash"></i> Eliminar</button>
+          </div>
+
+        </div>
     </div>
 </div>
 <?php endif; ?>        
@@ -264,7 +268,7 @@ $this->opciones = [
         });
 
         $("a.eliminar").click(function(){
-            if (confirm('¿Está seguro de eliminar este Documento?')) {
+            confirmar("Confirmar", "¿Está seguro de eliminar este Documento?", function(){
                 var that_a = $(this);
                 var iddepdoc = that_a.attr("data-iddepdoc");
                 $.ajax({
@@ -277,7 +281,10 @@ $this->opciones = [
                     }
                     lobiAlert(resp.tipo, resp.msj);
                 });    
-            }
+            });
+            // if (confirm('¿Está seguro de eliminar este Documento?')) {
+                
+            // }
             return false;
         });
         $("a.delete").click(function () {
@@ -305,7 +312,7 @@ $this->opciones = [
             return false;
         });
         $("#btn-eliminar").click(function () {
-            if (confirm('¿Está seguro de eliminar la Foto del Deportista?')) {
+            confirmar("Confirmar", "¿Está seguro de eliminar la Foto del Deportista?", function(){
                 var dep = "<?php echo $modelo->id_deportista; ?>";
                 //var nom = "<?php #echo $modelo->foto; ?>";
                 $.ajax({
@@ -322,7 +329,11 @@ $this->opciones = [
                     }
                     lobiAlert(resp.tipo, resp.msj);
                 }).fail(function () {});
-            }
+            });
+            // if (confirm('¿Está seguro de eliminar la Foto del Deportista?')) {
+            // }
+
+            return false;
         });
     });
 </script>    

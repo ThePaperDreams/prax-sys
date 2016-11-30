@@ -381,10 +381,14 @@ $formulario->abrir();
 
         $(".remove-doc").click(function(){
             var id = $(this).attr("data-id");
-            if(confirm("¿Realmente desea remover este documento?")){
+            confirmar("Confirmar", "¿Realmente desea remover este documento?", function(){
                 removerDoc(id);
-                return false;
-            }
+            });
+            return false;
+            // if(confirm("¿Realmente desea remover este documento?")){
+            //     removerDoc(id);
+            //     return false;
+            // }
         });
 
         $("#btn-agregar-doc").click(function(){
@@ -424,7 +428,7 @@ $formulario->abrir();
             }
         });  
         $("a.eliminar").click(function(){
-            if (confirm('¿Está seguro de eliminar este Documento?')) {
+            confirmar("Confirmar", "¿Está seguro de eliminar este Documento?", function(){
                 var that_a = $(this);
                 var idacudoc = that_a.attr("data-idacudoc");
                 $.ajax({
@@ -436,8 +440,11 @@ $formulario->abrir();
                         that_a.closest("tr").remove();
                     }
                     lobiAlert(resp.tipo, resp.msj);
-                });    
-            }
+                });
+            });
+            // if (confirm('¿Está seguro de eliminar este Documento?')) {
+                    
+            // }
             return false;
         });
         $("#form-acudientes").submit(function () {

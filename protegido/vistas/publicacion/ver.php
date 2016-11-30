@@ -159,9 +159,11 @@ $this->tituloPagina = "Ver publicación";
         });
 
         $("#eliminar").click(function(){
-            if(confirm("Se eliminará cualquier respuesta asociada al comentario ¿Desea continuar?")){
+            confirmar("Confirmar", "Se eliminará cualquier respuesta asociada al comentario ¿Desea continuar?", function(){
                 sendAjax(2);
-            }
+            });
+            // if(confirm("Se eliminará cualquier respuesta asociada al comentario ¿Desea continuar?")){
+            // }
         });
     });
 

@@ -335,6 +335,39 @@ $formulario->abrir();
             tab.parent().addClass("active");
             $(".tab-pane").removeClass("active");
             $(tab.attr("href")).addClass("active");
+
+            var edad = calcularEdad(new Date($("#Deportistas_fecha_nacimiento").val()));
+            var edadMax = <?= Configuracion::get("edad_max_deps"); ?>;
+            var error = true;
+
+            if(parseInt(edad) < 6){
+
+                lobiAlert("error", "El deportista no puede ser menor de 6 años");
+                $("#btn-send").attr("disabled", "disabled");
+                $("#next-acudientes").attr("disabled", "disabled");
+                error = true;
+            } else if(edad > edadMax){
+                lobiAlert("error", "El deportista no puede ser mayor de " + edadMax + " años");
+                $("#btn-send").attr("disabled", "disabled");
+                $("#next-acudientes").attr("disabled", "disabled");
+                error = true;
+            } else {
+                $("#btn-send").removeAttr("disabled");
+                $("#next-acudientes").removeAttr("disabled");
+                error = false;
+            }
+            
+            if(error == true){
+                setTimeout(function(){
+                    var tab = $("a[href='#formulario']");
+                    var nav = tab.closest(".nav-tabs");
+                    nav.find("li").removeClass("active");
+                    tab.parent().addClass("active");
+                    $(".tab-pane").removeClass("active");
+                    $(tab.attr("href")).addClass("active");
+                }, 20);
+            }
+
             return false;
         });
 
@@ -478,10 +511,12 @@ $formulario->abrir();
 
         $(".remove-doc").click(function(){
             var id = $(this).attr("data-id");
-            if(confirm("¿Realmente desea remover este documento?")){
-                removerDoc(id);
+            confirmar("Confirmar", "¿Realmente desea remover este documento?", function(){
+                removerDoc(id);                
+            });
+            // if(confirm("¿Realmente desea remover este documento?")){
                 return false;
-            }
+            // }
         });
 
         $("#btn-agregar-doc").click(function(){
@@ -637,7 +672,7 @@ $formulario->abrir();
             }
         });
         $("a.delete").click(function () { // eliminar acudiente ya asociado al deportista
-            if (confirm('¿Está seguro de eliminar este Acudiente?')) {
+            confirmar("Confirmar", "¿Está seguro de eliminar este Acudiente?", function(){
                 var a = $(this);
                 var iddepacu = a.attr("data-iddepacu");
                 $.ajax({
@@ -650,11 +685,14 @@ $formulario->abrir();
                     }
                     lobiAlert(resp.tipo, resp.msj);
                 });
-            }
+            });
+            // if (confirm('¿Está seguro de eliminar este Acudiente?')) {
+                
+            // }
             return false;
         });
         $("a.eliminar").click(function(){ // eliminar documento ya asociado al deportista
-            if (confirm('¿Está seguro de eliminar este Documento?')) {
+            confirmar("Confirmar", "¿Está seguro de eliminar este Documento?", function(){
                 var that_a = $(this);
                 var iddepdoc = that_a.attr("data-iddepdoc");
                 $.ajax({
@@ -667,7 +705,10 @@ $formulario->abrir();
                     }
                     lobiAlert(resp.tipo, resp.msj);
                 });    
-            }
+            });
+            // if (confirm('¿Está seguro de eliminar este Documento?')) {
+                
+            // }
             return false;
         });
         $("#form-deportistas").submit(function () {
@@ -693,13 +734,16 @@ $formulario->abrir();
             if(parseInt(edad) < 6){
                 lobiAlert("error", "El deportista no puede ser menor de 6 años");
                 $("#btn-send").attr("disabled", "disabled");
+                $("#next-acudientes").attr("disabled", "disabled");
                 return false;
             } else if(edad > edadMax){
                 lobiAlert("error", "El deportista no puede ser mayor de " + edadMax + " años");
                 $("#btn-send").attr("disabled", "disabled");
+                $("#next-acudientes").attr("disabled", "disabled");
                 return false;
             } else {
                 $("#btn-send").removeAttr("disabled");
+                $("#next-acudientes").removeAttr("disabled");
             }
         });
 

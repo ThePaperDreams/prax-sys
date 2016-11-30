@@ -107,6 +107,7 @@ class Evento extends CModelo {
             $this->fecha_publicacion = date("Y-m-d H:i:s");
             $this->fecha_disponibilidad = $this->fecha;
         }
+        $this->hora = str_replace(' ', '', $this->hora);        
     }
 
     /**

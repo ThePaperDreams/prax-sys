@@ -80,7 +80,7 @@
     public function etiquetasAtributos() {
         return [
                 
-		'categoria_id' => 'Categoría ategoría',
+		'categoria_id' => 'Categoría',
         'estado_id' => 'Estado',
 		'nombre' => 'Nombre Implemento', 
 		'descripcion' => 'Descripcion', 

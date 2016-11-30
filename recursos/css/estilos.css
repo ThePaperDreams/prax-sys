@@ -729,3 +729,10 @@ li.rep-jugador{
 .wickedpicker__controls, .wickedpicker__controls__control, .wickedpicker__controls__control--separator, .wickedpicker__controls__control-down, .wickedpicker__controls__control-up, .wickedpicker__title {
     color: black;
 }
+.lobibox-backdrop{
+    z-index: 12000;
+}
+
+.lobibox-confirm{
+    z-index: 12001;
+}

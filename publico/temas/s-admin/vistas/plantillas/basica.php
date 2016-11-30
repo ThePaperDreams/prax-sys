@@ -447,7 +447,37 @@ Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . '/librerias/chartjs/Ch
             }
 
             function mostrarEventosDia(dia){
-                $.ajax({});
+                $.ajax({
+                    type: 'POST',
+                    url: '<?= Sis::crearUrl(['principal/ajx']) ?>',
+                    data: {
+                        "ajx-rqst" : true,
+                        "get-eventos-dia" : true,
+                        "dia" : dia,
+                    }
+                }).done(function(data){
+                    if(data.error == false){
+                        var modal = $("#modal-eventos");
+                        var contenedorEventos = $("#listado-eventos");
+
+                        contenedorEventos.html("");
+                        $.each(data.eventos, function(k,v){
+                            var tr = $("<tr/>");
+                            var a = $("<a/>", {href: v.url, class: 'btn btn-primary', 'title' : 'Ver evento'});
+                            var icon = $("<i/>", {'class' : 'fa fa-eye'});
+                            a.html(icon);
+                            tr.append($("<td/>").html(v.nombre));
+                            tr.append($("<td/>").html(v.hora)); 
+                            tr.append($("<td/>", {'class': 'text-center'}).append(a));
+                            $("#dia-eventos").html(dia);
+                            contenedorEventos.append(tr);
+                        });
+                        modal.modal("show");
+
+                    } else {
+                        console.log(data);
+                    }
+                });
             }
 
             function consultarNotificaciones(){
@@ -512,6 +542,33 @@ Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . '/librerias/chartjs/Ch
                 // }
             // });
         });
-        </script>
+        </script>        
+        <div class="modal fade" id="modal-eventos">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Día del evento: <span id="dia-eventos"></span></h4>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Título</th>
+                                    <th>Hora</th>
+                                    <th>&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody id="listado-eventos">
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
