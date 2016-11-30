@@ -24,7 +24,7 @@ class CtrlPublicacion extends CControlador{
     }
 
     public function accionVisualizar($id){
-        $url = Configuracion::get('url_sitio_web') . "$id/publicaciones/ver";
+        $url = Configuracion::get('url_sitio_web') . "$id/publicaciones/ver?pre=true";
         header("Location: $url");
         Sis::fin();
     }

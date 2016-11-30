@@ -4,6 +4,7 @@ $this->migas = [
     'Listar Asistencia' => ['Asistencia/inicio'],
     'Ver'
 ];
+$this->tituloPagina = "Ver asistencia";
 ?>
 <div class="col-sm-6">
     <div class="panel panel-default">

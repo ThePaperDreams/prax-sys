@@ -227,7 +227,9 @@ class CtrlDeportista extends CControlador {
     }
 
     private function getFormAcudientes(){
-        $ti = TipoIdentificacion::modelo()->listar();
+        $c = new CCriterio();
+        $c->noEn("id_tipo_documento", [2,3]);
+        $ti = TipoIdentificacion::modelo()->listar($c);
         $tiposIdentificaciones = CHtml::modeloLista($ti, 'id_tipo_documento', 'nombre');
         $modelo = new Acudiente();
         $formularioAcudiente = $this->vistaP('_formulario_acudiente', ['modelo' => $modelo, 'tiposIdentificaciones' => $tiposIdentificaciones]);

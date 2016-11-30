@@ -108,7 +108,46 @@ class CtrlRol extends CControlador {
      */
     public function accionVer($pk) {
         $modelo = $this->cargarModelo($pk);
-        $this->mostrarVista('ver', ['modelo' => $modelo]);
+
+        if(isset($this->_p['ajx']) && isset($this->_p['get-permisos'])){
+            $this->consultarPermisosRol();
+        }
+
+        $modulos = Modulo::modelo()->listar();
+
+        $this->mostrarVista('ver', [
+            'modelo' => $modelo,
+            'modulos' => $modulos,
+        ]);
+    }
+
+    private function consultarPermisosRol(){
+        $rol = $this->_p['rol'];
+        $modulo = $this->_p['module'];
+
+        $permisos = Rol::getPermisos($modulo, $rol);
+        $json = [];
+        foreach($permisos AS $r){
+            $permiso = false;
+            if($r->rol_id != "" && $r->estado == 1){
+                # tiene permiso
+                $permiso = true;
+            } else if($r->rol_id != "" && $r->estado == 0){
+                # no tiene permiso
+            }
+
+            $json[] = [
+                'ruta' => $r->nombre_ruta,
+                'permiso' => $permiso,
+            ];
+        }
+
+        $this->json([
+            'error' => false,
+            'permisos' => $json,
+        ]);
+
+        Sis::fin();
     }
 
     /**

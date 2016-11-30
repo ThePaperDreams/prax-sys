@@ -27,7 +27,7 @@
     'columnas' => [
         'descripcion' => 'Resumen',
         'fecha_aplicacion',
-        // 'estado' => ['valor' => 'EstadoEtiqueta', 'opciones' => ['class' => 'text-center']],
+        'estado' => ['valor' => 'EstadoEtiqueta', 'opciones' => ['class' => 'text-center']],
         'total_objetivos' => ['valor' => 'TotalObjetivos', 'opciones' => ['class' => 'text-center']],
     ],
     'opciones' => [

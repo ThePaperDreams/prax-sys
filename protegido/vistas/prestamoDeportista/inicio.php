@@ -33,8 +33,8 @@
 //    'columnas' => 'nombreDeportista, club_origen, club_destino, fecha_inicio, fecha_fin, etiquetaTipo',
     'columnas' => [
         'deportista_id' => 'NombreDepCompleto',
-        'club_origen',
-        'club_destino',
+        'club_origen' => 'ClubOrigen->nombre',
+        'club_destino' => 'ClubDestino->nombre',
         'fecha_inicio',
         'estado' => 'EtiquetaEstado',
         'fecha_fin',
@@ -42,7 +42,7 @@
     ],
     'opciones' => [
         ['i' => 'eye', 'url' => 'PrestamoDeportista/ver&{id:pk}', 'title' => 'Ver'],
-        ['i' => 'pencil', 'url' => 'PrestamoDeportista/editar&{id:pk}', 'title' => 'Editar'],
+        // ['i' => 'pencil', 'url' => 'PrestamoDeportista/editar&{id:pk}', 'title' => 'Editar'],
         ['i' => 'check', 'url' => 'PrestamoDeportista/finalizar&{id:pk}', 'title' => 'Finalizar'],
         ['i' => 'trash', 'url' => 'PrestamoDeportista/eliminar&{id:pk}', 'title' => 'Eliminar', 'opciones' => ['class' => 'op-eliminar']],
     ],

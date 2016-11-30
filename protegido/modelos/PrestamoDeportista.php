@@ -53,6 +53,8 @@ class PrestamoDeportista extends CModelo {
             # el formato es simple: 
             # tipo de relación | modelo con que se relaciona | campo clave foranea
             'Deportista' => [self::PERTENECE_A, 'Deportista', 'deportista_id'],
+            'ClubOrigen' => [self::PERTENECE_A, 'Club', 'club_origen'],
+            'ClubDestino' => [self::PERTENECE_A, 'Club', 'club_destino'],
         ];
     }
 

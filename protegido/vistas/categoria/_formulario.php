@@ -78,14 +78,15 @@ $formulario->abrir();
                 . '});'
             . '}'
             . 'function mostrarAlerta(tipo, msg){'
-                . 'Lobibox.notify(tipo,{'
-                    . 'size:"mini",'
-                    . 'showClass:"bounceInRight",'
-                    . 'hideClass:"bounceOutRight",'
-                    . 'msg:msg,'
-                    . 'delay:8000,'
-                    . 'soundPath:"' . Sis::UrlRecursos() . 'librerias/lobibox/sounds/",'
-                . '});'
+                . 'lobiAlert(tipo, msg);' 
+                // . 'Lobibox.notify(tipo,{'
+                //     . 'size:"mini",'
+                //     . 'showClass:"bounceInRight",'
+                //     . 'hideClass:"bounceOutRight",'
+                //     . 'msg:msg,'
+                //     . 'delay:8000,'
+                //     . 'soundPath:"' . Sis::UrlRecursos() . 'librerias/lobibox/sounds/",'
+                // . '});'
             . '}';
     Sis::Recursos()->Script($script, CMRecursos::POS_BODY);
 ?>
@@ -133,15 +134,18 @@ $formulario->abrir();
     function validarEdad(){
         var emin = parseInt($("#Categorias_edad_minima").val());
         var emax = parseInt($("#Categorias_edad_maxima").val());
+        var eAge = emin + 1;
+        if(eAge > 16){ eAge = 16; }
         if(emin > emax){
-            $("#Categorias_edad_maxima").val(emin + 1);
+            $("#Categorias_edad_maxima").val(eAge);
             mostrarAlerta("warning", "La edad mínima no puede ser mayor a la máxima.");
             return true;
-        } else if(emin === emax){
-            $("#Categorias_edad_maxima").val(emin + 1);
-            mostrarAlerta("error", "La edad máxima y la mínima no pueden ser iguales");
-            return false;
-        }
+        } 
+        // else if(emin === emax){
+        //     $("#Categorias_edad_maxima").val(emin + 1);
+        //     mostrarAlerta("error", "La edad máxima y la mínima no pueden ser iguales");
+        //     return false;
+        // }
         return false;
     }
 </script>

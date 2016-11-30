@@ -25,7 +25,7 @@ $this->migas = [
             <?php if($deportista->foto != ""): ?>
             <img src="<?= Sis::UrlBase() ?>/publico/imagenes/deportistas/fotos/<?= $deportista->foto ?>">
             <?php else: ?>
-            <img src="<?= Sis::UrlBase() ?>/publico/imagenes/deportistas/fotos/sin-foto.jpg">
+            <img src="<?= Sis::UrlBase() ?>/publico/imagenes/deportistas/fotos/sin-foto.png">
             <?php endif ?>
         </div>
         <div class="col-sm-5">
@@ -152,7 +152,7 @@ $this->migas = [
                     <tr>
                         <th class="text-right">Dorsal:</th>
                         <td class="edit-cell" data-input-edit-cell="true" data-val="<?= $ficha->dorsal ?>">
-                            <?= CBoot::text($ficha->dorsal, ['id' => 'dorsal']) ?>
+                            <?= CBoot::text($ficha->dorsal, ['id' => 'dorsal', 'class' => 'dont-overpass', 'max' => 100]) ?>
                         </td>
                     </tr>
                     <tr>
@@ -164,7 +164,7 @@ $this->migas = [
                     <tr>
                         <th class="text-right">Valoración:</th>
                         <td>
-                            <?= CBoot::number($ficha->valoracion, ['id' => 'valoracion']) ?>
+                            <?= CBoot::number($ficha->valoracion, ['id' => 'valoracion', 'class' => 'dont-overpass', 'max' => '1000']) ?>
                         </td>
                         
                     </tr>
@@ -189,13 +189,23 @@ $this->migas = [
                     <tr>
                         <th class="text-right">Talla:</th>
                         <td>
-                            <?= CBoot::number($ficha->talla, ['id' => 'talla']) ?>
+                            <div class="input-group">                                    
+                                <?= CBoot::number($ficha->talla, ['id' => 'talla', 'class' => 'dont-overpass', 'max' => 200]) ?>
+                                <div class="input-group-addon">
+                                    Cm
+                                </div>
+                            </div>
                         </td>
                     </tr>
                     <tr>
                         <th class="text-right">Peso:</th>
                         <td>
-                            <?= CBoot::number($ficha->peso, ['id' => 'valoracion']) ?>
+                            <div class="input-group">
+                                <?= CBoot::number($ficha->peso, ['id' => 'valoracion']) ?>
+                                <div class="input-group-addon">
+                                    Kg
+                                </div>
+                            </div>
                         </td>
                     </tr>
                     <tr>
@@ -209,7 +219,7 @@ $this->migas = [
         </div>
         <div class="row">
             <div class="col-sm-offset-4 col-sm-4 text-center">
-                <?= CBoot::boton('Cancelar ', 'default', ['id' => 'btn-cancelar']) ?> 
+                <?= CBoot::boton('Cerrar ', 'default', ['id' => 'btn-cancelar']) ?> 
                 <?= CBoot::boton('Actualizar ' . CBoot::fa('pencil'), 'success', ['id' => 'btn-actualizar']) ?>
             </div>
         </div> 

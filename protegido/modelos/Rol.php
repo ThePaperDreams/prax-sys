@@ -78,6 +78,26 @@ class Rol extends CModelo {
         ];
     }
 
+    public static function getPermisos($modulo, $rol){
+        $query = "SELECT
+                    t.id_rxr,
+                    t.rol_id,
+                    t2.id_ruta,
+                    t3.nombre nombre_rol,
+                    (CASE WHEN t.rol_id = '" . $rol . "' THEN t.estado ELSE 0 END) as estado, 
+                    t2.nombre nombre_ruta,
+                    t2.ruta,
+                    t2.modulo_id
+            FROM
+                    tbl_rutas_x_rol t
+            RIGHT JOIN tbl_rutas t2 ON t2.id_ruta = t.ruta_id
+            LEFT JOIN tbl_roles t3 ON t3.id_rol = t.rol_id
+            WHERE (t.rol_id IS NULL OR t.rol_id = '" . $rol . "' OR t.rol_id <> '" . $rol . "') AND 
+         t2.modulo_id = '" . $modulo . "'";
+        $resultados = Sis::apl()->bd->ejecutarComando($query, true);
+        return $resultados;
+    }
+
     /**
      * Esta función permite listar todos los registros
      * @param array $criterio

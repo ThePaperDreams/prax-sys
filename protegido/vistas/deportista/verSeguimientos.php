@@ -1,10 +1,10 @@
 <?php 
-$this->tituloPagina = "Registrar seguimiento a "  . CHtml::e("strong", $deportista->nombreCompleto);
+$this->tituloPagina = "Ver seguimiento de "  . CHtml::e("strong", $deportista->nombreCompleto);
 $this->migas = [
     'Home' => ['principal/inicio'],
     'Listar deportistas' => ['Deportista/inicio'],
     'Ficha técnica ' . $deportista->nombreCompleto => ['Deportista/fichaTecnica', 'id' => $deportista->id],
-    'Añadir seguimientos',
+    'Ver seguimientos',
 ];
 ?>
 

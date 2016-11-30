@@ -5,7 +5,7 @@
                 <?php if($deportista->foto != ""): ?>
                 <img class="img-res" style="width: 100px" src="<?= Sis::UrlBase() ?>/publico/imagenes/deportistas/fotos/<?= $deportista->foto ?>">
                 <?php else: ?>
-                <img class="img-res" style="width: 100px" src="<?= Sis::UrlBase() ?>/publico/imagenes/deportistas/fotos/sin-foto.jpg">
+                <img class="img-res" style="width: 100px" src="<?= Sis::UrlBase() ?>/publico/imagenes/deportistas/fotos/sin-foto.png">
                 <?php endif ?>
             </td>
             <td class="col-7">

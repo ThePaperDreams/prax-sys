@@ -25,7 +25,7 @@ $this->migas = [
                     </label>
                 </div>
             </div>
-            <?= $formulario->inputAddon($modelo, 'evaluacion', 'number', ['label' => true, 'max' => 10, 'min' => 0, 'group' => true, 'class' => 'solo-numeros maximo-numero'], ['pos' => '0-10']) ?>
+            <?= $formulario->inputAddon($modelo, 'evaluacion', 'number', ['label' => true, 'max' => 10, 'min' => 0, 'group' => true, 'class' => 'solo-numeros dont-overpass'], ['pos' => '0-10']) ?>
             <div class="form-group">
                 <label for="">Descripción <span id="total-chars">0</span>/<span id="max-chars">500</span> </label>
                 <?= $formulario->areaTexto($modelo, 'descripcion', ['rows' => 6]) ?>
@@ -99,11 +99,11 @@ $this->migas = [
         var tipo = $("[name='Seguimientos[tipo_seguimiento]']:checked").val();
 
         if($.trim(evaluacion) == ""){
-            lobiAlert("error", "Por favor ingrese una calificación");
+            lobiAlert("error", "Debe ingresar una calificación de 1 a 10");
             $("#Seguimientos_evaluacion").focus();
             return;
         } else if($.trim(descripcion) == ""){
-            lobiAlert("error", "Por favor ingrese una descripción");
+            lobiAlert("error", "Debe ingresar una descripción de máximo 500 caracteres");
             $("#Seguimientos_descripcion").focus();
             return;
         }
@@ -131,6 +131,7 @@ $this->migas = [
                     cont.prepend(li);
                     $("#Seguimientos_evaluacion").val("").focus();
                     $("#Seguimientos_descripcion").val("");
+                    lobiAlert("success", "Se añadió correctamente el seguimiento");
                 } else {
                     console.log("Error al guardar el seguimiento");
                 }

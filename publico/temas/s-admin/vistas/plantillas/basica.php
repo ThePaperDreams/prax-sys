@@ -8,10 +8,10 @@ Sis::Recursos()->JQueryUI();
 Sis::Recursos()->Js('personalizados');
 Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . 'librerias/lobibox/css/animate.css']);
 Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . 'librerias/lobibox/css/lobibox.css']);
-Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . 'librerias/Trumbowyg/ui/trumbowyg.css']);
+// Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . 'librerias/Trumbowyg/ui/trumbowyg.css']);
 Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . 'librerias/lobibox/js/lobibox.js']);
 Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . 'librerias/lobibox/js/notifications.js']);
-Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . 'librerias/Trumbowyg/trumbowyg.js']);
+// Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . 'librerias/Trumbowyg/trumbowyg.js']);
 // Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . "/librerias/air-datepicker/js/datepicker.js"]);
 // Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . "/librerias/air-datepicker/js/i18n/datepicker.es.js"]);
 // Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . "/librerias/air-datepicker/css/datepicker.min.css"]);
@@ -49,7 +49,7 @@ Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . '/librerias/bootstrap
 Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . '/librerias/bootstrap-switch/bootstrap-switch.js']);
 Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . "/librerias/bootstrap-datepicker/css/datepicker.css"]);
 Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . "/librerias/bootstrap-datepicker/js/bootstrap-datepicker.js"]);
-
+Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . '/librerias/chartjs/Chart.js']);
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -437,10 +437,17 @@ Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . "/librerias/bootstrap-
                     for(var i in eventos){
                         if(dia.attr("data-date") == eventos[i]){
                             dia.addClass("con-eventos");
+                            dia.click(function(){
+                                mostrarEventosDia(eventos[i]);
+                            });
                             break;
                         }
                     }
                 });
+            }
+
+            function mostrarEventosDia(dia){
+                $.ajax({});
             }
 
             function consultarNotificaciones(){
@@ -483,10 +490,10 @@ Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . "/librerias/bootstrap-
             }
 
             $(function(){
-                // consultarNotificaciones();
+                consultarNotificaciones();
 
                 setInterval(function(){
-                    // consultarNotificaciones();
+                    consultarNotificaciones();
                 }, 6000);
             });
 

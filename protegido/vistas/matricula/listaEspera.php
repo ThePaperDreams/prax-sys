@@ -38,6 +38,22 @@ $formulario->abrir();
 <?php $formulario->cerrar(); ?>
 <script>
     $(function(){
+        $("#form-matriculas").submit(function(){
+            var categoria = $("#cmb-categoria");
+            var depo = $("#cmb-deportista");
+            if(categoria.val() == ""){
+                lobiAlert("error", "Por favor seleccione una categoría");
+                categoria.select2("open");
+                return false;
+
+            } else if(depo.val() == ""){
+                depo.select2("open");
+                lobiAlert("error", "Por favor seleccione un deportista");
+                return false;
+            }
+            return false;
+        });
+
         setTimeout(function(){
             $("#cmb-categoria").select2('open');
         }, 200);

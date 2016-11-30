@@ -152,7 +152,7 @@ class CtrlMatricula extends CControlador {
         // $c->noEn();
         $deportistas = Deportista::modelo()->listar($c);
         $ops = [
-            CHtml::e('option', 'Seleccione un deportista'),
+            CHtml::e('option', 'Seleccione un deportista', ['value' => '']),
         ];
         foreach($deportistas AS $k=>$v){ 
             if($v->estaMatriculado() == false){

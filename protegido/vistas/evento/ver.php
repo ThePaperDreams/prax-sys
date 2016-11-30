@@ -12,6 +12,7 @@ $this->opciones = [
         'Modificar' => ['Evento/editar', 'id' => $modelo->id_evento],
     ]
 ];
+$this->tituloPagina = "Ver evento";
 ?>
 <div class="col-sm-12">
     <div class="panel panel-default">
@@ -29,9 +30,13 @@ $this->opciones = [
                     <td><?php echo $modelo->fecha_publicacion; ?></td>
                 </tr>
                 <tr>
+                    <th><?php echo $modelo->obtenerEtiqueta('fecha') ?></th>
+                    <td><?php echo $modelo->fecha; ?></td>
+                </tr>
+                <!-- <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('fecha_disponibilidad') ?></th>
                     <td><?php echo $modelo->fecha_disponibilidad; ?></td>
-                </tr>
+                </tr> -->
                 <tr>
                     <th><?php echo $modelo->obtenerEtiqueta('tipo_id') ?></th>
                     <td><?php echo $modelo->TipoEvento->nombre; ?></td>

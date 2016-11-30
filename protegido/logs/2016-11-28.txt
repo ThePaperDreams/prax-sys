@@ -1,0 +1,12 @@
+[Error BD] [23:11:00]	Error de base de datos: Algo está equivocado en su sintax cerca ' 1, 2)' en la linea 1
+						>> Consulta ejecutada: SELECT t.* FROM tbl_categorias AS t WHERE  id_categoria IN(, 1, 2) 
+[Error BD] [23:11:08]	Error de base de datos: Algo está equivocado en su sintax cerca ' 1, 2)' en la linea 1
+						>> Consulta ejecutada: SELECT t.* FROM tbl_categorias AS t WHERE  id_categoria IN(, 1, 2) 
+[Error BD] [23:11:23]	Error de base de datos: Algo está equivocado en su sintax cerca ' 1, 2)' en la linea 1
+						>> Consulta ejecutada: SELECT t.* FROM tbl_categorias AS t WHERE  id_categoria IN(, 1, 2) 
+[Error BD] [23:16:39]	Error de base de datos: Cannot add or update a child row: a foreign key constraint fails (`prax_sys_prod`.`tbl_lista_espera`, CONSTRAINT `fk_lista_deportista` FOREIGN KEY (`deportista_id`) REFERENCES `tbl_deportistas` (`id_deportista`))
+						>> Consulta ejecutada: INSERT INTO tbl_lista_espera (deportista_id, categoria_id, fecha_registro, estado) VALUES ('Seleccione un deportista', '1', '2016-11-28', '1')
+[Error BD] [23:17:22]	Error de base de datos: Cannot add or update a child row: a foreign key constraint fails (`prax_sys_prod`.`tbl_lista_espera`, CONSTRAINT `fk_lista_deportista` FOREIGN KEY (`deportista_id`) REFERENCES `tbl_deportistas` (`id_deportista`))
+						>> Consulta ejecutada: INSERT INTO tbl_lista_espera (deportista_id, categoria_id, fecha_registro, estado) VALUES ('Seleccione un deportista', '1', '2016-11-28', '1')
+[Error BD] [23:17:43]	Error de base de datos: Cannot add or update a child row: a foreign key constraint fails (`prax_sys_prod`.`tbl_lista_espera`, CONSTRAINT `fk_lista_deportista` FOREIGN KEY (`deportista_id`) REFERENCES `tbl_deportistas` (`id_deportista`))
+						>> Consulta ejecutada: INSERT INTO tbl_lista_espera (deportista_id, categoria_id, fecha_registro, estado) VALUES ('Seleccione un deportista', '1', '2016-11-28', '1')

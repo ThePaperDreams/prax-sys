@@ -55,6 +55,7 @@ $formulario->abrir();
     </div>
 </div>
 
+<input type="hidden" id="input-switch">
 
 <?php $formulario->cerrar(); ?>
 <script>
@@ -63,18 +64,24 @@ $formulario->abrir();
 
         $("#tipo-prestamo").change(function(){
             consultarDeportista($(this).val());
+            // Este es el input que manejará el valor del club de origen o destino
+            var inputSwitch = $("#input-switch");
+
             if($(this).val() == "entrada"){
                 var selectM = $("#PrestamosDeportista_club_origen");
                 var selectM1 = $("#PrestamosDeportista_club_destino");
+                inputSwitch.attr("name", "PrestamosDeportista[club_destino]");
             } else if($(this).val() == "salida"){
                 var selectM = $("#PrestamosDeportista_club_destino");
                 var selectM1 = $("#PrestamosDeportista_club_origen");
+                inputSwitch.attr("name", "PrestamosDeportista[club_origen]");
             }
 
             selectM1.select2("destroy");
             selectM1.val(club_principal);
             selectM1.select2({width: '100%'});
             selectM1.select2("enable", false);
+            inputSwitch.val(selectM1.val());
 
             selectM.select2("enable", true);
             selectM.select2("open");

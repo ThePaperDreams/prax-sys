@@ -12,6 +12,8 @@ $this->opciones = [
         'Modificar' => ['PrestamoDeportista/editar', 'id' => $modelo->id_prestamo],
     ]
 ];
+
+$this->tituloPagina = "Ver préstamo de deportista";
 ?>
 <div class="col-sm-8">
     <div class="panel panel-primary">
@@ -26,11 +28,11 @@ $this->opciones = [
                 </tr>
                 <tr>
                     <th><?= $modelo->obtenerEtiqueta('club_origen') ?></th>
-                    <td><?= $modelo->club_origen; ?></td>
+                    <td><?= $modelo->ClubOrigen->nombre; ?></td>
                 </tr>
                 <tr>
                     <th><?= $modelo->obtenerEtiqueta('club_destino') ?></th>
-                    <td><?= $modelo->club_destino; ?></td>
+                    <td><?= $modelo->ClubDestino->nombre; ?></td>
                 </tr>
                 <tr>
                     <th><?= $modelo->obtenerEtiqueta('fecha_inicio') ?></th>

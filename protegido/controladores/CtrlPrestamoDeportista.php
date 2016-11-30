@@ -165,6 +165,10 @@ class CtrlPrestamoDeportista extends CControlador{
             $deportista->estado_id = 1;
             $deportista->guardar();
             # lógica para borrado exitoso
+            Sis::Sesion()->flash("alerta", [
+                'msg' => 'Se eliminó correctamente el préstamo',
+                'tipo' => 'success',
+            ]);
         } else {
             # lógica para error al borrar
         }

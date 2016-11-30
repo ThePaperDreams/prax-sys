@@ -21,6 +21,7 @@ final class CHtml {
      * @return string
      */
     public static function e($etiqueta = 'div', $contenido = '', $opciones = [], $cierra = true){
+        $opciones['autocomplete'] = isset($opciones['autocomplete'])? $opciones['autocomplete'] : 'off';
         $opc = self::crearOpcionesHtml($opciones);
         return "<$etiqueta" . ($opc != ""? " $opc" : "") .">"
                 . ($cierra? "$contenido</$etiqueta>" : "");
@@ -44,6 +45,7 @@ final class CHtml {
      * @return string
      */
     public static function input($tipo = 'text', $valor = '', $opciones = []){
+        $opciones['autocomplete'] = isset($opciones['autocomplete'])? $opciones['autocomplete'] : 'off';
         $opcionesHtml = self::crearOpcionesHtml($opciones);
         return "<input type=\"$tipo\" value=\"$valor\" $opcionesHtml/>";
     }

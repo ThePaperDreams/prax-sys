@@ -92,8 +92,14 @@ class CtrlPrincipal extends CControlador{
     }
     
     public function accionInicio(){
-        $this->plantilla = 'basica';        
-        $this->mostrarVista('inicio');
+        $this->plantilla = 'basica';
+
+        $data = Visita::getDataDash();
+
+        $this->mostrarVista('inicio', [
+            'labels' => implode(',', $data['labels']),
+            'data' => implode(',', $data['data']),
+        ]);
     }
 
     public function accionMapaNavegacion(){

@@ -224,7 +224,6 @@ $formulario->abrir();
             $(".tab-pane").removeClass("active");
             $(tab.attr("href")).addClass("active");
             return false;
-
         });
 
         $("#next-form").click(function(){
@@ -338,7 +337,7 @@ $formulario->abrir();
             showUpload: false,
             browseLabel: "Seleccionar archivo",
             maxFileSize: 5000,
-            allowedFileExtensions: ['jpg', 'gif', 'png', 'jpeg']
+            allowedFileExtensions: ['jpg', 'gif', 'png', 'jpeg'],
             language: 'es',
         });
         $("#nombre-documento").val("");

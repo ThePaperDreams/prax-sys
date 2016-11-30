@@ -1,3 +1,6 @@
+<?php 
+$this->tituloPagina = "Prax-sys";
+ ?>
 <!-- Notification Drawer -->
 <!-- Breadcrumb -->
 <!--<ol class="breadcrumb hidden-xs">
@@ -6,8 +9,8 @@
     <li class="active">Data</li>
 </ol>-->
 
-<h4 class="page-title">DASHBOARD</h4>
-
+<!-- <h4 class="page-title">DASHBOARD</h4>
+ -->
 <!-- Shortcuts -->
 <div class="block-area shortcut-area">
     <a class="shortcut tile" href="<?= Sis::crearUrl(['deportista/inicio']) ?>">
@@ -106,19 +109,40 @@
     <div class="tile">
         <h2 class="tile-title">Visitas</h2>
         <div class="tile-config dropdown">
-            <a data-toggle="dropdown" href="" class="tile-menu"></a>
-            <ul class="dropdown-menu pull-right text-right">
-                <li><a class="tile-info-toggle" href="">Chart Information</a></li>
-                <li><a href="">Refresh</a></li>
-                <li><a href="">Settings</a></li>
-            </ul>
+            
         </div>
         <div class="p-10">
-            <div id="line-chart-visitas" style="height: 250px; padding: 0px; position: relative;">     
-            </div>            
+            <!-- <div id="line-chart-visitas" style="height: 250px; padding: 0px; position: relative;">     
+            </div>   -->          
+            <canvas id="myChart" width="400" height="100"></canvas>
         </div>  
     </div>
 </div>
+<script>
+    $(function(){
+        // setTimeout(function(){
+
+            var ctx = document.getElementById("myChart");
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [<?= $labels ?>],
+                    datasets: [{
+                        label: 'Visitas',
+                        data: [<?= $data ?>],
+                        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                        borderColor: 'rgba(255,255,255,1)',
+                        borderWidth: 1,
+                        borderCapStyle: 'butt',
+                    }]
+                },
+
+            });
+
+        // }, 100);
+
+    });
+</script>
 
 <hr class="whiter" />
 
