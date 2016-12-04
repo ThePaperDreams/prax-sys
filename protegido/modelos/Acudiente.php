@@ -22,6 +22,7 @@
  */
 class Acudiente extends CModelo{
     public $_nombreCompleto;
+    public $_deportistasString;
     /**
      * Esta función retorna el nombre de la tabla representada por el modelo
      * @return string
@@ -77,6 +78,7 @@ class Acudiente extends CModelo{
             # tipo de relación | modelo con que se relaciona | campo clave foranea
             'TipoIdentificacion' => [self::PERTENECE_A, 'TipoIdentificacion', 'tipo_doc_id'],
             'Detalles' => [self::CONTENGAN_A, 'AcudienteDocumento', 'acudiente_id'],
+            'DDeportistas' => [self::CONTENGAN_A, 'DeportistaAcudiente', 'acudiente_id'],
         ];
     }
     
@@ -89,6 +91,28 @@ class Acudiente extends CModelo{
         return $documentos;
     }
     
+    public function getDeportistas() {
+        $DD = $this->DDeportistas;
+        $deportistas = [];
+        foreach ($DD as $detalle) {
+            $deportistas[] = $detalle->Deportista;
+        }
+        return $deportistas;
+    }
+
+    public function getDeportistasString($sep = true, $sep = '<hr>'){
+        $lista = [];
+        $deportistas = $this->getDeportistas();
+
+        foreach($deportistas AS $d){
+            if($d !== null){
+                $lista[] = $d->getNombreCompleto();
+            }
+        }
+
+        return $sep? implode("<hr><br>", $lista) : implode(", ", $lista);
+    }
+
     /**
      * Esta función retorna un alias dado a cada uno de los atributos del modelo
      * @return string
@@ -108,6 +132,7 @@ class Acudiente extends CModelo{
             'estado' => 'Estado',
             'tipo_doc_id' => 'Tipo Documento',
             '_nombreCompleto' => 'Nombre',
+            '_deportistasString' => 'Deportistas',
         ];
     }
     

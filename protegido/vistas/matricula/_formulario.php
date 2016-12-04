@@ -72,6 +72,12 @@ $formulario->abrir();
     </div>
 </div>
 
+<?php if (isset($this->_g['id'])): ?>
+    <input type="hidden" name="id_lista_espera" value="<?= $this->_g['id'] ?>">
+<?php endif ?>
+
+<?php $formulario->cerrar(); ?>
+
 <div class="modal fade" id="modal-clubes">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -87,34 +93,202 @@ $formulario->abrir();
                 </ul>
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="registrar">
-                        
-                        <div class="form-group">
-                            
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="">Nombre</label>
+                                <?= CBoot::text('', ['id' => 'club_nombre']) ?>
+                            </div>                            
                         </div>
-
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="">Teléfono</label>
+                                <?= CBoot::text('', ['id' => 'club_telefono']) ?>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="">Dirección</label>
+                                <?= CBoot::text('', ['id' => 'club_direccion']) ?>
+                            </div>                            
+                        </div>
+                        <hr>
+                        <br>
+                        <div class="form-group">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                            <button id="btn-guardar-club" type="button" class="btn btn-success">Guardar <i class="fa fa-floppy-o"></i></button>
+                        </div>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="gestionar">
-
+                        <table class="table table-hover" id="tabla-clubes">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Dirección</th>
+                                    <th>Teléfono</th>
+                                    <th>Opciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($mClubes as $club): ?>
+                                <tr data-id="<?= $club->id ?>">
+                                    <td><?= $club->nombre ?></td>
+                                    <td><?= $club->direccion ?></td>
+                                    <td><?= $club->telefono ?></td>
+                                    <td>
+                                        <!-- <button class="btn-primary btn btn-edit">
+                                            <i class="fa fa-pencil"></i>
+                                        </button> -->
+                                        <button class="btn-danger btn btn-delete-club">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <?php endforeach ?>
+                            </tbody>
+                        </table>
                     </div>
-                </div>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>                
             </div>
         </div>
     </div>
 </div>
 
-<?php if (isset($this->_g['id'])): ?>
-    <input type="hidden" name="id_lista_espera" value="<?= $this->_g['id'] ?>">
-<?php endif ?>
-
-<?php $formulario->cerrar(); ?>
 <script>
+
+    function guardarClub(){
+        var nombre = $("#club_nombre");
+        var telefono = $("#club_telefono");
+        var direccion = $("#club_direccion");        
+
+        if($.trim(nombre.val()) == ""){
+            lobiAlert("error", "Debe ingresar un nombre al club");
+            nombre.focus();
+            return false;
+        }
+
+        $.ajax({
+            type : 'POST',
+            url  :  '<?= Sis::crearUrl(["matricula/ajax"]) ?>', 
+            data : {
+                ajx: true,
+                type: "guardar-club",
+                nombre: nombre.val(),
+                telefono: telefono.val(),
+                direccion: direccion.val(),
+            }
+        }).done(function(data){
+            if(data.error == false){
+                lobiAlert("success", "Se guardó correctamente el nuevo club");
+                $("#modal-clubes").modal("hide");
+
+                var select = $("#Matriculas_club_id");
+                select.select2("destroy");
+                var op = $("<option/>", {value: data.club_id}).html(data.nombre);
+
+                select.append(op);
+                select.select2({
+                    width: "100%",
+                });
+
+                var icon = $("<i/>", {class: 'fa fa-trash'});
+                var button = $("<button/>", {class: 'btn btn-danger'});
+                button.append(icon);
+
+                var tr = $("<tr/>", {'data-id' : data.club_id});
+                tr.append($("<td/>").html(nombre.val()));
+                tr.append($("<td/>").html(direccion.val()));
+                tr.append($("<td/>").html(telefono.val()));
+                tr.append($("<td/>").append(button));
+
+                $("#tabla-clubes").find("tbody").append(tr);
+
+                button.click(function(){
+                    var tr = $(this).closest("tr");
+                    confirmar("Confirmar", "¿Seguro desea remover este club?", function(){
+                        borrarclub(tr.attr("data-id"));
+                    });
+                });
+                
+                select.select2("open");
+                nombre.val("");
+                telefono.val("");
+                direccion.val("");         
+
+            } else if(data.error == true){
+                lobiAlert("error", data.msg);
+            }else {
+                console.log(data);
+            }
+        });
+
+    }
+
+    function borrarclub(id){
+        ajax(1, id);
+    }
+
+    function editarClub(){
+
+    }
+
+    function ajax(tipo, id){
+        $.ajax({
+            type : 'POST',
+            url  :  '<?= Sis::crearUrl(["matricula/ajax"]) ?>', 
+            data: {
+                ajx: true,
+                type: "editar-eliminar",
+                "r-type" : tipo,
+                id: id,
+            }
+        }).done(function(data){
+            if(data.error == false){
+                lobiAlert("success", data.msg);
+                var tr = $("tr[data-id='" + id + "']");
+                tr.find("td").slideUp(function(){
+                    tr.remove();
+                });
+
+                var select = $("#Matriculas_club_id");
+                select.select2("destroy");
+                select.find("option[value='" + id + "']").remove();
+                select.select2({width: '100%'});
+
+            } else if(data.error == true){
+                lobiAlert("error", data.msg);
+            } else {
+                console.log(data);
+            }
+        });
+    }
+
     jQuery(function(){
+
+        $(".btn-edit").click(function(){
+            editarClub($(this).parent().attr("data-id"));
+        });
+
+        $(".btn-delete-club").click(function(){
+            var tr = $(this).closest("tr");
+            confirmar("Confirmar", "¿Seguro desea remover este club?", function(){
+                borrarclub(tr.attr("data-id"));
+                // var id = $(this).closest("td").attr("data-id");
+                // alert(id);
+                // borrarclub($(this).parent().attr("data-id"));
+            });
+            return false;
+        });
+
+        $("#btn-guardar-club").click(function(){
+            guardarClub();
+            return false;
+        });
+
         $("#button-add-club").click(function(){
             $("#modal-clubes").modal("show");
+            setTimeout(function(){
+                $("#club_nombre").focus();
+            }, 400);
             return false;
         });
 

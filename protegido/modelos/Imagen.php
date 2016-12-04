@@ -28,6 +28,8 @@
             'id_imagen' => ['pk'] ,
                 'descripcion',
                 'url',
+                'fecha',
+                'titulo',
             ];
     }
     
@@ -80,6 +82,12 @@
     public function primer($criterio = array()) {
         return parent::primer($criterio);
     } 
+
+    public function antesDeGuardar(){
+        if($this->nuevo){
+            $this->fecha = date("Y-m-d H:i:s");
+        }
+    }
 
     /**
      * Esta función retorna una instancia del modelo tbl_imagenes

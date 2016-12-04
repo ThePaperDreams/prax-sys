@@ -1,0 +1,2 @@
+[Error BD] [16:43:20]	Error de base de datos: Entrada duplicada '8454752-child-soccer-player-on-soccer-field.jpg' para la clave 'uq_titulo_Imagen'
+						>> Consulta ejecutada: INSERT INTO tbl_imagenes (descripcion, url, fecha, titulo) VALUES (null, '8454752-child-soccer-player-on-soccer-field.jpg', '2016-12-03 16:43:20', '8454752-child-soccer-player-on-soccer-field')

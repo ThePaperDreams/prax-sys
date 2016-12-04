@@ -29,6 +29,62 @@ class CtrlPublicacion extends CControlador{
         Sis::fin();
     }
 
+    public function accionImagenes(){
+        $this->tituloPagina = "Gestionar imagenes";
+        $imagenes = Imagen::modelo()->listar();
+        $this->vista("gestorImagenes", [
+            'imagenes' => $imagenes,
+        ]);
+    }
+
+    public function accionAjax(){
+        if(!isset($this->_p['ajx'])){ Sis::fin(); }
+        $id = isset($this->_p['id'])? $this->_p['id'] : null;
+        $img = Imagen::modelo()->porPk($id);
+        $error = false;
+        $msg = "";
+
+        if($this->_p['type'] == 'save'){
+            $img->descripcion = $this->_p['description'];
+            $error = !$img->guardar();
+            $msg = $error? "Error al actualizar" : "Se guardó correctamente la información"; 
+        } else if($this->_p['type'] == 'query_imgs'){
+            $c = new CCriterio();
+            $c->orden("id_imagen", false);
+            $imagenes = Imagen::modelo()->listar($c);
+            $json = [];
+            foreach($imagenes AS $k=>$v){
+                
+                $json[] = [
+                    'thumb' => Sis::urlBase() . 'publico/imagenes/galerias/thumbs/tmb_' . $v->url,
+                    'url' => Sis::urlBase() . 'publico/imagenes/galerias/' . $v->url,
+                ];
+            }
+            $this->json([
+                'error' => false,
+                'imgs' => $json,
+            ]);
+            Sis::fin();
+
+        } else if($this->_p['type'] == 'delete'){
+            $nombre = $img->url;
+            $error = !$img->eliminar();
+            $msg = $error? "Error al eliminar la imagen" : "Se eliminó correctamente la imagen";
+            if(!$error){
+                $ruta = Sis::resolverRuta("!publico.imagenes.galerias");
+                unlink($ruta . DS . $nombre);
+                unlink($ruta . DS . "thumbs" . DS . "tmb_" . $nombre);
+            }
+        }
+
+        $this->json([
+            'error' => $error,
+            'msg' => $msg,
+        ]);
+
+        Sis::fin();
+    }
+
     public function accionSitioWeb(){
         if(isset($this->_p['redes'])){
             foreach($this->_p['redes'] AS $k=>$v){
@@ -51,8 +107,8 @@ class CtrlPublicacion extends CControlador{
     
     private function cargarImagen(){        
         $imagen = CArchivoCargado::instanciarPorNombre('imagenes');
-        $rutaDes = Sis::resolverRuta(Sis::crearCarpeta("!publico.imagenes.publicaciones"));
-        $rutaThumbs = Sis::resolverRuta(Sis::crearCarpeta("!publico.imagenes.publicaciones.thumbs"));
+        $rutaDes = Sis::resolverRuta(Sis::crearCarpeta("!publico.imagenes.galerias"));
+        $rutaThumbs = Sis::resolverRuta(Sis::crearCarpeta("!publico.imagenes.galerias.thumbs"));
         $guardado = $imagen->guardar($rutaDes);
         $error = true;
         if($guardado){
@@ -62,6 +118,7 @@ class CtrlPublicacion extends CControlador{
                 'tipo' => strtolower($imagen->getExtension()),
             ]);
             $mImagen = new Imagen();
+            $mImagen->titulo = $imagen->getNombre();
             $mImagen->url = $imagen->getNombreOriginal();
             $mImagen->guardar();            
             $error = false;
@@ -71,7 +128,12 @@ class CtrlPublicacion extends CControlador{
         
         echo json_encode([
             'uploadErr' => $error,
-            'url' => Sis::UrlBase() . "/publico/imagenes/publicaciones/thumbs/tmb_$mImagen->url",
+            'url' => Sis::UrlBase() . "/publico/imagenes/galerias/thumbs/tmb_$mImagen->url",
+            'rurl' => Sis::UrlBase() . "/publico/imagenes/galerias/$mImagen->url",
+            'img_id' => $mImagen->id_imagen,
+            'title' => $mImagen->titulo,
+            'description' => $mImagen->descripcion,
+            'date' => $mImagen->fecha,
         ]);
         Sis::fin();
     }
@@ -289,6 +351,10 @@ class CtrlPublicacion extends CControlador{
         $modelo = $this->cargarModelo($pk);
         if($modelo->eliminar()){
             # lógica para borrado exitoso
+            Sis::Sesion()->flash("alerta", [
+                'msg' => 'Se eliminó correctamente la publicación',
+                'tipo' => 'success',
+            ]);
         } else {
             # lógica para error al borrar
         }

@@ -50,7 +50,7 @@ $formulario->abrir();
         <div role="tabpanel" class="tab-pane" id="cargar">
             <div class="row" id="tab-imagenes">
                 
-                <?= $this->vistaP('_imagenes', ['imagenes' => $imagenes]) ?>
+                <?= $this->vistaP('gestorImagenes', ['imagenes' => $imagenes]) ?>
                 
             </div>    
         </div>        
@@ -65,7 +65,7 @@ $formulario->abrir();
     </div>
 </div>    
 
-<div class="modal fade modal-wide" id="modal-imgs">
+<!-- <div class="modal fade modal-wide" id="modal-imgs">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -85,9 +85,54 @@ $formulario->abrir();
                 </div>
                 <?php endforeach ?>
 
+               <div class="row">
+                    <div class="col-sm-12" id="img-list-1">
+                    
+                    </div>
+                    <div class="col-sm-6 text-center" id="img-pre-add-1" style="display: none;">
+                        <img src="" id="preview-img-add-1" alt="">
+                        <div class="row">
+                            <div class="col-sm-offset-4 col-sm-4 p-15">
+                                
+                                <button class="btn btn-primary btn-block" id="insert-img">Insertar esta imagen</button>
+                            </div>
+                        </div>
+                    </div>
+               </div>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<div class="modal fade modal-wider" id="moda-use-img">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Seleccionar imagen</h4>
+            </div>
+            <div class="modal-body">
+               <div class="row">
+                    <div class="col-sm-12" id="img-list">
+                    
+                    </div>
+                    <div class="col-sm-6 text-center" id="img-pre-add" style="display: none;">
+                        <img src="" id="preview-img-add" alt="">
+                        <div class="row">
+                            <div class="col-sm-offset-4 col-sm-4 p-15">
+                                
+                                <button class="btn btn-primary btn-block" id="insert-img">Insertar esta imagen</button>
+                            </div>
+                        </div>
+                    </div>
+               </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button> 
             </div>
         </div>
     </div>
@@ -99,6 +144,15 @@ $formulario->abrir();
 
         $("#open-modal-img").click(function(){
             $("#modal-imgs").modal('show');
+            return false;
+        });
+
+        $("#insert-img").click(function(){
+            var img = $("#preview-img-add");
+            var target = $("#" + img.attr("data-target"));
+            target.val(img.attr("src"));
+            $("#moda-use-img").modal("hide");
+            return false;
         });
 
         $(".add-img-button").click(function(){
@@ -130,13 +184,56 @@ $formulario->abrir();
             plugins: "code,image,pagebreak,advlist,fullscreen,imagetools,link,media,paste,textcolor,wordcount,example,",
             image_advtab: true,
             image_prepend_url: "<?php echo Sis::UrlBase() ?>/imagenes/articulos",
-            link_assume_external_targets: true
+            link_assume_external_targets: true,
+            // file_browser_callback : 'openImageGallery',
+            file_browser_callback : function(field_name, url, type, win){
+                // $("#" + field_name).val("wolas");
+                openImageGallery(field_name);
+            },
         });
         
     $("#calendar").change(function(){
             validarFecha($(this));
         });
     });
+
+    function openImageGallery(inputName){
+        var modal = $("#moda-use-img");
+        fetchImgs(modal.find(".modal-body #img-list"), inputName);
+        modal.modal("show");
+    }   
+
+    function fetchImgs(appendBody, inputName){
+        $.ajax({
+            type: 'POST',
+            url: '<?= Sis::crearUrl(['publicacion/ajax']) ?>',
+            data: {
+                ajx : true,
+                type: 'query_imgs',
+            },
+        }).done(function(data){
+            if(data.error == false){
+                appendBody.html("");
+                $.each(data.imgs, function(k,v){
+                    var imgcont = $("<div/>", {'class' : 'img-container'}); 
+                    imgcont.attr("data-url", v.url);
+
+                    var img = $("<img/>", { src : v.thumb, 'width' : '100px', "data-url" : v.url, "data-target" : inputName});
+                    imgcont.append(img);                    
+
+                    imgcont.click(function(){
+                        $("#img-list").removeClass("col-sm-12")
+                            .addClass("col-sm-6");
+                        $("#preview-img-add").attr("src", v.url);
+                        $("#preview-img-add").attr("data-target", inputName);
+                        $("#img-pre-add").slideDown();
+                    });
+
+                    appendBody.append(imgcont);
+                });
+            }
+        });
+    }
  
  function validarFecha(fecha) {
         var d = new Date();

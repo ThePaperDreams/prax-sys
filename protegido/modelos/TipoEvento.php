@@ -52,7 +52,7 @@
         return [
 		'id_tipo' => 'Id Tipo', 
 		'nombre' => 'Nombre', 
-		'descripcion' => 'Descripcion', 
+		'descripcion' => 'Descripción', 
         ];
     }
     

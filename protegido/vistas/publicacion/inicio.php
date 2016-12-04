@@ -36,6 +36,7 @@
         ['i' => 'eye', 'url' => 'Publicacion/ver&{id:pk}', 'title' => 'Ver'],
         ['i' => 'pencil', 'url' => 'Publicacion/editar&{id:pk}', 'title' => 'Editar'],
         ['i' => 'globe', 'url' => 'Publicacion/visualizar&{id:pk}', 'title' => 'Ver en sitio web' , 'opciones' => ['target' => '_blank']],
+        ['i' => 'trash', 'url' => 'Publicacion/eliminar&{id:pk}', 'title' => 'Eliminar', 'opciones' => ['class' => 'op-eliminar']],
     ],
     'paginacion' => 10,
 ]) ?>

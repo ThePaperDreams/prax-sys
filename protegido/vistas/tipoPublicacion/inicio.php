@@ -23,7 +23,7 @@
     'opciones' => [
         ['i' => 'eye', 'title' => 'Ver','url' => 'TipoPublicacion/ver&{id:pk}', 'title' => 'Ver'],
         ['i' => 'pencil', 'title' => 'Editar', 'url' => 'TipoPublicacion/editar&{id:pk}','title' => 'Editar'],
-        ['i' => 'trash', 'title' => 'Eliminar','url' => 'TipoPublicacion/eliminar&{id:pk}', 'title' => 'Eliminar', 'visible' => '$m->yaAsociado == false'],
+        ['i' => 'trash', 'title' => 'Eliminar','url' => 'TipoPublicacion/eliminar&{id:pk}', 'title' => 'Eliminar', 'visible' => '$m->yaAsociado == false', 'opciones' => ['class' => 'op-eliminar']],
     ],
     'paginacion' => 10,
 ]) ?>

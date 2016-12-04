@@ -96,7 +96,7 @@ class Evento extends CModelo {
 
     public function filtros() {
         return [
-            'requeridos' => 'titulo,fecha_disponibilidad,tipo_id,lugar,hora,estado',
+            'requeridos' => 'titulo,fecha_disponibilidad,tipo_id,lugar,fecha,hora,estado',
             'seguros' => 'titulo,fecha_publicacion,fecha_disponibilidad', 'lugar', 'hora', 'autor',
         ];
     }

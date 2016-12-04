@@ -145,7 +145,7 @@ $(document).ready(function() {
             success: function (respuesta) {
                 console.log(respuesta);
                 if (respuesta.error == true) {
-                    mostrarAlert("error", "Ya existe ese nombre");
+                    mostrarAlert("error", "Ya existe un evento con ese título");
                 } else {
                     setTimeout(function(){
                         if($("#Eventos_contenido").val() == ""){

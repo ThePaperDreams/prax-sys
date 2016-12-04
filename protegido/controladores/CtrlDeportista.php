@@ -95,7 +95,7 @@ class CtrlDeportista extends CControlador {
             $this->redireccionar('inicio');
         }
 
-        $this->tituloPagina = "Deportistas - praxis";
+        $this->tituloPagina = "Deportistas";
         $campos = $this->_p['modelo'];
         foreach($campos AS $k=>$v){ $campos[$k] = $v == ''? null : $v; }
 
@@ -104,8 +104,9 @@ class CtrlDeportista extends CControlador {
         $c->unionIzq("tbl_matriculas", "m")
             ->donde("t.id_deportista", "=", "m.deportista_id AND m.estado = 1")
             ->condicion($concat, $campos['_nombreCompleto'], "LIKE")
-            ->y("t.identificacion", $campos['doc'], "LIKE")
+            ->y("t.identificacion", $campos['identificacion'], "LIKE")
             ->y("fecha_nacimiento", $campos['fecha_nacimiento'], "LIKE")
+            ->y("fn_get_edad_deportistas(t.id_deportista)", $campos['_edad'], 'LIKE')
             ->y("t.estado_id", $campos['estado_id'], "LIKE")
             ->orden("t.estado_id = 1", false)
             ->orden("t.id_deportista", false);

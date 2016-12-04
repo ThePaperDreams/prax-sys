@@ -36,6 +36,7 @@ class Deportista extends CModelo{
     public $_edad;
     public $categoria_id;
     public $matricula;
+    public $_acudientesString;
 
 
     /**
@@ -111,6 +112,16 @@ class Deportista extends CModelo{
         }
         return $acudientes;
     }
+
+    public function getAcudientesString($sep = true, $sep = '<hr>'){
+        $lista = [];
+        $acudientes = $this->getAcudientes();
+        foreach($acudientes AS $acudiente){
+            $lista[] = $acudiente->nombreCompleto;
+        }
+
+        return $sep? implode("<hr><br>", $lista) : implode(", ", $lista);
+    }
     
     public function getDocumentos() {
         $dc = $this->Documento;
@@ -152,15 +163,23 @@ class Deportista extends CModelo{
             ->y("t.estado_id", $this->estado_id, "LIKE")
             ->orden("t.estado_id = 1", false)
             ->orden("t.id_deportista", false);
-            // var_dump($_POST);
-            // exit();
 
         if($this->matricula == 1){
             $c->noEsVacio("m.id_matricula");
         } else if($this->matricula == 2){
             $c->esVacio("m.id_matricula");
         }
+        return $c;
+    }
 
+
+    public function filtroReporte(){
+        $c = new CCriterio();
+        $concat = "CONCAT_WS(' ', t.nombre1,t.nombre2,t.apellido1,t.apellido2)";
+        $c->condicion($concat, $this->_nombreCompleto, "LIKE")
+            ->y("t.identificacion", $this->identificacion, "LIKE")
+            ->agrupar("t.id_deportista")
+            ->orden("t.id_deportista", false);
         return $c;
     }
     
@@ -275,9 +294,10 @@ class Deportista extends CModelo{
             'categoria_id' => 'Categoría',
             'edad' => 'Edad',
             '_nombreCompleto' => 'Nombre',
-            'doc' => 'Doc.',
+            'doc' => 'Identificación',
             'matricula' => 'Matriculado',
             '_edad' => 'Edad',
+            '_acudientesString' => 'Acudientes',
         ];
     }
     

@@ -148,7 +148,7 @@
 .btn-success:hover{
     background-color: rgba(67, 148, 67, 0.63) !important;
     box-shadow: 0px 0px 5px rgba(92, 184, 92, 0.70);
-    border: 1px solid rgb(31, 78, 31) !important;
+    /*border: 1px solid rgb(31, 78, 31) !important;*/
 }
 
 .btn-primary{
@@ -157,12 +157,12 @@
 .btn-primary:hover{
     background-color: rgba(29, 78, 121, 0.7) !important;
     box-shadow: 0px 0px 5px rgba(29, 78, 121, 0.7);
-    border: 1px solid rgb(22, 66, 105) !important;
+    /*border: 1px solid rgb(22, 66, 105) !important;*/
 }
 .btn-default:hover{
     background-color: rgba(0, 0, 0, 0.60) !important;
     box-shadow: 0px 0px 5px rgba(255, 255, 255, 0.7);
-    border: 1px solid rgb(255, 2556, 255) !important;
+    /*border: 1px solid rgb(255, 2556, 255) !important;*/
 }
 
 .btn-info{
@@ -479,7 +479,7 @@ li.rep-jugador{
 }
 
 .modal-open .modal {
-    z-index: 10000;
+    z-index: 100000;
     background-color: rgba(255, 255, 255, 0.31);
 }
 @media (min-width: 768px){ 
@@ -500,6 +500,9 @@ li.rep-jugador{
 }
 .modal.modal-wide .modal-dialog{
     width: 70%;
+}
+.modal.modal-wider .modal-dialog{
+    width: 90%;
 }
 .img-pre .btn-danger{
     position: absolute;
@@ -699,7 +702,7 @@ li.rep-jugador{
     border-radius: 10px !important;
 }
 .lobibox-notify-wrapper{
-    z-index: 10000;
+    z-index: 100001;
 }
 .logo-brand{
     width: 30px;
@@ -730,9 +733,116 @@ li.rep-jugador{
     color: black;
 }
 .lobibox-backdrop{
-    z-index: 12000;
+    z-index: 100001;
 }
 
 .lobibox-confirm{
-    z-index: 12001;
+    z-index: 100002;
+}
+
+
+@-webkit-keyframes roll-img {
+    0%      { transform: scaleX(-1); }   
+    /*50%    { transform: scaleX(-1);  }*/
+    100%    { transform: scaleX(1);  }
+}
+@-moz-keyframes roll-img {
+    0%      { transform: scaleX(-1); }   
+    /*50%    { transform: scaleX(-1);  }*/
+    100%    { transform: scaleX(1);  }
+}
+
+@-o-keyframes roll-img {
+    0%      { transform: scaleX(-1); }   
+    /*50%    { transform: scaleX(-1);  }*/
+    100%    { transform: scaleX(1);  }
+}
+@keyframes roll-img {
+    0%      { transform: scaleX(-1); }   
+    /*50%    { transform: scaleX(-1);  }*/
+    100%    { transform: scaleX(1);  }
+}
+
+.gallery-manager{
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    max-height: 200px;
+    max-width: 200px;
+    overflow: hidden;
+    margin: 2.0px;
+    /*background-color: rgba(255, 255, 255, 0.47);*/
+    /*padding: 6px;*/
+}
+
+.image-gallery-container{
+    padding: 20px 20px;
+    display: inline-block;
+    margin: auto;
+    width: 88.3%;
+    text-align: left;
+}
+
+.image-gallery-container-wraper{
+    text-align: center;
+}
+
+.gallery-manager img{
+    transition: transform 0.6s;
+}
+
+.gallery-manager:hover img{
+    /*transform: scaleX(-1);*/
+    -webkit-animation-timing-function: ease;
+    -o-animation-timing-function: ease;
+    -moz-animation-timing-function: ease;
+    animation-timing-function: ease;
+
+    -webkit-animation: roll-img 0.6s;
+    -moz-animation: roll-img 0.6s;
+    -ms-animation: roll-img 0.6s;
+    -o-animation: roll-img 0.6s;
+    animation: roll-img 0.6s;
+
+}
+
+.gallery-manager .caption{
+    position: absolute;
+    top: -50%;
+    left: 0px;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.66);
+    padding: 10px 6px;
+    transition: all 0.6s;
+}
+
+.gallery-manager .label-view{
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    top: 40%;
+    display: table-column-group;
+    font-size: 15px;
+    font-weight: 600;
+    text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.56);
+    background-color: rgba(0, 0, 0, 0.62);
+    padding: 11px;
+    opacity: 0;
+    transition: all 0.6s;
+}
+
+.gallery-manager:hover .caption{
+    top: 0%;
+}
+.gallery-manager:hover .label-view{
+    opacity: 1;
+}
+.img-container{
+    cursor: pointer;
+    margin: 2px;
+    display: inline-block;
+}
+#img-list, #preview-img-add{
+    max-height: 500px;
+    overflow: auto;
 }

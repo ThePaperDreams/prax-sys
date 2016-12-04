@@ -97,6 +97,7 @@ class CtrlMatricula extends CControlador {
             'deportistas' => CHtml::modeloLista($deportistas, "id_deportista", "NombreIdentificacion"),
             'categorias' => CHtml::modeloLista($categorias, "id_categoria", "nombre"),
             'clubes' => CHtml::modeloLista($clubes, "id", "nombre"),
+            'mClubes' => $clubes,
         ]);
     }    
     
@@ -143,7 +144,63 @@ class CtrlMatricula extends CControlador {
         }
         if($this->_p['type'] == 'deportistas'){
             $this->consultarDeportistas();
+        } else if($this->_p['type'] == "guardar-club"){
+            $this->guardarClub();
+        } else if($this->_p['type'] == "editar-eliminar" && isset($this->_p['r-type']) && $this->_p['r-type'] == "1"){
+            # si se intenta eliminar
+            $this->eliminarClub();
         }
+    }
+
+    private function eliminarClub(){
+        $c = new CCriterio();
+        $c->condicion("t.club_id", $this->_p['id']);
+        $matriculas = Matricula::modelo()->listar($c);
+
+        if(count($matriculas) > 0){
+            $this->json([
+                'error' => true,
+                'msg' => 'No se puede eliminar el club debido a que ya se encuentra asignado a una o más matriculas',
+            ]);
+            Sis::fin();
+        }
+
+        $club = Club::modelo()->porPk($this->_p['id']);
+        $error = !$club->eliminar();
+        $this->json([
+            'error' => $error,
+            'msg' => $error == true? "Ocurrió un error al eliminar el club" : "Club eliminado correctamente",
+        ]);
+
+        Sis::fin();
+    }
+
+    private function guardarClub(){
+        $c = new CCriterio();
+        $c->condicion("t.nombre", $this->_p['nombre']);
+        $club = Club::modelo()->primer($c);
+
+        if($club != null){
+            $this->json([
+                'error' => true,
+                'msg' => 'Ya esiste un club con ese nombre'
+            ]);
+        } else {
+            $club = new Club();
+            $club->nombre = $this->_p['nombre'];
+            $club->telefono = $this->_p['telefono'];
+            $club->direccion = $this->_p['direccion'];
+            $error = !$club->guardar();
+            $this->json([
+                'error' => $error,
+                'club_id' => $club->id,
+                'nombre' => $club->nombre,
+                'msg' => '',
+            ]);            
+        }
+
+
+        Sis::fin();
     }
 
     private function consultarDeportistas(){

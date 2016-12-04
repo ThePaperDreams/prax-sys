@@ -96,7 +96,7 @@ $this->tituloPagina = "Prax-sys";
                 <div id="stats-line" class="pull-left"></div>
                 <div class="media-body">
                     <h2 data-value="<?= Sis::ap()->Utilidades->getEventos() ?>">0</h2>
-                    <small>Eventos proximos</small>
+                    <small>Eventos próximos</small>
                 </div>
             </div>
         </div>

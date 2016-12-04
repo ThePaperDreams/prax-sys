@@ -1,0 +1,12 @@
+[Error BD] [20:50:51]	Error de base de datos: Invalido uso de función en grupo
+						>> Consulta ejecutada: SELECT t.* FROM tbl_deportistas AS t JOIN tbl_deportistas_acudientes AS t2 ON t2.deportista_id = t.id_deportista  JOIN tbl_acudientes AS t3 ON t3.id_acudiente = t2.acudiente_id WHERE GROUP_CONCAT(CONCAT_WS(' ', t3.nombre1, t3.nombre2, t3.apellido1, t3.apellido2)) LIKE '%%'  GROUP BY t.id_deportista  ORDER BY t.id_deportista DESC  LIMIT 10  OFFSET 0 
+[Error BD] [20:52:10]	Error de base de datos: Invalido uso de función en grupo
+						>> Consulta ejecutada: SELECT t.* FROM tbl_deportistas AS t JOIN tbl_deportistas_acudientes AS t2 ON t2.deportista_id = t.id_deportista  JOIN tbl_acudientes AS t3 ON t3.id_acudiente = t2.acudiente_id WHERE GROUP_CONCAT(CONCAT_WS(' ', t3.nombre1, t3.nombre2, t3.apellido1, t3.apellido2)) LIKE '%Enr%'  GROUP BY t.id_deportista  ORDER BY t.id_deportista DESC  LIMIT 10  OFFSET 0 
+[Error BD] [20:52:12]	Error de base de datos: Invalido uso de función en grupo
+						>> Consulta ejecutada: SELECT t.* FROM tbl_deportistas AS t JOIN tbl_deportistas_acudientes AS t2 ON t2.deportista_id = t.id_deportista  JOIN tbl_acudientes AS t3 ON t3.id_acudiente = t2.acudiente_id WHERE GROUP_CONCAT(CONCAT_WS(' ', t3.nombre1, t3.nombre2, t3.apellido1, t3.apellido2)) LIKE '%Enr%'  GROUP BY t.id_deportista  ORDER BY t.id_deportista DESC  LIMIT 10  OFFSET 0 
+[Error BD] [20:52:12]	Error de base de datos: Invalido uso de función en grupo
+						>> Consulta ejecutada: SELECT t.* FROM tbl_deportistas AS t JOIN tbl_deportistas_acudientes AS t2 ON t2.deportista_id = t.id_deportista  JOIN tbl_acudientes AS t3 ON t3.id_acudiente = t2.acudiente_id WHERE GROUP_CONCAT(CONCAT_WS(' ', t3.nombre1, t3.nombre2, t3.apellido1, t3.apellido2)) LIKE '%Enr%'  GROUP BY t.id_deportista  ORDER BY t.id_deportista DESC  LIMIT 10  OFFSET 0 
+[Error BD] [21:26:39]	Error de base de datos: La columna 'estado_id' en order clause es desconocida
+						>> Consulta ejecutada: SELECT t.* FROM tbl_acudientes AS t  ORDER BY estado_id=1 DESC, t.id_deportista DESC  LIMIT 10  OFFSET 0 
+[Error BD] [21:27:00]	Error de base de datos: La columna 't.id_deportista' en order clause es desconocida
+						>> Consulta ejecutada: SELECT t.* FROM tbl_acudientes AS t  ORDER BY estado=1 DESC, t.id_deportista DESC  LIMIT 10  OFFSET 0 

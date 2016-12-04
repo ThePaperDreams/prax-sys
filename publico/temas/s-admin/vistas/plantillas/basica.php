@@ -176,7 +176,7 @@ Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . '/librerias/chartjs/Ch
                     ['texto' => 'Tipos de publicación', 'url' => ['tipoPublicacion/inicio']],
                     ['texto' => 'Eventos', 'url' => ['Evento/inicio']],
                     ['texto' => 'Tipo de Eventos', 'url' => ['tipoEvento/inicio']],
-                    // ['texto' => 'Imágenes', 'url' => ['Publicacion/cargarImagenes']],                    
+                    ['texto' => 'Imágenes', 'url' => ['Publicacion/imagenes']],                    
                 ]],
                 ['texto' => 'Usuarios', 'fa' => 'users', 'elementos' => [
                         ['texto' => 'Roles', 'url' => ['Rol/inicio']],
@@ -283,13 +283,23 @@ Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . '/librerias/chartjs/Ch
 
                     setTimeout(function(){
                         if(mostrarMenu == 'true'){
-                            sideBar.addClass("toggled");
-                            $("html").addClass("menu-active");
+                            sideBar.css({overflow: 'hidden'});
+                            
+                            sideBar.animate({"width": '0px'}, 100, function(){
+                                
+                                // sideBar.css({overflow: 'inherit'});
+                                sideBar.addClass("toggled");
+                                setTimeout(function(){
+                                    $("html").addClass("menu-active");
+                                    sideBar.removeAttr("style");
+                                }, 100);
+
+                            });
                         } else {
                             sideBar.removeClass("toggled");
                             $("html").removeClass("menu-active");
                         }
-                    }, 5);
+                    }, 1);
 
                     $("#menu-toggle").click(function(){
                         setTimeout(function(){

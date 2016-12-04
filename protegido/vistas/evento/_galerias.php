@@ -167,11 +167,16 @@ Sis::Recursos()->recursoJs(['url' => Sis::urlRecursos() . 'librerias/boot-file-i
     
     function addGallery(){
         var tituloGaleria = $("#nombre-galeria");
-        
         if($.trim(tituloGaleria.val()) === ""){
             lobiAlert("error", "Ingrese un nombre para la galería");
             tituloGaleria.focus();
             return;
+        }
+
+        if($("[data-title='" + tituloGaleria.val().toLowerCase() + "']").length){
+            lobiAlert("error", "Ya existe una galería con ese nombre");
+            tituloGaleria.focus().select();
+            return false;
         }
         
         var ul = $("<ul/>");
@@ -185,6 +190,7 @@ Sis::Recursos()->recursoJs(['url' => Sis::urlRecursos() . 'librerias/boot-file-i
         var btnRemove = $("<button/>", { class: 'btn btn-danger', "data-gallery-id" : galerias });
         var galeria = $("<div/>", { class: 'gallery', id: 'galeria-' + galerias });
         var input = $("<input/>", { type:'hidden', 'name' : 'galerias[' + galerias + '][nombre]' });
+
         input.val(tituloGaleria.val());
         
         button.click(function(){ 
@@ -194,6 +200,7 @@ Sis::Recursos()->recursoJs(['url' => Sis::urlRecursos() . 'librerias/boot-file-i
         
         btnRemove.click(function(){
             removeGallery($(this).attr("data-gallery-id"));
+            return false;
         });
         
         thumbList.append(ul);
@@ -203,14 +210,16 @@ Sis::Recursos()->recursoJs(['url' => Sis::urlRecursos() . 'librerias/boot-file-i
         photosDiv.append(thumbList, buttonGrp);
         btnRemove.append(iconRemove);
         title.html(tituloGaleria.val());
+        title.attr("data-title", tituloGaleria.val().toLowerCase());
         title.append(btnRemove);
         galeria.append(title, photosDiv);
         galeria.append(input);
-        
+        $("#nombre-galeria").val("");
+
         button.click(function(){ return false; });
         
         var contenedorGalerias = $("#galleries-container");
-        contenedorGalerias.append(galeria);
+        contenedorGalerias.prepend(galeria);
         
         galerias ++;
     }

@@ -24,7 +24,7 @@ $this->complemento('!siscoms.bootstrap3.CBGrid', [
     'filtrosAjax' => [
         'doc' => CBoot::text('', ['name' => 'doc', 'style' => 'max-width: 150px;']),
         '_nombreCompleto' => CBoot::text('', ['name' => '_nombreCompleto', 'style' => 'max-width: 150px;']), 
-        'edad' => CBoot::number('', ['name' => 'edad', 'style' => 'max-width: 100px;']),
+        '_edad' => CBoot::number('', ['name' => '_edad', 'style' => 'max-width: 100px;']),
         'fecha_nacimiento' => CBoot::text('', ['name' => 'fecha_nacimiento', 'style' => 'max-width: 100px;']),
         'estado_id' => CBoot::select('', $estados, ['defecto' => '---', 'style' => 'max-width: 100px;', 'name' => 'estado_id']),
         'matricula' => CBoot::select('', [1=>'Si', 2=>'No'], ['defecto' => '---', 'style' => 'max-width: 80px;', 'name' => 'matricula']),
@@ -35,7 +35,7 @@ $this->complemento('!siscoms.bootstrap3.CBGrid', [
      'columnas' => [
         'doc' => 'identificacion',
         '_nombreCompleto' => 'nombreCompleto',
-        'edad',
+        '_edad' => 'edad',
         'fecha_nacimiento',
         'matricula' => ['valor' => 'matriculado', 'opciones' => ['class' => 'text-center']],
         'estado_id' => ['valor' => 'EtiquetaEstado', 'opciones' => ['class' => 'text-center']] 

@@ -58,21 +58,22 @@ $formulario->abrir();
                 if (respuesta.error == true) {
                     mostrarAlert("error", "Ya existe ese nombre");
                 } else {
-                    // document.getElementById("form-tipospublicacion").submit();
+                    document.getElementById("form-tipospublicacion").submit();
                 }
             }
         });
     }
 
     function mostrarAlert(tipo, msg) {
-        Lobibox.notify(tipo, {
-            size: 'mini',
-            showClass: 'bounceInRight',
-            hideClass: 'bounceOutRight',
-            msg: msg,
-            delay: 8000,
-            soundPath: '<?= Sis::UrlRecursos() ?>librerias/lobibox/sounds/',
-        });
+        lobiAlert(tipo, msg);
+        // Lobibox.notify(tipo, {
+        //     size: 'mini',
+        //     showClass: 'bounceInRight',
+        //     hideClass: 'bounceOutRight',
+        //     msg: msg,
+        //     delay: 8000,
+        //     soundPath: '<?= Sis::UrlRecursos() ?>librerias/lobibox/sounds/',
+        // });
     }
     
 </script>

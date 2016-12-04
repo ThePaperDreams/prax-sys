@@ -97,6 +97,10 @@ class CtrlEvento extends CControlador{
             $modelo->atributos = $this->_p['Eventos'];
             if($modelo->guardar()){
                 # lógica para guardado exitoso
+                Sis::Sesion()->flash("alerta", [
+                    'msg' => 'Actualización exitosa',
+                    'tipo' => 'success',]
+                );
                 $this->redireccionar('inicio');
             }
         }

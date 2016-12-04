@@ -25,6 +25,10 @@ class CtrlTipoEvento extends CControlador{
             $modelo->atributos = $this->_p['TiposEvento'];
             if($modelo->guardar()){
                 # lógica para guardado exitoso
+                Sis::Sesion()->flash("alerta", [
+                    'tipo' => 'success',
+                    'msg' => 'Registro exitoso',
+                ]);
                 $this->redireccionar('inicio');
             }
         }
@@ -43,6 +47,10 @@ class CtrlTipoEvento extends CControlador{
             $modelo->atributos = $this->_p['TiposEvento'];
             if($modelo->guardar()){
                 # lógica para guardado exitoso
+                Sis::Sesion()->flash("alerta", [
+                    'tipo' => 'success',
+                    'msg' => 'Actualización exitosa',
+                ]);
                 $this->redireccionar('inicio');
             }
         }
@@ -98,7 +106,10 @@ class CtrlTipoEvento extends CControlador{
             ]);
         } else {
             if($modelo->eliminar()){
-                # lógica para borrado exitoso
+                Sis::Sesion()->flash("alerta", [
+                    'tipo' => 'success',
+                    'msg' => 'Eliminación exitosa',
+                ]);
             } else {
                 # lógica para error al borrar
             }            

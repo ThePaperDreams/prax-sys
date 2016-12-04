@@ -11,7 +11,7 @@ $this->opciones = [
     ],
 ];
 
-$this->tituloPagina = "Acudientes por deportista";
+$this->tituloPagina = "Deportistas por acudiente";
  ?>
 
 <?=
@@ -27,13 +27,13 @@ $this->complemento('!siscoms.bootstrap3.CBGrid', [
         // '_acudientesString' => CBoot::text('', ['name' => '_acudientesString', 'style' => 'max-width: 150px;']),
      ],
     'fnCriterios' => 'filtroReporte',
-    'criterios' => ['order' => 'estado_id=1 DESC, t.id_deportista DESC'],
-    'modelo' => 'Deportista',
+    'criterios' => ['order' => 'estado	=1 DESC, t.id_acudiente DESC'],
+    'modelo' => 'Acudiente',
 # id_deportista, identificacion, nombre1, nombre2, apellido1, apellido2, direccion, foto, telefono1, telefono2, fecha_nacimiento, estado_id, tipo_documento_id
      'columnas' => [
         'identificacion' => ['valor' => 'identificacion', 'opciones' => ['style' => 'vertical-align: middle;']],
         '_nombreCompleto' => ['valor' =>'nombreCompleto', 'opciones' => ['style' => 'vertical-align: middle;']],
-        '_acudientesString' => 'acudientesString', 
+        '_deportistasString' => 'deportistasString', 
     ],
     'paginacion' => 10,
 ])

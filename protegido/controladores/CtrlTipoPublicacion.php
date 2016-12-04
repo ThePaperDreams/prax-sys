@@ -107,6 +107,10 @@ class CtrlTipoPublicacion extends CControlador{
         } else {
             if($modelo->eliminar()){
                 # lógica para borrado exitoso
+                Sis::Sesion()->flash("alerta", [
+                    'msg' => 'Se eliminó correctamente el tipo de publicación',
+                    'tipo' => 'success',
+                ]);
             } else {
                 # lógica para error al borrar
             }            

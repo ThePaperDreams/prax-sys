@@ -1,7 +1,8 @@
 <?php
 $this->ayudaTitulo = "Registrar / Modificar Acudiente";
 $this->ayuda = "acudientes/editarCrear";
-$this->tituloPagina = "Editar Acudiente";
+$this->tituloPagina = "Actualizar Acudiente";
+
 $this->migas = [
     'Home' => ['principal/inicio'],
     'Listar Acudientes' => ['Acudiente/inicio'],

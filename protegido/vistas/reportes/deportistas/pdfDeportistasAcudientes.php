@@ -3,10 +3,7 @@
 		<tr>
 			<th>Documento</th>
 			<th>Nombre</th>
-			<th>Edad</th>
-			<th>Fecha de nacimiento</th>
-			<th>Matriculado</th>
-			<th>Estado</th>
+			<th>Acudientes</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -21,10 +18,7 @@
 		<tr>
 			<td><?= $deportista->identificacion ?></td>
 			<td><?= $deportista->nombreCompleto ?></td>
-			<td><?= $deportista->edad ?></td>
-			<td><?= $deportista->fecha_nacimiento ?></td>
-			<td><?= $deportista->matriculado ?></td>
-			<td><?= $deportista->EtiquetaEstado ?></td>
+			<td><?= $deportista->acudientesString ?></td>
 		</tr>
 		<?php endforeach ?>
 	<?php endif ?>

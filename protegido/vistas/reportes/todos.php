@@ -1,3 +1,6 @@
+<?php
+$this->tituloPagina = "Reportes";
+  ?>
 <div class="tile p-15">
 	<div class="row">
 		
@@ -10,6 +13,7 @@
 				<div class="list-group">
 					<a href="<?= Sis::crearUrl(['reportes/deportistas']) ?>" class="list-group-item">Todos los deportistas</a>
 					<a href="<?= Sis::crearUrl(['reportes/deportistasAcudientes']) ?>" class="list-group-item">Acudientes por deportista</a>
+					<a href="<?= Sis::crearUrl(['reportes/acudientesDeportistas']) ?>" class="list-group-item">Deportistas por acudiente</a>
 				</div>
 			</div>
 
