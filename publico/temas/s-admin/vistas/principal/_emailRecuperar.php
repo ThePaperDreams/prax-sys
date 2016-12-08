@@ -7,10 +7,11 @@
     </tr>
     <tr>
         <td style="text-align: justify;padding: 10px 100px;">
-            <p>Has solicitado modificar tu contraseña, haz clic <a href="<?= Sis::CrearUrl(['principal/restablecerClave', 't' => $url]) ?>">aquí</a> para 
-            ingresar una nueva contraseña </p>
-            <p><b>Nota:</b> Una vez hayas finalizado el proceso este enlace no será valido</p>
-            <p>Si no haz inciado un proceso de recuperación de contraseña da clic <a href="<?= Sis::CrearUrl(['principal/cancelarRecuperacion', 't' => $url]) ?>">aquí</a> para cancelar</p>
+            <h4>Señor: <?= $usuario->nombreCompleto ?>.</h4>
+            <p>Se ha solicitado recuperar contraseña, para ingresar una nueva contraseña haga clic <a href="<?= Sis::CrearUrl(['principal/restablecerClave', 't' => $url]) ?>">aquí.</a> </p>
+            <br>
+            <p><b>Nota:</b> Una vez finalizado el proceso de recuperación de contraseña el enlace de restauración en este correo no será válido.  </p>
+            <p>Si usted no ha iniciado un proceso de recuperación de contraseña, haga clic <a href="<?= Sis::CrearUrl(['principal/cancelarRecuperacion', 't' => $url]) ?>">aquí</a> para cancelar.</p>
         </td>
     </tr>
     <tr>

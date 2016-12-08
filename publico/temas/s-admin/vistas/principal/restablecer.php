@@ -34,6 +34,12 @@
             } else if(pwd1.val().length < 6){
                 lobiAlert("error", "La contraseña debe tener un mínimo de 6 cáracteres");
                 pwd1.focus();
+            } else if(/[`~,.<>;':"/[\]|{}()=_+-]/.test(pwd1.val())){
+                lobiAlert("error", "No está permitido usar caracteres especiales");
+                pwd1.focus().select();
+            } else if(/(([a-zA-Z]{3}[0-9]{3})|([0-9]{3}[a-zA-Z]{3}))/.test(pwd1.val()) == false){
+                lobiAlert("error", "La contraseña debe tener al menos 3 letras seguidas de al menos 3 números, o viceversa");
+                pwd1.focus().select();
             } else if($.trim(pwd2.val()) === ""){
                 lobiAlert("error", "Por favor confirme la contraseña");
                 pwd2.focus();
@@ -43,6 +49,7 @@
             } else {
                 send = true;
             }
+
             return send;
         });
         

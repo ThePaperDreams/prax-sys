@@ -51,7 +51,8 @@ $formulario->abrir();
                 lobiAlert("error", "Por favor seleccione un deportista");
                 return false;
             }
-            return false;
+
+            return true;
         });
 
         setTimeout(function(){

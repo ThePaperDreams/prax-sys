@@ -53,8 +53,38 @@ class Utilidades extends CComponenteAplicacion{
 			$this->notiComentarios();
 			$this->listaEspera();
 			$this->entregaImplementos();
+			$this->mensualidadesVencidas();
+			$this->pagosMes();
 		}
 		return $this->notificaciones;
+	}
+
+	private function mensualidadesVencidas(){
+		$c = new CCriterio();		
+		$fini = date("Y-m-01");
+		$c->condicion("t.fecha_inicio", $fini, "<");
+		$pagos = Pago::modelo()->contar($c);
+		if($pagos > 0){
+			$this->notificaciones[] = [
+				'texto' => 'Hay mensualidades atrasadas ',
+				'icono' => 'clock-o',
+				'url' => Sis::crearUrl(['pago/pagosPendientes']),
+			];
+		}
+	}
+
+	private function pagosMes(){
+		$c = new CCriterio();		
+		$fini = date("Y-m-01");
+		$c->condicion("t.fecha_inicio", $fini);
+		$pagos = Pago::modelo()->contar($c);
+		if($pagos > 0){
+			$this->notificaciones[] = [
+				'texto' => 'Hay mensualidades pendientes por cobrar este mes',
+				'icono' => 'money',
+				'url' => Sis::crearUrl(['pago/pagosPendientes']),
+			];
+		}
 	}
 
 	private function entregaImplementos(){

@@ -48,10 +48,10 @@ $this->tituloPagina = "Prax-sys";
         <i class="fa fa-users"></i>
         <small class="t-overflow">Suscritos</small>
     </a>
-    <a class="shortcut tile" href="#">
+    <!-- <a class="shortcut tile" href="#">
         <img src="<?= Sis::ap()->getTema()->getUrlBase() ?>/img/shortcuts/reports.png" alt="">
         <small class="t-overflow">Reportes</small>
-    </a>
+    </a> -->
 </div>
 
 <hr class="whiter" />

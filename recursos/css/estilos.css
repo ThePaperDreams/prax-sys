@@ -646,7 +646,7 @@ li.rep-jugador{
 }
 
 .select2-container--open, .select2-dropdown--above, .select2-results, .select2-search__field {
-    z-index: 10000;
+    z-index: 100001;
 }
 
 .dropdown-mas{
@@ -845,4 +845,7 @@ li.rep-jugador{
 #img-list, #preview-img-add{
     max-height: 500px;
     overflow: auto;
+}
+.select2-dropdown {
+  z-index: 100001 !important;
 }

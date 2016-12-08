@@ -2,17 +2,153 @@
 
 class CtrlPago extends CControlador{
     
-    public function accionPagosPendientes(){
-        if(isset($this->_p['ajaxSearch'])){
-            $this->consultarPagos();
-        }
+    // public function accionPagosPendientes(){
+    //     if(isset($this->_p['ajaxSearch'])){
+    //         $this->consultarPagos();
+    //     }
         
-        $deportistas = Matricula::listarDeportistas();
-        $this->vista("pagosPendientes", [
-            'deportistas' => $deportistas,
-        ]);
+    //     $deportistas = Matricula::listarDeportistas();
+    //     $this->vista("pagosPendientes", [
+    //         'deportistas' => $deportistas,
+    //     ]);
+    // }
+    
+
+    public function accionReporteRealizados(){
+        $this->tituloPagina = "Pagos realizados";
+        $campos = $this->_p['modelo'];
+        foreach($campos AS $k=>$v){ $campos[$k] = $v == ''? null : $v; }
+        $c = new CCriterio();
+        $concat = "CONCAT_WS(' ', d.nombre1,d.apellido1)";
+        $c->union("tbl_matriculas", "m")
+            ->donde("m.id_matricula", "=", "t.matricula_id")
+            ->union("tbl_categorias", "ca")
+            ->donde("ca.id_categoria", "=", "m.categoria_id")
+            ->union("tbl_deportistas", "d")
+            ->donde("d.id_deportista", "=", "m.deportista_id")
+            ->condicion($concat, $campos['matricula_id'], 'LIKE')
+            ->en("t.estado", [0,1,3])
+            ->orden("t.estado = 1", false)
+            ->orden("t.estado = 0")
+            ->orden("t.fecha_inicio");
+
+        if($campos['fecha_inicio'] != null && $campos['fecha_fin'] == null){
+            $c->y("t.fecha_inicio", $campos['fecha_inicio'], ">=");
+        } else if($campos['fecha_fin'] != null && $campos['fecha_inicio'] == null){
+            $c->y("t.fecha_fin", $campos['fecha_fin'], "<=");
+        } else if($campos['fecha_inicio'] != null && $campos['fecha_fin'] != null){
+            $c->entre("t.fecha_inicio", $campos['fecha_inicio'], $campos['fecha_fin'], true);
+        }
+
+        $pagos = Pago::modelo()->listar($c);
+
+        $this->plantilla = "reporte";
+        $pdf = Sis::apl()->mpdf->crear();
+        ob_start();
+        $this->vista('reportes/realizados', ['pagos' => $pagos]);
+        $texto = ob_get_clean();
+        $pdf->writeHtml($texto);
+        $pdf->Output("Pagos realizados.pdf", 'I');
+    }
+
+    public function accionReportePendientes(){
+        $this->tituloPagina = "Pagos pendientes";
+        $campos = $this->_p['modelo'];
+        foreach($campos AS $k=>$v){ $campos[$k] = $v == ''? null : $v; }
+        $c = new CCriterio();
+        $concat = "CONCAT_WS(' ', d.nombre1,d.apellido1)";
+        $c->union("tbl_matriculas", "m")
+            ->donde("m.id_matricula", "=", "t.matricula_id")
+            ->union("tbl_categorias", "ca")
+            ->donde("ca.id_categoria", "=", "m.categoria_id")
+            ->union("tbl_deportistas", "d")
+            ->donde("d.id_deportista", "=", "m.deportista_id")
+            ->condicion($concat, $campos['matricula_id'], 'LIKE')
+            ->en("t.estado", [2])
+            ->orden("t.fecha_inicio");
+
+        if($campos['fecha_inicio'] != null && $campos['fecha_fin'] == null){
+            $c->y("t.fecha_inicio", $campos['fecha_inicio'], ">=");
+        } else if($campos['fecha_fin'] != null && $campos['fecha_inicio'] == null){
+            $c->y("t.fecha_fin", $campos['fecha_fin'], "<=");
+        } else if($campos['fecha_inicio'] != null && $campos['fecha_fin'] != null){
+            $c->entre("t.fecha_inicio", $campos['fecha_inicio'], $campos['fecha_fin'], true);
+        }
+
+        $pagos = Pago::modelo()->listar($c);
+
+        $this->plantilla = "reporte";
+        $pdf = Sis::apl()->mpdf->crear();
+        ob_start();
+        $this->vista('reportes/pendientes', ['pagos' => $pagos]);
+        $texto = ob_get_clean();
+        $pdf->writeHtml($texto);
+        $pdf->Output("Pagos pendientes.pdf", 'I'); 
     }
     
+    public function accionPagosPendientes(){
+        $c = new CCriterio();
+        $c->union("tbl_matriculas", "m")
+            ->donde("m.id_matricula", "=", "t.matricula_id")
+            ->union("tbl_categorias", "ca")
+            ->donde("ca.id_categoria", "=", "m.categoria_id")
+            ->union("tbl_deportistas", "d")
+            ->donde("d.id_deportista", "=", "m.deportista_id")
+            ->condicion("t.estado", 2)
+            ->orden("t.fecha_inicio");
+
+        $this->vista('pagosPendientes', [
+            'criterios' => $c
+        ]);
+    }
+
+    public function accionRealizados(){
+        $c = new CCriterio();
+        $c->condicion("t.estado", 1)
+            ->o("t.estado", 0)
+            ->o("t.estado", 3)
+            ->orden("t.estado = 1", false)
+            ->orden("t.estado = 0")
+            ->orden("t.fecha_inicio");
+
+        $this->vista('realizados', [
+            'criterios' => $c
+        ]);
+    }
+
+    public function accionRegistrar($pk){
+        $pago = Pago::modelo()->porPk($pk);
+        $matricula = $pago->MatriculaPago;
+        // $matricula = Matricula::modelo()->porPk($pk);
+        // $pago = new Pago();
+        // $pago->matricula_id = $pk;
+        $pago->valor_cancelado = $matricula->Categoria->tarifa;
+        $pago->fecha = $pago->fecha_inicio . " - " . $pago->fecha_fin;
+        
+        if(isset($this->_p['Pagos'])){
+            $pago->atributos = $this->_p['Pagos'];
+            $archivoGuardado = $this->guardarComprobantePago($pago, $matricula->Deportista->identificacion, $pago->fecha);
+            $pago->estado = 1;
+            if(!$archivoGuardado && $pago->guardar()){
+                Sis::Sesion()->flash("alerta", [
+                    'msg' => 'Guardado exitoso',
+                    'tipo' => 'success',
+                ]);
+                $this->redireccionar('pagosPendientes');
+            }else {
+                Sis::Sesion()->flash("alerta", [
+                    'msg' => 'Error al guardar el pago',
+                    'tipo' => 'error',
+                ]);
+            }
+        }
+        
+        $this->vista('registrarPago', [
+            'modelo' => $pago,
+            'matricula' => $matricula,
+        ]);
+    }
+
     public function accionReporte(){
         if(!isset($this->_p['modelo'])){
             $this->redireccionar('inicio');
@@ -95,7 +231,7 @@ class CtrlPago extends CControlador{
         Sis::fin();
     }
     
-    public function accionRegistrar($pk){
+    public function accionRegistrar_($pk){
         $matricula = Matricula::modelo()->porPk($pk);
         $pago = new Pago();
         $pago->matricula_id = $pk;
@@ -163,20 +299,37 @@ class CtrlPago extends CControlador{
     
     public function accionAnular($id){
         $modelo = Pago::modelo()->porPk($id);
-        if ($modelo->estado==0) {
-             Sis::Sesion()->flash("alerta", [
-                    'msg' => 'Esta categoria ya se encuentra inactiva',
-                    'tipo' => 'error',
-                ]);
-             $this->redireccionar('inicio');
-        }
-        $modelo->estado = $modelo->estado == 1? 0 : 1;
+        $modelo->estado = 0;
         $modelo->guardar();
+
+        $nuevoPago = new Pago();
+        $nuevoPago->estado = 2;
+        $nuevoPago->matricula_id = $modelo->matricula_id;
+        $nuevoPago->fecha_inicio = $modelo->fecha_inicio;
+        $nuevoPago->fecha_fin = $modelo->fecha_fin;
+        $nuevoPago->url_comprobante = $modelo->url_comprobante;
+        $nuevoPago->valor_cancelado = $modelo->valor_cancelado;
+        $nuevoPago->guardar();
+
         Sis::Sesion()->flash("alerta", [
-                'msg' => 'Guardado exitoso',
+                'msg' => 'Se anuló correctamente el pago',
                 'tipo' => 'success',
-            ]);
-        $this->redireccionar('pago/consultar');
+        ]);
+
+        $this->redireccionar('pago/realizados');
+    }
+
+    public function accionCondonar($id){
+        $modelo = Pago::modelo()->porPk($id);
+        $modelo->estado = 3;
+        $modelo->guardar();
+
+        Sis::Sesion()->flash("alerta", [
+                'msg' => 'Se condonó el pago',
+                'tipo' => 'success',
+        ]);
+
+        $this->redireccionar('pago/realizados');
     }
     
     public function accionVer($pk){

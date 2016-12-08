@@ -4,10 +4,11 @@ $this->migas = [
     'Consultar pagos' => ['Pago/consultar'],
     'Ver'
 ];
-
+$this->tituloPagina = "Ver detalles Pago";
 $this->opciones = [
     'elementos' => [
-        'Consultar pagos' => ['Pago/consultar'],
+        'Pagos realizados' => ['Pago/realizados'],
+        'Pagos pendientes' => ['Pago/pagosPendientes'],
     ]
 ];
 ?>

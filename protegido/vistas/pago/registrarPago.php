@@ -11,7 +11,8 @@ $this->tituloPagina="Registrar pago";
     
     $this->opciones = [
         'elementos' => [
-            'Consultar pagos' => ['pago/consultar'],
+            'Pagos pendientes' => ['pago/pagosPendientes'],
+            'Pagos realizados' => ['pago/realizados'],
         ]
     ];
 ?>
@@ -45,7 +46,10 @@ $formulario->abrir();
 <div class="col-sm-6">
     <?php echo $formulario->inputAddon($modelo, 'valor_cancelado', 'number', ['label' => true, 'group' => true, 'class' => 'solo-numeros maximo-numero', 'max' => '100000'], ['pre' => '$']) ?>
     <?php echo $formulario->inputAddon($modelo, 'descuento', 'number', ['label' => true, 'group' => true, 'class' => 'solo-numeros maximo-numero', 'max' => '100000'], ['pre' => '$']) ?>
-    <?php echo $formulario->campoArchivo($modelo, 'url_comprobante', ['label' => true, 'group' => true]) ?>
+    <div class="form-group">
+        <label for="Pagos_url_comprobante">Comprobante <span class="text-danger">*</span></label>
+        <?php echo $formulario->campoArchivo($modelo, 'url_comprobante', []) ?>
+    </div>
 </div>
 
 <div class="col-sm-6">
@@ -58,7 +62,7 @@ $formulario->abrir();
         <?php echo CHtml::link(CBoot::fa('undo').' Cancelar', ['pago/pagosPendientes'], ['class' => 'btn btn-primary btn-block']); ?>
     </div>
     <div class="col-sm-3">
-        <?php echo CBoot::boton(CBoot::fa('save') .' '. ($modelo->nuevo? 'Guardar' : 'Actualizar'), 'success', ['class' => 'btn-block']); ?>
+        <?php echo CBoot::boton(CBoot::fa('save') .' Registrar', 'success', ['class' => 'btn-block']); ?>
     </div>
 </div>
 
@@ -68,6 +72,13 @@ $formulario->abrir();
 <script>
     var valorAnterior = 0;
     $(function(){
+        $("#form-pagos").submit(function(){
+            var input = $("#Pagos_url_comprobante");
+            if(input.val() == ""){
+                lobiAlert("error", "Debe cargar un comprobante");
+                return false;
+            }
+        });
 
         $("#Pagos_razon_descuento").keydown(function(e){
             var t = $(this);

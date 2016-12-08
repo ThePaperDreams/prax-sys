@@ -96,6 +96,8 @@ class CSAdminSideNav extends CComplemento{
             $texto = isset($elemento['texto'])? $elemento['texto'] : '';                     
             $i = isset($elemento['i'])? $elemento['i'] : '';
             $fa = isset($elemento['fa'])? CBoot::fa($elemento['fa']) : '';
+            $opLink = isset($elemento['opcionesLink'])? $elemento['opcionesLink'] : [];
+            $opLink['class'] = $i;
             # Si hay elementos y no se trata de crear subelementos
             if(isset($elemento['elementos']) && !$subElementos){
                 $texto = CHtml::e("span", $texto, ['class' => 'menu-item']);                
@@ -119,7 +121,7 @@ class CSAdminSideNav extends CComplemento{
                 if(!$this->activo && $esActivo){ $opcionesLi['class'] = 'active'; }
                 if($esActivo && $subElementos){ $this->activo = true; }
                 
-                $link = CHtml::link($fa . $texto, (isset($elemento['url'])? $elemento['url'] : '#'), ['class' => $i]);
+                $link = CHtml::link($fa . $texto, (isset($elemento['url'])? $elemento['url'] : '#'), $opLink);
                 $items[] = CHtml::e('li', $link, $opcionesLi);
             }
         }

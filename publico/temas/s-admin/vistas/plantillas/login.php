@@ -54,9 +54,21 @@ Sis::Recursos()->css('estilos');
         </script>
         <?php endif ?>
         <script>
+
             function lobiAlert(tipo, mensaje){
+                 // lobibox-notify-success animated-fast bounceInRight notify-mini
+                $(".lobibox-notify").remove();
+                var nchars = mensaje.length;
+                if(nchars < 70){
+                    s = 'mini';
+                } else if(nchars >= 70 && nchars < 140){
+                    s = 'normal';
+                } else if(nchars >= 140){
+                    s = 'large';
+                }
+
                 Lobibox.notify(tipo, {
-                    size: 'mini',
+                    size: s,
                     showClass: 'bounceInRight',
                     hideClass: 'bounceOutRight',
                     msg:mensaje,

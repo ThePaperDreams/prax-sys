@@ -15,12 +15,12 @@ Sis::Recursos()->recursoJs([
 		<div class="row" id="search-panel">
 			<div class="col-sm-4">
 				<div class="input-group">
-					<?= CBoot::text('', ['id' => 'search', 'placeholder' => 'Buscar imagen']) ?>
 					<div class="input-group-addon">
 						<i class="fa fa-search"></i>
 					</div>
+					<?= CBoot::text('', ['id' => 'search', 'placeholder' => 'Buscar imagen']) ?>
 					<div class="input-group-btn">
-						<?= CBoot::boton('Buscar', 'default') ?>
+						<?= CBoot::boton('Buscar', 'default', ['id' => 'btn-search']) ?>
 					</div>					
 				</div>
 			</div>
@@ -32,7 +32,7 @@ Sis::Recursos()->recursoJs([
 	<div class="image-gallery-container-wraper">		
 		<div id="imgs-container" class="image-gallery-container">
 			<?php foreach ($imagenes as $imagen): ?>
-			<div id="img-gallery-<?= $imagen->id_imagen ?>" data-id="<?= $imagen->id_imagen ?>" class="gallery-manager" data-url="<?= Sis::urlBase() . 'publico/imagenes/galerias/' . $imagen->url ?>" data-date="<?= $imagen->fecha ?>" data-description="<?= $imagen->descripcion ?>">
+			<div data-title="<?= strtolower($imagen->titulo) ?>" id="img-gallery-<?= $imagen->id_imagen ?>" data-id="<?= $imagen->id_imagen ?>" class="gallery-manager pic-searchable" data-url="<?= Sis::urlBase() . 'publico/imagenes/galerias/' . $imagen->url ?>" data-date="<?= $imagen->fecha ?>" data-description="<?= $imagen->descripcion ?>">
 				<img src="<?= Sis::urlBase() . 'publico/imagenes/galerias/thumbs/tmb_' . $imagen->url ?>" alt="">
 				<p class="caption"><?= $imagen->titulo ?></p>
 				<p class="label-view">Ver</p>
@@ -108,6 +108,16 @@ Sis::Recursos()->recursoJs([
 
 <script>
 	$(function(){
+		$("#search").keypress(function(e){
+			if(e.which == 13){
+				buscarImagenes();	
+			}
+		});
+		$("#btn-search").click(function(){
+			buscarImagenes();
+			return false;
+		});
+
 		$("#btn-upload-img").click(function(){
 			$("#upload-img").modal("show");
 		});
@@ -161,6 +171,17 @@ Sis::Recursos()->recursoJs([
 	    });
 
 	});
+
+	function buscarImagenes(){
+		var searchInput = $("#search");
+		var pics = $(".pic-searchable");
+		if($.trim(searchInput.val()) != ""){
+			pics.hide();
+			$(".pic-searchable[data-title*='" + searchInput.val() + "']").show();
+		} else {
+			pics.show();
+		}
+	}
 
 	function guardar(obj){
 		doRequest(obj.attr("data-id"), "save");

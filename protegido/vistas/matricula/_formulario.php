@@ -49,7 +49,7 @@ $formulario->abrir();
                         </div>
                     </div>
                     <div class="col-sm-5">
-                        <?php echo $formulario->inputAddon($modelo, 'fecha_pago', 'text', ['label' => true, 'readonly' => true, 'group' => true, 'class' => 'campo-fecha', 'data-val-maxmin' => true, 'data-only-min' => true], ['pos' => CBoot::fa('calendar')]) ?>
+                        <?php echo $formulario->inputAddon($modelo, 'fecha_pago', 'text', ['label' => true, 'readonly' => true, 'group' => true, 'class' => 'campo-fecha', 'data-val-maxmin' => true, 'data-only-min' => true], ['pos' => CBoot::fa('calendar', ['class' => 't-calendar', 'data-t' => '#Matriculas_fecha_pago'])]) ?>
                     </div>
                 </div>
                 <div class="row">

@@ -1,0 +1,4 @@
+[Error BD] [19:00:17]	Error de base de datos: La columna 'fecha' no puede ser nula
+						>> Consulta ejecutada: INSERT INTO tbl_pagos (fecha, valor_cancelado, url_comprobante, estado, descuento, razon_descuento, matricula_id, fecha_inicio, fecha_fin) VALUES (null, '0', null, '2', null, null, '15', '2016-12-01', '2016-12-31')
+[Error BD] [19:01:03]	Error de base de datos: La columna 'url_comprobante' no puede ser nula
+						>> Consulta ejecutada: INSERT INTO tbl_pagos (fecha, valor_cancelado, url_comprobante, estado, descuento, razon_descuento, matricula_id, fecha_inicio, fecha_fin) VALUES (null, '0', null, '2', null, null, '16', '2016-12-01', '2016-12-31')

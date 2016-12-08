@@ -72,6 +72,7 @@ class CtrlMatricula extends CControlador {
             $modelo->atributos = $this->_p['Matriculas'];
             $modelo->url_comprobante = $this->cargarComprobante($modelo);
             if ($modelo->guardar()) {
+                $this->generarPendientes($modelo);
                 # actualizamos la lista de espera
                 if(isset($this->_p['id_lista_espera'])){
                     $lista = ListaEspera::modelo()->porPk($this->_p['id_lista_espera']);
@@ -100,6 +101,42 @@ class CtrlMatricula extends CControlador {
             'mClubes' => $clubes,
         ]);
     }    
+
+    private function generarPendientes($matricula){
+        $fechaFormateada = new DateTime($matricula->fecha_realizacion);
+
+        $fechaInicial = $fechaFormateada->format("Y-m-01");
+        $fi = new DateTime($fechaInicial);
+        $fechaFinal = $fi->format("Y") . "-12-31";
+        $ff = new DateTime($fechaFinal);
+        $int = DateInterval::createFromDateString("1 month");
+        $periodos = new DatePeriod($fi, $int, $ff);
+        // $meses = [];
+        foreach($periodos AS $k=>$v){
+            // $meses[] = ['fi' => $v->format("Y-m-01"), 'ff' => $v->format("Y-m-t")];
+            $pago = new Pago();            
+            $pago->fecha_inicio = $v->format("Y-m-01");
+            $pago->fecha_fin = $v->format("Y-m-t");
+            $pago->estado = 2;
+            $pago->matricula_id = $matricula->id_matricula;
+            $pago->valor_cancelado = 0;
+            $pago->guardar();
+        }
+        // var_dump($meses);
+        // Sis::ap()->log->escribir("Saludo");
+    }
+
+    public function accionGenerarPendientes(){
+        $c = new CCriterio();
+        $c->condicion("id_matricula", "17", "<>");
+
+        $matriculas = Matricula::modelo()->listar($c);
+        foreach($matriculas AS $m){
+            echo "-> Matricula $m->id_matricula<br>";
+            $this->generarPendientes($m);
+        }
+        echo "[OK] Pendientes Generados correctamente.";
+    }
     
     public function accionReporte(){
         if(!isset($this->_p['modelo'])){

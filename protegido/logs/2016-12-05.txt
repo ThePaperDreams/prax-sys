@@ -1,0 +1,4 @@
+[Error BD] [10:56:55]	Error de base de datos: Entrada duplicada 'soccer-673474_960_720.jpg' para la clave 'uq_titulo_Imagen'
+						>> Consulta ejecutada: INSERT INTO tbl_imagenes (descripcion, url, fecha, titulo) VALUES (null, 'soccer-673474_960_720.jpg', '2016-12-05 10:56:55', 'soccer-673474_960_720')
+[Error BD] [11:59:15]	Error de base de datos: Algo está equivocado en su sintax cerca 'AND estado = 1' en la linea 1
+						>> Consulta ejecutada: SELECT t.* FROM tbl_matriculas AS t WHERE deportista_id=  AND estado = 1 

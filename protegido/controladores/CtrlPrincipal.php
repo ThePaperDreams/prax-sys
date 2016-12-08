@@ -20,6 +20,8 @@ class CtrlPrincipal extends CControlador{
     }
 
 
+
+
     public function accionConfiguracion(){
         if(isset($this->_p['ajx_rqst'])){
             $guardado = $this->guardarConfiguraciones();
@@ -79,9 +81,21 @@ class CtrlPrincipal extends CControlador{
 
         Sis::fin();
     }
+    
 
     public function accionTest(){
-        Sis::ap()->log->escribir("Saludo");
+        $fechaInicial = "2016-06-06";
+        $fi = new DateTime($fechaInicial);
+        $fechaFinal = $fi->format("Y") . "-12-31";
+        $ff = new DateTime($fechaFinal);
+        $int = DateInterval::createFromDateString("1 month");
+        $periodos = new DatePeriod($fi, $int, $ff);
+        $meses = [];
+        foreach($periodos AS $k=>$v){
+            $meses[] = ['fi' => $v->format("Y-m-01"), 'ff' => $v->format("Y-m-t")];
+        }
+        var_dump($meses);
+        // Sis::ap()->log->escribir("Saludo");
     }
     
     public function accionRecuperar(){
@@ -97,7 +111,7 @@ class CtrlPrincipal extends CControlador{
                 $msg = 'No se encuentra un usuario registrado con ese email';
             } else {
                 $mensaje = $this->vistaP("_emailRecuperar");
-                $this->enviarEmail($email, $mensaje);
+                $this->enviarEmail($email, $mensaje, $usuario);
                 $tipo = 'success';
                 $msg = 'Se ha enviado un email a la dirección de correo electrónico ingresada.';
             }
@@ -222,9 +236,9 @@ class CtrlPrincipal extends CControlador{
         }
     }
 
-    private function enviarEmail($email, $link) {
+    private function enviarEmail($email, $link, $usuario) {
         $asunto = "Recuperación de contraseña";
-        $mensaje = $this->vistaP('_emailRecuperar', ['url' => $link]);
+        $mensaje = $this->vistaP('_emailRecuperar', ['url' => $link, 'usuario' => $usuario]);
         return Sis::apl()->JMail->enviar($email, $asunto, $mensaje);     
     }
     
@@ -277,8 +291,8 @@ class CtrlPrincipal extends CControlador{
                 $url = $this->generarUrlRecuperacion($usuario);
                 $usuario->url_recuperacion = $url;
                 $usuario->recuperacion = 1;
-                $usuario->guardar();
-                if($this->enviarEmail($usuario->email, $url)){
+                if($this->enviarEmail($usuario->email, $url, $usuario)){
+                    $usuario->guardar();
                     $this->alertar('success','Se ha enviado un email con instrucciones para la modificación de contraseña.');
                     $this->redireccionar("entrar");
                 }

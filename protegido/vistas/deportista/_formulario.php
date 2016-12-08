@@ -831,8 +831,8 @@ $formulario->abrir();
         var identificacion = $("#Deportistas_identificacion").val();
         if (identificacion === "") {
             return false;
-        }else if(identificacion.length < 10){
-            lobiAlert("error", "la identificación debe ser mayor o igual a 10 dígitos");
+        }else if(identificacion.length < 7){
+            lobiAlert("error", "la identificación debe ser mayor o igual a 7 dígitos");
             return false;
         }
 

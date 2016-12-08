@@ -65,7 +65,7 @@ $formulario->abrir();
     </div>
 </div>    
 
-<!-- <div class="modal fade modal-wide" id="modal-imgs">
+<div class="modal fade modal-wide" id="modal-imgs">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -85,7 +85,7 @@ $formulario->abrir();
                 </div>
                 <?php endforeach ?>
 
-               <div class="row">
+               <!-- <div class="row">
                     <div class="col-sm-12" id="img-list-1">
                     
                     </div>
@@ -98,7 +98,7 @@ $formulario->abrir();
                             </div>
                         </div>
                     </div>
-               </div>
+               </div> -->
 
             </div>
             <div class="modal-footer">
@@ -106,7 +106,7 @@ $formulario->abrir();
             </div>
         </div>
     </div>
-</div> -->
+</div>
 
 <div class="modal fade modal-wider" id="moda-use-img">
     <div class="modal-dialog">

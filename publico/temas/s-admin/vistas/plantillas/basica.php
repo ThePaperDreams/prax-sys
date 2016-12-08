@@ -15,7 +15,6 @@ Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . 'librerias/lobibox/js/
 // Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . "/librerias/air-datepicker/js/datepicker.js"]);
 // Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . "/librerias/air-datepicker/js/i18n/datepicker.es.js"]);
 // Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . "/librerias/air-datepicker/css/datepicker.min.css"]);
-// 
 // Sis::Recursos()->recursoCss(['url' => Sis::UrlRecursos() . 'librerias/uikit/css/uikit.css']);
 
 $url = Sis::ap()->getTema()->getUrlBase();
@@ -165,7 +164,7 @@ Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . '/librerias/chartjs/Ch
                 ]],                
                 ['texto' => 'Pagos', 'fa' => 'money', 'elementos' => [
                     ['texto' => 'Pagos pendientes', 'url' => ['Pago/pagosPendientes']],
-                    ['texto' => 'Consultar pagos', 'url' => ['pago/consultar']],
+                    ['texto' => 'Pagos realizados', 'url' => ['pago/realizados']],
                 ]],
                 ['texto' => 'Torneos', 'fa' => 'trophy', 'elementos' => [
                     ['texto' => 'Torneos', 'url' => ['torneo/inicio']],
@@ -177,15 +176,16 @@ Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . '/librerias/chartjs/Ch
                     ['texto' => 'Eventos', 'url' => ['Evento/inicio']],
                     ['texto' => 'Tipo de Eventos', 'url' => ['tipoEvento/inicio']],
                     ['texto' => 'Imágenes', 'url' => ['Publicacion/imagenes']],                    
+                    ['texto' => 'Ir a sitio web', 'url' => ['Publicacion/verSitio'], 'opcionesLink' => ['target' => '_blank']],
                 ]],
                 ['texto' => 'Usuarios', 'fa' => 'users', 'elementos' => [
                         ['texto' => 'Roles', 'url' => ['Rol/inicio']],
                         ['texto' => 'Usuarios', 'url' => ['Usuario/inicio']],
                         ['texto' => 'Permisos', 'url' => ['Permiso/asignar']],
                 ]],
-                ['texto' => 'Reportes', 'fa' => 'bar-chart-o', 'opciones' => ['title' => 'Reportes'], 'elementos' => [
-                    ['texto' => 'Ver reportes', 'url' => ['reportes/todos']]
-                ]],
+                // ['texto' => 'Reportes', 'fa' => 'bar-chart-o', 'opciones' => ['title' => 'Reportes'], 'elementos' => [
+                //     ['texto' => 'Ver reportes', 'url' => ['reportes/todos']]
+                // ]],
                 ['texto' => 'Configuración', 'fa' => 'cogs', 'elementos' => [
                         ['texto' => 'Configuración General', 'url' => ['principal/configuracion']],
                         // ['texto' => 'Rutas', 'url' => ['Ruta/inicio']],
@@ -207,7 +207,7 @@ Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . '/librerias/chartjs/Ch
                 <div class="page-header">
                     <h4><?= $this->tituloPagina ?></h4>
                     <?php if($this->ayuda != ""): ?>
-                    <span id="icono-ayuda">
+                    <span id="icono-ayuda" style="display: none">
                         <i class="fa fa-question-circle" title="Ayuda" data-help="<?= $this->ayuda ?>" data-help-title="<?= $this->ayudaTitulo ?>"></i>
                     </span>
                     <?php endif ?>
@@ -313,10 +313,18 @@ Sis::Recursos()->recursoJs(['url' => Sis::UrlRecursos() . '/librerias/chartjs/Ch
 
             function lobiAlert(tipo, mensaje){
                  // lobibox-notify-success animated-fast bounceInRight notify-mini
-                 $(".lobibox-notify").remove();
+                $(".lobibox-notify").remove();
+                var nchars = mensaje.length;
+                if(nchars < 70){
+                    s = 'mini';
+                } else if(nchars >= 70 && nchars < 140){
+                    s = 'normal';
+                } else if(nchars >= 140){
+                    s = 'large';
+                }
 
                 Lobibox.notify(tipo, {
-                    size: 'mini',
+                    size: s,
                     showClass: 'bounceInRight',
                     hideClass: 'bounceOutRight',
                     msg:mensaje,
